@@ -4,6 +4,11 @@
 
 target=$1
 
+if [[ $# -lt 1 ]]; then
+	echo "You must specify a target host ($0 <target_host>)."
+	exit
+fi
+
 timeout 5s bash -c "until ping -c3 $target; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
