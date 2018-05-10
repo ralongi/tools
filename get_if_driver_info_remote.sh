@@ -4,10 +4,15 @@
 
 target=$1
 password=$2
+default_paswword="100yard-"
+
+if [[ $# -lt 1 ]]; then
+	echo "You must specify a target host and root password($0 <target_host> [root pw])."
+	exit
+fi
 
 if [[ $# -lt 2 ]]; then
-	echo "You must specify a target host and root password($0 <target_host> <root pw>)."
-	exit
+	password="$default_paswword"
 fi
 
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
