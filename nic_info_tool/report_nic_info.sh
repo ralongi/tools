@@ -1,24 +1,37 @@
 #!/bin/bash
 
-# Script to get info on interfaces on target host
+# Script to log into target host and gather iface and driver info
 
-rm -f /home/nic_info.txt
-echo "" >> /home/nic_info.txt
-echo "NIC and Interface list for $(hostname):" >> /home/nic_info.txt
-echo -e "Note that only physical interfaces are listed\n" >> /home/nic_info.txt
-echo "---------------------------------------------------------------------" >> /home/nic_info.txt
+target=$1
+password=$2
+default_paswword="100yard-"
 
-for i in $(ls /sys/class/net | egrep -v 'lo|ovs|vir|vnet|tun'); do
-	driver=$(ethtool -i $i | grep driver | awk '{print $NF}')
-	pci_slot=$(ethtool -i $i | grep bus | awk -F ":" '{print $3":"$4$5}')
-	nic_name=$(lspci -v | grep $pci_slot | awk -F ":" '{print $NF}')
-	echo -e "Interface: $i\n" >> /home/nic_info.txt
-	echo "    Driver: $driver" >> /home/nic_info.txt
-	echo "    Card: $nic_name" >> /home/nic_info.txt
-	echo "    PCI Slot: $pci_slot" >> /home/nic_info.txt
-	echo "---------------------------------------------------------------------" >> /home/nic_info.txt
-done
+if [[ $# -lt 1 ]]; then
+	echo "You must specify a target host and root password($0 <target_host> [root pw])."
+	exit
+fi
 
-more /home/nic_info.txt 
+if [[ $# -lt 2 ]]; then
+	password="$default_paswword"
+fi
 
+rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
+if [[ $rhel_version -eq 7 ]]; then
+	sshpass_rpm="https://rpmfind.net/linux/epel/7/x86_64/Packages/s/sshpass-1.06-1.el7.x86_64.rpm"
+elif [[ $rhel_version -eq 7 ]]; then
+	sshpass_rpm="https://rpmfind.net/linux/epel/6/x86_64/Packages/s/sshpass-1.06-1.el6.x86_64.rpm"
+fi
+
+if [[ ! $(which sshpass) ]]; then
+	echo "sshpass must be installed for this tool to work.  You may find the sshpass package for your system here:  $sshpass_rpm"
+	exit
+fi
+
+timeout 5s bash -c "until ping -c3 $target; do sleep 1s; done"
+if [[ $? -ne 0 ]]; then
+	echo "$target is not reachable.  Exiting test..."
+	exit
+fi
+
+cat ./report_nic_info.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
 
