@@ -1,13 +1,19 @@
 #!/bin/bash
 
 # Script to log into target host and set up DNS/IP aliases
+set -x
 
 target=$1
 password=$2
+default_password="100yard-"
+
+if [[ $# -lt 1 ]]; then
+	echo "You must specify a target host and root password($0 <target_host> [root pw])."
+	exit
+fi
 
 if [[ $# -lt 2 ]]; then
-	echo "You must specify a target host and root password($0 <target_host> <root pw>)."
-	exit
+	password="$default_password"
 fi
 
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
@@ -22,11 +28,11 @@ if [[ ! $(which sshpass) ]]; then
 	exit
 fi
 
-timeout 5s bash -c "until traceroute $target; do sleep 1s; done"
+timeout 5s bash -c "until ping -c3 $target; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
 	exit
 fi
 
-cat ./alias_cfg.sh | sshpass -p $password ssh -o "StrictHostKeyChecking=no" root@$target 'bash -'
+cat ./alias_cfg.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
 

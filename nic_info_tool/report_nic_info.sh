@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Script to log into target host and gather iface and driver info
+set -x
 
 target=$1
 password=$2
-default_paswword="100yard-"
+default_password="100yard-"
 
 if [[ $# -lt 1 ]]; then
 	echo "You must specify a target host and root password($0 <target_host> [root pw])."
@@ -12,7 +13,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 if [[ $# -lt 2 ]]; then
-	password="$default_paswword"
+	password="$default_password"
 fi
 
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
