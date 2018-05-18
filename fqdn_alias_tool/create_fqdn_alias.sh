@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Script to log into target host and set up DNS/IP aliases
-set -x
 
 target=$1
 password=$2
