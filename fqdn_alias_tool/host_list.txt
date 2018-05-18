@@ -1,34 +1,6 @@
-imp1 impairment1.knqe.lab.eng.bos.redhat.com
-imp2 impairment2.knqe.lab.eng.bos.redhat.com
-robin robin.knqe.lab.eng.bos.redhat.com
-sam sam.knqe.lab.eng.bos.redhat.com
-qe1 netqe1.knqe.lab.eng.bos.redhat.com
-qe2 netqe2.knqe.lab.eng.bos.redhat.com
-qe3 netqe3.knqe.lab.eng.bos.redhat.com
-qe4 netqe4.knqe.lab.eng.bos.redhat.com
-qe5 netqe5.knqe.lab.eng.bos.redhat.com
-qe6 netqe6.knqe.lab.eng.bos.redhat.com
-qe7 netqe7.knqe.lab.eng.bos.redhat.com
-qe8 netqe8.knqe.lab.eng.bos.redhat.com
-qe9 netqe9.knqe.lab.eng.bos.redhat.com
-qe10 netqe10.knqe.lab.eng.bos.redhat.com
-qe11 netqe11.knqe.lab.eng.bos.redhat.com
-qe12 netqe12.knqe.lab.eng.bos.redhat.com
-qe13 netqe13.knqe.lab.eng.bos.redhat.com
-qe14 netqe14.knqe.lab.eng.bos.redhat.com
-qe15 netqe15.knqe.lab.eng.bos.redhat.com
-qe16 netqe16.knqe.lab.eng.bos.redhat.com
-qe17 netqe17.knqe.lab.eng.bos.redhat.com
-spirent spirentimpair.knqe.lab.eng.bos.redhat.com
-pnate pnate-control-01.lab.bos.redhat.com 
-inf netqe-infra01.knqe.lab.eng.bos.redhat.com
-qe18 netqe18.knqe.lab.eng.bos.redhat.com
-qe19 netqe19.knqe.lab.eng.bos.redhat.com
-qe20 netqe20.knqe.lab.eng.bos.redhat.com
-qe21 netqe21.knqe.lab.eng.bos.redhat.com
-qe22 netqe22.knqe.lab.eng.bos.redhat.com
-qe23 netqe23.knqe.lab.eng.bos.redhat.com
-qe24 netqe24.knqe.lab.eng.bos.redhat.com
-qe25 netqe25.knqe.lab.eng.bos.redhat.com
-qe26 netqe26.knqe.lab.eng.bos.redhat.com
+# Sample entries below
+# host alias followed by a space and then the FQDN for the host:
 
+#imp1 impairment1.knqe.lab.eng.bos.redhat.com
+#qe1 netqe1.knqe.lab.eng.bos.redhat.com
+#sam sam.knqe.lab.eng.bos.redhat.com
