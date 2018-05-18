@@ -23,8 +23,8 @@ elif [[ $rhel_version -eq 7 ]]; then
 fi
 
 if [[ ! $(which sshpass) ]]; then
-	echo "sshpass must be installed for this tool to work.  You may find the sshpass package for your system here:  $sshpass_rpm"
-	exit
+	echo "sshpass must be installed for this tool to work.  Installing it now..."
+	yum -y install sshpass $sshpass_rpm
 fi
 
 timeout 5s bash -c "until ping -c3 $target; do sleep 1s; done"
