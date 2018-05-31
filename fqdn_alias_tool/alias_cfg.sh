@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Populate the/etc/host.aliases file
+#Populate the /etc/host.aliases file
 # must be run as root
 rm -f /etc/host.aliases
 touch /etc/host.aliases && chmod 755 /etc/host.aliases

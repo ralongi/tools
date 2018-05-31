@@ -34,5 +34,5 @@ if [[ $? -ne 0 ]]; then
 	exit
 fi
 
-cat ./report_nic_info.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
+cat ./get_nic_info.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
 

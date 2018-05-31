@@ -2,6 +2,7 @@
 
 # Script to get info on interfaces on target host
 
+if [[ ! $(which lspci) ]]; then yum -y install pciutils; fi
 rm -f /home/nic_info.txt
 echo "" >> /home/nic_info.txt
 echo "NIC and Interface list for $(hostname):" >> /home/nic_info.txt
