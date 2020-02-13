@@ -34,11 +34,15 @@ get_if_driver_info()
 	echo -e
 	cat /tmp/iface_driver_list.txt | grep -v '!'
 	one_g=$(grep -w 1000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
+	two_pt_five_g=$(grep -w 2500 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
+	five_g=$(grep -w 5000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
 	ten_g=$(grep -w 10000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
 	twenty_five_g=$(grep -w 25000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
 	forty_g=$(grep -w 40000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
 	fifty_g=$(grep -w 50000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
 	one_hundred_g=$(grep -w 100000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
+	two_hundred_g=$(grep -w 200000 /tmp/iface_driver_list.txt | awk '{print $2 " (" $4 ")"}' | tr -d ",")
+	
 	echo -e
 	if [[ -z "$one_g" ]]; then 
 		echo -e "1G interfaces currently available for test: NONE"
@@ -46,14 +50,28 @@ get_if_driver_info()
 		echo -e "1G interfaces currently available for test: "
 		echo "$one_g"
 	fi
-	echo -e
+	echo -e	
+	if [[ -z "$two_pt_five_g" ]]; then 
+		echo -e "2.5G interfaces currently available for test: NONE"
+	else
+		echo -e "2.5G interfaces currently available for test: "
+		echo "$two_pt_five_g"
+	fi
+	echo -e	
+	if [[ -z "$five_g" ]]; then 
+		echo -e "5G interfaces currently available for test: NONE"
+	else
+		echo -e "5G interfaces currently available for test: "
+		echo "$five_g"
+	fi
+	echo -e	
 	if [[ -z "$ten_g" ]]; then 
 		echo -e "10G interfaces currently available for test: NONE"
 	else
 		echo -e "10G interfaces currently available for test: "
 		echo "$ten_g"
 	fi
-	echo -e
+	echo -e	
 	if [[ -z "$twenty_five_g" ]]; then 
 		echo -e "25G interfaces currently available for test: NONE"
 	else
@@ -80,6 +98,13 @@ get_if_driver_info()
 	else
 		echo -e "100G interfaces currently available for test: "
 		echo "$one_hundred_g"
+	fi
+	echo -e	
+	if [[ -z "$two_hundred_g" ]]; then 
+		echo -e "200G interfaces currently available for test: NONE"
+	else
+		echo -e "200G interfaces currently available for test: "
+		echo "$two_hundred_g"
 	fi
 	echo -e
 	echo -e "Interfaces unavailable for test due to no detected link or port speed: "

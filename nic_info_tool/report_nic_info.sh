@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Script to log into target host and gather iface and driver info
-set -x
 
 target=$1
 password=$2
@@ -28,7 +27,7 @@ if [[ ! $(which sshpass) ]]; then
 	exit
 fi
 
-timeout 5s bash -c "until ping -c3 $target; do sleep 1s; done"
+timeout 5s bash -c "until traceroute $target; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
 	exit
