@@ -19,11 +19,13 @@ get_if_driver_info()
 	else
 		echo "Sleeping 30 seconds to allow all driver types to set link up..."
 		sleep 30
+		echo -e
 	fi
 	
-	echo -e "Here is the current status for all interfaces on host $(hostname): "
+	echo -e "Here is the current status for all interfaces on host $(hostname):"
+	echo -e
 	ip l l
-
+	echo -e
 	echo "This is the interface information for host "$(hostname):
 	echo -e
 	echo "The management interface is: $mgmt_iface"
