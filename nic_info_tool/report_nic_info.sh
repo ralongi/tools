@@ -27,7 +27,7 @@ if [[ ! $(which sshpass) ]]; then
 	exit
 fi
 
-timeout 5s bash -c "until traceroute $target; do sleep 1s; done"
+timeout 15s bash -c "until traceroute $target; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
 	exit
