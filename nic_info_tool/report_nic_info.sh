@@ -1,5 +1,8 @@
 #!/bin/bash
 
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
+
 # Script to log into target host and gather iface and driver info
 
 target=$1
@@ -27,11 +30,17 @@ if [[ ! $(which sshpass) ]]; then
 	exit
 fi
 
+nslookup $target
+if [[ $? -ne 0 ]]; then
+	 echo "$target does not appear to be a valid FQDN.  Please enter a valid FQDN target."
+	 exit 0
+fi
+
 timeout 15s bash -c "until traceroute $target; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
 	exit
 fi
 
-cat ./get_nic_info.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
+cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
 
