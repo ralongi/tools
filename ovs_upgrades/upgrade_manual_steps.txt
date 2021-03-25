@@ -6,11 +6,11 @@
 
 scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@netqe9.knqe.lab.eng.bos.redhat.com:/tmp
 
-scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@hpe-netqe-syn480g10-06.knqe.lab.eng.bos.redhat.com:/tmp
+scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@impairment1.knqe.lab.eng.bos.redhat.com:/tmp
 
 scp /home/ralongi/inf_ralongi/git_temp/upgrade_ovs_manual.sh root@netqe9.knqe.lab.eng.bos.redhat.com:.
 
-scp /home/ralongi/inf_ralongi/git_temp/upgrade_ovs_manual.sh root@hpe-netqe-syn480g10-06.knqe.lab.eng.bos.redhat.com:.
+scp /home/ralongi/inf_ralongi/git_temp/upgrade_ovs_manual.sh root@impairment1.knqe.lab.eng.bos.redhat.com:.
 	
 - on infra01, mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
 
@@ -21,21 +21,21 @@ chmod +x ~/upgrade_ovs_manual.sh
 yum -y install wget
 
 . /tmp/package_list.sh
-export FDP_RELEASE="fdp20i"
-#export RPM_OVS=$OVS29_20I_RHEL7 # OVS package under test
-export RPM_OVS=$OVS211_20I_RHEL7 # OVS package under test
-#export RPM_OVS=$OVS213_20I_RHEL7 # OVS package under test
-export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_20H_RHEL7 # RPM from previous release of same stream
-#export STARTING_RPM_OVS=$OVS29_20H_RHEL7 # RPM from previous release of same stream
-export STARTING_RPM_OVS=$OVS211_20H_RHEL7 # RPM from previous release of same stream
-#export STARTING_RPM_OVS=$OVS213_20H_RHEL7 # RPM from previous release of same stream (may have to go to several releases back)
-export OVS_LATEST_STREAM_PKG=$OVS213_20I_RHEL7 # Latest available stream change for stream under test
+export FDP_RELEASE="fdp21c"
+#export RPM_OVS=$OVS29_21C_RHEL7 # OVS package under test
+export RPM_OVS=$OVS211_21C_RHEL7 # OVS package under test
+#export RPM_OVS=$OVS213_21C_RHEL7 # OVS package under test
+export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21B_RHEL7 # RPM from previous release of same stream
+#export STARTING_RPM_OVS=$OVS29_21B_RHEL7 # RPM from previous release of same stream
+export STARTING_RPM_OVS=$OVS211_21B_RHEL7 # RPM from previous release of same stream
+#export STARTING_RPM_OVS=$OVS213_21B_RHEL7 # RPM from previous release of same stream (may have to go to several releases back)
+export OVS_LATEST_STREAM_PKG=$OVS213_21C_RHEL7 # Latest available stream change for stream under test
 
 ~/upgrade_ovs_manual.sh 
 
 ### scp below no longer necessary as the test scp's the file itself now
-- scp results file to root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/fdp20I
-  i.e. scp /tmp/openvswitch-2.9.0-129.el7fdp.x86_64.rpm_openvswitch-2.9.0-131.el7fdp.x86_64.rpm_results.txt root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/fdp20I
+- scp results file to root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/fdp21c
+  i.e. scp /tmp/openvswitch-2.9.0-129.el7fdp.x86_64.rpm_openvswitch-2.9.0-131.el7fdp.x86_64.rpm_results.txt root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/fdp21c
 ###  
 
 - use url shortener to create URL for results sheet
@@ -45,14 +45,17 @@ chmod +x ~/upgrade_ovs_manual.sh
 . /tmp/package_list.sh
 yum -y install wget
 
-export FDP_RELEASE="fdp21a"
-#export RPM_OVS=$OVS211_20I_RHEL8 # OVS package under test
-export RPM_OVS=$OVS213_21A_RHEL8 # OVS package under test
-export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_20I_RHEL8 # RPM from previous release of same stream
-#export STARTING_RPM_OVS=$OVS211_20H_RHEL8 # RPM from previous release of same stream
-export STARTING_RPM_OVS=$OVS213_20I_RHEL8 # RPM from previous release of same stream
-export OVS_LATEST_STREAM_PKG=$OVS213_21A_RHEL8 # Latest available stream change for stream under test
+export FDP_RELEASE="fdp21c"
+#export RPM_OVS=$OVS211_21C_RHEL8 # OVS package under test
+export RPM_OVS=$OVS213_21C_RHEL8 # OVS package under test
+#export RPM_OVS=$OVS215_21C_RHEL8 # OVS package under test
+export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21B_RHEL8 # RPM from previous release of same stream
+#export STARTING_RPM_OVS=$OVS211_21B_RHEL8 # RPM from previous release of same stream
+export STARTING_RPM_OVS=$OVS213_21B_RHEL8 # RPM from previous release of same stream
+export STARTING_RPM_OVS=$OVS215_21B_RHEL8 # RPM from previous release of same stream
+export OVS_LATEST_STREAM_PKG=$OVS215_21C_RHEL8 # Latest available stream change for stream under test
 
 ~/upgrade_ovs_manual.sh 
+
 
 
