@@ -439,5 +439,10 @@ else
 fi
 echo "===========================================================================" | tee -a $RESULTS_FILE
 
+FDP_RELEASE=$(echo $FDP_RELEASE | tr '[:upper:]' '[:lower:]')
+
+if [[ ! $(ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com ls /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE) ]]; then
+	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
+fi
 scp -o "StrictHostKeyChecking no" $RESULTS_FILE root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/$FDP_RELEASE/
 

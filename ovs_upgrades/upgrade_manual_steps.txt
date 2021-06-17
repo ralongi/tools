@@ -8,11 +8,12 @@ scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@
 
 scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@impairment1.knqe.lab.eng.bos.redhat.com:/tmp
 
-scp /home/ralongi/inf_ralongi/git_temp/upgrade_ovs_manual.sh root@netqe9.knqe.lab.eng.bos.redhat.com:.
+scp /home/ralongi/github/tools/ovs_upgrades/upgrade_ovs_manual.sh root@netqe9.knqe.lab.eng.bos.redhat.com:.
 
-scp /home/ralongi/inf_ralongi/git_temp/upgrade_ovs_manual.sh root@impairment1.knqe.lab.eng.bos.redhat.com:.
+scp /home/ralongi/github/tools/ovs_upgrades/upgrade_ovs_manual.sh root@impairment1.knqe.lab.eng.bos.redhat.com:.
 	
-- on infra01, mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
+# below step is now done automatically by upgrade_ovs_manual.sh	
+# - on infra01, mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
 
 - export variables on DUTs before each test:
 
