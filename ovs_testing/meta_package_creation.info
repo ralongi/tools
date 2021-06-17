@@ -1,0 +1,42 @@
+# to create new openvswitch meta package
+
+log into ifra01 as root
+
+su ralongi
+cd ~/rpmbuild/SPECS/
+
+create product-openvswitch.spec file containing the following info (version info chages with each openvswitch stream.  the example below is for 2.10.
+
+[ralongi@netqe-infra01 openvswitch_meta_pkgs]$ cat ~/rpmbuild/SPECS/product-openvswitch.spec 
+Name: product-openvswitch
+Version: 2.10
+Release: 1%{?dist}
+Summary: Meta package requiring specific openvswitch branch
+Group: System Environment/Daemons
+License: GPL
+BuildArch: noarch
+
+Obsoletes: openvswitch < 2.10
+Requires: openvswitch2.10
+
+%description
+This is a meta package to require the correct openvswitch version
+for the product.
+
+%files
+
+%changelog
+* Mon Oct 29 2018 Rick Alongi <ralongi@redhat.com> 2.10-1
+- Created the package
+
+------------------------------------------------------------------------------
+
+build the package: rpmbuild -ba product-openvswitch.spec
+
+copy the package to the appropriate directory
+
+sudo cp /home/ralongi/rpmbuild/RPMS/noarch/product-openvswitch-2.10-1.el7.noarch.rpm /home/www/html/repo/packages/openvswitch_meta_pkgs/2.10
+
+update repo: sudo createrepo --update /home/www/html/repo/
+
+

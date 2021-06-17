@@ -1,0 +1,300 @@
+=====================================================================
+
+netqe5:
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe5.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe5.knqe.lab.eng.bos.redhat.com is: em3
+
+---------------------------------------------------------------------
+Interface: em1
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.0
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.3
+---------------------------------------------------------------------
+Interface: gre0
+
+    Driver: 
+    Card: 
+    PCI Slot: 
+---------------------------------------------------------------------
+Interface: gretap0
+
+    Driver: 
+    Card: 
+    PCI Slot: 
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10-Gigabit X540-AT2 (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10-Gigabit X540-AT2 (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+=====================================================================
+
+netqe6
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe6.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe6.knqe.lab.eng.bos.redhat.com is: em3
+
+---------------------------------------------------------------------
+Interface: em1
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.0
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.3
+---------------------------------------------------------------------
+Interface: gre0
+
+    Driver: 
+    Card: 
+    PCI Slot: 
+---------------------------------------------------------------------
+Interface: gretap0
+
+    Driver: 
+    Card: 
+    PCI Slot: 
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10-Gigabit X540-AT2 (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10-Gigabit X540-AT2 (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+=====================================================================
+
+netqe9
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe9.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe9.knqe.lab.eng.bos.redhat.com is: em3
+
+---------------------------------------------------------------------
+Interface: em1
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.0
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.3
+---------------------------------------------------------------------
+Interface: p4p1
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller XXV710 for 25GbE SFP28 (rev 02)
+    PCI Slot: 82:00.0
+---------------------------------------------------------------------
+Interface: p4p2
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller XXV710 for 25GbE SFP28 (rev 02)
+    PCI Slot: 82:00.1
+---------------------------------------------------------------------
+Interface: p6p1
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27520 Family [ConnectX-3 Pro]
+    PCI Slot: 03:00.0
+---------------------------------------------------------------------
+Interface: p6p2
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27520 Family [ConnectX-3 Pro]
+    PCI Slot: 03:00.0
+---------------------------------------------------------------------
+Interface: p7p1
+
+    Driver: qede
+    Card:  QLogic Corp. FastLinQ QL41000 Series 10/25/40/50GbE Controller (rev 02)
+    PCI Slot: 05:00.0
+---------------------------------------------------------------------
+Interface: p7p2
+
+    Driver: qede
+    Card:  QLogic Corp. FastLinQ QL41000 Series 10/25/40/50GbE Controller (rev 02)
+    PCI Slot: 05:00.1
+---------------------------------------------------------------------
+=====================================================================
+
+netqe20
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe20.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe20.knqe.lab.eng.bos.redhat.com is: em1
+
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em3
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.0
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.1
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+Interface: p5p1
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.0
+---------------------------------------------------------------------
+Interface: p5p2
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.1
+---------------------------------------------------------------------
+=====================================================================
+
+netqe21
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe21.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe21.knqe.lab.eng.bos.redhat.com is: em1
+
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em3
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.0
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.1
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+Interface: p5p1
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.0
+---------------------------------------------------------------------
+Interface: p5p2
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.1
+---------------------------------------------------------------------
+Interface: p7p1
+
+    Driver: atlantic
+    Card:  Aquantia Corp. AQC108 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion] (rev 02)
+    PCI Slot: 05:00.0
+---------------------------------------------------------------------
+=====================================================================
+

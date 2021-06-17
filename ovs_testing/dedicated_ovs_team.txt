@@ -1,0 +1,22 @@
+OVS Testing Considerations:
+
+From a QE/testing perspective, OVS has historically been treated as another feature of the RHEL kernel, much like bonding, VLANs, routing, etc.  It has become apparent that, although this approach was feasible at one time, it is no longer scalable based on the critical and ever-increasing role that OVS plays within the Red Hat product ecosystem.  OVS is a key building block for all of the Red Hat next generation products (RHEL-OSP, etc.).  It is a complex, feature-rich software switch (with features/functionality constantly being added) that requires significantly more resources than currently allocated to be adequately tested.  Bear in mind that a hardware switch vendor that supports a similar set of features would typically have an entire failrly large team assigned to test a switch.
+
+Potential areas of OVS testing responsibilities (high level):
+
+- Individual feature testing (conntrack, spanning tree, tunnels, etc.)
+- General Performance (multitude of topologies/scenarios), VSPERF
+- BZ verification
+- Regression test creation/execution
+- Upstream testing (assist VMware)
+- ERS testing
+- Z stream testing
+- Automation development
+- New feature research/planning/testing
+- Testing of new OVS releases
+- Testing of RHEL releases with shipping or new OVS version
+- OVS and OVS/DPDK testing
+
+There are currently 2 to 3 Kernel-QE engineers allocated to perform all OVS testing among their other feature testing and work assignments.  To support the level of testing envisioned by Dev and PM (breadth and depth), it seems that we should consider assembling a dedicated OVS QE team under Kernel-QE.  This team would focus exclusively on testing openvswitch (features, functionality, performance, scalability, etc.). 
+
+More research and investigation would need to be done to determine the specifics (number of engineers needed, team organization, etc.).

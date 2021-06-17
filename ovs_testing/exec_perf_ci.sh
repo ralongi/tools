@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# perf
+# may need to create proper image for westford or point to bj image
+
+dbg_flag="set -x"
+card_type=$(echo $1 | tr '[:upper:]' '[:lower:]')
+
+pushd ~/git/kernel/networking/openvswitch/perf
+server="netqe24.knqe.lab.eng.bos.redhat.com"
+client="netqe25.knqe.lab.eng.bos.redhat.com"
+ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+
+if [[ $card_type == "cx5" ]]; then
+	test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx5_westford
+elif [[ $card_type == "cx6" ]]; then
+	test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford
+fi
+
+lstest | runtest $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=nic_test=mlx5_100g --param=test_env=$test_env --param=image=$VM_IMAGE --param=rpm_dpdk=$rpm_dpdk --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX_EXTRA_POLICY --param=rpm_ovs=$RPM_OVS --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf"
+
+popd
+

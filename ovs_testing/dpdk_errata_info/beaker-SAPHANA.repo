@@ -1,0 +1,6 @@
+[beaker-SAPHANA]
+name=beaker-SAPHANA
+baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/RHEL-8.3.0-20200825.0/compose/SAPHANA/x86_64/os
+enabled = 0
+gpgcheck=0
+skip_if_unavailable=1

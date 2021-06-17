@@ -1,0 +1,86 @@
+
+How to create containers:
+http://www.tecmint.com/install-create-run-lxc-linux-containers-on-centos/
+
+Email thread with Flavio:
+
+On Tue, Sep 22, 2015 at 12:06:55PM -0400, Rick Alongi wrote:
+> Hi Flavio,
+>
+> Yes, we can add the RSS setting (on/off) as another variable in our tests. We'll let you know the results.
+
+Looking forward to the results!
+Thanks,
+fbl
+
+
+>
+> Thanks,
+> Rick
+>
+> ----- Original Message -----
+>
+> From: "Flavio Leitner" <fbl@redhat.com>
+> To: "Rick Alongi" <ralongi@redhat.com>, "Kexin Zhang" <kzhang@redhat.com>, "Jean Hsiao" <jhsiao@redhat.com>
+> Cc: "Rashid Khan" <rkhan@redhat.com>
+> Sent: Tuesday, September 22, 2015 11:54:53 AM
+> Subject: VXLAN performance test
+>
+>
+> Hi,
+>
+>
+> I've been running some ideas with Rajat to improve VXLAN performance
+> and there is one thing I've confirmed but I would like someone else
+> to try as well.
+>
+> Basically VXLAN without HW offloading forces the networking stack to
+> do all the heavy lifting. We all know that.
+>
+> On TX side, the load is distributed per application transmitting
+> data, so there is a distributed workload happening.
+>
+> On the RX side though, all RX traffic goes to one CPU and it becomes
+> a bottleneck. If you have one stream, you get up to 3.5~4Gbps.
+>
+> If you add multiple containers, it does improve up to 7.5Gbps with
+> a 100% busy CPU in %softirq and others remain 100% idle.
+>
+> The vxlan tunnels are sockets and they use ephemeral ports as
+> source port. This means we have this 5-tuple:
+>
+> <fixed src_IP>:<variable srcport> <fixed dst_ip>:<fixed dstport>
+>
+> So, basically we need to enable RSS to hash L4 to spread the workload.
+>
+> This shows the current hash state:
+> # ethtool -n em1 rx-flow-hash udp4
+>
+> This sets RSS to use L4
+> # ethtool -N em1 rx-flow-hash udp4 sdfn
+>
+> This resets RSS to not use L4
+> # ethtool -N em1 rx-flow-hash udp4 sd
+>
+> I have two hosts communicating over a VXLAN tunnel and each one
+> has 100 containers.
+>
+> without RSS: 7.5Gbps total, one 100% busy CPU
+> with RSS: 9.0Gbps total, 8 CPUs with ~15% load each.
+>
+> 9.0Gbps seems to be line rate when using vxlan, etc..
+>
+> I would expect that with less powerful CPUs, the gain increases
+> because the single CPU will handle less traffic, but we should
+> scale to line rate with more cores anyway.
+>
+> Could you guys try something like that? I think your test env
+> already does such test, we just need to include the with/without
+> RSS setting variable.
+>
+> Thanks,
+> fbl
+>
+> 
+
+

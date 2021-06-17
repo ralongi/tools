@@ -1,0 +1,344 @@
+# NIC Info:
+
+=============================================================================
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe20.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe20.knqe.lab.eng.bos.redhat.com is: em1
+
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: tg3
+    Card:  Broadcom Inc. and subsidiaries NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em3
+
+    Driver: tg3
+    Card:  Broadcom Inc. and subsidiaries NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.0
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: tg3
+    Card:  Broadcom Inc. and subsidiaries NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.1
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+Interface: p5p1
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.0
+---------------------------------------------------------------------
+Interface: p5p2
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.1
+---------------------------------------------------------------------
+
+
+=============================================================================
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe12.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe12.knqe.lab.eng.bos.redhat.com is: em3
+
+---------------------------------------------------------------------
+Interface: em1
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.0
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: bnx2x
+    Card:  Broadcom Limited NetXtreme II BCM57800 1/10 Gigabit Ethernet (rev 10)
+    PCI Slot: 01:00.3
+---------------------------------------------------------------------
+Interface: p1p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet 10G 2P X520 Adapter (rev 01)
+    PCI Slot: 81:00.0
+---------------------------------------------------------------------
+Interface: p1p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet 10G 2P X520 Adapter (rev 01)
+    PCI Slot: 81:00.1
+---------------------------------------------------------------------
+Interface: p4p1
+
+    Driver: be2net
+    Card:  Emulex Corporation OneConnect NIC (Skyhawk) (rev 10)
+    PCI Slot: 82:00.0
+---------------------------------------------------------------------
+Interface: p4p2
+
+    Driver: be2net
+    Card:  Emulex Corporation OneConnect NIC (Skyhawk) (rev 10)
+    PCI Slot: 82:00.1
+---------------------------------------------------------------------
+Interface: p7p1
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27520 Family [ConnectX-3 Pro]
+    PCI Slot: 04:00.0
+---------------------------------------------------------------------
+Interface: p7p2
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27520 Family [ConnectX-3 Pro]
+    PCI Slot: 04:00.0
+---------------------------------------------------------------------
+
+=============================================================================
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe20.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe20.knqe.lab.eng.bos.redhat.com is: em1
+
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em3
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.0
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.1
+---------------------------------------------------------------------
+Interface: p1p1
+
+    Driver: cxgb4
+    Card:  Chelsio Communications Inc T520-CR Unified Wire Ethernet Controller
+    PCI Slot: 81:00.4
+---------------------------------------------------------------------
+Interface: p1p2
+
+    Driver: cxgb4
+    Card:  Chelsio Communications Inc T520-CR Unified Wire Ethernet Controller
+    PCI Slot: 81:00.4
+---------------------------------------------------------------------
+Interface: p2p1
+
+    Driver: igb
+    Card:  Intel Corporation I350 Gigabit Network Connection (rev 01)
+    PCI Slot: 84:00.0
+---------------------------------------------------------------------
+Interface: p2p2
+
+    Driver: igb
+    Card:  Intel Corporation I350 Gigabit Network Connection (rev 01)
+    PCI Slot: 84:00.1
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+Interface: p4p1
+
+    Driver: qlcnic
+    Card:  QLogic Corp. ISP8324 1/10GbE Converged Network Controller (rev 02)
+    PCI Slot: 82:00.0
+---------------------------------------------------------------------
+Interface: p4p2
+
+    Driver: qlcnic
+    Card:  QLogic Corp. ISP8324 1/10GbE Converged Network Controller (rev 02)
+    PCI Slot: 82:00.1
+---------------------------------------------------------------------
+Interface: p5p1
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.0
+---------------------------------------------------------------------
+Interface: p5p2
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.1
+---------------------------------------------------------------------
+Interface: p6p1
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27500 Family [ConnectX-3]
+    PCI Slot: 04:00.0
+---------------------------------------------------------------------
+Interface: p6p2
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27500 Family [ConnectX-3]
+    PCI Slot: 04:00.0
+---------------------------------------------------------------------
+Interface: p7p1
+
+    Driver: atlantic
+    Card:  Aquantia Corp. AQC107 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion] (rev 02)
+    PCI Slot: 05:00.0
+---------------------------------------------------------------------
+
+==============================================================================
+
+::::::::::::::
+/home/nic_info.txt
+::::::::::::::
+
+NIC and Interface list for netqe21.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe21.knqe.lab.eng.bos.redhat.com is: em1
+
+---------------------------------------------------------------------
+Interface: em2
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 01:00.1
+---------------------------------------------------------------------
+Interface: em3
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.0
+---------------------------------------------------------------------
+Interface: em4
+
+    Driver: tg3
+    Card:  Broadcom Limited NetXtreme BCM5720 Gigabit Ethernet PCIe
+    PCI Slot: 02:00.1
+---------------------------------------------------------------------
+Interface: p1p1
+
+    Driver: cxgb4
+    Card:  Chelsio Communications Inc T520-CR Unified Wire Ethernet Controller
+    PCI Slot: 81:00.4
+---------------------------------------------------------------------
+Interface: p1p2
+
+    Driver: cxgb4
+    Card:  Chelsio Communications Inc T520-CR Unified Wire Ethernet Controller
+    PCI Slot: 81:00.4
+---------------------------------------------------------------------
+Interface: p2p1
+
+    Driver: igb
+    Card:  Intel Corporation I350 Gigabit Network Connection (rev 01)
+    PCI Slot: 84:00.0
+---------------------------------------------------------------------
+Interface: p2p2
+
+    Driver: igb
+    Card:  Intel Corporation I350 Gigabit Network Connection (rev 01)
+    PCI Slot: 84:00.1
+---------------------------------------------------------------------
+Interface: p3p1
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.0
+---------------------------------------------------------------------
+Interface: p3p2
+
+    Driver: ixgbe
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 83:00.1
+---------------------------------------------------------------------
+Interface: p4p1
+
+    Driver: qlcnic
+    Card:  QLogic Corp. ISP8324 1/10GbE Converged Network Controller (rev 02)
+    PCI Slot: 82:00.0
+---------------------------------------------------------------------
+Interface: p4p2
+
+    Driver: qlcnic
+    Card:  QLogic Corp. ISP8324 1/10GbE Converged Network Controller (rev 02)
+    PCI Slot: 82:00.1
+---------------------------------------------------------------------
+Interface: p5p1
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.0
+---------------------------------------------------------------------
+Interface: p5p2
+
+    Driver: i40e
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 06:00.1
+---------------------------------------------------------------------
+Interface: p6p1
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27500 Family [ConnectX-3]
+    PCI Slot: 04:00.0
+---------------------------------------------------------------------
+Interface: p6p2
+
+    Driver: mlx4_en
+    Card:  Mellanox Technologies MT27500 Family [ConnectX-3]
+    PCI Slot: 04:00.0
+---------------------------------------------------------------------
+Interface: p7p1
+
+    Driver: atlantic
+    Card:  Aquantia Corp. AQC108 NBase-T/IEEE 802.3bz Ethernet Controller [AQtion] (rev 02)
+    PCI Slot: 05:00.0
+---------------------------------------------------------------------
+
+==============================================================================

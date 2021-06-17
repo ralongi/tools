@@ -1,0 +1,6 @@
+[beaker-ResilientStorage-debuginfo]
+name=beaker-ResilientStorage-debuginfo
+baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/RHEL-8.3.0-20200825.0/compose/ResilientStorage/x86_64/debug/tree
+enabled = 0
+gpgcheck=0
+skip_if_unavailable=1

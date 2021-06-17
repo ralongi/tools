@@ -1,0 +1,12 @@
+OVS 2.4.0 Test Observations:
+
+Throughput:
+
+cxgb4 (40G): 
+- Much impreoved when MTU=9000, especially for tunnels (even though driver doesn't support vxlan offload)
+
+mlx4_en (40G):
+- IPv6 tests over vxlan tunnels failing
+- Tunnel tests only yield 5 Gbps (except for vxlan without vlan, which is much higher).  Is this expected with 40G card?
+
+

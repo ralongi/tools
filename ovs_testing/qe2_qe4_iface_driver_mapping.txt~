@@ -1,0 +1,19 @@
+qe2/qe4 interface/driver mapping:
+
+1 Interface: p3p1	Driver: mlx4_en (Mellanox 40Gbe)
+2 Interface: p3p2	Driver: mlx4_en (Mellanox 40Gbe)
+3 Interface: eth0	Driver: cxgb4 (Chelsio 10Gbe/40Gbe)
+4 Interface: eth1	Driver: cxgb4 (Chelsio 10Gbe/40Gbe)
+5 Interface: em1	Driver: igb (Intel 1Gbe)
+6 Interface: em2	Driver: igb (Intel 1Gbe)
+7 Interface: em3	Driver: igb (Intel 1Gbe)
+8 Interface: em4	Driver: igb (Intel 1Gbe)
+9 Interface: p4p1	Driver: ixgbe (Intel 10Gbe)
+10 Interface: p4p2	Driver: ixgbe (Intel 10Gbe)
+11 Interface: p2p1	Driver: bnx2x (Broadcom 10Gbe)
+12 Interface: p2p2	Driver: bnx2x (Broadcom 10Gbe)
+13 Interface: p1p1	Driver: tg3 (Broadcom 1Gbe)
+14 Interface: p1p2	Driver: tg3 (Broadcom 1Gbe)
+15 Interface: p1p3	Driver: tg3 (Broadcom 1Gbe)
+16 Interface: p1p4	Driver: tg3 (Broadcom 1Gbe)
+

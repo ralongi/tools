@@ -1,0 +1,136 @@
+# provision system using /home/ralongi/scripts/provision.sh
+# /home/ralongi/inf_ralongi/scripts/provision.sh netqe9.knqe.lab.eng.bos.redhat.com RHEL-7.5
+
+# install beaker stuff
+# RHEL 7:
+
+echo "sslverify=false" >> /etc/yum.conf
+
+# install wget in case it's missing
+yum -y install wget
+
+# install beaker-client.repo
+wget -O /etc/yum.repos.d/beaker-client.repo http://download.lab.bos.redhat.com/beakerrepos/beaker-client-RedHatEnterpriseLinux.repo
+
+# install beaker related packages
+yum -y install rhts-test-env beakerlib rhts-devel rhts-python beakerlib-redhat beaker-client beaker-redhat
+yum -y install rhts-test-env beakerlib rhts-python beakerlib-redhat
+
+# create beaker-tasks.repo file
+(
+	echo [beaker-tasks]
+	echo name=beaker-tasks
+	echo baseurl=http://beaker.engineering.redhat.com/rpms
+	echo enabled=1
+	echo gpgcheck=0
+	echo skip_if_unavailable=1
+) > /etc/yum.repos.d/beaker-tasks.repo
+
+
+# install git
+git_install()
+{
+	if [ $# -gt 0 ]; then 
+		git_dir=$1
+	else
+		git_dir="/mnt/git_repo"
+	fi
+	
+	echo "Installing Git if not already installed and cloning repo..."
+    yum -y install git || true
+    mkdir "$git_dir"
+	pushd "$git_dir" && git clone git://pkgs.devel.redhat.com/tests/kernel && popd
+}
+
+#pull down git repo
+#git_install /mnt/git_repo
+
+git_install /mnt/tests
+
+# RHEL 8:
+
+yum install -y http://download.eng.bos.redhat.com/beakerrepos/harness-testing/RedHatEnterpriseLinux8/beakerlib-1.17-19.el8bkr.noarch.rpm
+yum install -y http://download.eng.bos.redhat.com/beakerrepos/harness-testing/RedHatEnterpriseLinux8/restraint-0.1.37-1.el8bkr.x86_64.rpm
+yum install -y http://download.eng.bos.redhat.com/beakerrepos/harness-testing/RedHatEnterpriseLinux8/restraint-rhts-0.1.37-1.el8bkr.x86_64.rpm
+
+python_major_ver=$(rpm -q platform-python | awk -F "-" '{print $3}' | awk -F "." '{print $1}')
+python_pkg_ver=$(rpm -q platform-python | awk -F "-" '{print $3}' | awk -F "." '{print $1$2}')
+yum -y install python"$python_pkg_ver"
+yum -y install python"$python_major_ver"-tkinter
+
+git_install() {
+    if rpm -q git 2>/dev/null; then
+        echo "Git is already installed; doing a git pull"; cd /mnt/tests/kernel; git pull
+        return 0
+    else
+            yum -y install git
+            mkdir /mnt/tests
+        pushd /mnt/tests && git clone git://pkgs.devel.redhat.com/tests/kernel && popd
+    fi
+}
+git_install
+
+alias python=/usr/libexec/platform-python
+
+. /mnt/tests/kernel/networking/common/include.sh
+
+export OVS_TOPO=setup
+export NAY=yes
+export PVT=no
+export NIC_DRIVER=ixgbe
+export image_name=rhel8.0.qcow2
+#export image_name=rhel7.6.qcow2
+#export UPDATE_VM=no
+
+# RHEL 8
+export RPM_OVS_SELINUX_EXTRA_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/16.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-16.el8fdp.noarch.rpm"
+export RPM_OVS="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/12.el8fdp/x86_64/openvswitch2.11-2.11.0-12.el8fdp.x86_64.rpm"
+export DISTRO_BUILD="RHEL-8.0.0"
+
+# RHEL 7
+export RPM_CONTAINER_SELINUX_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
+export RPM_OVS_SELINUX_EXTRA_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/13.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-13.el7fdp.noarch.rpm"
+export RPM_OVS="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/12.el7fdp/x86_64/openvswitch2.11-2.11.0-12.el7fdp.x86_64.rpm"
+export DISTRO_BUILD="RHEL-7.7-20190612.0"
+export image_name=rhel7.6.qcow2
+
+export CLIENTS=netqe5.knqe.lab.eng.bos.redhat.com
+export SERVERS=netqe6.knqe.lab.eng.bos.redhat.com
+export JOBID=12345
+
+pushd /mnt/tests/kernel/networking/openvswitch/ovs_qos/
+make run
+
+##########################################################################
+# on server system only:
+
+ovs-vsctl add-port ovsbr0 vnet1 -- set interface vnet1 ofport_request=5
+ovs-vsctl add-port ovsbr0 vnet3 -- set interface vnet3 ofport_request=6
+ovs-vsctl add-port ovsbr0 enp131s0f0
+ovs-vsctl show
+
+total_max_egress_rate=200000000
+q1_max_egress_rate=20000000
+q2_max_egress_rate=40000000
+q1_max_egress_rate=20000000
+total_min_egress_rate=100000000
+q1_min_egress_rate=10000000
+q2_min_egress_rate=20000000
+ovs-vsctl set port enp131s0f0 qos=@newqos -- --id=@newqos create qos type=linux-htb other-config:max-rate=200000000 other-config:min-rate=100000000 queues:123=@tap1queue queues:234=@tap2queue -- --id=@tap1queue create queue other-config:max-rate=20000000 other-config:min-rate=10000000 -- --id=@tap2queue create queue other-config:max-rate=40000000 other-config:min-rate=20000000
+ovs-ofctl add-flow ovsbr0 in_port=5,actions=set_queue:123,normal
+ovs-ofctl add-flow ovsbr0 in_port=6,actions=set_queue:234,normal
+ovs-ofctl dump-flows ovsbr0
+
+virsh console vm1
+netperf -4 -t UDP_STREAM -H 172.31.115.1 -l 30 -- -m 10000
+netperf -6 -t UDP_STREAM -H 2001:0db8:115::1 -l 30 -- -m 10000
+
+virsh console vm2
+netperf -4 -t UDP_STREAM -H 172.31.115.1 -l 30 -- -m 10000
+netperf -6 -t UDP_STREAM -H 2001:0db8:115::1 -l 30 -- -m 10000
+
+timeout 120s bash -c "until ping -c3 172.31.115.1; do sleep 10; done"
+netperf -4 -t UDP_STREAM -H 172.31.115.1 -l 30 -- -m 10000
+
+timeout 120s bash -c "until ping6 -c3 2001:0db8:115::1; do sleep 10; done"
+netperf -6 -t UDP_STREAM -H 2001:0db8:115::1 -l 30 -- -m 10000

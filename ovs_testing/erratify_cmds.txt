@@ -1,0 +1,61 @@
+# To set up and run manual TPS tests: http://wiki.test.redhat.com/Faq/Beaker/Erratify
+	- there will be additional links in the above document that explain how to install/run oats, manually run tps tests, etc.
+	
+# Summary of commands that will be run:
+
+yum -y --nogpgcheck install http://nest.test.redhat.com/mnt/tpsdist/oats.noarch.rpm
+
+# if no busybox installed:
+
+cd /etc/yum.repos.d/
+vi beaker-harness.repo
+
+[beaker-harness]
+name=beaker-harness
+baseurl=http://beaker.engineering.redhat.com/harness/RedHatEnterpriseLinux7/
+enabled = 0
+gpgcheck=0
+
+# install various packages below proactively:
+yum install -y tigervnc-server xorg-x11-server-utils xterm telnet-server xorg-x11-twm motif rpm-build perl perl-Date-Manip
+yum -y install autoconf automake libtool openssl-devel selinux-policy-devel git
+
+#yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm
+
+yum -y install nfs-utils && systemctl start rpcbind && systemctl enable rpcbind
+vi /etc/sysconfig/oats.conf 
+
+TREE=<get this using steps provided in wiki>
+OATS_INSTALL_STAR='false'
+#STREAM=6 # This is only for 7.6.z stream
+OATS_TEST_PROFILE=<test profile being used for test>
+
+service oatsd start
+tail -f /var/log/oatsd 
+tps-setup-channel-cache
+tps-channel-cache
+update-tpsd-settings
+cd /mnt/qa/scratch/
+hostname -s
+
+cd netqe-p8-02
+ls
+cd 2020:50341
+pwd
+ls 2020*
+ls
+cd tps/
+tps
+ls *srpm*
+more tps-srpmtest.log 
+yum install rpm-build
+pwd
+tps
+more tps-srpmtest.log 
+yum -y install autoconf automake libtool openssl-devel selinux-policy-devel git
+pwd
+ps
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+
+

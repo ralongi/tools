@@ -1,0 +1,7 @@
+ip link set dev $iface up
+ip link add link $iface name $iface.10 type vlan id 10
+ip link set dev $iface.10 up
+brctl addbr linuxbr0
+ip link set dev linuxbr0 up
+brctl addif linuxbr0 $iface.10
+ip addr add dev linuxbr0 192.168.1.7/24

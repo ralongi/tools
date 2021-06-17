@@ -1,0 +1,19 @@
+# Steps to manually install RealTime kernel
+
+pushd /etc/yum.repos.d
+yum -y install java-headless
+rpm -i http://hdn.corp.redhat.com/rhel7-csb-stage/RPMS/noarch/redhat-internal-cert-install-0.1-23.el7.csb.noarch.rpm
+wget https://download.devel.redhat.com/rel-eng/RCMTOOLS/rcm-tools-rhel-8-baseos.repo
+yum -y install brewkoji
+popd
+
+mkdir ~/kernel-rt-4.18.0-193.34.1.rt13.84.el8_2.dt1
+pushd  kernel-rt-4.18.0-193.34.1.rt13.84.el8_2.dt1
+brew download-build kernel-rt-4.18.0-193.34.1.rt13.84.el8_2.dt1 --arch x86_64 --arch noarch
+yum -y localinstall --nogpgcheck kernel-rt-4.18.0-193.34.1.rt13.84.el8_2.dt1.x86_64.rpm kernel-rt-core-4.18.0-193.34.1.rt13.84.el8_2.dt1.x86_64.rpm kernel-rt-modules-4.18.0-193.34.1.rt13.84.el8_2.dt1.x86_64.rpm kernel-rt-modules-internal-4.18.0-193.34.1.rt13.84.el8_2.dt1.x86_64.rpm kernel-rt-devel-4.18.0-193.34.1.rt13.84.el8_2.dt1.x86_64.rpm kernel-rt-kvm-4.18.0-193.34.1.rt13.84.el8_2.dt1.x86_64.rpm
+
+# or yum -y localinstall --nogpgcheck ./*
+
+popd
+reboot
+

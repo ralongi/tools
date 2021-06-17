@@ -1,0 +1,15 @@
+
+
+# to create a static IP address on a Linux interface using nmcli
+nmcli con add con-name $con_name ifname $iface type ethernet ip4 $ip4addr/24 ip6 $ip6addr/64
+nmcli con mod $con_name 802-3-ethernet.mtu $mtu
+nmcli con up $con_name
+
+
+
+# to create a Linux VLAN interface with no IP address using nmcli 
+nmcli con add type vlan con-name VLAN77 dev p4p1 id 77   OR
+nmcli con add type vlan ifname VLAN77 dev p4p1 id 77 (will prepend "vlan" to ifname
+
+# to create a Linux VLAN interface with a static IP address using nmcli
+nmcli con add type vlan con-name VLAN99 id 99 dev p4p2 ip4 192.168.99.2/24 ip6 2019::2/64

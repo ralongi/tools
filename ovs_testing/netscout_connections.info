@@ -1,0 +1,152 @@
+# Netscout cable/port connections
+
+# for switch connected tests
+
+Netqe11_p1p1: in_use_Juniper_pvt_jun1_port16
+Netqe11_p1p1: in_use_Juniper_pvt_jun1_port17
+
+Netqe12_p1p1: in_use_Juniper_pvt_jun1_port22
+Netqe12_p1p1: in_use_Juniper_pvt_jun1_port23
+
+# for tests requiring Xena module 5 
+
+Netqe12_p1p1: XenaM5P0
+Netqe12_p1p1: XenaM5P1
+
+# for tests requiring back-to-back connection between p1p1/p1p2 on netqe11/netqe12
+
+Netqe11_p1p1: Netqe12_p1p1
+Netqe11_p1p2: Netqe12_p1p2
+
+
+root@netqe-ex4300-01.knqe.lab.eng.bos.redhat.com> ...install-host-ex-4300mp-x86-64-18.2R1.9-secure-signed.tgz                              
+Verified jinstall-host-ex-4300mp-x86-64-18.2R1.9-secure-signed signed by PackageProductionEc_2018 method ECDSA256+SHA256
+Pushing Junos image package to the host...
+Installing /var/tmp/install-media-ex-4300mp-junos-18.2R1.9-secure.tgz
+Extracting the package ...
+
+============================================
+Current Host kernel version : 3.14.52-rt50-WR7.0.0.9_ovp
+Package Host kernel version : 3.14.52-rt50-WR7.0.0.9_ovp
+Current Host version        : 3.0.9
+Package Host version        : 3.0.9
+Min host version required for applications: 3.0.0
+Skipping Host OS upgrade!
+============================================
+
+Setting up Junos host applications for installation ...
+
+JUNOS OS upgrade staged. Reboot the system to complete installation!
+
+
+{master:0}
+root@netqe-ex4300-01.knqe.lab.eng.bos.redhat.com> request system reboot 
+Reboot the system ? [yes,no] (no) yes 
+
+                                                                               
+*** System shutdown message from root@netqe-ex4300-01.knqe.lab.eng.bos.redhat.
+com ***                                                                       
+
+System going down in 1 minute                                                  
+
+
+
+
+
+
+
+root@netqe-ex4300-01:RE:0% ls -alt /var/tmp
+total 176
+-rw-r--r--   1 root  wheel       694 Jul 17 14:54 package.log
+drwxrwxrwx   5 root  wheel       512 Jul 17 14:50 .
+-rwxrwxrwx   1 root  wheel      4649 Jul 17 14:49 jinstall-host-ex-4300mp-x86-64-18.2R1.9-secure-signed.tgz
+-rwxrwxrwx   1 root  wheel        45 Jul 17 14:17 bcast.rstdisp.log
+-rwxrwxrwx   1 root  wheel        73 Jul 17 14:17 bcast.disp.log
+-rwxrwxrwx   1 root  wheel        52 Jul 17 14:17 bcast.undisp.log
+-rwxrwxrwx   1 root  wheel        50 Jul 17 14:17 bcast.bdisp.log
+-rwxrwxrwx   1 root  wheel        57 Jul 17 14:15 krt_rpf_filter.txt
+prwxrwxrwx   1 root  wheel         0 Jul 16 20:32 mmcq_sdb_bbe_mmcq
+drwxr-xr-x  21 root  wheel       512 Jul 16 20:32 ..
+-rwxrwxrwx   1 root  wheel     15663 Jul 16 20:32 ex_autod_config
+prwxrwxrwx   1 root  wheel         0 Jul 16 20:32 mmcq_mmdb_rep_mmcq
+drwxrwxrwx   2 root  wheel       512 Jul 16 20:32 rtsdb
+-rwxrwxrwx   1 root  wheel     14623 Jul 16 20:32 ex_autod_rollback_cfg
+-rwxrwxrwx   1 root  wheel        42 Jul 16 20:32 pfe_debug_commands
+drwxrwxrwx   2 root  wheel       512 Jul 16 20:30 sd-upgrade
+drwxrwxrwx   2 root  operator    512 Jul 16 20:30 .snap
+root@netqe-ex4300-01:RE:0% cli
+{master:0}
+
+
+
+root@netqe-ex4300-01.knqe.lab.eng.bos.redhat.com> show version 
+localre:
+--------------------------------------------------------------------------
+Hostname: netqe-ex4300-01.knqe.lab.eng.bos.redhat.com
+Model: ex4300-48mp
+Junos: 18.2-20180421_18.2T_tvp.0
+JUNOS OS Kernel 64-bit  [20180413.173511_fbsd-builder_stable_11]
+JUNOS OS libs [20180413.173511_fbsd-builder_stable_11]
+JUNOS OS runtime [20180413.173511_fbsd-builder_stable_11]
+JUNOS OS time zone information [20180413.173511_fbsd-builder_stable_11]
+JUNOS OS libs compat32 [20180413.173511_fbsd-builder_stable_11]
+JUNOS OS 32-bit compatibility [20180413.173511_fbsd-builder_stable_11]
+JUNOS py extensions [20180421.075653_dc-builder_release_182_throttle]
+JUNOS py base [20180421.075653_dc-builder_release_182_throttle]
+JUNOS OS vmguest [20180413.173511_fbsd-builder_stable_11]
+JUNOS OS crypto [20180413.173511_fbsd-builder_stable_11]
+JUNOS network stack and utilities [20180421.075653_dc-builder_release_182_throttle]
+JUNOS libs [20180421.075653_dc-builder_release_182_throttle]
+JUNOS libs compat32 [20180421.075653_dc-builder_release_182_throttle]
+JUNOS runtime [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Web Management Platform Package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS qfx runtime [20180421.075653_dc-builder_release_182_throttle]
+JUNOS common platform support [20180421.075653_dc-builder_release_182_throttle]
+JUNOS qfx platform support [20180421.075653_dc-builder_release_182_throttle]
+JUNOS dcp network modules [20180421.075653_dc-builder_release_182_throttle]
+JUNOS modules [20180421.075653_dc-builder_release_182_throttle]
+JUNOS qfx modules [20180421.075653_dc-builder_release_182_throttle]
+JUNOS qfx Data Plane Crypto Support [20180421.075653_dc-builder_release_182_throttle]
+JUNOS daemons [20180421.075653_dc-builder_release_182_throttle]
+JUNOS qfx daemons [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services URL Filter package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services TLB Service PIC package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Telemetry [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services SSL [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services SOFTWIRE [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Stateful Firewall [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services RPM [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services PCEF package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services NAT [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Mobile Subscriber Service Container package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services MobileNext Software package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Logging Report Framework package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services LL-PDF Container package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Jflow Container package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Deep Packet Inspection package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services IPSec [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services IDS [20180421.075653_dc-builder_release_182_throttle]
+JUNOS IDP Services [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services HTTP Content Management package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Flowd MS-MPC Software package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Crypto [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Captive Portal and Content Delivery Container package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services COS [20180421.075653_dc-builder_release_182_throttle]
+JUNOS AppId Services [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services Application Level Gateways [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Services AACL Container package [20180421.075653_dc-builder_release_182_throttle]
+JUNOS SDN Software Suite [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Extension Toolkit [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Packet Forwarding Engine Support (DC-PFE) [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Packet Forwarding Engine Support (M/T Common) [20180421.075653_dc-builder_release_182_throttle]
+JUNOS J-Insight [20180421.075653_dc-builder_release_182_throttle]
+JUNOS jfirmware [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Online Documentation [20180421.075653_dc-builder_release_182_throttle]
+JUNOS jail runtime [20180413.173511_fbsd-builder_stable_11]
+JUNOS FIPS mode utilities [20180421.075653_dc-builder_release_182_throttle]
+JUNOS Host Software [3.14.52-rt50-WR7.0.0.9_ovp:3.0.9]
+JUNOS Host ex-4300mp platform package [18.2-20180421_18.2T_tvp.0]
+JUNOS Host ex-4300mp control-plane package [18.2-20180421_18.2T_tvp.0]
+JUNOS Host ex-4300mp data-plane package [18.2-20180421_18.2T_tvp.0]
+JUNOS Host ex-4300mp base package [18.2-20180421_18.2T_tvp.0]
+

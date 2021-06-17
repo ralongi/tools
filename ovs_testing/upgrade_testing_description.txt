@@ -1,0 +1,31 @@
+Upgrade Tests:
+
+Automated Test 1 (Upgrading RHEL kernel/userspace and openvswitch):
+Note: This test focuses on a single RHEL upgrade path and a single openvswitch upgrade path.  See Automated Tes 2 below for more expansive upgrade path testing for openvswitch.
+
+A. "Upgrade RHEL kernel only, then update OVS to version under test"
+B. "Upgrade RHEL kernel only, OVS version under test used throughout"
+C. "Baseline RHEL kernel throughout, upgrade to OVS version under test"
+D. "Upgrade RHEL user space packages, then update OVS to version under test, then reboot to new RHEL kernel"
+
+The only verification performed at various points throughout the above tests is to check to make sure 1K internal ports and 1K flows are present in the configuration as expected.  When the system has been rebooted or the openvswitch service restarted, it is expected that the flows will need to be restored (after having been backed up by the ovs-save tool provided by Flavio/upstream).
+
+The tests above measure traffic disruption time whenever the openvswitch service is restarted and flows restored (i.e. "systemctl restart openvswitch.service && $saved_flows_script").
+
+*******************************************************************************
+
+Automated Test 2 (Upgrade openvswitch package only and focus on correct systemd behavior):
+Note: This test focuses on upgrading of the openvswitch package only (not RHEL) and is designed to be run across many openvswitch upgrade paths).  Other non-upgrade tests also exist that exercise systemd behavior, check processes, etc.
+
+A. "openvswitch service NOT running prior to upgrade"
+B. "openvswitch service IS running prior to upgrade"
+C. "Verify behavior of OVS related systemd services with upgraded version"
+
+The above tests focus on making sure that, during openvswitch upgrades, the openvswitch related services restart when expected, are enabled as expected, ports and flows are present (or not) as expected, etc.
+
+*******************************************************************************
+
+Automated Test 3 (Upgrades openvswitch, kernel package or entire compose to the version specified by the user and focuses on performance)
+Note: This upgrade test requires two hosts (client and server) and focuses on network traffic performance after the upgrade.
+
+The test uses netperf for traffic generation and is not very reliable or deterministic.  For this reason, THIS TEST HAS BEEN DEPRECATED.  The best approach is probably to utilize VSPERF in an upgrade test environment whenever that becomes possible.

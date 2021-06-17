@@ -1,0 +1,255 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>[kernel RHEL-7.5-20171214] /kernel/networking/openvswitch/vm100 ovs 2.8</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="RHEL-8.0-20180503.1" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel0.repo
+								[beaker-kernel0]
+								name=beaker-kernel0
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-AppStream-8/compose/AppStream/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel1.repo
+								[beaker-kernel1]
+								name=beaker-kernel1
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+%end
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-8.0-20180503.1"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+      </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="hp-dl380g9-04.rhts.eng.pek2.redhat.com "/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+      </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.0-20180503.1"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="rpm_ovs" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.8.0/4.el7fdb/x86_64/openvswitch-2.8.0-4.el7fdb.x86_64.rpm"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-bj.usersys.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="RHEL-8.0-20180503.1" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel0.repo
+								[beaker-kernel0]
+								name=beaker-kernel0
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-AppStream-8/compose/AppStream/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel1.repo
+								[beaker-kernel1]
+								name=beaker-kernel1
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+%end
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-8.0-20180503.1"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="hp-dl380pg8-08.rhts.eng.pek2.redhat.com"/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.0-20180503.1"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="rpm_ovs" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.8.0/4.el7fdb/x86_64/openvswitch-2.8.0-4.el7fdb.x86_64.rpm"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-bj.usersys.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="RHEL-8.0-20180503.1" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel0.repo
+								[beaker-kernel0]
+								name=beaker-kernel0
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-AppStream-8/compose/AppStream/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel1.repo
+								[beaker-kernel1]
+								name=beaker-kernel1
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+%end
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-8.0-20180503.1"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="hp-dl388g8-22.rhts.eng.pek2.redhat.com"/>
+                    <system_type op="=" value="Machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.0-20180503.1"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="rpm_ovs" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.8.0/4.el7fdb/x86_64/openvswitch-2.8.0-4.el7fdb.x86_64.rpm"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-bj.usersys.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="RHEL-8.0-20180503.1" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel0.repo
+								[beaker-kernel0]
+								name=beaker-kernel0
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-AppStream-8/compose/AppStream/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+cat <<-EOF >/etc/yum.repos.d/beaker-kernel1.repo
+								[beaker-kernel1]
+								name=beaker-kernel1
+								baseurl=http://download.eng.pek2.redhat.com/nightly/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/x86_64/os/
+								enabled=1
+								gpgcheck=0
+								skip_if_unavailable=1
+								EOF
+%end
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-8.0-20180503.1"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="hp-dl580g8-02.rhts.eng.pek2.redhat.com"/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="CLIENTS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.0-20180503.1"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="CLIENTS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_DRIVER" value="cxgb4"/>
+          <param name="rpm_ovs" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.8.0/4.el7fdb/x86_64/openvswitch-2.8.0-4.el7fdb.x86_64.rpm"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-bj.usersys.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

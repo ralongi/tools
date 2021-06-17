@@ -1,0 +1,52 @@
+
+- install openvswitch
+- start ovs, check return code, check process status
+- stop ovs, check return code, check process status
+- restart ovs, check return code, check process status
+- create ifcfg file(s) for ovs bridge ??
+- enable ovs, check return code, check process status, reboot
+- upon system recovery, check process status, check ovs-vsctl show
+
+*** Modify power-cycle and crash tests to include ovs bridge ifcfg file(s) ***
+
+#ifcfg-ifcfg_ovsbr0
+
+DEVICE=ifcfg_ovsbr0
+ONBOOT=yes
+DEVICETYPE=ovs
+TYPE=OVSBridge
+#BOOTPROTO=static
+#IPADDR=A.B.C.D
+#NETMASK=X.Y.Z.0
+HOTPLUG=no
+
+#ifcfg-intport0
+
+DEVICE=ifcfg_intport0
+ONBOOT=yes
+DEVICETYPE=ovs
+TYPE=OVSIntPort
+OVS_BRIDGE=ifcfg_ovsbr0
+OVS_OPTIONS="tag=10"
+BOOTPROTO=static
+IPADDR=192.168.1.1
+NETMASK=255.255.255.0
+HOTPLUG=no
+
+#ifcfg-p2p2
+
+DEVICE=ifcfg_p2p2
+ONBOOT=yes
+DEVICETYPE=ovs
+TYPE=OVSPort
+OVS_BRIDGE=ifcfg_ovsbr0
+BOOTPROTO=none
+HOTPLUG=no
+
+
+
+systemctl status openvswitch.service | grep Active: | awk '{print $2}'
+
+if systemctl start openvswitch.service; then return $result; echo "openvswitch service start test: PASSED"; else return $result; echo "openvswitch service start test: FAILED"; fi
+
+

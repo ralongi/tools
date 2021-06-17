@@ -1,0 +1,38 @@
+82:25 not_connect netqe5.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.0 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV7.12.19-bc-7.12.5 pciid:14e4:168a-(rev-10) driver-Machine bos-network-qe
+# 44:a8:42:0a:82:27 not_connect netqe5.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.1 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV7.12.19-bc-7.12.5 pciid:14e4:168a-(rev-10) driver-Machine bos-network-qe
+# 44:a8:42:0a:82:2b not_connect netqe5.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.3 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV7.12.19-bc-7.12.5 pciid:14e4:168a-(rev-10) driver-Machine bos-network-qe
+a0:36:9f:08:2b:c4 not_connect netqe5.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.0 Intel-Ethernet_Controller_10Gb540-AT2 10000Mb/s Moveable Link:yes firmware:0x8000059e pciid:8086:1528-(rev-01) driver-Machine bos-network-qe
+a0:36:9f:08:2b:c6 not_connect netqe5.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.1 Intel-Ethernet_Controller_10Gb540-AT2 10000Mb/s Moveable Link:yes firmware:0x8000059e pciid:8086:1528-(rev-01) driver-Machine bos-network-qe
+
+# 44:a8:42:10:08:bc not_connect netqe6.knqe.lab.eng.bos.redhat.com bnx2 0000:01:00.0 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV7.12.19-bc-7.12.5 pciid:14e4:168a-(rev-10) driver-Machine bos-network-qe
+# 44:a8:42:10:08:be not_connect netqe6.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.1 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV7.12.19-bc-7.12.5 pciid:14e4:168a-(rev-10) driver-Machine bos-network-qe
+# 44:a8:42:10:08:c2 not_connect netqe6.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.3 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV7.12.19-bc-7.12.5 pciid:14e4:168a-(rev-10) driver-Machine bos-network-qe
+a0:36:9f:4f:1e:a8 not_connect netqe6.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.0 Intel-Ethernet_Controller_10Gb540-AT2 10000Mb/s Moveable Link:yes firmware:0x80000389 pciid:8086:1528-(rev-01) driver-Machine bos-network-qe
+a0:36:9f:4f:1e:aa not_connect netqe6.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.1 Intel-Ethernet_Controller_10Gb540-AT2 10000Mb/s Moveable Link:yes firmware:0x80000389 pciid:8086:1528-(rev-01) dr
+
+0c:bd not_connect netqe9.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.0 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV10.01.00-bc-7.14.5 pciid:14e4:168a-(rev-10) driver-Machine jhsiao
+# 44:a8:42:32:0c:bf not_connect netqe9.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.1 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV10.01.00-bc-7.14.5 pciid:14e4:168a-(rev-10) driver-Machine jhsiao
+# 44:a8:42:32:0c:c3 not_connect netqe9.knqe.lab.eng.bos.redhat.com bnx2x 0000:01:00.3 Broadcom-NetXtreme_II_BCM57800_1-10_Gb Unknown! Onboard Link:no firmware:FFV10.01.00-bc-7.14.5 pciid:14e4:168a-(rev-10) driver-Machine jhsiao
+3c:fd:fe:a7:37:54 other-unknown netqe9.knqe.lab.eng.bos.redhat.com i40e 0000:82:00.0 Intel-Ethernet_Controller_XXV710_for_25Gb28 25000Mb/s Moveable Link:yes firmware:6.01-0x800034a2-1.1747.0 pciid:8086:158b-(rev-02) driver-Machine jhsiao
+3c:fd:fe:a7:37:55 other-unknown netqe9.knqe.lab.eng.bos.redhat.com i40e 0000:82:00.1 Intel-Ethernet_Controller_XXV710_for_25Gb28 25000Mb/s Moveable Link:yes firmware:6.01-0x800034a2-1.1747.0 pciid:8086:158b-(rev-02) driver-Machine jhsiao
+e4:1d:2d:17:5c:90 not_connect netqe9.knqe.lab.eng.bos.redhat.com mlx4_en 0000:03:00.0 Mellanox-MT27520_Family 40000Mb/s Moveable Link:yes firmware:2.42.5000 pciid:15b3:1007 driver-Machine jhsiao
+e4:1d:2d:17:5c:91 not_connect netqe9.knqe.lab.eng.bos.redhat.com mlx4_en 0000:03:00.0 Mellanox-MT27520_Family 40000Mb/s Moveable Link:yes firmware:2.42.5000 pciid:15b3:1007 driver-Machine jhsiao
+f4:e9:d4:ed:aa:64 not_connect netqe9.knqe.lab.eng.bos.redhat.com qede 0000:05:00.0 QLogic-FastLinQ_QL41000_Series_10-25-40-50Gb 25000Mb/s Moveable Link:yes firmware:mfw-8.20.10.0-storm-8.20.0.0 pciid:1077:8070-(rev-02) driver-Machine jhsiao
+f4:e9:d4:ed:aa:65 not_connect netqe9.knqe.lab.eng.bos.redhat.com qede 0000:05:00.1 QLogic-FastLinQ_QL41000_Series_10-25-40-50Gb 25000Mb/s Moveable Link:yes firmware:mfw-8.20.10.0-storm-8.20.0.0 pci
+
+82:44 4550-4-xe-0/0/0 netqe20.knqe.lab.eng.bos.redhat.com i40e 0000:06:00.0 Intel-Ethernet_Controller_X710_for_10Gb 10000Mb/s Moveable Link:yes firmware:6.01-0x80003483-1.1747.0 pciid:8086:1572-(rev-01) driver-Machine bos-network-qe
+3c:fd:fe:ad:82:45 4550-4-xe-0/0/1 netqe20.knqe.lab.eng.bos.redhat.com i40e 0000:06:00.1 Intel-Ethernet_Controller_X710_for_10Gb 10000Mb/s Moveable Link:yes firmware:6.01-0x80003483-1.1747.0 pciid:8086:1572-(rev-01) driver-Machine bos-network-qe
+a0:36:9f:f5:b2:04 not_connect netqe20.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.0 Intel-Ethernet_Controller_10G_X550T 10000Mb/s Moveable Link:yes firmware:0x80000482 pciid:8086:1563-(rev-01) driver-Machine bos-network-qe
+a0:36:9f:f5:b2:05 not_connect netqe20.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.1 Intel-Ethernet_Controller_10G_X550T 10000Mb/s Moveable Link:yes firmware:0x80000482 pciid:8086:1563-(rev-01) driver-Machine bos-network-qe
+# 18:66:da:e6:5a:bd not_connect netqe20.knqe.lab.eng.bos.redhat.com tg3 0000:01:00.1 Broadcom-NetXtreme_BCM5720_Gb Unknown! Onboard Link:no firmware:FFV20.2.17-bc-5720-v1.39 pciid:14e4:165f driver-Machine bos-network-qe
+# 18:66:da:e6:5a:be not_connect netqe20.knqe.lab.eng.bos.redhat.com tg3 0000:02:00.0 Broadcom-NetXtreme_BCM5720_Gb Unknown! Onboard Link:no firmware:FFV20.2.17-bc-5720-v1.39 pciid:14e4:165f driver-Machine bos-network-qe
+# 18:66:da:e6:5a:bf not_connect netqe20.knqe.lab.eng.bos.redhat.com tg3 0000:02:00.1 Broadcom-NetXtreme_BCM5720_Gb Unknown! Onboard Link:no firmware:FFV20.2.17-bc-5720-v1.39 pciid:14e4:165f driver-Machine bos-network-qe
+
+# 00:17:b6:00:13:eb not_connect netqe21.knqe.lab.eng.bos.redhat.com atlantic 0000:05:00.0 Aquantia-AQC108_NBase-T-IEEE_802.3bz_Ethernet_Controller Unknown! Moveable Link:no firmware:1.5.58 pciid:1d6a:d108-(rev-02) driver-Machine bos-network-qe
+3c:fd:fe:ad:82:10 4550-4-xe-0/0/2 netqe21.knqe.lab.eng.bos.redhat.com i40e 0000:06:00.0 Intel-Ethernet_Controller_X710_for_10Gb 10000Mb/s Moveable Link:yes firmware:6.01-0x80003483-1.1747.0 pciid:8086:1572-(rev-01) driver-Machine bos-network-qe
+3c:fd:fe:ad:82:11 4550-4-xe-0/0/3 netqe21.knqe.lab.eng.bos.redhat.com i40e 0000:06:00.1 Intel-Ethernet_Controller_X710_for_10Gb 10000Mb/s Moveable Link:yes firmware:6.01-0x80003483-1.1747.0 pciid:8086:1572-(rev-01) driver-Machine bos-network-qe
+a0:36:9f:f5:b1:c8 not_connect netqe21.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.0 Intel-Ethernet_Controller_10G_X550T 10000Mb/s Moveable Link:yes firmware:0x80000482 pciid:8086:1563-(rev-01) driver-Machine bos-network-qe
+a0:36:9f:f5:b1:c9 not_connect netqe21.knqe.lab.eng.bos.redhat.com ixgbe 0000:83:00.1 Intel-Ethernet_Controller_10G_X550T 10000Mb/s Moveable Link:yes firmware:0x80000482 pciid:8086:1563-(rev-01) driver-Machine bos-network-qe
+# 18:66:da:e6:59:cd not_connect netqe21.knqe.lab.eng.bos.redhat.com tg3 0000:01:00.1 Broadcom-NetXtreme_BCM5720_Gb Unknown! Onboard Link:no firmware:FFV20.2.17-bc-5720-v1.39 pciid:14e4:165f driver-Machine bos-network-qe
+# 18:66:da:e6:59:ce not_connect netqe21.knqe.lab.eng.bos.redhat.com tg3 0000:02:00.0 Broadcom-NetXtreme_BCM5720_Gb Unknown! Onboard Link:no firmware:FFV20.2.17-bc-5720-v1.39 pciid:14e4:165f driver-Machine bos-network-qe
+# 18:66:da:e6:59:cf not_connect netqe21.knqe.lab.eng.bos.redhat.com tg3 0000:02:00.1 Broadcom-NetXtreme_BCM5720_Gb Unknown! Onboard Link:no firmware:FFV20.2.17-bc-5720-v1.39 pciid:14e4:165f driver-Machine bos-network-qe

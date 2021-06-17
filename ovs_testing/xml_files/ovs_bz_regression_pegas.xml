@@ -1,0 +1,53 @@
+<job retention_tag="scratch">
+  <whiteboard>ralongi@redhat.com, OVS BZ regression test regression test - RHEL-ALT-7.4-20170913.1 with OVS 2.7.2.7 FDP</whiteboard>
+  <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, OVS BZ regression test regression test - RHEL-ALT-7.4-20170913.1 with OVS 2.7.2.7 FDP" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinuxAlternateArchitectures7" op="="/>
+          <distro_name value="RHEL-ALT-7.4-20170913.1" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="netqe18.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/bz_regression/bz1359890" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/bz_regression/bz1397049" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/bz_regression/bz1411480" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

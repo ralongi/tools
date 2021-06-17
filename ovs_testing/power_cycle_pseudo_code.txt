@@ -1,0 +1,16 @@
+- configure client and server
+    - static IP on iface
+    - static VLAN on iface
+    - static bridge IP address?
+    - vnet assigned to ovs bridge
+
+create Task 1 to configure settings on host
+utilize Jeff Bastian's beaker task for power cycling a machine (Task 2)
+create Task 3 to check uptime and verify that expected settings are present
+
+hence, create beaker job with these tasks sequentially (standalone):
+- Distribution/install
+- Task 1 (configure)
+- Task 2 (Jeff B's power cycle routine)
+- Task 3 (verify configuration after machine under test has come back up
+

@@ -1,0 +1,59 @@
+.qa.[root@ppc64le-7s-v2 ~]# cat /etc/sysconfig/oats.conf
+ONBOOT=0
+RELEASE=7Server
+ARCH=ppc64le
+RHEL5LIVE=1
+RHEL6LIVE=1
+ESHURL='http://esh.devel.redhat.com/stable-heaven'
+TREE=http://download.devel.redhat.com/pub/rhel/released/RHEL-7/7.4/Server/x86_64/os/
+PRODUCT=RHEL
+
+
+OATS_TEST_PROFILE=stable-rhv-4-mgmt-agent-for-power-le-rpms
+
+
+
+
+
+## Default settings.  Note that these should be written
+## so as not to override any prior settings.
+
+ESHURL=${ESHURL:-http://esh.devel.redhat.com/stable-heaven}
+KEYSERV=${KEYSERV:-http://tps-server.lab.bos.redhat.com/keyserv.cgi}
+OATS_BOOTSTRAP=${OATS_BOOTSTRAP:-http://qesat.lab.bos.redhat.com/pub/bootstrap}
+OATS_NOREBUILD=${OATS_NOREBUILD:-http://qesat.lab.bos.redhat.com/pub/oats/noRebuild}
+OATS_RPMDIR=${OATS_RPMDIR:-http://nest.test.redhat.com/mnt/tpsdist}
+OLD_OATS_COBBLER_CONF=/etc/profile.d/cobbler.sh
+OATS_COBBLER_CONF=/etc/profile.d/rh-env.sh
+#
+# Variables for future use:
+# Which TPS to install: devel, stacks, or polling
+OATS_TPS_FLAVOR=${OATS_TPS_FLAVOR:-''}
+# Test profile, must match a profile name on TpsServer
+OATS_TEST_PROFILE=${OATS_TEST_PROFILE:-''}
+# Which server to ask for dynamically updated info
+OATS_CONTROL=${OATS_CONTROL:-http://tps-server.lab.bos.redhat.com}
+#
+# Set to zero if RHEL6 has not yet been released.  Controls
+# what gets used for RHN.Live, among other things.  Set to
+# 1 after release.
+RHEL6LIVE=${RHEL6LIVE:-1}
+
+# Note that the Stream and StreamExt variables are used
+# to configure a machine for Z-stream or LL channels.
+
+# OATS_INSTALL_STAR defaults to true and controls whether oats
+# will attempt a "yum install *".  Set it to 'false' to disable
+# that behavior.
+
+
+#
+# The following can be set to use adhoc, beta, or pre-production resources
+# Do not use them without excellent reason.
+# TPSSERV_ENV can be set to one of: devel, test, or prod.  Default: prod
+# export TPSSERV_ENV
+# OATS_PULP_FOR_QA=adhoc-r8qa
+# OATS_PULP_FOR_LIVE=adhoc-r8live
+# export OATS_PULP_FOR_QA OATS_PULP_FOR_LIVE
+#
+

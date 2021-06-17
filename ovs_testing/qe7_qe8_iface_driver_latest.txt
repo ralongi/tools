@@ -1,0 +1,81 @@
+qe7
+
+[root@netqe7 ~]# get_if_driver 
+1 Interface: p7p1
+2 Interface: p7p2
+3 Interface: p2p1
+4 Interface: em1
+5 Interface: em2
+6 Interface: em3
+7 Interface: em4
+8 Interface: p1p1
+9 Interface: p1p2
+10 Interface: p4p1
+11 Interface: p4p2
+12 Interface: p4p3
+13 Interface: p4p4
+14 Interface: p3p1
+15 Interface: p3p2
+16 Interface: ovs-system
+17 Interface: vnet0
+18 Interface: ovsbr0
+19 Interface: intport0
+ 
+
+1 Driver: be2net (Emulex 10Gbe/40Gbe)
+2 Driver: be2net (Emulex 10Gbe/40Gbe)
+3 Driver: be2net (Emulex 10Gbe/40Gbe)
+4 Driver: bnx2x (Broadcom 10Gbe)
+5 Driver: bnx2x (Broadcom 10Gbe)
+6 Driver: bnx2x (Broadcom 10Gbe)
+7 Driver: bnx2x (Broadcom 10Gbe)
+8 Driver: i40e (Intel 10Gbe/40Gbe)
+9 Driver: i40e (Intel 10Gbe/40Gbe)
+10 Driver: i40e (Intel 10Gbe/40Gbe)
+11 Driver: i40e (Intel 10Gbe/40Gbe)
+12 Driver: i40e (Intel 10Gbe/40Gbe)
+13 Driver: i40e (Intel 10Gbe/40Gbe)
+14 Driver: ixgbe (Intel 10Gbe)
+15 Driver: ixgbe (Intel 10Gbe)
+16 Driver: openvswitch
+17 Driver: tun
+18 Driver: openvswitch
+19 Driver: openvswitch
+
+************************
+qe8
+
+[root@netqe8 ~]# get_if_driver 
+1 Interface: p7p1 10G
+2 Interface: p7p2
+3 Interface: p2p1 40G
+4 Interface: em1 10G
+5 Interface: em2
+6 Interface: em3 1G
+7 Interface: em4
+8 Interface: p1p1 40G
+9 Interface: p1p2
+10 Interface: p3p1 10G
+11 Interface: p3p2
+12 Interface: ovs-system
+13 Interface: vnet0
+14 Interface: ovsbr0
+15 Interface: intport0
+ 
+
+1 Driver: be2net (Emulex 10Gbe/40Gbe)
+2 Driver: be2net (Emulex 10Gbe/40Gbe)
+3 Driver: be2net (Emulex 10Gbe/40Gbe)
+4 Driver: bnx2x (Broadcom 10Gbe)
+5 Driver: bnx2x (Broadcom 10Gbe)
+6 Driver: bnx2x (Broadcom 10Gbe)
+7 Driver: bnx2x (Broadcom 10Gbe)
+8 Driver: i40e (Intel 10Gbe/40Gbe)
+9 Driver: i40e (Intel 10Gbe/40Gbe)
+10 Driver: ixgbe (Intel 10Gbe)
+11 Driver: ixgbe (Intel 10Gbe)
+12 Driver: openvswitch
+13 Driver: tun
+14 Driver: openvswitch
+15 Driver: openvswitch
+

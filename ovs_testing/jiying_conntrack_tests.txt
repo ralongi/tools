@@ -1,0 +1,89 @@
+# Joan's conntrack tests to run
+
+1. Conntrack firewall rules Jiying Qiu (not related to driver)
+   (conntrack2 and contrack_dpdk)
+
+OVS 2.11, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3847836
+https://beaker.engineering.redhat.com/jobs/3867294
+
+OVS 2.11, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3848082
+https://beaker.engineering.redhat.com/jobs/3848081
+
+OVS 2.12, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3892889
+https://beaker.engineering.redhat.com/jobs/3892924
+
+OVS 2.12, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3910170
+https://beaker.engineering.redhat.com/jobs/3910171
+
+2. Stateful traffic Xena (by speed)
+
+Google sheet: https://docs.google.com/spreadsheets/d/1cPG1ovmrCo1RhAMGVfK9SgKIEtj7yocjYP_CDvLUfYY/edit?usp=sharing
+
+OVS 2.11, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3918107
+https://beaker.engineering.redhat.com/jobs/3918108
+
+OVS 2.11, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3910218
+https://beaker.engineering.redhat.com/jobs/3910219
+
+OVS 2.12, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3892889
+https://beaker.engineering.redhat.com/jobs/3892924
+
+OVS 2.12, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3897844
+https://beaker.engineering.redhat.com/jobs/3892948
+
+3. ovs-dpdk-conntrack
+
+Google sheet: https://docs.google.com/spreadsheets/d/17MKqKpCmVV93dhCawgD-xxAm3aQweV5yszb82A-L-Kk/edit?usp=sharing
+
+OVS 2.11, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3893661
+
+OVS 2.11, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3852858
+
+OVS 2.12, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3918242
+
+OVS 2.12, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3892951
+
+4. ovs-kernel-conntrack
+
+Google sheet: https://docs.google.com/spreadsheets/d/1qku7ViuVgAwWXobQjekv1JxNvfQ4rgjCOBX0NTeda9o/edit?usp=sharing
+
+OVS 2.11, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3848299
+
+OVS 2.11, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3848300
+
+OVS 2.12, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3892943
+
+OVS 2.12, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3892953
+
+5. ovs-dpdk-latency jiqiu
+
+Google sheet: https://docs.google.com/spreadsheets/d/11BqpCkXoUXTVH4s0uMGZ4ieBOZzUNjbYS9E-3CxYIpI/edit?usp=sharing
+
+OVS 2.11, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3848304
+
+OVS 2.11, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3848305
+
+OVS 2.12, RHEL-7
+https://beaker.engineering.redhat.com/jobs/3892944
+
+OVS 2.12, RHEL-8
+https://beaker.engineering.redhat.com/jobs/3892957
+

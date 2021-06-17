@@ -1,0 +1,37 @@
+OVS Sanity check regression tests:
+
+All RHEL and OSP versions:
+power-cycle_crash
+userspace_commands
+STP
+add_del ports
+perf_check
+ovs_vlan
+upgrade (openvswitch, kernel, compose)
+
+Additional for RHEL7+ and OVS 2.5+
+RSTP
+mcast_snoop
+conntrack
+ovs_systemd
+
+Others:
+bz_regression/bz1397045
+
+
+STANDALONE TESTS:
+power-cycle_crash
+userspace_commands
+STP
+add_del ports
+RSTP
+mcast_snoop
+conntrack
+ovs_systemd
+bz_regression/bz1397045
+
+MULTIHOST TESTS:
+perf_check
+ovs_vlan
+upgrade (openvswitch, kernel, compose)
+

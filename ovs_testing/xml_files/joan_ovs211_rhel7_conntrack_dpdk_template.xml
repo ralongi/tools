@@ -1,0 +1,102 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>FDP fdp_release rhel_compose ovs 2.11 /kernel/networking/openvswitch/conntrack_dpdk</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="FDP fdp_release rhel_compose ovs 2.11 /kernel/networking/openvswitch/conntrack_dpdk --servers=1 --clients=1{--machine=dell-per730-25.rhts.eng.pek2.redhat.com,dell-per730-26.rhts.eng.pek2.redhat.com }" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos>
+        <repo name="myrepo_1" url="'http://download.eng.pek2.redhat.com/rel-eng/updates/RHEL-7.5/RHEL-7.5-updates-20180619.4/compose/Server/x86_64/os/'"/>
+      </repos>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="rhel_compose"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="dell-per730-26.rhts.eng.pek2.redhat.com"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            <system_type value="Machine"/></hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="rhel_compose"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/conntrack_dpdk" role="SERVERS">
+        <params>
+          <param name="NIC_DRIVER" value="ixgbe"/>
+          <param name="NAY" value="no"/>
+          <param name="PVT" value="yes"/>
+          <param name="RPM_OVS" value="rpm_ovs"/>
+          <param name="RPM_DPDK" value="rpm_dpdk"/>
+          <param name="RPM_DPDK_TOOLS" value="rpm_dpdk_tools"/>
+          <param name="QEMU_KVM_RHEV" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/18.el7/x86_64/qemu-kvm-rhev-2.12.0-18.el7.x86_64.rpm"/>
+          <param name="OVS_EXTRA" value="ovs_selinux"/>
+          <param name="image_name" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
+          <param name="GUEST_IMAGE" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
+          <param name="DISTRO_BUILD" value="rhel_compose"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="FDP fdp_release rhel_compose ovs 2.11 /kernel/networking/openvswitch/conntrack_dpdk" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos>
+        <repo name="myrepo_1" url="'http://download.eng.pek2.redhat.com/rel-eng/updates/RHEL-7.5/RHEL-7.5-updates-20180619.4/compose/Server/x86_64/os/'"/>
+      </repos>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="rhel_compose"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="dell-per730-25.rhts.eng.pek2.redhat.com"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            <system_type value="Machine"/></hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="CLIENTS">
+        <params>
+          <param name="DISTRO_BUILD" value="rhel_compose"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/conntrack_dpdk" role="CLIENTS">
+ <params>
+          <param name="NIC_DRIVER" value="ixgbe"/>
+          <param name="NAY" value="no"/>
+          <param name="PVT" value="yes"/>
+          <param name="RPM_OVS" value="rpm_ovs"/>
+          <param name="RPM_DPDK" value="rpm_dpdk"/>
+          <param name="RPM_DPDK_TOOLS" value="rpm_dpdk_tools"/>
+          <param name="QEMU_KVM_RHEV" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/18.el7/x86_64/qemu-kvm-rhev-2.12.0-18.el7.x86_64.rpm"/>
+          <param name="OVS_EXTRA" value="ovs_selinux"/>
+          <param name="image_name" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
+          <param name="GUEST_IMAGE" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
+          <param name="DISTRO_BUILD" value="rhel_compose"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

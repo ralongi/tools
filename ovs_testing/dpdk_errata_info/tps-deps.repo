@@ -1,0 +1,6 @@
+[tps-deps]
+name=Dependencies for TPS on RHEL-8
+baseurl=http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps/$basearch/
+enabled = 0
+gpgcheck=0
+skip_if_unavailable=True

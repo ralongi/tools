@@ -1,0 +1,13 @@
+# Port connections Synergy Chassis 1:
+
+HPE VC			Juniper QFX5100
+==========		===============
+Slot 3, Q1			P0
+Slot 6, Q1			P1
+Slot 3, Q2			P2
+Slot 6, Q2			P3
+Slot 3, Q3			P4
+Slot 6, Q3			P5
+Slot 3, Q4			P6
+Slot 6, Q4			P7
+

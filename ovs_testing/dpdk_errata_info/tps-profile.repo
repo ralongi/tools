@@ -1,0 +1,94 @@
+# _TestProfile_ stable-rhel-8-baseos
+# _server_ pulp.dist.prod.ext.phx2.redhat.com
+# _generated_ 2020-09-04 10:11:50 -0400
+
+# _begin_ TpsServer: PulpChannel 8500
+# last_published="2020-08-26 08:41:41 UTC"
+[rhel-8-for-x86_64-appstream-debug-rpms]
+name=rhel-8-for-x86_64-appstream-debug-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/appstream/debug
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8500
+
+# _begin_ TpsServer: PulpChannel 8509
+# last_published="2020-08-26 08:41:57 UTC"
+[rhel-8-for-x86_64-appstream-rpms]
+name=rhel-8-for-x86_64-appstream-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/appstream/os
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8509
+
+# _begin_ TpsServer: PulpChannel 8513
+# last_published="2020-08-26 08:39:17 UTC"
+[rhel-8-for-x86_64-appstream-source-rpms]
+name=rhel-8-for-x86_64-appstream-source-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/appstream/source/SRPMS
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8513
+
+# _begin_ TpsServer: PulpChannel 8520
+# last_published="2020-08-03 15:55:35 UTC"
+[rhel-8-for-x86_64-baseos-debug-rpms]
+name=rhel-8-for-x86_64-baseos-debug-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/baseos/debug
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8520
+
+# _begin_ TpsServer: PulpChannel 8529
+# last_published="2020-08-10 09:12:01 UTC"
+[rhel-8-for-x86_64-baseos-rpms]
+name=rhel-8-for-x86_64-baseos-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/baseos/os
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8529
+
+# _begin_ TpsServer: PulpChannel 8533
+# last_published="2020-08-10 09:07:45 UTC"
+[rhel-8-for-x86_64-baseos-source-rpms]
+name=rhel-8-for-x86_64-baseos-source-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/baseos/source/SRPMS
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8533
+
+# _begin_ TpsServer: PulpChannel 8739
+# last_published="2020-06-10 09:11:44 UTC"
+[rhel-8-for-x86_64-highavailability-rpms]
+name=rhel-8-for-x86_64-highavailability-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/highavailability/os
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8739
+
+# _begin_ TpsServer: PulpChannel 8764
+# last_published="2020-06-10 09:11:48 UTC"
+[rhel-8-for-x86_64-resilientstorage-rpms]
+name=rhel-8-for-x86_64-resilientstorage-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/resilientstorage/os
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8764
+
+# _begin_ TpsServer: PulpChannel 8741
+# last_published="2020-06-10 09:11:35 UTC"
+[rhel-8-for-x86_64-highavailability-source-rpms]
+name=rhel-8-for-x86_64-highavailability-source-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/highavailability/source/SRPMS
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8741
+
+# _begin_ TpsServer: PulpChannel 8765
+# last_published="2020-06-10 09:11:38 UTC"
+[rhel-8-for-x86_64-resilientstorage-source-rpms]
+name=rhel-8-for-x86_64-resilientstorage-source-rpms/8
+baseurl=http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/rhel8/8/x86_64/resilientstorage/source/SRPMS
+enabled=1
+gpgcheck=1
+# _end_ TpsServer: PulpChannel 8765
+

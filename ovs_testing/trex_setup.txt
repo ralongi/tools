@@ -1,0 +1,156 @@
+# Helpful links:
+pbench.perf.lab.eng.bos.redhat.com/agent/installation.html
+http://pbench.perf.lab.eng.bos.redhat.com/agent/bootstrapping.html
+http://pbench.perf.lab.eng.bos.redhat.com/agent/installation.html#pbench:installing-using-ansible
+
+##### Run commands below on Ansible laptop (assuming perf-dept repo is already present):
+
+pushd ~/perf-dept
+git checkout master
+git remote update
+git rebase
+popd
+
+provision the system to be used for Trex
+
+##### Run commands below on target Trex system after it has been provisioned
+
+sed -i -e 's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=32 iommu=pt intel_iommu=on /'  /etc/default/grub
+grub2-editenv - unset kernelopts
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+#mkdir /root/mem_leak_soak/
+yum -y install git
+yum -y install tmux
+yum -y install at
+
+# install tuned
+# for RHEL-7.6
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/tuned/2.11.0/10.el7/noarch/tuned-2.11.0-10.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/tuned/2.11.0/10.el7/noarch/tuned-profiles-cpu-partitioning-2.11.0-10.el7.noarch.rpm
+
+yum -y install tuned
+yum -y install tuned-profiles-cpu-partitioning
+systemctl enable atd
+systemctl start atd
+systemctl enable tuned
+systemctl start tuned
+
+# select driver to use, pick one of the ifaces for that driver (on system a33: p1p1 for i40e, p8p1 for mlx5_core)
+#NIC1=p1p1 # for i40e
+NIC1=ens1f0 # for i40e
+#NIC1=p8p1 # for mlx5_core
+#NIC1=ens8f0 # for mlx5_core
+NIC1_PCI_ADDR=$(ethtool -i $NIC1 | grep 'bus-info' | awk '{print $NF}')
+NICNUMA=$(cat /sys/class/net/$NIC1/device/numa_node)
+ISOLCPUS=$(lscpu | grep "NUMA node$NICNUMA" | awk '{print $4}')
+ISOLCPUS=$(echo $ISOLCPUS | cut -c 5-)
+echo -e "no_balance_cores=$ISOLCPUS" >> /etc/tuned/cpu-partitioning-variables.conf
+echo -e "isolated_cores=$ISOLCPUS" >> /etc/tuned/cpu-partitioning-variables.conf
+sleep 2
+tuned-adm profile cpu-partitioning
+
+reboot
+
+after reboot, verify hugepages via: cat /proc/meminfo
+
+# install DPDK on target Trex system
+
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.2/4.el8_1/x86_64/dpdk-18.11.2-4.el8_1.x86_64.rpm
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.2/4.el8_1/x86_64/dpdk-tools-18.11.2-4.el8_1.x86_64.rpm
+
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/2.el8/x86_64/dpdk-19.11-2.el8.x86_64.rpm
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/2.el8/x86_64/dpdk-tools-19.11-2.el8.x86_64.rpm
+
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11/4.el7_6/x86_64/dpdk-18.11-4.el7_6.x86_64.rpm
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11/4.el7_6/x86_64/dpdk-tools-18.11-4.el7_6.x86_64.rpm
+
+#yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-18.11.7-1.el7_8.x86_64.rpm
+#yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-tools-18.11.7-1.el7_8.x86_64.rpm
+
+# install EPEL repo and mlocate
+#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+yum -y install mlocate && updatedb
+
+##### Run commands below on Ansible laptop
+
+copy ssh keys from laptop to target system for both regular user and root on laptop:
+    ssh-copy-id -f root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
+    sudo ssh-copy-id -f root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
+    
+# Run repo bootstrap playbook to install necessary repos on target system (make sure repo-bootstrap.hosts has correct info):
+    inv=/home/ralongi/.config/Inventory/repo-bootstrap.hosts
+    pushd ~/perf-dept/sysadmin/Ansible && ansible-playbook  --user=root -i ${inv} repo-bootstrap.yml && popd
+    
+# sample myhosts.inv file that works:
+-------------------------------------------------------------------------------
+
+# Copy this file to .../Inventory/pbench-agent.hosts and change the
+# [servers] section to the set of hosts where you want to install
+# pbench-agent. The various hosts can be running any combinations of
+# RHEL7, RHEL8, or (supported) Fedora versions (currently 28 and 29).
+
+[servers]
+wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
+#wsfd-advnetlab34.anl.lab.eng.bos.redhat.com
+
+# DO NOT CHANGE ANYTHING BELOW THIS LINE
+[servers:vars]
+# where to get the key
+keyurl = http://git.app.eng.bos.redhat.com/git/pbench.git/plain/agent/{{ pbench_configuration_environment }}/ssh/id_rsa
+# where to put it
+keydest = /opt/pbench-agent/
+
+# where to get the config file
+configurl = http://git.app.eng.bos.redhat.com/git/pbench.git/plain/agent/{{ pbench_configuration_environment }}/config/pbench-agent.cfg
+# where to put it
+configdest = /opt/pbench-agent/config/
+
+
+pbench_key_url = http://git.app.eng.bos.redhat.com/git/pbench.git/plain/agent/{{ pbench_configuration_environment }}/ssh
+
+pbench_config_url = http://git.app.eng.bos.redhat.com/git/pbench.git/plain/agent/{{ pbench_configuration_environment }}/config
+
+owner = pbench
+group = pbench
+-------------------------------------------------------------------------------    
+On laptop:
+    
+# Install pbench roles:
+	ansible-galaxy collection install pbench.agent # (updates any roles)
+	
+# Run pbench_agent installation playbook (playbooks are located in /home/ralongi/git/pbench/agent/ansible/)
+	ansible-playbook -i ~/.config/Inventory/myhosts.inv ~/git/pbench/agent/ansible/pbench_agent_install.yml
+	
+	# if above command fails due to ssh error, run command below instead
+	ansible-playbook -u root -i ~/.config/Inventory/myhosts.inv /home/ralongi/git/pbench/agent/ansible/pbench_agent_install.yml
+	
+##### Run commands below on Trex system
+
+source /etc/profile.d/pbench-agent.sh && pbench-register-tool-set  
+
+# run command below (NOTE: it will fail due to SSL cert problem.  This is just to pull down install-trex.sh)
+
+# i40e
+pbench-trafficgen --devices=0000:3b:00.0,0000:3b:00.1 --frame-size=64 --traffic-direction=unidirectional --max-loss-pct=30 --num-flows=128 --rate=0.05 --samples=1 --one-shot --validation-runtime=10
+
+# mlx5_core
+pbench-trafficgen --devices=0000:d8:00.0,0000:d8:00.1 --frame-size=64 --traffic-direction=unidirectional --max-loss-pct=30 --num-flows=128 --rate=0.05 --samples=1 --one-shot --validation-runtime=10
+
+sed -i 's/insecure_curl=0/insecure_curl=1/g' /opt/trafficgen/install-trex.sh
+#sed -i 's/trex_ver="v2.82"/trex_ver="v2.72"/g' /opt/trafficgen/install-trex.sh
+cp /opt/trafficgen/launch-trex.sh /opt/trafficgen/launch-trex_orig.sh
+
+
+# https://privatebin-it-iso.int.open.paas.redhat.com/?13f6ace6ec7cd3da#86Xk8mvR9sUKmorn7G88gXQ7resMkt92noFQ3mswwTTV
+
+
+ssh-keygen 
+ssh-copy-id root@wsfd-advnetlab34.anl.lab.eng.bos.redhat.com
+
+yum -y groupinstall "infiniband support" # needed when using mlx5_core for Trex
+#yum -y install libib*
+	
+# on laptop:
+	scp /home/ralongi/inf_ralongi/Documents/ovs_testing/pbench_trafficgen.sh root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com:/root/traffic.sh
+	

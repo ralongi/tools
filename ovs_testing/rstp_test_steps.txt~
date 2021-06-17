@@ -1,0 +1,94 @@
+# To configure RSTP test
+
+# cleanup environment before test
+ovs-vsctl --if-exists del-br ovsbr0
+ovs-vsctl --if-exists del-br ovsbr1
+ip netns del ns0 | true
+ip netns del ns1 | true
+ip link del veth0 type veth peer name veth1
+ip link del veth2 type veth peer name veth3
+ovs-vsctl show
+ip l l
+systemctl stop openvswitch
+sleep 3
+systemctl start openvswitch
+
+# configure two OVS bridges with intports
+ovs-vsctl --if-exists del-br ovsbr0
+ovs-vsctl add-br ovsbr0
+ovs-vsctl add-port ovsbr0 intport0 -- set interface intport0 type=internal
+
+ovs-vsctl --if-exists del-br ovsbr1
+ovs-vsctl add-br ovsbr1
+ovs-vsctl add-port ovsbr1 intport1 -- set interface intport1 type=internal
+
+# configure two namespaces
+ip netns del ns0 | true
+ip netns add ns0
+ip netns exec ns0 ip link set lo up
+
+ip netns del ns1 | true
+ip netns add ns1
+ip netns exec ns1 ip link set lo up
+
+# configure two pairs of veth devices and connect the two bridges
+ip link add veth0 type veth peer name veth1
+ip link add veth2 type veth peer name veth3
+ovs-vsctl add-port ovsbr0 veth0
+ovs-vsctl add-port ovsbr1 veth1
+ovs-vsctl add-port ovsbr0 veth2
+ovs-vsctl add-port ovsbr1 veth3
+ip link set netns ns0 dev intport0
+ip link set netns ns1 dev intport1
+
+# configure IP addresses for intports on each bridge
+ip netns exec ns0 ip addr add 192.168.101.1/24 dev intport0
+ip netns exec ns1 ip addr add 192.168.101.2/24 dev intport1
+
+# make sure RSTP is disabled before negative test
+ovs-vsctl set Bridge ovsbr0 rstp_enable=false
+ovs-vsctl set Bridge ovsbr1 rstp_enable=false
+
+# set all interfaces up
+ip link set dev ovsbr0 up
+ip link set dev ovsbr1 up
+ip link set dev veth0 up
+ip link set dev veth1 up
+ip link set dev veth2 up
+ip link set dev veth3 up
+ip netns exec ns0 ip link set dev intport0 up
+ip netns exec ns1 ip link set dev intport1 up
+
+# run ping test from intport0 to inport1 ---> should fail due to bridge loop
+ip netns exec ns0 ping -c5 192.168.101.1
+ip netns exec ns0 ping -c5 192.168.101.2
+ip netns exec ns1 ping -c5 192.168.101.2
+ip netns exec ns1 ping -c5 192.168.101.1
+
+# check %CPU
+cpu_load=$(grep -i ovs-vswitchd top_output.txt | awk '{ print $9 }')
+
+# enable RSTP
+ovs-vsctl set Bridge ovsbr0 rstp_enable=true
+ovs-vsctl set Bridge ovsbr1 rstp_enable=true
+
+# run ping test from intport0 to inport1 ---> should be successful with RSTP enabled
+ip netns exec ns0 ping -c5 192.168.101.1
+ip netns exec ns0 ping -c5 192.168.101.2
+ip netns exec ns1 ping -c5 192.168.101.2
+ip netns exec ns1 ping -c5 192.168.101.1
+
+# check %CPU
+# best way to automate?  top -b -n3 > /tmp/top_output.txt, then grep for %CPU value?
+
+# determine which veth pair is active 
+# only possible via checking tcpdump to see which pair has ICMP traffic??  how to automate this step? (tcpdump -nn -i eth0 -w output.asc; grep <icmp> or check stats somewhere)
+
+# then remove active veth port from one of the bridges
+ovsvsctl del-port ovsbr0 <veth>
+
+# verify that ping is successful over the other path
+
+# add the veth port back to the ovs bridge, verify that pings are still working and no storm is occurring (i.e. check %CPU)
+ovsvsctl add-port ovsbr0 <veth>
+

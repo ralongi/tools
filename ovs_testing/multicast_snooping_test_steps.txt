@@ -1,0 +1,23 @@
+# steps to do basic test of multicast snooping
+
+install and start ovs
+create ovs bridge with internal port
+create 2 or 3 VMs connected to the ovs bridge, start VMs, update to same kernel that's running on host
+configure IP addresses on eth0 on all VMs such that they can connect to host intport (can be static or not)
+add multicast route to all VMs (/sbin/route -n add -net 224.0.0.0 netmask 240.0.0.0 dev eth0)
+verify that the multicast route has been successfully added (/sbin/route -n | grep 224)
+make sure multicast snooping is disabled on OVS bridge (ovs-vsctl set Bridge myovs mcast_snooping_enable=false)
+make sure command was successful
+launch multicast server on VM1 (iperf -s -u -B 224.0.55.55 -i 1 -p eth0)
+verify that multicast packets/traffic are observed on eth0 of VM2 and VM3 (tcpdump -nn -i eth0 ip multicast > output.asc; grep <mcast string> or check stats somewhere)
+pkill iperf server on VM1; make sure it is successfully killed
+enable multicast snooping (ovs-vsctl set Bridge myovs mcast_snooping_enable=true)
+make sure command was successful
+launch multicast server on VM1 (iperf -s -u -B 224.0.55.55 -i 1 -p eth0)
+verify that no multicast packets are observed on eth0 of VM2 and VM3 (tcpdump -nn -i eth0 ip multicast > output.asc; grep <mcast string> or check stats somewhere)
+launch multicast client app using iperf on VM2 and VM3 (iperf -c 224.0.55.55 -u -T 32 -t 3 -i 1 -p eth0)
+verify that multicast traffic is now passed on VM2 and VM2 eth0 (tcpdump -nn -i eth0 ip multicast > output.asc; grep <mcast string> or check stats somewhere)
+verify that the multicast server received the traffic from clients??
+repeat steps??
+test other ovs-vsctl multicast_snooping related commands??
+

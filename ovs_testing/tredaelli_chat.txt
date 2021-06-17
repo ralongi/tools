@@ -1,0 +1,26 @@
+(10:49:51 AM) tredaelli: hello
+(10:49:56 AM) ralongi: Hi
+(10:50:13 AM) tredaelli: I read your email about openvswitch fast-datapath vs beta
+(10:50:50 AM) tredaelli: it seems you didn't do rhpkg pull from inside fast-datapath-rhel-7 branch
+(10:51:02 AM) ralongi: i wasn't sure if i was missing something.
+(10:52:03 AM) tredaelli: btw patch file is rhel-make-openvswitch-service-start-return-when-read.patch
+(10:52:37 AM) ralongi: isn't this the correct way to switch branch and execute rhpkg?
+(10:52:37 AM) ralongi: [ralongi@ralongi openvswitch]$ rhpkg switch-branch fast-datapath-rhel-7
+(10:52:37 AM) ralongi: Switched to branch 'fast-datapath-rhel-7'
+(10:52:37 AM) ralongi: [ralongi@ralongi openvswitch]$ rhpkg prep
+(10:52:53 AM) tredaelli: you should do rhpkg pull after switch-branch
+(10:52:58 AM) tredaelli: just in case you have some updates
+(10:53:53 AM) tredaelli: if you open openvswitch.spec you should see
+(10:53:56 AM) tredaelli: # Backport make openvswitch service start return when ready BZ 1422227
+(10:53:57 AM) tredaelli: Patch42: rhel-make-openvswitch-service-start-return-when-read.patch
+(10:57:12 AM) ralongi: ok.  i see it in the openvswitch.spc file.  but i still don't see it in the git log as reported from git log --oneline --grep=1422227
+(10:57:41 AM) ralongi: this after rhpkg switch-branch fast-datapath-rhel-7. rhpkg pull and rhpkg prep
+(10:58:02 AM) tredaelli: I only create one commit with alignments between fdbeta and fdprod
+(10:58:29 AM) tredaelli: git show a5cb10b3
+(11:00:04 AM) ralongi: ok.  so by virtue of it being in Beta and your commit syncing Beta with FDP, this shows that the patch is in FDP, correct?
+(11:02:43 AM) tredaelli: yes, actually the patch is the file rhel-make-openvswitch-service-start-return-when-read.patch
+(11:05:12 AM) ralongi: so if i need to go through this exercise in the future, is verifying that the patch file appears in the openvswitch.spec file sufficient?
+(11:05:49 AM) tredaelli: actually to check if FDP is aligned to FDB I only do: git diff origin/fast-datapath-beta-rhel-7..origin/fast-datapath-rhel-7 -- openvswitch.spec
+(11:06:12 AM) tredaelli: as you can see the only "mayor" differences are the disabled PMD
+(11:06:38 AM) tredaelli: the epoch are removed in order to install the fdbeta version if fdbeta repository is enabled
+(11:18:51 AM) ralongi: ok.  thanks for the info!

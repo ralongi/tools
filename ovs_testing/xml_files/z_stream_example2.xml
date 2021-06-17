@@ -1,0 +1,93 @@
+<job retention_tag="60days">
+  <whiteboard>RHEL 7.3.z  Z Stream kernel/3.10.0/514.36.1.el7 /kernel/networking/team/{sanity_check:,libteam:,runners/loadbalan.,runners/activebac.,runners/broadcast.,runners/roundrobi.,...} --nay-nic-num=2{--variant=Server --netqe-nic-match=bos}</whiteboard>
+  <recipeSet priority="High">
+    <recipe whiteboard="RHEL 7.3.z  Z Stream kernel/3.10.0/514.36.1.el7 /kernel/networking/team/{sanity_check:,libteam:,runners/loadbalan.,runners/activebac.,runners/broadcast.,runners/roundrobi.,...} --nay-nic-num=2{--variant=Server --netqe-nic-match=bos}" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+
+
+
+
+
+
+
+%post
+
+cat << EOF >/etc/yum.repos.d/kernel-test.repo
+[kernel-test]
+name=kernel-test
+baseurl=http://brew-task-repos.usersys.redhat.com/repos/official/kernel/3.10.0/957.61.2.el7
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1
+EOF
+%end
+
+																											]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-7.3"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname op="=" value="netqe12.knqe.lab.eng.bos.redhat.com"/>
+          <system_type op="=" value="Machine"/>
+        </and>
+      </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="STANDALONE">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-7.3"/>
+        </params>
+      </task>
+      <task name="/distribution/kernelinstall" role="STANDALONE">
+        <params>
+          <param name="KERNELARGNAME" value="kernel"/>
+          <param name="KERNELARGVERSION" value="3.10.0-514.36.1.el7"/>
+          <param name="KERNELARGVARIANT" value="up"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/team/sanity_check" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/team/libteam" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/team/runners/loadbalance" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/team/runners/activebackup" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/team/runners/broadcast" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/team/runners/roundrobin" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

@@ -1,0 +1,494 @@
+main password: fo0m4nchU
+
+password for RHV EUS stable system (tps-rhv-7s-4-h.rhev.lab.eng.brq.redhat.com): qum5net
+
+sedeasy ()
+{
+sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+} 
+
+## Errata info
+
+http://wiki.test.redhat.com/ReferenceManual/StableSystems#Connecting
+http://penguins.usersys.redhat.com/monitoring/
+https://wiki.test.redhat.com/ErrataWorkflow
+http://wiki.test.redhat.com/Kernel/Filesystem/errata
+https://wiki.test.redhat.com/ErrataWorkflow/PreparingToTest
+https://wiki.test.redhat.com/ErrataWorkflow/PreparingToTest#AutomatedRpmdiffTests
+http://wiki.test.redhat.com/Faq/Tps/RunningTpsManually
+
+
+# From CT:
+
+For Docs approval I always email these two people ->
+Lucie Manaskova and Marci Wolfe
+
+Old erratas for reference with waives ->
+
+https://errata.devel.redhat.com/advisory/39299
+
+https://errata.devel.redhat.com/advisory/39302
+
+For TPS issues I cannot figure out I always email ->
+
+Timothy Redaelli & Lucas Svaty & Pavel Novotny
+
+TPS system links for accessing systems ->
+
+http://wiki.test.redhat.com/ReferenceManual/StableSystems#Connecting
+
+# From Amit:
+
+1. https://wiki.test.redhat.com/Faq/Tps/HowToInstallMissingPackages#MissingPackagesNeededForRebuild
+2. http://wiki.test.redhat.com/ErrataWorkflow/PreparingToTest#TroubleshootingTPS
+
+# to build a stable system that TPS jobs can automatically run on for 24 hours:
+
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-openshift-enterprise-3.6 --arch=x86_64 
+
+OR
+
+bkr workflow-tomorrow 7 --machine=netqe5.knqe.lab.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-openshift-enterprise-3.6
+
+if [[ $arch == "x86_64" ]]; then
+
+
+# To build stable system for RHEL7 x86_64
+
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd"
+
+# To build stable system for RHEL7 ppc64le:
+
+NOTE: For repo "rhel-7-for-power9-fast-datapath-rpms", use test profile "stable-rhel-alt-7-server"
+
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd"
+
+Note: use test profile "stable-rhel-alt-7-server" with above ppc64le command for RHEL ALT streams.
+
+# To build stable system for RHEL7 s390x:
+
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd"
+
+# To build stable system for RHEL8 x86_64
+
+bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=x86_64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd" --task '! dnf -y install libibverbs'
+
+# To build stable system for RHEL8 ppc64le
+
+bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=ppc64le --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task '! systemctl restart tpsd' --task "! dnf -y install libibverbs"
+
+# To build stable system for RHEL8 s390x
+
+bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=s390x --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
+
+# to install selinux and libunbound packages
+
+arch=$(uname -m)
+RPM_OVS_SELINUX_EXTRA_POLICY=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm
+RPM_OVS=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.12/2.12.0/4.el7fdp/$arch/openvswitch2.12-2.12.0-4.el7fdp.$arch.rpm
+yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY
+yum -y install $RPM_OVS
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+
+# to remove all openvswitch packages except to openvswitch-selinux
+
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+
+# to install specific openvswitch package
+
+yum -y install http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/13.el7fdp/ppc64le/openvswitch2.11-2.11.0-13.el7fdp.ppc64le.rpm
+
+# to install python-twisted dependencies
+
+# x86_64
+
+yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm
+
+# ppc64le
+
+yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm
+
+# s390x
+
+yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm
+
+yum -y install tcpdump
+
+yum -y install python-netifaces
+
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm
+
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm
+
+# to remove all ovs and ovn packages except for selinux (do this before each test run)
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+
+# to resolve libibverbs.so.1 errors
+
+yum -y install libibverbs
+
+# to disable srpm/rebuild tests (fast datapath channel ONLY, not extras channel (i.e. dpdk, driverctl)):
+
+# Note: For below entry in tpsd.conf, it should be the repo name specified in the TPS job minus "rpms"
+
+(01:21:24 PM) Timothy Redaelli: vim /etc/tpsd.conf
+(01:22:00 PM) Timothy Redaelli: find
+(01:22:11 PM) Timothy Redaelli: SRPM_SKIP_CHANNELS=
+(01:22:35 PM) Timothy Redaelli: and append rhel-7-fast-datapath- so you should have something like: SRPM_SKIP_CHANNELS='jbappplatform-,rhel-7-fast-datapath-'
+(01:22:58 PM) Timothy Redaelli: then you can restart tpsd (service tpsd restart) and it should work
+
+(07:08:57 AM) ralongi: ping
+(07:28:27 AM) Timoth Redaelli: halo
+(07:35:20 AM) ralongi: Hi Timothy.  I was just told about another errata that i was unaware of: https://errata.devel.redhat.com/advisory/43708
+(07:35:41 AM) ralongi: the two tps jobs failed.  one looks like it's because of the srpms rebuild
+(07:36:00 AM) ralongi: is that something we have to get approval to disable/skip each release?
+(07:36:08 AM) Timoth Redaelli: it's for DPDK standalone package on extras 7.7
+(07:36:10 AM) Timoth Redaelli: aka for august
+(07:36:21 AM) Timoth Redaelli: it's not FDP
+(07:37:37 AM) Timoth Redaelli: and we shouldn't disable rebuild test on extras
+(07:38:24 AM) ralongi: is dpdk the only package that is in the extras channel?
+(07:38:34 AM) Timoth Redaelli: dpdk and driverctl
+(07:40:21 AM) ralongi: can we disable rebuild for fast datapath (i.e. ovs and ovn) for every release?
+(07:41:01 AM) ralongi: or do we need approval from someone each release?
+(07:41:12 AM) Timoth Redaelli: for fast datapath we can do for every release
+
+# to kick off tps job using bkr:
+
+bkr workflow-tomorrow --errata=43252 --variant=detect --tps-rpmtest --tps-srpmtest --profile=stable-openshift-enterprise-3.6 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --arch=x86_64 --reserve-if-fail
+
+### DPDK / extras errata:
+# may need to reschedule x86_64 job even without making any changes to see if it passes
+
+# other issues:
+
+yum -y install numactl-devel
+yum -y install doxygen
+yum -y install python-devel
+yum -y install python-sphinx
+
+# stable system RHEL 8 ppc64le
+
+Hi,
+
+I'm sending an email to ask for a "permanent" TPS stable system for
+RHEL8 on ppc64le, but in the meanwhile I created a stable system:
+
+# bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=ppc64le --variant=BaseOS
+
+Then I had to install some needed packages:
+
+# dnf install -y openvswitch-selinux-extra-policy tcpdump network-scripts
+
+And to change tpsd.conf and to restart tpsd as usual:
+
+# the channel name used should be the repo name specified in the errata summary
+
+/bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig
+
+# RHEL7:
+#channel="rhel-7-fast-datapath-"
+#channel="rhel-7-for-power9-fast-datapath-"
+#channel="rhel-7-for-power-le-fast-datapath-"
+
+# RHEL 8:
+#channel="fast-datapath-for-rhel-"
+
+sedeasy ()
+{
+sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+} 
+
+sedeasy "SRPM_REBUILD_SKIP_CHANNELS=''" "SRPM_REBUILD_SKIP_CHANNELS='$channel'" "/etc/tpsd.conf"
+sedeasy "# TPS_LIMIT_CHANNELS_TO=''" "TPS_LIMIT_CHANNELS_TO='$channel'" "/etc/tpsd.conf"
+sedeasy "# export TPS_LIMIT_CHANNELS_TO" "export TPS_LIMIT_CHANNELS_TO" "/etc/tpsd.conf"
+
+systemctl restart tpsd
+
+sed -i "s/SRPM_SKIP_CHANNELS='\(.*\)'/SRPM_SKIP_CHANNELS='\1,fast-datapath-for-rhel-'/" /etc/tpsd.conf
+
+RHEL 7
+sed -i "s/SRPM_REBUILD_SKIP_CHANNELS='\(.*\)'/SRPM_REBUILD_SKIP_CHANNELS='\1rhel-7-fast-datapath-'/" /etc/tpsd.conf
+sed -i "s/SRPM_REBUILD_SKIP_CHANNELS='\(.*\)'/SRPM_REBUILD_SKIP_CHANNELS='\1rhel-7-for-power9-fast-datapath-'/" /etc/tpsd.conf
+sed -i "s/SRPM_REBUILD_SKIP_CHANNELS='\(.*\)'/SRPM_REBUILD_SKIP_CHANNELS='\1rhel-7-for-power-le-fast-datapath-'/" /etc/tpsd.conf
+
+
+#sed -i "s/SRPM_REBUILD_SKIP_CHANNELS='\(.*\)'/SRPM_REBUILD_SKIP_CHANNELS='\1fast-datapath-for-rhel-,rhel-7-fast-datapath-,rhel-7-for-power-le-fast-datapath-,rhel-7-for-power9-fast-datapath-'/" /etc/tpsd.conf
+systemctl restart tpsd
+
+### Best to Push Now/Push OVN and openvswitch RHEL8 at the same time ###
+
+# info on closing errata if a newer version already exists in staging
+
+https://wiki.test.redhat.com/ErrataWorkflow/ClosingErrata#ANewerVersionAlreadyExistsInStage
+
+# info on deal with layered products, create new test profile, etc: 
+
+http://wiki.test.redhat.com/Faq/Tps/HowToDealWithLayeredProducts
+
+
+### after first round of TPS jobs are all set, do: Push Now, Push (to kick off RHNQA TPS jobs)
+
+# to determine stable systems to be used with specific Job ID (assumes the job HAS NEVER BEEN STARTED OR RUN)
+
+/mnt/qa/scratch/rbiba/tps-utils/tps-find-ss <Job ID>
+Example: /mnt/qa/scratch/rbiba/tps-utils/tps-find-ss 376930
+
+# to determine test profile being used by a stable system:
+
+[ralongi@ralongi ~]$ want_host=x86-64-7s-6eus-v1.ss.eng.bos.redhat.com
+[ralongi@ralongi ~]$ tpsserv-checkin-tpsd -f $want_host | grep ^test_profile
+test_profile="stable-rhel-7.6-z-server"
+test_profile_updated="2019-08-14 15:30:48 UTC"
+
+# To re-apply test profile to system:
+
+oats-apply-test-profile -b
+
+or: rm -rf /tmp/tps* /var/cache/tps/*chan* ; update-tpsd-settings
+
+systemctl restart tpsd
+
+# send email to docs:
+
+to: lmanasko@redhat.com, mwolfe@redhat.com
+cc: ctrautma@redhat.com, asupugad@redhat.com, kfida@redhat.com
+
+Subject: Errata Doc Review/Approval
+
+Hi,
+
+Please review the docs for the errata links listed below.
+
+Thanks,
+Rick
+
+https://errata.devel.redhat.com/advisory/43252
+https://errata.devel.redhat.com/advisory/43248
+https://errata.devel.redhat.com/advisory/43249
+https://errata.devel.redhat.com/advisory/43253
+https://errata.devel.redhat.com/advisory/43254
+
+
+# For rel eng issues, contact: bhills (used to be asabadra or kmogal)
+# For tps issues, contact: rbiba or qwan (better to use #tps)
+
+#########################################################################
+
+Wait until CAT tests are passed before debugging RHNQA TPS tests
+
+(11:40:32 AM) sgraf: ralongi: I *think* that CAT test passed *after* you finished TPS and succesfull CAT test reschedules TPS>...
+(11:40:45 AM) sgraf: ralongi: see timestamp here https://errata.devel.redhat.com/advisory/49256/test_run/ccat
+(11:40:54 AM) sgraf: ralongi: it matches to your message you see
+(11:43:09 AM) shruti [~shruti@10.18.33.30] entered the room.
+(11:44:17 AM) ralongi: sgraf: Thanks.  So it seems that best practice is to wait until after CAT passes before working on TPS jobs.
+(11:44:42 AM) sgraf: ralongi: right...
+(11:46:22 AM) ralongi: sgraf: I thought TPS wouldn't even start to run at all until after CAT passed so I learned something new :-)  I'll definitely keep that in mind going forward.  thanks again.
+(11:47:28 AM) bkhomuts_ left the room (quit: Ping timeout: 615 seconds).
+(11:48:01 AM) sgraf: ralongi: you're welcome
+
+#########################################################################
+
+Random things to try (i.e. when "package uniqueness test" fails:
+
+Dunno.  I logged in to one box, everything looked fine.  I rebuilt the cache with tps-setup-channel-cache and re-ran tps-make-lists, and all was fine.
+
+## Note from me based on when I have had to do this:  running tps-setup-channel-cache may be all that is necessary
+
+So I rescheduled all the runs, and they all worked just fine.
+
+No clues as to why the same package was on both Old & New lists the first time around, unless something like yum-chron or some other automatic tool that doesn't understand Live-vs-QA sources was running (and corrupting cache) in the mean time.  I didn't see anything like that, but also didn't look too hard.
+
+In any case, all the runs are now showing PASS at https://errata.devel.redhat.com/tps/rhnqa_results/42624 <https://errata.devel.redhat.com/tps/rhnqa_results/42624>
+
+#########################################################################
+
+To provision 7.6-eus stable system:
+
+Must manually build the system as bkr workflow-tomorrow doesn't build it properly.
+
+http://wiki.test.redhat.com/Faq/Beaker/Erratify
+
+Note: chelsio3.knqe.lab.eng.bos.redhat.com should be available as the stable system.
+
+#########################################################################
+
+To check details of what a particular package used for supporting packages when debugging TPS failures.  Example for dpdk:
+
+http://download.eng.bos.redhat.com/brewroot/vol/rhel-8/packages/dpdk/19.11/3.el8/data/logs/x86_64/root.log
+http://download.eng.bos.redhat.com/brewroot/vol/rhel-8/packages/dpdk/19.11.3/1.el8/data/logs/aarch64/root.log
+
+19.11.3/1.el8
+
+#########################################################################
+
+DPDK errata File list error info:
+
+(01:37:46 PM) tredaelli: hi, I'm puzzled for this error http://nest.test.redhat.com//mnt/qa/scratch/x86-64-7s-v1/2019:49917/tps/tps-srpmtest.html#Rebuild%20Test-7-6-1
+(02:04:12 PM) jwl_home: tredaelli: looks like the dist tag identification failed between el7_8 and el7.
+(02:05:25 PM) jwl_home: the 'el7' native to the test machine was used rather than the 'el7_8' that the advisory packages used.  Not sure why.
+(02:06:22 PM) jwl_home: Mucking about with tps-get-dist-from-spec (or grepping in the logs for it) might reveal more if you're really curious.
+(02:06:38 PM) jwl_home: However, I'd say "looks like the packages were built okay" and move on with a waiver.
+(02:07:13 PM) jwl_home: It *is* possible to fool TPS into using the wrong %dist value by having weird & complex expressions in the .spec file.  Probably by having simple ones, too :)
+(02:13:04 PM) tredaelli: ralongi: ^^
+(02:14:33 PM) ralongi: tredaelli: OK.  Thanks.  I will waive the failed test.
+(02:22:09 PM) jwl_home: fwiw, you can see that the build did what it was told, in blue text at the top of that test:
+(02:22:24 PM) jwl_home: Rebuild command: x86_64 rpmbuild --rebuild   --define "dist .el7" [and so on]
+(02:22:39 PM) jwl_home: it's the "dist .el7" that causes that result
+
+#########################################################################
+
+TPS installation  and tools info:
+
+From rbiba:
+
+Most of the CLI tools are part of the TPS package, which you can install as described here:
+
+http://wiki.test.redhat.com/ReferenceManual/Tps#InstallingTPS
+
+tps-find-ss is an exception and is stored outside the package. Note that some docs on the wiki refer to other scripts from the same directory, so if you check out http://nest.test.redhat.com/mnt/qa/scratch/rbiba/tps-utils/ you can find some other potentially useful scripts to download. Sometimes I update these scripts, though, which means that /mnt/qa remains the ideal place to run them from.
+
+Drive should be mounted:
+
+[ralongi@ralongi-home tps-utils]$ mount | grep /mnt/qa
+nest.test.redhat.com:/mnt/qa on /mnt/qa type nfs4 (rw,nosuid,nodev,noatime,vers=4.0,rsize=8192,wsize=8192,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=10.3.114.112,local_lock=none,addr=10.16.115.148)
+
+fstab ebtry:
+
+nest.test.redhat.com:/mnt/qa /mnt/qa nfs defaults,rsize=8192,wsize=8192,bg,auto,noatime,nosuid,nodev,intr 0 0
+
+#########################################################################
+
+To find a free system for a particular arch, search for the arch and then add "free/" before the "?".
+
+Example:
+
+https://beaker.engineering.redhat.com/free/?systemsearch-0.table=System%2FArch&systemsearch-0.keyvalue=&systemsearch-0.operation=contains&systemsearch-0.value=ppc64le&systemsearch_column_System%2FArch=System%2FArch&systemsearch_column_System%2FLoanedTo=System%2FLoanedTo&systemsearch_column_System%2FModel=System%2FModel&systemsearch_column_System%2FName=System%2FName&systemsearch_column_System%2FStatus=System%2FStatus&systemsearch_column_System%2FType=System%2FType&systemsearch_column_System%2FUser=System%2FUser&systemsearch_column_System%2FVendor=System%2FVendor
+
+#########################################################################
+
+When staging has a newer version of the package you are trying to release causing DistQA TPS jobs to fail:
+
+- Log into each system that the failed test was run on
+- tps-cd YYYY:NNNNN (i.e. tps-cd 2020:53552)
+- execute: tps-rhnqa --exact
+- manually upload results
+    - from same directory, run: /mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+Links:
+https://wiki.test.redhat.com/ErrataWorkflow/ClosingErrata#ANewerVersionAlreadyExistsInStage
+http://wiki.test.redhat.com/Faq/Tps/ReportingTpsResultsManually
+
+#########################################################################
+
+Problem: The TPS or DistQA TPS jobs will not select the desired stable system to run the job(s).
+Resolution: Run the TPS or DistQA TPSjob(s) manually as follows:
+
+ - Log into the target desired stable system where you want to run the job
+ - Execute: tps-cd -c <Full Errata> 
+   - For example: tps-cd -c 2020:55595
+ - Note: you must execute "export TPSQ_RHNDEST=<repo name> before running tests manually (i.e. export TPSQ_RHNDEST=rhel-7-fast-datapath-rpms)
+ - From that directory, execute: tps -m
+ - Once job has run successfully and passed, from same directory execute: /mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+   - Would you like to report a good result of this TPS job? (y/n) y (assuming job passed)
+   - Enter the text that should describe the link to these log files (e.g. "Known issue, bug 123456", or "Ran manually successfully" (default text if you do not enter anything)): <hit enter to accept default text>
+   
+The TPS results page for the errata should now reflect result: Ran manually successfully
+
+Helpful links: 
+- http://wiki.test.redhat.com/Faq/Tps/RunningTpsManually
+- http://wiki.test.redhat.com/Faq/Tps/ReportingTpsResultsManually
+
+#########################################################################
+
+To keep a recently built stable system extending reserve time by 99 hours every 72 hours:
+
+- crontab -e
+- 0 */72 * * * /usr/bin/extendtesttime.sh 99
+- systemctl restart crond
+
+#########################################################################
+
+DPDK errata x86_64 system: x86-64-8-v1.ss.eng.bos.redhat.com (fo0m4nchU)
+
+#########################################################################
+# To manually install stable system:
+
+http://wiki.test.redhat.com/Faq/Beaker/Erratify
+
+provision system using scheduler (reserve)
+yum -y install wget
+
+to install oats on RHEL-8: 
+	wget -O /etc/yum.repos.d/tps-deps.repo http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps.repo
+	yum -y install busybox
+	yum -y --nogpgcheck install http://nest.test.redhat.com/mnt/tpsdist/oats.noarch.rpm
+yum -y install nfs-utils ; service rpcbind start
+yum -y install perl-Date-Manip
+yum -y install rpm-build
+
+# create /etc/yum.repos.d/myrepo.1.repo for compose being used (this is necessary to make sure the system installs the newest version of packages like libibverbs in case a package like dpdk relies on the newer version of libibverbs)
+[myrepo_1]
+name=myrepo_1
+baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/RHEL-8.4.0-20210309.1/compose/BaseOS/x86_64/os
+enabled=1
+gpgcheck=0
+skip_if_unavailable=1
+
+
+echo OATS_TEST_PROFILE="<test profile name>" >> /etc/sysconfig/oats.conf
+#echo OATS_TEST_PROFILE="stable-rhv-4-mgmt-agent-for-power-le-rpms" >> /etc/sysconfig/oats.conf
+#echo OATS_TEST_PROFILE="rhel-7-server-rhv-4.2-mgmt-agent-for-power-le-eus-rpms" >> /etc/sysconfig/oats.conf
+#echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg | sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
+# OR
+# TREE=/mnt/redhat/released/rhel-6-7-8/rhel-8/RHEL-8/8.0.0/BaseOS/x86_64/os/
+# OR
+#TREE=/devops_engarchive2_nfs/redhat/released/rhel-6-7-8/rhel-8/RHEL-8/8.3.0/BaseOS/x86_64/os/
+echo OATS_INSTALL_STAR='false' >> /etc/sysconfig/oats.conf
+
+systemctl start oatsd	
+tail -f /var/log/oatsd
+
+# after reboot:
+check to make sure /etc/yum.repos.d/ has expected repos:
+	ls -alth /etc/yum.repos.d/
+
+sedeasy ()
+{
+sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+}
+
+# IF problems were observed:
+sedeasy "ONBOOT=0" "ONBOOT=1" /etc/sysconfig/oats.conf
+systemctl restart oatsd
+
+# Else
+tps-setup-channel-cache
+tps-channel-cache
+update-tpsd-settings
+
+yum -y install rpm-build
+yum -y install autoconf automake git libtool openssl-devel selinux-policy-devel
+
+# for manual testing
+systemctl stop tpsd
+
+# otherwise:
+channel="rhel-7-server-rhv-4.2-mgmt-agent-for-power-le-eus-rpms"
+sedeasy "# TPS_LIMIT_CHANNELS_TO=''" "TPS_LIMIT_CHANNELS_TO='$channel'" "/etc/tpsd.conf"
+sedeasy "# export TPS_LIMIT_CHANNELS_TO" "export TPS_LIMIT_CHANNELS_TO" "/etc/tpsd.conf"
+systemctl restart tpsd
+
+## Note: you don't need to run tpsd to run tests manually so best to stop tpsd whenever possible.
+
+#########################################################################
+
+"Status code: 410 for http://pulp.dist.prod.ext.phx2.redhat.com/content/dist/layered/rhel8/x86_64/fast-datapath/debug/repodata/repomd.xml"
+
+Run: oats-apply-test-profile -b -y
+
+#########################################################################
+
+

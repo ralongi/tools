@@ -1,0 +1,13 @@
+Memory Leak Soak Test Info
+
+- Setting up Trex on Machine 1:
+	- https://github.com/chaudron/ovs_perf#setup-the-trex-traffic-generator
+	
+- Setting up DUT (Machine 2)
+	- Varies depending on test scenario
+	
+- Setting up Ansible controller (from Qijun):
+	- README: http://pkgs.devel.redhat.com/cgit/tests/kernel/tree/networking/openvswitch/perf/ansible/README
+	- Code: http://pkgs.devel.redhat.com/cgit/tests/kernel/tree/networking/openvswitch/perf/ansible
+	
+

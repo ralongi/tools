@@ -1,0 +1,102 @@
+MCAST SNOOPING
+
+Test Description:
+Steps:
+1. Configuration (single bare metal host with hypervisor):
+   - Create three VMs on a single bare metal host (iperf installed on all VMs).  All VM guests connected to a single OVS bridge
+2. Add a multicast route to each VM: "/sbin/route -n add -net 224.0.0.0 netmask 240.0.0.0 dev $iface_vm". Verify that it is now reported in routing table on each VM: "/sbin/route -n | grep 224"	
+3. Disable mcast_snooping on OVS bridge: "ovs-vsctl set Bridge $ovsbr mcast_snooping_enable=false"
+4. Start iperf mcast server on VM1: "iperf -s -u -B 224.0.55.55 -i 1 -p $iface_vm &".  Using tcpdump verify that mcast traffic is received on VM2 and VM3: "tcpdump -nn -i $iface_vm ip multicast"
+5. Enable mcast_snooping on OVS bridge: "ovs-vsctl set Bridge $ovsbr mcast_snooping_enable=true"
+6. Restart iperf mcast server on VM1: "pkill iperf"; "iperf -s -u -B 224.0.55.55 -i 1 -p $iface_vm &".  Using tcpdump verify that mcast traffic is NOT received on VM2 and VM3: "tcpdump -nn -i $iface_vm ip multicast"
+7. Restart iperf mcast server on VM1: "pkill iperf"; "iperf -s -u -B 224.0.55.55 -i 1 -p $iface_vm &", Launch iperf mcast client on VM2 and VM3: "iperf -c 224.0.55.55 -u -T 32 -t 3 -i 1 -p $iface_vm &".  Using tcpdump, verify that mcast traffic is now seen on VM2 and VM3: "tcpdump -nn -i $iface_vm ip multicast"
+
+Expected Results:
+1. Configuration is successful
+2. Multicast route is successfully added on each VM
+3. Command to disable multicast snooping executes successfully
+4. IP Multicast traffic is observed on VM2 and VM3
+5. Command to enable multicast snooping executes successfully
+6. No mcast traffic is observed on VM2 or VM3
+7. Mcast traffic is observed on VM2 or VM3
+
+**************************************************
+
+SPANNING TREE
+
+Test Description (STP):
+Steps:
+1. Configuration (single bare metal host):
+   - Create two OVS bridges
+   - Add intport to each OVS bridge
+   - Create two network name spaces
+   - Configure two veth pairs, use them to create redundant links between the two OVS bridges
+   - Assign one intport to one ns, one to the other ns, assign IP addresses to both intports on same IP subnet
+   - Disable STP: ovs-vsctl set Bridge $ovsbr0 stp_enable=false, ovs-vsctl set Bridge $ovsbr1 stp_enable=false
+   - Set all interfaces up
+2. Check for a network storm on all veth interfaces by running tcpdump and confirming that there are excessive packets captured
+3. Execute a ping test between intports
+4. Enable STP: ovs-vsctl set Bridge $ovsbr0 stp_enable=true, ovs-vsctl set Bridge $ovsbr1 stp_enable=true; wait 50 seconds for network convergence
+5. Check for the presence of 802.1d BPDU's on all veth interfaces
+6. Execute a ping test between intports
+7. Disable forwarding port on non-root bridge, wait 50 seconds for network convergence
+8. Execute a ping test between intports, verify that packets are traversing the new forwarding port
+9. Increase path cost on inactive path to ensure that it remains inactive path after being added back to bridge.  Re-enable port that was disabled in Step 7, wait 50 seconds for network convergence
+10. Execute a ping test between intports, verify pings are successful and are traversing the correct path
+11. Check for a network storm on all veth interfaces by running tcpdump and confirming that there are no excessive packets captured
+
+Expected Results:
+1. Configuration is successful
+2. A network storm is present
+3. The pings are NOT successful
+4. STP is successfully enabled
+5. 802.1d BPDU's are observed on all veth interfaces
+6. The pings are successful
+7. The current forwarding port on the non-root bridge is successfully disabled
+8. The pings are successful and are traversing the new forwarding port on the non-root bridge
+9. The newly added port does not go into Forwarding state
+10. The pings are successful and are still traversing the new forwarding port on the non-root bridge
+11. No network storm is present
+
+Test Description (RSTP):
+Steps:
+1.	Configuration (single bare metal host):
+	- Create two OVS bridges
+	- Add intport to each OVS bridge
+	- Create two network name spaces
+	- Configure two veth pairs, use them to create redundant links between the two OVS bridges
+	- Assign one intport to one ns, one to the other ns, assign IP addresses to both intports on same IP subnet
+	- Disable RSTP: ovs-vsctl set Bridge $ovsbr0 rstp_enable=false, ovs-vsctl set Bridge $ovsbr1 rstp_enable=false
+	- Set all interfaces up
+2.	Check for a network storm on all veth interfaces by running tcpdump and confirming that there are excessive packets captured
+3.	Execute a ping test between intports
+4.	Enable RSTP: ovs-vsctl set Bridge $ovsbr0 rstp_enable=true, ovs-vsctl set Bridge $ovsbr1 rstp_enable=true; wait 15 seconds for network convergence
+5.	Check for the presence of 802.1w BPDU's on all veth interfaces
+6.	Execute a ping test between intports
+7.	Disable forwarding port on non-root bridge, wait 15 seconds for network convergence
+8.	Execute a ping test between intports, verify that packets are traversing the new forwarding port
+9.	Increase path cost on inactive path to ensure that it remains inactive path after being added back to bridge.  Re-enable port that was disabled in Step 7, wait 50 seconds for network convergence
+10.	Execute a ping test between intports, verify pings are successful and are traversing the correct path
+11.	Check for a network storm on all veth interfaces by running tcpdump and confirming that there are no excessive packets captured
+
+Expected Results:
+1.	Configuration is successful
+2.	A network storm is present
+3.	The pings are NOT successful
+4.	RSTP is successfully enabled
+5.	802.1w BPDU's are observed on all veth interfaces
+6.	The pings are successful
+7.	The current forwarding port on the non-root bridge is successfully disabled
+8.	The pings are successful and are traversing the new forwarding port on the non-root bridge
+9.	The newly added port does not go into Forwarding state
+10.	The pings are successful and are still traversing the new forwarding port on the non-root bridge
+11.	No network storm is present
+
+**************************************************
+
+PERF_CHECK
+
+Test Description:
+Steps:
+
+

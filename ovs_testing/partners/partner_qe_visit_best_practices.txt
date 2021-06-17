@@ -1,0 +1,11 @@
+Lessons from Chelsio QE visit:
+
+- Best practice:
+    - obtain detailed hardware requirements from partner 
+    - plan budget, procurement and installation location of necessary servers per requirements provided
+    - open tickets with eng-ops to purchase and install servers
+    - have partner send all NICs, cables, etc. and have them installed by eng-ops
+    - create group in beaker
+
+- Have partner QE engineer come with laptop running RHEL (bare metal or VM)
+    - all necessary packages should be installed (beaker, ???)

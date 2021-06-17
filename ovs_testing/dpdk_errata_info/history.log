@@ -1,0 +1,31 @@
+    1  wget -O /etc/yum.repos.d/tps-deps.repo http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps.repo
+    2  yum -y install busybox
+    3  yum -y --nogpgcheck install http://nest.test.redhat.com/mnt/tpsdist/oats.noarch.rpm
+    4  yum -y install nfs-utils ; service rpcbind start
+    5  yum -y install perl-Date-Manip
+    6  echo OATS_TEST_PROFILE="stable-rhel-8-baseos" >> /etc/sysconfig/oats.conf
+    7  echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg | sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
+    8  vi /etc/sysconfig/oats.conf
+    9  echo OATS_INSTALL_STAR='false' >> /etc/sysconfig/oats.conf
+   10  vi /etc/sysconfig/oats.conf
+   11  systemctl start oatsd
+   12  tail -f /var/log/oatsd 
+   13  less /mnt/qa/scratch/netqe33/2020:55958/tps/tps-srpmtest.report
+   14  cd /bin
+   15  ls -alth
+   16  ls -alth | more
+   17  locate doxygen | more
+   18  rm /usr/bin/doxygen 
+   19  updatedb
+   20  locate libclang
+   21  locate libclang.so.6
+   22  yum provides llvm
+   23  yum provides llvm-toolchain-artful
+   24  yum provides clang-6.0
+   25  ln -s /usr/local/bin/doxygen /usr/bin/doxygen
+   26  yum install llvm
+   27  updatedb
+   28  locate libclang-9.so.1
+   29  mkdir dpdk_errata_info
+   30  cp /etc/yum.repos.d/*.repo dpdk_errata_info/
+   31  history > dpdk_errata_info/history.log

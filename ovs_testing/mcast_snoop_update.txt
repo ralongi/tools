@@ -1,0 +1,32 @@
+# Add mcast route test
+- add mcast route to all vms
+
+# Disable mcast snoop test 1
+- disable mcast snooping
+- start tcpdump on vm2 and vm3
+- start iperf client on vm1 sending mcast UDP traffic: iperf -c 224.0.55.55 -u -b -f -t 5 $iface_vm &
+- verify that traces on vm2 and vm3 contain UDP mcast traffic
+
+# Enable mcast snoop test 1
+- enable mcast snooping
+- kill iperf and tcpdump on all vms
+- start tcpdump on vm2 and vm3
+- start iperf client on vm1 sending mcast UDP traffic: iperf -c 224.0.55.55 -u -b -f -t 5 $iface_vm &
+- verify that traces on vm2 and vm3 contain UDP mcast traffic
+
+# Enable mcast snoop test 2
+- enable mcast snooping
+- kill iperf and tcpdump on all vms
+- start iperf server on vm2 only: iperf -s -u -B 224.0.55.55 -i 1 -p $iface_vm &
+- start tcpdump on vm2 and vm3
+- start iperf client on vm1 sending mcast UDP traffic: iperf -c 224.0.55.55 -u -b -f -t 5 $iface_vm &
+- verify that trace on vm2 contains UDP mcast traffic
+- verify that trace on vm3 contains NO UDP mcast traffic
+
+# Enable mcast snoop test 3
+- enable mcast snooping
+- kill iperf and tcpdump on all vms
+- start iperf server on vm2 and vm3: iperf -s -u -B 224.0.55.55 -i 1 -p $iface_vm &
+- start tcpdump on vm2 and vm3
+- start iperf client on vm1 sending mcast UDP traffic: iperf -c 224.0.55.55 -u -b -f -t 5 $iface_vm &
+- verify that traces on vm2 and vm3 both contain UDP mcast traffic

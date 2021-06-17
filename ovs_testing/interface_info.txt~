@@ -1,0 +1,243 @@
+Interface info:
+*******************************************************************
+qe7:
+
+This is the interface information for host netqe7.knqe.lab.eng.bos.redhat.com:
+
+The management interface is: em3
+
+Interfaces available for test:
+
+Interface: em1, Driver: bnx2x, Speed: 10000 Mbps
+Interface: em2, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p1p1, Driver: i40e, Speed: 40000 Mbps
+Interface: p1p2, Driver: i40e, Speed: 40000 Mbps
+Interface: p2p1, Driver: be2net, Speed: 40000 Mbps
+Interface: p3p1, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p3p2, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p5p1, Driver: cxgb4, Speed: 40000 Mbps
+Interface: p5p2, Driver: cxgb4, Speed: 40000 Mbps
+Interface: p6p1, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p6p2, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p7p1, Driver: be2net, Speed: 10000 Mbps
+Interface: p7p2, Driver: be2net, Speed: 10000 Mbps
+
+1G interfaces available for test: 
+
+
+10G interfaces available for test: 
+em1 (bnx2x)
+em2 (bnx2x)
+p3p1 (ixgbe)
+p3p2 (ixgbe)
+p7p1 (be2net)
+p7p2 (be2net)
+
+40G interfaces available for test: 
+p1p1 (i40e)
+p1p2 (i40e)
+p2p1 (be2net)
+p5p1 (cxgb4)
+p5p2 (cxgb4)
+p6p1 (mlx4_en)
+p6p2 (mlx4_en)
+
+*******************************************************************
+qe8:
+
+This is the interface information for host netqe8.knqe.lab.eng.bos.redhat.com:
+
+The management interface is: em3
+
+Interfaces available for test:
+
+Interface: em1, Driver: bnx2x, Speed: 10000 Mbps
+Interface: em2, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p1p1, Driver: i40e, Speed: 40000 Mbps
+Interface: p1p2, Driver: i40e, Speed: 40000 Mbps
+Interface: p2p1, Driver: be2net, Speed: 40000 Mbps
+Interface: p3p1, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p3p2, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p5p1, Driver: cxgb4, Speed: 40000 Mbps
+Interface: p5p2, Driver: cxgb4, Speed: 40000 Mbps
+Interface: p6p1, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p6p2, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p7p1, Driver: be2net, Speed: 10000 Mbps
+Interface: p7p2, Driver: be2net, Speed: 10000 Mbps
+
+1G interfaces available for test: 
+
+
+10G interfaces available for test: 
+em1 (bnx2x)
+em2 (bnx2x)
+p3p1 (ixgbe)
+p3p2 (ixgbe)
+p7p1 (be2net)
+p7p2 (be2net)
+
+40G interfaces available for test: 
+p1p1 (i40e)
+p1p2 (i40e)
+p2p1 (be2net)
+p5p1 (cxgb4)
+p5p2 (cxgb4)
+p6p1 (mlx4_en)
+p6p2 (mlx4_en)
+
+*******************************************************************
+
+qe2:
+
+This is the interface information for host netqe2.knqe.lab.eng.bos.redhat.com:
+
+The management interface is: em1
+
+Interfaces available for test:
+
+Interface: em4, Driver: igb, Speed: 1000 Mbps
+Interface: p1p1, Driver: tg3, Speed: 1000 Mbps
+Interface: p1p2, Driver: tg3, Speed: 1000 Mbps
+Interface: p1p3, Driver: tg3, Speed: 1000 Mbps
+Interface: p2p1, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p2p2, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p3p1, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p3p2, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p4p1, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p4p2, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p6p1, Driver: cxgb4, Speed: 40000 Mbps
+Interface: p6p2, Driver: cxgb4, Speed: 40000 Mbps
+
+1G interfaces available for test: 
+em4 (igb)
+p1p1 (tg3)
+p1p2 (tg3)
+p1p3 (tg3)
+
+10G interfaces available for test: 
+p2p1 (bnx2x)
+p2p2 (bnx2x)
+p4p1 (ixgbe)
+p4p2 (ixgbe)
+
+40G interfaces available for test: 
+p3p1 (mlx4_en)
+p3p2 (mlx4_en)
+p6p1 (cxgb4)
+p6p2 (cxgb4)
+
+*******************************************************************
+qe4:
+
+This is the interface information for host netqe4.knqe.lab.eng.bos.redhat.com:
+
+The management interface is: em2
+
+Interfaces available for test:
+
+Interface: em4, Driver: igb, Speed: 1000 Mbps
+Interface: p1p1, Driver: tg3, Speed: 1000 Mbps
+Interface: p1p2, Driver: tg3, Speed: 1000 Mbps
+Interface: p1p3, Driver: tg3, Speed: 1000 Mbps
+Interface: p2p1, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p2p2, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p3p1, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p3p2, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p4p1, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p4p2, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p6p1, Driver: cxgb4, Speed: 40000 Mbps
+Interface: p6p2, Driver: cxgb4, Speed: 40000 Mbps
+
+1G interfaces available for test: 
+em4 (igb)
+p1p1 (tg3)
+p1p2 (tg3)
+p1p3 (tg3)
+
+10G interfaces available for test: 
+p2p1 (bnx2x)
+p2p2 (bnx2x)
+p4p1 (ixgbe)
+p4p2 (ixgbe)
+
+40G interfaces available for test: 
+p3p1 (mlx4_en)
+p3p2 (mlx4_en)
+p6p1 (cxgb4)
+p6p2 (cxgb4)
+
+*******************************************************************
+qe13:
+
+This is the interface information for host netqe13.knqe.lab.eng.bos.redhat.com:
+
+The management interface is: em3
+
+Interfaces available for test:
+
+Interface: em1, Driver: bnx2x, Speed: 10000 Mbps
+Interface: em2, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p2p1, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p2p2, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p5p1, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p5p2, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p6p1, Driver: be2net, Speed: 10000 Mbps
+Interface: p6p2, Driver: be2net, Speed: 10000 Mbps
+Interface: p7p1, Driver: i40e, Speed: 10000 Mbps
+Interface: p7p2, Driver: i40e, Speed: 10000 Mbps
+
+1G interfaces available for test: 
+
+
+10G interfaces available for test: 
+em1 (bnx2x)
+em2 (bnx2x)
+p2p1 (ixgbe)
+p2p2 (ixgbe)
+p6p1 (be2net)
+p6p2 (be2net)
+p7p1 (i40e)
+p7p2 (i40e)
+
+40G interfaces available for test: 
+p5p1 (mlx4_en)
+p5p2 (mlx4_en)
+
+*******************************************************************
+qe14:
+
+This is the interface information for host netqe14.knqe.lab.eng.bos.redhat.com:
+
+The management interface is: em3
+
+Interfaces available for test:
+
+Interface: em1, Driver: bnx2x, Speed: 10000 Mbps
+Interface: em2, Driver: bnx2x, Speed: 10000 Mbps
+Interface: p2p1, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p2p2, Driver: ixgbe, Speed: 10000 Mbps
+Interface: p5p1, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p5p2, Driver: mlx4_en, Speed: 40000 Mbps
+Interface: p6p1, Driver: be2net, Speed: 10000 Mbps
+Interface: p6p2, Driver: be2net, Speed: 10000 Mbps
+Interface: p7p1, Driver: i40e, Speed: 10000 Mbps
+Interface: p7p2, Driver: i40e, Speed: 10000 Mbps
+
+1G interfaces available for test: 
+
+
+10G interfaces available for test: 
+em1 (bnx2x)
+em2 (bnx2x)
+p2p1 (ixgbe)
+p2p2 (ixgbe)
+p6p1 (be2net)
+p6p2 (be2net)
+p7p1 (i40e)
+p7p2 (i40e)
+
+40G interfaces available for test: 
+p5p1 (mlx4_en)
+p5p2 (mlx4_en)
+
+*******************************************************************

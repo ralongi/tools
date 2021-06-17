@@ -1,0 +1,13 @@
+
+
+# To get log file names with just the port/datapath type
+grep -l "/" mylog*.sum | awk -F "." '{ print $2 }'
+
+
+# To get just the average throughput values from the log summary files
+grep -i "/" mylog*.sum | awk -F "/" '{ print $2 }'
+
+
+# The copy/paste into a spreadsheet for tracking
+
+

@@ -1,0 +1,88 @@
+chat with Flavio
+
+(11:13:14 AM) fbl_: Hi sir
+(11:13:26 AM) ralongi: hello
+(11:13:33 AM) fbl_: you told me you tested ovs-14 only, but we had other public versions
+(11:13:37 AM) fbl_: are we testing those too?
+(11:13:53 AM) fbl_: maybe i just misunderstood what you said.
+(11:14:08 AM) ralongi: i can test with any starting and ending version that we want.  i did only test with 2.5.0.14 as a base version.  
+(11:14:14 AM) ralongi: what other versions should we test with?
+(11:14:45 AM) ralongi: we (QE) don't have much visibility into what is being used by cistomers.
+(11:14:51 AM) ralongi: customers
+(11:16:22 AM) ralongi: it would be helpful to have PM or someone give QE a heads up re: the OVS upgrade paths for each release under test.
+(11:18:15 AM) fbl_: does it accept a list of packages to test the upgrade?
+(11:18:20 AM) fbl_: I mean, assume we have OVS 2.7
+(11:18:39 AM) fbl_: we want to know if the upgrade from 2.4, 2.5-14, 2.5-23, 2.5-..., 2.6, works fine
+(11:19:04 AM) ralongi: the way i structured the test, we just need to specify a start_ovs_ver and a target_ovs_ver
+(11:19:51 AM) ralongi: so i can re-run the task multiple times specifying different start/end versions
+(11:21:48 AM) ralongi: i created 2 separate upgrade tests.  one focuses on systemd behavior.
+(11:21:57 AM) ralongi: if you look at this log: https://beaker.engineering.redhat.com/recipes/3488718/tasks/51059347/results/250581805/logs/test_log-Verify-behavior-of-OVS-related-systemd-services-with-upgraded-version.log
+(11:22:13 AM) ralongi: it should show you what is being tested
+(11:22:49 AM) fbl_: RHOS5,6,7 had 2.4.0-1.el7 
+(11:23:39 AM) fbl_: let me see if there are others in OSP
+(11:23:43 AM) ralongi: ok.  it would be very helpful if someone could provide me with a comprehensive list of paths that should be tested.  start version and upgrade version
+(11:23:56 AM) ralongi: an upgrade test matrix
+(11:23:57 AM) fbl_: yup, I am digging into it
+(11:24:07 AM) ralongi: we should add this to our release process
+(11:24:19 AM) ralongi: so nothing slips thru the cracks
+(11:24:35 AM) fbl_: basically every new release gets into the list 
+(11:24:48 AM) fbl_: and we don't remove them for 5 years at least
+(11:25:15 AM) ralongi: wow.  that is going to be one big upgrade test matrix :-)
+(11:26:00 AM) fbl_: yes, and again packaging might change so...
+(11:26:12 AM) fbl_: anyway, I understand now the situation so I will what we can do.
+(11:26:22 AM) fbl_: no worries, thanks!
+(11:26:46 AM) ralongi: i will work on getting the upgrade test, at least the one that focuses on systemd service behavior, into CI
+(11:27:25 AM) ralongi: i'm just not sure how to handle specifying many different starting ovs versions.  i have to look into that.
+(11:29:08 AM) fbl_: I know
+(11:29:22 AM) fbl_: We pushed one last patch to upstream fixing systemd
+(11:29:29 AM) fbl_: hopefully it's all okay now
+(11:29:31 AM) fbl_: no more changes
+(11:30:45 AM) fbl_: https://mail.openvswitch.org/pipermail/ovs-dev/2017-February/328645.html
+(11:33:00 AM) ralongi: ok.  that's helpful.  i had opened a bug that Eelco closed as not a bug due to confusion around the expected behavior when stopping/starting the two sub-processes.
+(11:33:28 AM) ralongi: i have since removed those tests and focus only on manipulating openvswitch.service and check status of all 3 processes.
+(11:34:08 AM) ralongi: although i could add them back and test for the status per the link you just gave me.
+(11:35:16 AM) ralongi: this table would have been very helpful if i had it before i wrote the test :-)
+(11:36:58 AM) ralongi: i have a separate question for you since i have you.  there is a Vault request asking that QE try to incorporate Fedora testing if/when possible.  i honestly don't think ovs-qe has the cycles with all of the release vehicles we already have to test.  in any case, i wouldn't think that oopenvswitch / DPDK testing would be applicable to Fedora.  Do you agree?
+(01:23:11 PM) ralongi: Hi Flavio.  Just checking back in on this so I can update the Vault request.  Do you see any value in testing ovs with upstream Fedora if we did have the time (which I doubt we will since we now test FDB, FDP, RHEL6, RHEL7, z stream and upstream ovs).
+(01:23:30 PM) fbl_: sorry, I was in a meeting and then I forgot to get back
+(01:23:31 PM) fbl_: reading
+(01:24:03 PM) fbl_: oh, you wrote the tests before Eelco and me and Aaron got in a aggrement of how it should work :)
+(01:24:39 PM) fbl_: we will enable DPDK on fedora when OVS 2.7 is out
+(01:25:13 PM) fbl_: and with the exception to that port syntax change, everything else should be the same
+(01:25:40 PM) fbl_: hm, Fedora will be shared linked, so it will bring dpdk package as a dependency, not sure if that impacts on your testing
+(01:25:58 PM) fbl_: anyway, we are trying as much as possible to have RHEL and Fedora in-sync with upstream
+(01:26:10 PM) fbl_: so that the RPMs would be very close if not the same
+(01:26:19 PM) fbl_: and testing scenarios are the same
+(01:26:25 PM) fbl_: commands would be the same
+(01:26:48 PM) fbl_: regarding to cycles, we have at least 1 package per fedora release
+(01:26:56 PM) ralongi: ok, so in theory, we should be able to provision systems with fedora instead of rhel and run our ovs tests and it should be transparent?
+(01:27:00 PM) fbl_: and almost no updates after that 
+(01:27:13 PM) fbl_: yes, if not, we should fix it.
+(01:27:31 PM) ralongi: and it would be the same ovs rpm package whetehr used with rhel or fedora?
+(01:27:49 PM) fbl_: no, fedora has its own packages
+(01:28:06 PM) fbl_: so you need to deploy fedora and get ovs, dpdk and driverctl from there
+(01:28:15 PM) fbl_: but the remaining should be the same
+(01:28:54 PM) ralongi: ok.  so you guys would provide us a pointer to the appropriate ovs related packages to install with fedora?  right now we install from http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/
+(01:29:31 PM) ralongi: or we just deploy fedora and then install ovs stuff from http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/?
+(01:30:06 PM) fbl_: I think you can get from koji:
+(01:30:11 PM) fbl_: https://koji.fedoraproject.org/koji/packageinfo?packageID=13455
+(01:30:33 PM) fbl_: there is an option to get notification when new build is pushed to stable/rawhide
+(01:30:42 PM) fbl_: so it can be automated if you want
+(01:31:59 PM) ralongi: ok.  so, for example, we would use https://kojipkgs.fedoraproject.org//packages/openvswitch/2.6.1/0.fc26/x86_64/openvswitch-2.6.1-0.fc26.x86_64.rpm with fedira, correct?
+(01:32:04 PM) ralongi: fedora
+(01:33:56 PM) fbl_: yes
+(01:34:26 PM) ralongi: ok.  trying to figure out how to set up notifications that you mentioned.
+(01:36:17 PM) ralongi: i'm not a user on koji
+(01:43:52 PM) fbl_: I don't know off the top of my head
+(01:44:40 PM) ralongi: ok.  i'll keep looking.  in any case, we can plan to test with whatever is the latest ovs for any given Fedora release that we test against.
+(01:45:02 PM) fbl_: you could try today with 2.6.1 there and fedora.
+(01:45:05 PM) fbl_: it should work
+(01:46:18 PM) fbl_: iirc, we should be looking at Bodhi which pushes the build to the update process
+(01:46:56 PM) ralongi: i have a dumb question but is Fedorarawhide the Fedora release that is currently under test?  
+(01:47:15 PM) ralongi: i haven't done much testing against Fedora
+(01:47:40 PM) fbl_: fedora rawhide is what is being develop at the moment
+(01:47:57 PM) fbl_: when it gets stable, it becomes fedora F<x>
+(01:48:08 PM) fbl_: and another rawhide cycle starts
+(01:48:20 PM) ralongi: ok.  so if i were to run ovs tests, i would run against the latest stable fedora (which is F25 right now)?
+(01:52:35 PM) fbl_: yes, you could take the F25 OVS build which is available by default: yum install openvswitch,  and run the tests
+(01:52:44 PM) ralongi: cool.  thanks.

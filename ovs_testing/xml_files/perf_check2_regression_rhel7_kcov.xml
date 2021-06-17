@@ -1,0 +1,250 @@
+<job retention_tag="scratch">
+  <whiteboard>ralongi@redhat.com, OVS perf_check regression test (bnx2x, mlx4_en, be2net) - RHEL-7.4 GA with OVS 2.8 FDB kcov</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="ralongi@redhat.com, OVS perf_check regression test (bnx2x, mlx4_en, be2net) - RHEL-7.4 GA with OVS 2.8 FDB kcov" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux7" op="="/>
+          <distro_name value="RHEL-7.4" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="netqe8.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="SERVERS"/>
+      <task name="/kernel/kcov/prepare" role="SERVERS">
+        <params>
+          <param name="MODE" value="KA"/>
+          <param name="KDIR" value="net"/>
+        </params>
+      </task>
+      <task name="/kernel/kcov/start" role="SERVERS"/>
+      <task name="/kernel/networking/openvswitch/perf_check" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="bnx2x"/>
+          <param name="mtu" value="1500"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="bnx2x"/>
+          <param name="mtu" value="9000"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="mlx4_en"/>
+          <param name="mtu" value="1500"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="mlx4_en"/>
+          <param name="mtu" value="9000"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="be2net"/>
+          <param name="mtu" value="1500"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="be2net"/>
+          <param name="mtu" value="9000"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/kcov/end" role="SERVERS"/>
+      <task name="/kernel/kcov/finalize" role="SERVERS"/>
+    </recipe>
+    <recipe whiteboard="ralongi@redhat.com, OVS perf_check regression test (bnx2x, mlx4_en, be2net) - RHEL-7.4 GA with OVS 2.8 FDB kcov" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux7" op="="/>
+          <distro_name value="RHEL-7.4" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="netqe7.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="CLIENTS"/>
+      <task name="/kernel/kcov/prepare" role="CLIENTS">
+        <params>
+          <param name="MODE" value="KA"/>
+          <param name="KDIR" value="net"/>
+        </params>
+      </task>
+      <task name="/kernel/kcov/start" role="CLIENTS"/>
+      <task name="/kernel/networking/openvswitch/perf_check" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="bnx2x"/>
+          <param name="mtu" value="1500"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="bnx2x"/>
+          <param name="mtu" value="9000"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="mlx4_en"/>
+          <param name="mtu" value="1500"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="mlx4_en"/>
+          <param name="mtu" value="9000"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="be2net"/>
+          <param name="mtu" value="1500"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/perf_check" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="driver" value="be2net"/>
+          <param name="mtu" value="9000"/>
+          <param name="do_host_netperf" value="do_host_netperf_all"/>
+          <param name="do_vm_netperf" value="do_vm_netperf_all"/>
+          <param name="netperf_time" value="30"/>
+          <param name="set_netperf_threshold" value="no"/>
+          <param name="vm_version" value="7.3"/>
+          <param name="OVS_TOPO" value="ovs_all"/>
+          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+        </params>
+      </task>
+      <task name="/kernel/kcov/end" role="CLIENTS"/>
+      <task name="/kernel/kcov/finalize" role="CLIENTS"/>
+    </recipe>
+  </recipeSet>
+</job>
+

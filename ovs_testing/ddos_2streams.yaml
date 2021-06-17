@@ -1,0 +1,53 @@
+- duration : 0.1
+  generator :  
+          distribution : "seq"
+          clients_start : "16.0.0.1"
+          clients_end   : "16.0.0.255"
+          servers_start : "48.0.0.1"
+          servers_end   : "48.0.255.255"
+          clients_per_gb : 201
+          min_clients    : 101
+          dual_port_mask : "1.0.0.0" 
+          tcp_aging      : 3600
+          udp_aging      : 0
+          generator_clients :
+              - name : "c8"
+                distribution : "seq"
+                ip_start : "28.0.0.1"
+                ip_end : "28.10.255.255"
+              - name : "c9"
+                distribution : "seq"
+                ip_start : "29.0.0.1"
+                ip_end : "29.10.255.255"
+          generator_servers :
+              - name : "s8"
+                distribution : "seq"
+                ip_start : "38.0.0.1"
+                ip_end : "38.1.255.255"
+                track_ports : false
+              - name : "s9"
+                distribution : "seq"
+                ip_start : "39.0.0.1"
+                ip_end : "39.1.255.255"
+                track_ports : false
+  cap_ipg    : false
+  cap_info : 
+     - name: test.pcap
+       client_pool: "c8"
+       server_pool: "s8"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c9"
+       server_pool: "s9"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+memory    :             
+      dp_flows    : 104048576 
+

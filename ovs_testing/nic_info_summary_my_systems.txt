@@ -1,0 +1,44 @@
+netqe11 driver list:
+
+bnx2x
+ixgbe
+be2net
+i40e
+mlx4_en
+
+============================================================================
+
+netqe12 driver list:
+
+bnx2x
+ixgbe
+be2net
+mlx4_en
+
+============================================================================
+
+netqe20 driver list:
+
+tg3
+cxgb4
+igb
+ixgbe
+qlcnic
+i40e
+mlx4_en
+atlantic
+
+============================================================================
+
+netqe21 driver list:
+
+tg3
+cxgb4
+igb
+ixgbe
+qlcnic
+i40e
+mlx4_en
+atlantic
+
+============================================================================

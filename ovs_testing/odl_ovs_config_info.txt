@@ -1,0 +1,35 @@
+OVS config:
+
+root@Switch:~# ovs-vsctl add-br br0
+root@Switch:~# ovs-vsctl set-fail-mode br0 secure
+root@Switch:~# ovs-vsctl add-port br0 eth1
+root@Switch:~# ovs-vsctl add-port br0 eth2
+root@Switch:~# ovs-vsctl add-port br0 eth3
+root@Switch:~# ovs-vsctl set-controller br0 tcp::6633
+
+The ip address of the controller in our case is 192.168.11.1. Hence, the last command above would be “ovs-vsctl set-controller br0 tcp:192.168.11.1:6633”
+
+After this make sure to enable all the interfaces that form part of the above bridge, else you won’t be able to run traffic from one host to another
+	
+root@Switch:~# ifconfig eth1 up
+root@Switch6:~# ifconfig eth2 up
+root@Switch:~# ifconfig eth3 up
+
+ODL controller config:
+
+opendaylight-user@root> feature:install odl-restconf odl-l2switch-switch odl-dlux-all odl-ovsdb-all odl-openflowplugin-flow-services-ui
+wait 5 minutes, then
+root>system:shutdown
+wait 5 minutes
+#./bin/karaf
+
+to access ODL via web UI: http://netqe-infra01.knqe.lab.eng.bos.redhat.com:8181/index.html
+user: admin
+pw: admin
+
+
+Links:
+
+https://viveksubbarao.wordpress.com/2015/11/17/how-to-setup-a-sdn-using-openvswitch-and-odl-controller/
+http://fosskb.in/2014/09/01/adding-open-vswitch-node-to-opendaylight-controller/
+https://www.opendaylight.org/installing-opendaylight

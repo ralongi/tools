@@ -1,0 +1,3 @@
+Command to manipulate power via drac:
+
+ipmitool -I lanplus -H netqe7-drac.knqe.lab.eng.bos.redhat.com -U root -P calvin chassis power [on/off/reset]

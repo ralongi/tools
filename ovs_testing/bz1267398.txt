@@ -1,0 +1,19 @@
+(12:51:52 PM) egarver: Rick?
+(12:54:01 PM) Rick Alongi: Hi.
+(12:54:34 PM) egarver: Regarding.. 1267398 - backport multicast: Extend ip address command to enable multicast group join/leave on
+(12:54:51 PM) egarver: I think you can test one of two ways..
+(12:55:01 PM) egarver: 1) Using OVS as you mentioned.
+(12:56:16 PM) egarver: 2) Without OVS.. which is much simpler. This is how I tested. You just need to add the ip multicast IP with "autojoin" keyword.. and use tcpdump to make sure the IGMP join is sent.
+(12:57:27 PM) Rick Alongi: so just execute the ip commnd on a particulat intyerface while capturing the packets and make sure the IGMP join sent?
+(12:57:35 PM) egarver: If you want to test with OVS, then you should should also run multicast traffic. After you doing the "autojoin", then the endpoint should begin receiving the stream from the OVS bridge.
+(12:57:47 PM) egarver: Yea. I think that is sufficient.
+(01:02:33 PM) Rick Alongi: sorry eric.  one second please.
+(01:05:51 PM) egarver: No problem.
+(01:17:12 PM) Rick Alongi: Sorry.  Someone stopped by my cube and we had to go through some stuff together.
+(01:18:06 PM) Rick Alongi: my feature focus is OVS so i think i'll need to try to test it that way.  maybe i'll use iperf to send mcast traffic.  
+(01:18:44 PM) Rick Alongi: is there any areas of regression testing i should focus on?  we would normally be running some traffic over tunnels as part of our regression testing.
+(01:22:30 PM) egarver: Not really. The changeset is pretty small. You can make sure to do normal ip add/delete commands.
+(01:23:01 PM) egarver: Feel free to ping me if you have questions.
+(01:23:11 PM) Rick Alongi: Great...thanks!
+
+Note to me: also verify related BZ 1333513

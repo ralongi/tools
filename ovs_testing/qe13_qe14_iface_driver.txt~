@@ -1,0 +1,28 @@
+# netqe14/14 iface_driver mapping
+
+1 Interface: p6p1
+2 Interface: p6p2
+3 Interface: p5p1
+4 Interface: p5p2
+5 Interface: p7p1
+6 Interface: p7p2
+7 Interface: em1
+8 Interface: em2
+9 Interface: em3
+10 Interface: em4
+11 Interface: p2p1
+12 Interface: p2p2
+ 
+
+1 Driver: be2net (Emulex 10Gbe/40Gbe)
+2 Driver: be2net (Emulex 10Gbe/40Gbe)
+3 Driver: mlx4_en (Mellanox 40Gbe)
+4 Driver: mlx4_en (Mellanox 40Gbe)
+5 Driver: i40e (Intel 10Gbe/40Gbe)
+6 Driver: i40e (Intel 10Gbe/40Gbe)
+7 Driver: bnx2x (Broadcom 10Gbe)
+8 Driver: bnx2x (Broadcom 10Gbe)
+9 Driver: bnx2x (Broadcom 10Gbe)
+10 Driver: bnx2x (Broadcom 10Gbe)
+11 Driver: ixgbe (Intel 10Gbe)
+12 Driver: ixgbe (Intel 10Gbe)

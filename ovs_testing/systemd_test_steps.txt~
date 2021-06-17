@@ -1,0 +1,9 @@
+
+- install openvswitch
+- start ovs, check return code, check process status
+- stop ovs, check return code, check process status
+- restart ovs, check return code, check process status
+- create ifcfg file(s) for ovs bridge ??
+- enable ovs, check return code, check process status, reboot
+- upon system recovery, check process status, check ovs-vsctl show
+
