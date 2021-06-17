@@ -302,9 +302,12 @@ cleanup_ovs
 get_ovs_stream
 create_local_upgrade_repo
 
+compose_id=$(grep 'server='  /root/anaconda-ks.cfg | awk -F "/" '{print $(NF-5)}')
+
 echo "===========================================================================" | tee -a $RESULTS_FILE
 echo "Package Info:" | tee -a $RESULTS_FILE
 echo "RHEL VERSION: $rhel_version" | tee -a $RESULTS_FILE
+echo "RHEL Compose: $compose_id" | tee -a $RESULTS_FILE
 echo "Kernel: $(uname -r)" | tee -a $RESULTS_FILE
 echo "Starting OVS selinux package: $STARTING_RPM_OVS_SELINUX_EXTRA_POLICY_RPM" | tee -a $RESULTS_FILE
 echo "Starting OVS package: $STARTING_RPM_OVS_RPM" | tee -a $RESULTS_FILE
