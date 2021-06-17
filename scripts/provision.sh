@@ -1,0 +1,48 @@
+#!/bin/bash
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
+
+# to provision a system using the bkr cli
+
+# function to get fqdn from alias
+. ~/.bashrc 2>&1 > /dev/null
+system_name=$1
+
+if [[ $(fqdn $system_name) ]]; then
+	system_name=$(fqdn $system_name)
+else
+	system_name=$1
+fi
+
+#system_name=$1
+distro=$2
+
+if [[ ! $(echo $distro | grep -i RHEL) ]]; then
+	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $distro > /tmp/distro.txt
+	distro=$(grep 'latest stable' /tmp/distro.txt | awk -F ":" '{print $NF}' | tr -d " ")
+	rm -f /tmp/distro.txt
+fi	
+
+if [[ $(echo $distro | awk -F "." '{print $1}') == "RHEL-8" ]]; then
+	variant="BaseOS"
+else
+	variant="Server"
+fi
+
+arch=$3
+if [[ $# -lt 3 ]]; then arch="x86_64"; fi
+
+if [[ $# -lt 2 ]]; then
+	echo "Usage: $0 <system> <distro_name>"
+	echo "Example: $0 netqe9.knqe.lab.eng.bos.redhat.com RHEL-7.5"
+	exit 0
+fi
+
+distro_id=$(bkr distro-trees-list --name=$distro --arch=$arch | grep -B2 "Variant: $variant" | grep ID | awk '{print $NF}')
+
+echo "Provisioning $system_name with distro $distro (Distro ID: $distro_id)"
+
+bkr system-reserve $system_name 2>/dev/null
+bkr system-provision --distro-tree=$distro_id $system_name
+
+
