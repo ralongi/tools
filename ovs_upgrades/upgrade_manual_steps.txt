@@ -48,12 +48,12 @@ yum -y install wget
 
 export FDP_RELEASE="fdp21e"
 #export RPM_OVS=$OVS211_21C_RHEL8 # OVS package under test
-export RPM_OVS=$OVS213_21E_RHEL8 # OVS package under test
-#export RPM_OVS=$OVS215_21E_RHEL8 # OVS package under test
+#export RPM_OVS=$OVS213_21E_RHEL8 # OVS package under test
+export RPM_OVS=$OVS215_21E_RHEL8 # OVS package under test
 export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21D_RHEL8 # RPM from previous release of same stream
 #export STARTING_RPM_OVS=$OVS211_21B_RHEL8 # RPM from previous release of same stream
-export STARTING_RPM_OVS=$OVS213_21D_RHEL8 # RPM from previous release of same stream
-#export STARTING_RPM_OVS=$OVS215_21D_RHEL8 # RPM from previous release of same stream
+#export STARTING_RPM_OVS=$OVS213_21D_RHEL8 # RPM from previous release of same stream
+export STARTING_RPM_OVS=$OVS215_21D_RHEL8 # RPM from previous release of same stream
 export OVS_LATEST_STREAM_PKG=$OVS215_21E_RHEL8 # Latest available stream change for stream under test
 
 ~/upgrade_ovs_manual.sh 

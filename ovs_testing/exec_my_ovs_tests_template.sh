@@ -46,7 +46,12 @@ EOF
 
 # RHEL composes
 
-/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}') && echo "Using compose: $COMPOSE"
+# if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing the scripts to kick off tests
+if [[ -z $COMPOSE ]]; then
+	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
+fi
+
+echo "Using compose: $COMPOSE"
 
 # Netperf package
 export SRC_NETPERF="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20210121.tar.bz2"
@@ -104,12 +109,12 @@ export VM_IMAGE=rhel8.3.qcow2
 #./exec_mcast_snoop.sh
 export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
 ###############################################################################
-#./exec_ovs_qos.sh
-#./exec_forward_bpdu.sh
-#./exec_of_rules.sh
-#./exec_power_cycle_crash.sh
-#./exec_topo.sh ixgbe
-#./exec_topo.sh i40e
+./exec_ovs_qos.sh
+./exec_forward_bpdu.sh
+./exec_of_rules.sh
+./exec_power_cycle_crash.sh
+./exec_topo.sh ixgbe
+./exec_topo.sh i40e
 #./exec_topo.sh enic
 #./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6
