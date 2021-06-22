@@ -4,6 +4,7 @@ dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
 #RHEL_VER=${RHEL_VER:-""}
 RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
+SELINUX=${SELINUX:-"yes"}
 
 # Script to execute all of my ovs tests
 
@@ -57,14 +58,25 @@ echo "Using compose: $COMPOSE"
 export SRC_NETPERF="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20210121.tar.bz2"
 
 # VM image names
-export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
+if [[ -z $VM_IMAGE ]]; then
+	export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
+else
+	export VM_IMAGE=$VM_IMAGE
+fi
 
 # OVS packages
-
-export RPM_OVS=$OVSFDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+if [[ -z $RPM_OVS ]]; then
+	export RPM_OVS=$OVSFDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+else
+	export RPM_OVS=$RPM_OVS
+fi
 
 # SELinux packages
-export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+else
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
+fi
 
 #DPDK packages
 
@@ -78,6 +90,10 @@ elif [[ $(echo $COMPOSE | grep RHEL-8.3) ]]; then
 	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11.3/1.el8/x86_64/dpdk-19.11.3-1.el8.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11.3/1.el8/x86_64/dpdk-tools-19.11.3-1.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-8.4) ]]; then
+	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+# use 8.4 packages for RHEL-8.5 until updated info is available on https://errata.devel.redhat.com/package/show/dpdk
+elif [[ $(echo $COMPOSE | grep RHEL-8.5) ]]; then
 	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
@@ -101,20 +117,15 @@ export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ip
 
 #pushd /home/ralongi/Documents/ovs_testing
 #pushd /home/ralongi/global_docs/ovs_testing
-pushd /home/ralongi/inf_ralongi/Documents/ovs_testing
+pushd /home/ralongi/github/tools/ovs_testing
 
-###############################################################################
-# USE rhel8.3 VM IMAGE for mcast_snoop tests for now to avoid problems with IPv6 tests
-export VM_IMAGE=rhel8.3.qcow2
 #./exec_mcast_snoop.sh
-export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
-###############################################################################
 ./exec_ovs_qos.sh
-./exec_forward_bpdu.sh
-./exec_of_rules.sh
-./exec_power_cycle_crash.sh
-./exec_topo.sh ixgbe
-./exec_topo.sh i40e
+#./exec_forward_bpdu.sh
+#./exec_of_rules.sh
+#./exec_power_cycle_crash.sh
+#./exec_topo.sh ixgbe
+#./exec_topo.sh i40e
 #./exec_topo.sh enic
 #./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6

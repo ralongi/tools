@@ -30,7 +30,7 @@ export RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
 export FDP_STREAM=${FDP_STREAM:-"$3"}
 export FDP_STREAM=$(echo $FDP_STREAM | tr -d '.')
 
-pushd ~/inf_ralongi/Documents/ovs_testing
+pushd /home/ralongi/github/tools/ovs_testing
 /bin/cp -f exec_my_ovs_tests_template.sh exec_my_ovs_tests.sh
 sed -i "s/FDP_RELEASE_VALUE/$FDP_RELEASE/g" exec_my_ovs_tests.sh
 sed -i "s/RHEL_VER_VALUE/$RHEL_VER/g" exec_my_ovs_tests.sh

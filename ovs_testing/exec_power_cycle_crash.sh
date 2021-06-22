@@ -13,6 +13,7 @@ sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\
 pushd /home/ralongi/inf_ralongi/Documents/ovs_testing/xml_files
 
 /bin/cp -f template_power_cycle_crash_rhel$RHEL_VER_MAJOR.xml power_cycle_crash_rhel$RHEL_VER_MAJOR.xml
+sedeasy "SELINUX_VALUE" "$SELINUX" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 sedeasy "FDP_RELEASE_VALUE" "$FDP_RELEASE" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 sedeasy "OVS_RPM_VALUE" "$ovs_rpm_name" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 sedeasy "COMPOSE_VALUE" "$COMPOSE" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
