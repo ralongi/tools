@@ -1,0 +1,145 @@
+usage()
+{
+	cat <<-EOF
+	$0 [options] ...
+	options:
+	-h|--help               show this message
+	-n|--name               guest name
+	-m|--memory             memory size in unit KiB
+	-p|--password           password for root to login guest
+	--image                 url to download guest image
+	--xml                   guest xml file
+	--interface-xml         XML file list for test interfaces
+	--vcpu                  vcpu placement for guest
+	--cpuset                cpuset for guest cputune
+	--emulatorpin-cpuset    emulatorpin cpuset for guest cputune
+	--bootopts              bootopts for guest
+	--tuned-profiles        tuned-profiles, cpu-partitioning or realtime
+	--ssh-mac               MAC address for the interface used by ssh login
+	--ssh-ip                IP address for ssh login
+	--test-ip4              IPv4 address for test interface, eg. 192.168.123.1/24
+	--test-ip6              IPv6 address for test interface, eg. 2001:db8:123::1/64
+	--hw-offload            NIC hardware offload, yes or no
+	--mtu                   MTU of the test interface in guest
+	--repo-AppStream        url in repo beaker-Appstream
+	--repo-BaseOS           url in repo beaker-BaseOS
+	--pcis                  test interface PCIs in guest, default (03:00.0 04:00.0)
+	--dpdk-in-guest         link to dpdk rpm in guest
+	--testpmd               testpmd command line
+	--skip-dpdk-bind        skip dpdk bind, yes or no
+	--vIOMMU                vIOMMU yes or no
+	EOF
+}
+
+options=$(getopt -o hn:i:m:p: --long help,name:,memory:,password:,image:,xml:,interface-xml:,vcpu:,cpuset:,emulatorpin-cpuset:,bootopts:,tuned-profiles:,ssh-mac:,ssh-ip:,test-ip4:,test-ip6:,hw-offload:,dpdk-in-guest:,repo-AppStream:,repo-BaseOS:,testpmd:,pcis:,skip-dpdk-bind:,vIOMMU:, -- "$@")
+[[ $? -eq 0 ]] || {
+	echo "Incorrect options provided"
+	exit 1
+}
+eval set -- "$options"
+while true
+do
+	case "$1" in
+	-h | --help)
+		usage
+		exit 0
+		;;
+	-n | --name)
+		shift
+		name="$1"
+		;;
+	-m | --memory)
+		shift
+		memory="$1"
+		;;
+	-p | --password)
+		shift
+		password="$1"
+		;;
+	--image)
+		shift
+		image="$1"
+		;;
+	--xml)
+		shift
+		xml="$1"
+		;;
+	--interface-xml)
+		shift
+		interface_xml=(${1/,/ /g})
+		;;
+	--vcpu)
+		shift
+		vcpu="${1}"
+		;;
+	--cpuset)
+		shift
+		cpuset=(${1/,/ /g})
+		;;
+	--emulatorpin-cpuset)
+		shift
+		emulatorpin_cpuset="${1}"
+		;;
+	--bootopts)
+		shift
+		bootopts="$1"
+		;;
+	--tuned-profiles)
+		shift
+		tuned_profiles="$1"
+		;;
+	--ssh-mac)
+		shift
+		ssh_mac="$1"
+		;;
+	--ssh-ip)
+		shift
+		ssh_ip="$1"
+		;;
+	--test-ip4)
+		shift
+		test_ip4="$1"
+		;;
+	--test-ip6)
+		shift
+		test_ip6="$1"
+		;;
+	--hw-offload)
+		shift
+		hw_offload="$1"
+		;;
+	--dpdk-in-guest)
+		shift
+		dpdk_in_guest="$1"
+		;;
+	--repo-AppStream)
+		shift
+		repo_AppStream="$1"
+		;;
+	--repo-BaseOS)
+		shift
+		repo_BaseOS="$1"
+		;;
+	--testpmd)
+		shift
+		testpmd="$1"
+		;;
+	--pcis)
+		shift
+		pcis=($1)
+		;;
+	--skip-dpdk-bind)
+		shift
+		skip_dpdk_bind="$1"
+		;;
+	--vIOMMU)
+		shift
+		vIOMMU="$1"
+		;;
+	--)
+		shift
+		break
+		;;
+	esac
+	shift
+done

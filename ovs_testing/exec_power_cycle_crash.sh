@@ -10,7 +10,7 @@ sedeasy ()
 sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
 }
 
-pushd /home/ralongi/inf_ralongi/Documents/ovs_testing/xml_files
+pushd /home/ralongi/github/tools/ovs_testing/xml_files
 
 /bin/cp -f template_power_cycle_crash_rhel$RHEL_VER_MAJOR.xml power_cycle_crash_rhel$RHEL_VER_MAJOR.xml
 sedeasy "SELINUX_VALUE" "$SELINUX" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"

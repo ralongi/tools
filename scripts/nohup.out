@@ -1,0 +1,27 @@
+PING wsfd-advnetlab34.anl.lab.eng.bos.redhat.com (10.19.128.72) 56(84) bytes of data.
+64 bytes from wsfd-advnetlab34.anl.lab.eng.bos.redhat.com (10.19.128.72): icmp_seq=1 ttl=53 time=78.0 ms
+
+--- wsfd-advnetlab34.anl.lab.eng.bos.redhat.com ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 78.037/78.037/78.037/0.000 ms
+epel-release-7-13.noarch
+EPEL repo is already installed
+sshpass-1.06-2.el7.x86_64
+sshpass is already installed.
+--2021-07-19 08:15:22--  http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/junk.txt
+Resolving netqe-infra01.knqe.lab.eng.bos.redhat.com (netqe-infra01.knqe.lab.eng.bos.redhat.com)... 10.19.15.43
+Connecting to netqe-infra01.knqe.lab.eng.bos.redhat.com (netqe-infra01.knqe.lab.eng.bos.redhat.com)|10.19.15.43|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 9 [text/plain]
+Saving to: ‘/home/ralongi/temp/junk.txt’
+
+     0K                                                       100%  615K=0s
+
+2021-07-19 08:15:22 (615 KB/s) - ‘/home/ralongi/temp/junk.txt’ saved [9/9]
+
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/ralongi/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+
+/usr/bin/ssh-copy-id: WARNING: All keys were skipped because they already exist on the remote system.
+		(if you think this is a mistake, you may want to use -f option)
+

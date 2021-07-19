@@ -4,6 +4,7 @@ dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
 #RHEL_VER=${RHEL_VER:-""}
 RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
+SELINUX=${SELINUX:-"yes"}
 
 # Script to execute all of my ovs tests
 
@@ -58,21 +59,21 @@ export SRC_NETPERF="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.0.qcow2"
+	export VM_IMAGE="rhel7.9.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS215_21E_RHEL9
+	export RPM_OVS=$OVS213_21F_RHEL7
 else
 	export RPM_OVS=$RPM_OVS
 fi
 
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21E_RHEL9
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21F_RHEL7
 else
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
 fi
@@ -101,14 +102,14 @@ elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
 fi
 
 # For rpm_dpdk variable used by openvswitch/perf tests
-export rpm_dpdk=$RPM_DPDK_RHEL9
-export rpm_dpdk_tools=$RPM_DPDK_TOOLS_RHEL9
+export rpm_dpdk=$RPM_DPDK_RHEL7
+export rpm_dpdk_tools=$RPM_DPDK_TOOLS_RHEL7
 
 # QEMU packages
-export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
+#export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN215_21E_RHEL9 
+export RPM_OVN=$OVN213_21F_RHEL7 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -118,13 +119,13 @@ export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ip
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-#./exec_mcast_snoop.sh
+./exec_mcast_snoop.sh
 ./exec_ovs_qos.sh
-#./exec_forward_bpdu.sh
-#./exec_of_rules.sh
-#./exec_power_cycle_crash.sh
+./exec_forward_bpdu.sh
+./exec_of_rules.sh
+./exec_power_cycle_crash.sh
 #./exec_topo.sh ixgbe
-#./exec_topo.sh i40e
+./exec_topo.sh i40e
 #./exec_topo.sh enic
 #./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6
@@ -138,12 +139,15 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_ovn_memory_leak_soak.sh
 
 ###############################################################################
-# set VM_IMAGE value to full URL for per_ci test
+# set VM_IMAGE value to full URL for perf_ci test
 # may need to create proper image for westford or point to bj image
-export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel9.0.qcow2
+export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel7.9.qcow2
 #./exec_perf_ci.sh cx5
+#./exec_perf_ci_endurance.sh cx5
 #./exec_perf_ci.sh cx6
-export VM_IMAGE="rhel9.0.qcow2"
+#./exec_perf_ci_endurance.sh cx6
+#./exec_perf_ci_pensando_sriov.sh
+export VM_IMAGE="rhel7.9.qcow2"
 ###############################################################################
 
 # Conntrack firewall rules Jiying Qiu (not related to driver)
