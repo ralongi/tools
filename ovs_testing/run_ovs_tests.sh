@@ -14,6 +14,7 @@ display_usage()
 	echo "This script will kick off OVS tests based on parameters provided."
 	echo "Usage: $0 <FDP Release> <RHEL Version> <FDP Stream>"
 	echo "Example: $0 21e 8.4 2.13"
+	echo "To use a specific compose (versus using latest), first execute 'export COMPOSE=<COMPOSE_ID>' in terminal window"
 	exit 0
 }
 

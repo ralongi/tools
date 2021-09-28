@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP 21F, openvswitch2.13-2.13.0-98.el7fdp.x86_64.rpm, RHEL-7.9-updates-20210713.1, openvswitch/power_cycle_crash</whiteboard>
+  <whiteboard>FDP 21G, openvswitch2.13-2.13.0-102.el7fdp.x86_64.rpm, RHEL-7.9-updates-20210713.1, openvswitch/power_cycle_crash</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP 21F, openvswitch2.13-2.13.0-98.el7fdp.x86_64.rpm, RHEL-7.9-updates-20210713.1, openvswitch/power_cycle_crash" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP 21G, openvswitch2.13-2.13.0-102.el7fdp.x86_64.rpm, RHEL-7.9-updates-20210713.1, openvswitch/power_cycle_crash" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -89,7 +89,7 @@ chmod 755 /usr/bin/rhts-power
           <param name="NAY" value="yes"/>
           <param name="NIC_NUM" value="3"/>
           <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/18.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-18.el7fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/98.el7fdp/x86_64/openvswitch2.13-2.13.0-98.el7fdp.x86_64.rpm"/>
+          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/102.el7fdp/x86_64/openvswitch2.13-2.13.0-102.el7fdp.x86_64.rpm"/>
           <param name="DISTRO_BUILD" value="RHEL-7.9-updates-20210713.1"/>
         </params>
       </task>

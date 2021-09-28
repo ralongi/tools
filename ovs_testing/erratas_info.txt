@@ -491,4 +491,62 @@ Run: oats-apply-test-profile -b -y
 
 #########################################################################
 
+# To clean up and set up for next test (and run manual test if necessary)
+
+errata=2021:80100
+
+# x86_64
+
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+errata=$errata
+repo=fast-datapath-for-rhel-8-x86_64-rpms
+tps-cd -c $errata
+export export TPSQ_RHNDEST=$repo
+yum install -y $(tps-filter-filelist -o -u)
+
+tps -m
+#tps-rhnqa
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+
+# ppc64le
+
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+errata=$errata
+repo=fast-datapath-for-rhel-8-ppc64le-rpms
+tps-cd -c $errata
+export export TPSQ_RHNDEST=$repo
+yum install -y $(tps-filter-filelist -o -u)
+
+tps -m
+#tps-rhnqa
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+
+# s390x
+
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+errata=$errata
+repo=fast-datapath-for-rhel-8-s390x-rpms
+tps-cd -c $errata
+export export TPSQ_RHNDEST=$repo
+yum install -y $(tps-filter-filelist -o -u)
+
+tps -m
+#tps-rhnqa
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+#########################################################################
+
+To update tps-polling package (may be necessary when tps-make-lists is failing):
+
+pushd /mnt/tpsdist/test/
+service tpsd stop ; rpm -Uvh /mnt/tpsdist/test/tps-polling.noarch* ; service tpsd start
+popd
+
+#########################################################################
+
 

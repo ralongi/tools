@@ -5,10 +5,12 @@ $dbg_flag
 #RHEL_VER=${RHEL_VER:-""}
 RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
 SELINUX=${SELINUX:-"yes"}
+COMPOSE=${COMPOSE:-""}
+/home/ralongi/gvar/bin/gvar $COMPOSE
 
 # Script to execute all of my ovs tests
 
-source ~/git/kernel/networking/openvswitch/common/package_list.sh
+source ~/git/kernel/networking/openvswitch/common/package_list.sh > /dev/null
 
 use_hpe_synergy=${use_hpe_synergy:-"no"}
 
@@ -48,6 +50,7 @@ EOF
 # RHEL composes
 
 # if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing the scripts to kick off tests
+echo "Checking to see if a COMPOSE has been specified..."
 if [[ -z $COMPOSE ]]; then
 	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
 fi
@@ -104,6 +107,9 @@ fi
 # For rpm_dpdk variable used by openvswitch/perf tests
 export rpm_dpdk=$RPM_DPDK_RHELRHEL_VER_MAJOR_VALUE
 export rpm_dpdk_tools=$RPM_DPDK_TOOLS_RHELRHEL_VER_MAJOR_VALUE
+export RPM_DPDK=$RPM_DPDK_RHELRHEL_VER_MAJOR_VALUE
+export RPM_DPDK_TOOLS=$RPM_DPDK_TOOLS_RHELRHEL_VER_MAJOR_VALUE
+
 
 # QEMU packages
 #export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
@@ -119,16 +125,16 @@ export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ip
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-./exec_mcast_snoop.sh
-./exec_ovs_qos.sh
-./exec_forward_bpdu.sh
-./exec_of_rules.sh
-./exec_power_cycle_crash.sh
+#./exec_mcast_snoop.sh
+#./exec_ovs_qos.sh
+#./exec_forward_bpdu.sh
+#./exec_of_rules.sh
+#./exec_power_cycle_crash.sh
 #./exec_topo.sh ixgbe
-./exec_topo.sh i40e
+#./exec_topo.sh i40e
 #./exec_topo.sh enic
 #./exec_topo.sh mlx5_core cx5
-#./exec_topo.sh mlx5_core cx6
+./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
 #./exec_topo.sh nfp
@@ -141,6 +147,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 ###############################################################################
 # set VM_IMAGE value to full URL for perf_ci test
 # may need to create proper image for westford or point to bj image
+# Best to just clone jobs from previous release and not use this automated method
 export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
 #./exec_perf_ci.sh cx5
 #./exec_perf_ci_endurance.sh cx5

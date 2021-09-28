@@ -18,7 +18,7 @@ fi
 distro=$2
 
 if [[ ! $(echo $distro | grep -i RHEL) ]]; then
-	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $distro > /tmp/distro.txt
+	/home/ralongi/github/tools/scripts/get_beaker_compose_id.sh $distro > /tmp/distro.txt
 	distro=$(grep 'latest stable' /tmp/distro.txt | awk -F ":" '{print $NF}' | tr -d " ")
 	rm -f /tmp/distro.txt
 fi	

@@ -394,6 +394,8 @@ if [[ $ovs_stream == $ovs_running_version_short ]]; then
 	fi
 	echo "===========================================================================" | tee -a $RESULTS_FILE
 	scp -o "StrictHostKeyChecking no" $RESULTS_FILE root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/$FDP_RELEASE/
+	RESULTS_FILE=$(echo $RESULTS_FILE | awk -F "/" '{print $NF}')
+	echo "Results file URL: http://netqe-infra01.knqe.lab.eng.bos.redhat.com/ovs_upgrade_test_results/$FDP_RELEASE/$RESULTS_FILE"
 	exit 0
 else
 
@@ -448,4 +450,6 @@ if [[ ! $(ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.
 	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
 fi
 scp -o "StrictHostKeyChecking no" $RESULTS_FILE root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/$FDP_RELEASE/
+RESULTS_FILE=$(echo $RESULTS_FILE | awk -F "/" '{print $NF}')
+echo "Results file URL: http://netqe-infra01.knqe.lab.eng.bos.redhat.com/ovs_upgrade_test_results/$FDP_RELEASE/$RESULTS_FILE"
 

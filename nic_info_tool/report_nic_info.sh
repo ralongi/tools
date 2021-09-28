@@ -8,6 +8,7 @@ $dbg_flag
 target=$1
 password=$2
 default_password="100yard-"
+timeout=${timeout:-"15s"}
 
 if [[ $# -lt 1 ]]; then
 	echo "You must specify a target host and root password($0 <target_host> [root pw])."
@@ -36,7 +37,7 @@ if [[ $? -ne 0 ]]; then
 	 exit 0
 fi
 
-timeout 15s bash -c "until traceroute $target; do sleep 1s; done"
+timeout $timeout bash -c "until traceroute $target; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
 	exit

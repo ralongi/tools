@@ -67,6 +67,9 @@ yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk
 #yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-18.11.7-1.el7_8.x86_64.rpm
 #yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-tools-18.11.7-1.el7_8.x86_64.rpm
 
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+
 # install EPEL repo and mlocate
 #yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -80,7 +83,7 @@ copy ssh keys from laptop to target system for both regular user and root on lap
     
 # Run repo bootstrap playbook to install necessary repos on target system (make sure repo-bootstrap.hosts has correct info):
     inv=/home/ralongi/.config/Inventory/repo-bootstrap.hosts
-    pushd ~/perf-dept/sysadmin/Ansible && ansible-playbook  --user=root -i ${inv} repo-bootstrap.yml && popd
+    pushd ~/perf-dept/sysadmin/Ansible && ansible-playbook --user=root -i ${inv} repo-bootstrap.yml && popd
     
 # sample myhosts.inv file that works:
 -------------------------------------------------------------------------------

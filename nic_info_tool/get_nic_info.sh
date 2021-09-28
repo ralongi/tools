@@ -12,14 +12,19 @@ echo -e "The management interface for $(hostname) is: $mgmt_iface\n" >> /home/ni
 echo "---------------------------------------------------------------------" >> /home/nic_info.txt
 
 for i in $(ls /sys/class/net | egrep -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
-	driver=$(ethtool -i $i | grep driver | awk '{print $NF}')
-	pci_slot=$(ethtool -i $i | grep bus | awk -F ":" '{print $3":"$4$5}')
-	nic_name=$(lspci -v | grep $pci_slot | awk -F ":" '{print $NF}')
+	driver=$(ethtool -i $i | grep driver | awk '{print $2}')
+	driver_version=$(ethtool -i $i | grep version | egrep -v 'firmware|expansion' | awk '{print $2}')
+	firmware_version=$(ethtool -i $i | grep 'firmware-version' | awk '{print $2}')
+	pci_slot=$(ethtool -i $i | grep bus | awk '{print $NF}')
+	pci_slot_short=$(ethtool -i $i | grep bus | awk -F ":" '{print $3":"$4$5}')
+	nic_name=$(lspci -v | grep $pci_slot_short | awk -F ":" '{print $NF}')
 	speed=$(ethtool $i | grep Speed | awk '{print $2}' | tr -d '[a-z A-Z /]')
 	if [[ $(echo $speed | grep '!') ]]; then speed="Unknown"; fi
 	link_detected=$(ethtool $i | grep 'Link detected' | awk '{print $NF}')
 	echo -e "Interface: $i\n" >> /home/nic_info.txt
 	echo "    Driver: $driver" >> /home/nic_info.txt
+	echo "    Driver version: $driver_version" >> /home/nic_info.txt
+	echo "    Firmware version: $firmware_version" >> /home/nic_info.txt
 	echo "    Card: $nic_name" >> /home/nic_info.txt
 	echo "    PCI Slot: $pci_slot" >> /home/nic_info.txt
 	echo "    Speed: $speed Mbps" >> /home/nic_info.txt
