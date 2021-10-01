@@ -11,7 +11,8 @@ default_password="100yard-"
 timeout=${timeout:-"15s"}
 
 if [[ $# -lt 1 ]]; then
-	echo "You must specify a target host and root password($0 <target_host> [root pw])."
+	echo "You must specify a target host and root password ($0 <target_host> [root pw])."
+	echo "Password 100yard- will be used if no password is provided"
 	exit
 fi
 
