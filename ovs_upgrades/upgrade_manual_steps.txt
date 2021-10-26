@@ -8,7 +8,7 @@ scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@
 
 scp /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh root@impairment1.knqe.lab.eng.bos.redhat.com:/tmp
 
-scp /home/ralongi/github/tools/ovs_upgrades/upgrade_ovs_manual.sh root@netqe9.knqe.lab.eng.bos.redhat.com:.
+scp /home/ralongi/github/tools/ovs_upgrades/upgrade_ovs_manual.sh root@netqe21.knqe.lab.eng.bos.redhat.com:.
 
 scp /home/ralongi/github/tools/ovs_upgrades/upgrade_ovs_manual.sh root@impairment1.knqe.lab.eng.bos.redhat.com:.
 	
@@ -46,15 +46,17 @@ chmod +x ~/upgrade_ovs_manual.sh
 . /tmp/package_list.sh
 yum -y install wget
 
-export FDP_RELEASE="fdp21g"
+export FDP_RELEASE="fdp21i"
 #export RPM_OVS=$OVS211_21C_RHEL8 # OVS package under test
-#export RPM_OVS=$OVS213_21G_RHEL8 # OVS package under test
-export RPM_OVS=$OVS215_21G_RHEL8 # OVS package under test
-export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21F_RHEL8 # RPM from previous release of same stream
+#export RPM_OVS=$OVS213_21I_RHEL8 # OVS package under test
+#export RPM_OVS=$OVS215_21I_RHEL8 # OVS package under test
+export RPM_OVS=$OVS216_21I_RHEL8 # OVS package under test
+export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21H_RHEL8 # RPM from previous release of same stream
 #export STARTING_RPM_OVS=$OVS211_21B_RHEL8 # RPM from previous release of same stream
-#export STARTING_RPM_OVS=$OVS213_21F_RHEL8 # RPM from previous release of same stream
-export STARTING_RPM_OVS=$OVS215_21F_RHEL8 # RPM from previous release of same stream
-export OVS_LATEST_STREAM_PKG=$OVS215_21G_RHEL8 # Latest available stream change for stream under test
+#export STARTING_RPM_OVS=$OVS213_21H_RHEL8 # RPM from previous release of same stream
+#export STARTING_RPM_OVS=$OVS215_21H_RHEL8 # RPM from previous release of same stream
+export STARTING_RPM_OVS=$OVS216_21H_RHEL8 # RPM from previous release of same stream
+export OVS_LATEST_STREAM_PKG=$OVS216_21I_RHEL8 # Latest available stream change for stream under test
 
 ~/upgrade_ovs_manual.sh 
 

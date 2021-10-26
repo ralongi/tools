@@ -51,7 +51,9 @@ if [[ ! $(echo $distro | grep -i RHEL) ]]; then
 	rm -f /tmp/distro.txt
 fi	
 
-if [[ $(echo $distro | awk -F "." '{print $1}') == "RHEL-8" ]]; then
+distro_ver=$(echo $distro | awk -F "-" '{print $2}' | awk -F "." '{print $1}')
+
+if [[ $(echo $distro_ver -ge 8) ]]; then
 	variant="BaseOS"
 else
 	variant="Server"

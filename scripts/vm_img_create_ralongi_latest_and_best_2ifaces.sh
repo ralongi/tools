@@ -31,7 +31,7 @@ cat <<'SCRIPT' > vm_img_tmp.sh
 #!/bin/bash
 #
 
-TARGET_IMAGE=${TARGET_IMAGE:-rhel7.4}
+TARGET_IMAGE=${TARGET_IMAGE:-rhel8.5}
 
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
 if (($rhel_version <= 6)); then

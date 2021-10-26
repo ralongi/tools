@@ -6,11 +6,14 @@
 # set VM image to rhel8.4.qcow2 when running RHEL-9 compose due to problems installing netperf on RHEL-9 guest
 if [[ $(echo $COMPOSE | grep RHEL-9) ]]; then VM_IMAGE="rhel8.4.qcow2"; fi
 
-dbg_flag="set -x"
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 pushd ~/git/kernel/networking/tools/runtest-network
 driver=$1
 mlx_card_type=$(echo $2 | tr '[:lower:]' '[:upper:]')
+
+compose_version=$(echo $COMPOSE | awk -F "-" '{print $2}' | awk -F "." '{print $1}')
 
 if [[ $# -lt 1 ]]; then
 	echo "Please enter the driver name"
@@ -177,8 +180,13 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX5" ]]; then
 	client="netqe25.knqe.lab.eng.bos.redhat.com"
 	NAY="no"
 	PVT="yes"
-	server_nic_test="enp4s0f0"
-	client_nic_test="enp4s0f0"
+	if [[ $compose_version -gt 8 ]]; then
+		server_nic_test="enp4s0f0np0"
+		client_nic_test="enp4s0f0np0"
+	else
+		server_nic_test="enp4s0f0"
+		client_nic_test="enp4s0f0"
+	fi
 	#server_pciid="15b3:101d" #CX6
 	#client_pciid="15b3:1017" #CX5
 	cat ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE  --machine=$server,$client --systype=machine,machine --param=mh-nic_test=$server_nic_test,$client_nic_test --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=$NAY --param=PVT=$PVT --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver (CX5)"
@@ -188,8 +196,13 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX6" ]]; then
 	client="netqe24.knqe.lab.eng.bos.redhat.com"
 	NAY="no"
 	PVT="yes"
-	server_nic_test="enp4s0f0"
-	client_nic_test="enp4s0f0"
+	if [[ $compose_version -gt 8 ]]; then
+		server_nic_test="enp4s0f0np0"
+		client_nic_test="enp4s0f0np0"
+	else
+		server_nic_test="enp4s0f0"
+		client_nic_test="enp4s0f0"
+	fi
 	#server_pciid="15b3:1017" #CX5
 	#client_pciid="15b3:101d" #CX6
 	cat ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE  --machine=$server,$client --systype=machine,machine  --param=mh-nic_test=$server_nic_test,$client_nic_test --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=$NAY --param=PVT=$PVT --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type)"
@@ -200,8 +213,13 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ -z "$mlx_card_type" ]]; then
 	client="netqe24.knqe.lab.eng.bos.redhat.com"
 	NAY="no"
 	PVT="yes"
-	server_nic_test="enp4s0f0"
-	client_nic_test="enp4s0f0"
+	if [[ $compose_version -gt 8 ]]; then
+		server_nic_test="enp4s0f0np0"
+		client_nic_test="enp4s0f0np0"
+	else
+		server_nic_test="enp4s0f0"
+		client_nic_test="enp4s0f0"
+	fi
 	cat ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE  --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver (CX6)"
 # ice driver
 elif [[ "$driver" == "ice" ]]; then

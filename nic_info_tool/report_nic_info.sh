@@ -8,7 +8,7 @@ $dbg_flag
 target=$1
 password=$2
 default_password="100yard-"
-timeout=${timeout:-"15s"}
+timeout=${timeout:-"10s"}
 
 if [[ $# -lt 1 ]]; then
 	echo "You must specify a target host and root password ($0 <target_host> [root pw])."
@@ -32,17 +32,18 @@ if [[ ! $(which sshpass) ]]; then
 	exit
 fi
 
-nslookup $target
+nslookup $target > /dev/null
 if [[ $? -ne 0 ]]; then
 	 echo "$target does not appear to be a valid FQDN.  Please enter a valid FQDN target."
 	 exit 0
 fi
 
-timeout $timeout bash -c "until traceroute $target; do sleep 1s; done"
+timeout $timeout bash -c "until traceroute $target > /dev/null; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
 	exit
 fi
 
-cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -o "StrictHostKeyChecking= no" root@$target 'bash -'
+echo "Logging into $target..."
+cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -q -o "StrictHostKeyChecking= no" root@$target 'bash -'
 

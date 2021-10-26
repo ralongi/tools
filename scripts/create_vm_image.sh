@@ -1,159 +1,146 @@
 #!/bin/bash
-#
 
-TERM=xterm sshpass -p 100yard- ssh -X -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$1 << 'EOF'
+# usage: ./vm_image.sh
 
-cat <<'SCRIPT' > vm_img_tmp.sh
-#!/bin/bash
-#
+# if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing this script
 
-vm_version=$1
-rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
-vm_maj_ver=$(echo $vm_version | awk -F "." '{print $1}')
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
 
-#############################################################
-vm=rhel$vm_version
+skip_upload=${skip_upload:-"yes"}
 
-if [[ $vm_maj_ver -ge 7 ]]; then
-	distro="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-7/compose/Server/x86_64/os/"
-	optional="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-7/compose/Server/x86_64/os/"
-	iperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/iperf-2.0.4-1.el7.rf.x86_64.rpm"
-	netperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/netperf-2.6.0-1.el7.x86_64.rpm"
+echo "Please provide the FQDN (hostname) of the target system (For example,netqe9.knqe.lab.eng.bos.redhat.com):"
+read target_system
+
+if [[ -z $COMPOSE ]]; then
+	echo "Please provide the target RHEL minor version for the target system (For example, 8.5):"
+	read RHEL_VER
+	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
 else
-	distro="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-6/compose/Server/x86_64/os/"
-	optional="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-6/compose/Server/x86_64/os/"
-	iperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/iperf-2.0.5-11.el6.x86_64.rpm"
-	netperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/netperf-2.6.0-1.el6.rf.x86_64.rpm"
+	echo "You have specified compose $COMPOSE for use"
+	export COMPOSE=$(/home/ralongi/gvar/bin/gvar $COMPOSE)
 fi
 
-# install EPEL repo
-timeout 120s bash -c "until ping -c3 dl.fedoraproject.org; do sleep 10; done"	
-if [[ $rhel_version -eq 6 ]]; then
-	rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+echo "Provisioning $target_system with compose $COMPOSE"
+
+# Provison target system
+/home/ralongi/github/tools/scripts/provision.sh $target_system $COMPOSE
+total_sleep=20
+echo "Sleeping $total_sleep minutes while system is being provisioned..."
+count=1
+
+while [[ $count -le $total_sleep ]]; do
+	sleep 1m
+	echo "Time remaining: $((( $total_sleep - $count ))) minutes"
+	let count++
+done
+
+# Test SSH to target system
+while [ 1 ]; do
+	ssh -q -o "StrictHostKeyChecking no" root@$target_system exit
+	if [[ $? -ne 0 ]]; then
+		echo "SSH to $target_system was unsuccessful.  Sleeping 2 minutes and will try again..."
+		sleep 2m
+	else
+		echo "SSH to $target_system was successful."
+		break
+	fi
+done
+
+TERM=xterm sshpass -p 100yard- ssh -X -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$target_system << 'EOF'
+
+RHEL_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d \" -f 2 | cut -d . -f 1)
+if [[ $RHEL_VERSION -lt 8 ]]; then
+	if [[ -s /etc/yum.repos.d/beaker-Server.repo ]]; then
+		repo_file="/etc/yum.repos.d/beaker-Server.repo"
+	elif [[ -s /etc/yum.repos.d/beaker-Client.repo ]]; then
+		repo_file="/etc/yum.repos.d/beaker-Client.repo"
+	fi
 else
-	rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+	repo_file="/etc/yum.repos.d/beaker-BaseOS.repo"
 fi
 
-# install sshpass
+yum -y install git
+mkdir /root/git
+pushd /root/git && git clone https://github.com/ctrautma/VSPerfBeakerInstall
+chmod +x ./VSPerfBeakerInstall/vmcreate.sh
+popd
+MYCOMPOSE=$(cat $repo_file | grep baseurl | cut -c9-)
+sudo sh -c 'echo 1 > /proc/sys/vm/overcommit_memory'
+########## temporary workaround for problem with vmcreate.sh ##########
+pushd /root/git/VSPerfBeakerInstall
+git reset --hard d30ceb6555c68bc86499ffe30587fe2c006c259c
+chmod +x ./vmcreate.sh
+sleep 3
+popd
+#######################################################################
+/root/git/VSPerfBeakerInstall/vmcreate.sh -d -c 3 -l $MYCOMPOSE
+sleep 480
+SECONDS=0
+while [ $SECONDS -lt 1800 ]; do
+	if [[ $(virsh list --all | grep master | awk '{print $NF}') != "off" ]]; then
+		sleep 15
+	else
+		break
+	fi
+done
+sleep 2m
+image_size=$(ls -alth /var/lib/libvirt/images/master.qcow2 | awk '{print $5}')
+rlLog "Size of master.qcow2 image file that was created: $image_size"
+if [ ! $(echo "$image_size" | grep G) ]; then
+	echo "Guest image file size is only $image_size.  Printing out qemu master.log..."
+	echo "Current time: $(date +'%D %r')"
+	echo "qemu master.log file info: $(ls -lth /var/log/libvirt/qemu/master.log)"
+	cat /var/log/libvirt/qemu/master.log
+fi
+
+source /etc/os-release
+new_image_name=rhel"$VERSION_ID".qcow2
+/bin/cp -f /var/lib/libvirt/images/master.qcow2 /var/lib/libvirt/images/$new_image_name
+
+epel_install()
+{
+	local rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
+	local arch=$(uname -m)
+
+	if rpm -q epel-release 2>/dev/null; then
+		echo "EPEL repo is already installed"
+		return 0
+	elif [[ ! $(rpm -q https://dl.fedoraproject.org/pub/epel/epel-release-latest-$rhel_version.noarch.rpm) ]]; then
+		rlLog "EPEL package https://dl.fedoraproject.org/pub/epel/epel-release-latest-$rhel_version.noarch.rpm is not available"
+		rlLog "Skipping EPEL installation..."
+		return 0
+	else
+		echo "Installing EPEL repo..."
+		timeout 120s bash -c "until ping -c3 dl.fedoraproject.org; do sleep 10; done"
+		yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-$rhel_version.noarch.rpm
+	fi
+}
+
+epel_install
 yum -y install sshpass
 
-#############################################################
-echo "
-distro=$distro
-vm=$vm
-"
-#############################################################
+yes "y" | ssh-keygen -o -t ed25519 -f ~/.ssh/id_rsa -N ""
+ssh -q -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com exit
+if [[ $? -ne 0 ]]; then 
+    sshpass -p 100yard- ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@netqe-infra01.knqe.lab.eng.bos.redhat.com
+    wait
+    sleep 3
+fi
 
-#    - tidy up any prior installation of this VM
-
-virsh destroy $vm
-virsh undefine $vm --managed-save
-virsh vol-delete --pool default /var/lib/libvirt/images/$vm.qcow2
-virsh pool-refresh default
-#############################################################
-cat << KS_CFG > ks.cfg
-
-#    Kickstart file automatically generated by anaconda.
-
-
-#version=DEVEL
-install
-url --url=$distro
-lang en_US.UTF-8
-keyboard us
-network --onboot yes --device eth0 --bootproto dhcp
-timezone --utc America/New_York
-rootpw redhat
-selinux --enforcing
-authconfig --enableshadow --passalgo=sha512
-firewall --service=ssh
-reboot
-
-#    The following is the partition information you requested
-#    Note that any partitions you deleted are not expressed
-#    here so unless you clear all partitions first, this is
-#    not guaranteed to work
-
-zerombr
-clearpart --linux --drives=vda
-
-part pv.252002 --grow --size=500
-volgroup vg --pesize=32768 pv.252002
-logvol swap --name=lv_swap --vgname=vg --grow --size=2000 --maxsize=4000
-logvol / --fstype=ext4 --name=lv_root --vgname=vg --grow --size=1024 --maxsize=51200
-part /boot --fstype=ext4 --size=500
-
-bootloader --location=mbr --timeout=5 --append="crashkernel=auto rhgb quiet console=ttyS0,115200"
-
-%packages
-@base
-@core
--@X Window System
--@development tools
-%end
-
-%post
-# open console output
-cat /etc/grub2.cfg | sed 's/quiet//g' | tee /etc/grub2.cfg
-
-# add repos to do installation
-cat >/etc/yum.repos.d/beaker-Server.repo <<REPO
-[beaker-Server]
-name=beaker-Server
-baseurl=$DISTRO
-enabled=1
-gpgcheck=0
-skip_if_unavailable=1
-REPO
-
-cat >/etc/yum.repos.d/infra01-server.repo <<REPO
-[infra01-server]
-name=infra01-server
-baseurl=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo
-enabled=1
-gpgcheck=0
-skip_if_unavailable=1
-REPO
-
-# setup ifcfg-eth0
-cat >/etc/sysconfig/network-scripts/ifcfg-eth0 <<ETH0
-DEVICE="eth0"
-BOOTPROTO="dhcp"
-ONBOOT="yes"
-TYPE="Ethernet"
-USERCTL="yes"
-PEERDNS="yes"
-IPV6INIT="no"
-PERSISTENT_DHCLIENT="1"
-ETH0
-ip link set eth0 up
-sleep 5
-rm -rf "/etc/udev/rules.d/$(ls /etc/udev/rules.d | grep persistent-net)"
-
-# install packages
-rpm -ivh $netperf_distro
-rpm -ivh $iperf_distro
-
-%end
-KS_CFG
-
-#############################################################
-pwd=$(pwd)
-virt-install --name $vm --vcpus 2 --ram 2048 --vnc --location $distro --disk path=/var/lib/libvirt/images/$vm.qcow2,format=qcow2,size=8,bus=virtio --network bridge=virbr0,model=virtio --initrd-inject=$pwd/ks.cfg --extra-args "ks=file:/ks.cfg"
-#############################################################
-
-# shut down the VM
-virsh destroy $vm
-sleep 5
-
-# copy the qcow2 image file to infra01 server
-sshpass -p 100yard- scp /var/lib/libvirt/images/$vm.qcow2 root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/vm
+if [[ $skip_upload != "yes ]]; then
+	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com "ls /home/www/html/share/vms/OVS/$new_image_name"
+	if [[ $? -ne 0 ]]; then
+		echo "Uploading $new_image_name..."
+		scp -o "StrictHostKeyChecking no" /var/lib/libvirt/images/$new_image_name root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/share/vms/OVS/
+	else
+		echo "/home/www/html/share/vms/OVS/$new_image_name already exists on netqe-infra01.knqe.lab.eng.bos.redhat.com so skipping automatic file upload."
+	fi
+else
+	echo "You have elected to skip upload of image file."
+fi
 
 exit
 SCRIPT
 
-bash vm_img_tmp.sh
-rm -rf vm_img_tmp.sh
-
 EOF
-

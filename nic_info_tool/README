@@ -1,0 +1,59 @@
+Tool to report back detailed information on all NICs in the target system.
+
+Installation: 
+Download "install" file to a local directory (typically your home directory but it doesn't matter) and run ./install (you will need to run "chmod +x install" first).  This will create a directory containing the necessary script file(s).
+
+Usage: ./report_nic_info.sh <FQDN of target_host> [root pw]
+Examples: ./report_nic_info.sh netqe20.knqe.lab.eng.bos.redhat.com 100yard-
+
+Note: Password "100yard-" will be used by default if no password is provided.  This default password can be changed by the user by modifying the "default_password" variable in report_nic_info.sh.
+
+Sample output:
+
+NIC and Interface list for netqe20.knqe.lab.eng.bos.redhat.com:
+Note that only physical interfaces are listed
+
+The management interface for netqe20.knqe.lab.eng.bos.redhat.com is: eno1
+
+---------------------------------------------------------------------
+Interface: enp131s0f0
+
+    Driver: ixgbe
+    Driver version: 4.18.0-305.17.1.el8_4.x86_64
+    Firmware version: 0x80000482
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 0000:83:00.0
+    Speed: Unknown Mbps
+    Link detected: no
+---------------------------------------------------------------------
+Interface: enp131s0f1
+
+    Driver: ixgbe
+    Driver version: 4.18.0-305.17.1.el8_4.x86_64
+    Firmware version: 0x80000482
+    Card:  Intel Corporation Ethernet Controller 10G X550T (rev 01)
+    PCI Slot: 0000:83:00.1
+    Speed: Unknown Mbps
+    Link detected: no
+---------------------------------------------------------------------
+Interface: enp6s0f0
+
+    Driver: i40e
+    Driver version: 4.18.0-305.17.1.el8_4.x86_64
+    Firmware version: 8.10
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 0000:06:00.0
+    Speed: Unknown Mbps
+    Link detected: no
+---------------------------------------------------------------------
+Interface: enp6s0f1
+
+    Driver: i40e
+    Driver version: 4.18.0-305.17.1.el8_4.x86_64
+    Firmware version: 8.10
+    Card:  Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (rev 01)
+    PCI Slot: 0000:06:00.1
+    Speed: Unknown Mbps
+    Link detected: no
+---------------------------------------------------------------------
+

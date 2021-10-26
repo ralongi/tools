@@ -69,14 +69,14 @@ fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS216_21H_RHEL8
+	export RPM_OVS=$OVS216_21I_RHEL8
 else
 	export RPM_OVS=$RPM_OVS
 fi
 
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21H_RHEL8
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_21I_RHEL8
 else
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
 fi
@@ -115,7 +115,7 @@ export RPM_DPDK_TOOLS=$RPM_DPDK_TOOLS_RHEL8
 #export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN216_21H_RHEL8 
+export RPM_OVN=$OVN216_21I_RHEL8 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -134,7 +134,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh i40e
 #./exec_topo.sh enic
 #./exec_topo.sh mlx5_core cx5
-./exec_topo.sh mlx5_core cx6
+#./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
 #./exec_topo.sh nfp
@@ -145,16 +145,13 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_ovn_memory_leak_soak.sh
 
 ###############################################################################
-# set VM_IMAGE value to full URL for perf_ci test
-# may need to create proper image for westford or point to bj image
-# Best to just clone jobs from previous release and not use this automated method
-export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel8.4.qcow2
+#export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel8.4.qcow2
 #./exec_perf_ci.sh cx5
-#./exec_perf_ci_endurance.sh cx5
-#./exec_perf_ci.sh cx6
-#./exec_perf_ci_endurance.sh cx6
+#./exec_endurance.sh cx5
+./exec_perf_ci.sh cx6
+./exec_endurance.sh cx6
 #./exec_perf_ci_pensando_sriov.sh
-export VM_IMAGE="rhel8.4.qcow2"
+#export VM_IMAGE="rhel8.4.qcow2"
 ###############################################################################
 
 # Conntrack firewall rules Jiying Qiu (not related to driver)

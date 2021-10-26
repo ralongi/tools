@@ -11,7 +11,7 @@ make tag > /tmp/bkrtag.tmp
 if [[ $? -eq 0 ]]; then 
 	echo "make tag command PASSED"; 
 else 
-	if [[ $(grep 'is not an ancestor of HEAD' /tmp/bkrtag.tmp; then
+	if [[ $(grep 'is not an ancestor of HEAD' /tmp/bkrtag.tmp) ]]; then
 		tag=$(grep 'current tag' /tmp/bkrtag.tmp | awk '{print $4}')
 		echo "Got an error that $tag is not an ancestor of HEAD.  Trying to merge it now..."
 		git merge -m "" $tag HEAD

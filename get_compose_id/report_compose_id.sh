@@ -45,5 +45,5 @@ if [[ $? -ne 0 ]]; then
     exit
 fi
 
-cat get_compose_id.sh | sshpass -p $password ssh -q -o "StrictHostKeyChecking= no" root@$target 'bash -'
+cat /home/ralongi/github/tools/get_compose_id/get_compose_id.sh | sshpass -p $password ssh -q -o "StrictHostKeyChecking= no" root@$target 'bash -'
 

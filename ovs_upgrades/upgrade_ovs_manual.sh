@@ -11,6 +11,8 @@ else
 	pkg_cmd="dnf"
 fi
 
+skip_upload=${skip_upload:-"no"}
+
 . /tmp/package_list.sh
 
 FDP_RELEASE=${FDP_RELEASE:-""}
@@ -323,7 +325,38 @@ wait
 $pkg_cmd -y install $STARTING_RPM_OVS
 wait
 
+echo "" | tee -a $RESULTS_FILE
+echo "=============================== TEST RESULTS ==============================" | tee -a $RESULTS_FILE
+
+#sed -i 's/openvswitch:hugetlbfs/root:root/g' /etc/sysconfig/openvswitch
+#sleep 3
+
+OVS_USER_ID_SETTING=$(grep OVS_USER_ID /etc/sysconfig/openvswitch | awk -F "=" '{print $NF}' | tr -d '"')
+echo "OVS_USER_ID setting in /etc/sysconfig/openvswitch: $OVS_USER_ID_SETTING" | tee -a $RESULTS_FILE
+if [[ $OVS_USER_ID_SETTING != "openvswitch:hugetlbfs" ]]; then
+	echo "WARN: OVS_USER_ID setting in /etc/sysconfig/openvswitch is not 'openvswitch:hugetlbfs'" | tee -a $RESULTS_FILE
+fi
+
+expected_user_id=$(echo $OVS_USER_ID_SETTING | awk -F":" '{print $1}')
+expected_group_id=$(echo $OVS_USER_ID_SETTING | awk -F":" '{print $2}')
+
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == "openvswitch" ]] && [[ $GROUP == "openvswitch" ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (before service start) are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (before service start) are NOT correct" | tee -a $RESULTS_FILE
+fi
+
 systemctl enable openvswitch && systemctl start openvswitch
+
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == $expected_user_id ]] && [[ $GROUP == $expected_group_id ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after service start) are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after service start) are NOT correct" | tee -a $RESULTS_FILE
+fi
 
 starting_ovs_pkg=$(rpm -qa | grep openvswitch | grep -v selinux)
 ovs-vsctl add-br $ovsbr
@@ -332,10 +365,6 @@ add_flows $ovsbr > /dev/null
 num_flows1=$(ovs-ofctl dump-flows $ovsbr | wc -l)
 
 pid1=$(systemctl status openvswitch | grep PID | awk '{print $3}')
-
-
-echo "" | tee -a $RESULTS_FILE
-echo "=============================== TEST RESULTS ==============================" | tee -a $RESULTS_FILE
 	
 $pkg_cmd -y update $RPM_OVS
 sleep 2
@@ -347,6 +376,22 @@ if [[ "$starting_ovs_pkg" == "$ending_ovs_pkg" ]]; then
 	echo "FAIL: OVS package was not upgraded" | tee -a $RESULTS_FILE
 else
 	echo "PASS: OVS package was successfully upgraded" | tee -a $RESULTS_FILE
+fi
+
+OVS_USER_ID_SETTING=$(grep OVS_USER_ID /etc/sysconfig/openvswitch | awk -F "=" '{print $NF}' | tr -d '"')
+echo "OVS_USER_ID setting in /etc/sysconfig/openvswitch: $OVS_USER_ID_SETTING" | tee -a $RESULTS_FILE
+if [[ $OVS_USER_ID_SETTING != "openvswitch:hugetlbfs" ]]; then
+	echo "WARN: OVS_USER_ID setting in /etc/sysconfig/openvswitch is not 'openvswitch:hugetlbfs'" | tee -a $RESULTS_FILE
+fi
+
+expected_user_id=$(echo $OVS_USER_ID_SETTING | awk -F":" '{print $1}')
+expected_group_id=$(echo $OVS_USER_ID_SETTING | awk -F":" '{print $2}')
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == $expected_user_id ]] && [[ $GROUP == $expected_group_id ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after package update) are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after package update) are NOT correct" | tee -a $RESULTS_FILE
 fi
 
 echo ""  | tee -a $RESULTS_FILE
@@ -376,6 +421,14 @@ if [[ $num_flows1 == $num_flows3 ]]; then
 	echo "PASS: All $num_flows3 flows intact" | tee -a $RESULTS_FILE
 else
 	echo "FAIL: Flows are not intact" | tee -a $RESULTS_FILE
+fi
+
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == $expected_user_id ]] && [[ $GROUP == $expected_group_id ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after service reload) are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after service reload) are NOT correct" | tee -a $RESULTS_FILE
 fi
 
 # Test to make sure direct upgrade to different stream package fails
@@ -414,6 +467,14 @@ else
 	fi
 fi
 
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == $expected_user_id ]] && [[ $GROUP == $expected_group_id ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch are NOT correct" | tee -a $RESULTS_FILE
+fi
+
 # test OVS stream change with wrapper file available
 sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/mylocalrepo.repo
 
@@ -422,34 +483,56 @@ systemctl restart openvswitch
 get_ovs_stream
 get_ovs_running_version
 
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == $expected_user_id ]] && [[ $GROUP == $expected_group_id ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after service restart) are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch (after service restart) are NOT correct" | tee -a $RESULTS_FILE
+fi
+
 echo ""  | tee -a $RESULTS_FILE
 echo "TEST: Verify that openvswitch stream change with wrapper file is successful" | tee -a $RESULTS_FILE
 if [[ $ovs_stream == $ovs_running_version_short ]]; then
 	echo "PASS: OVS stream change was successful" | tee -a $RESULTS_FILE
 else
 	echo "FAIL: OVS stream change was NOT successful" | tee -a $RESULTS_FILE
+fi
+
+USER=$(stat -c '%U' /var/log/openvswitch)
+GROUP=$(stat -c '%G' /var/log/openvswitch)
+if [[ $USER == $expected_user_id ]] && [[ $GROUP == $expected_group_id ]]; then
+	echo "PASS: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch are correct" | tee -a $RESULTS_FILE
+else
+	echo "FAIL: USER ($USER) and GROUP ($GROUP) values for /var/log/openvswitch are NOT correct" | tee -a $RESULTS_FILE
 fi	
 
 echo ""  | tee -a $RESULTS_FILE
 echo ""  | tee -a $RESULTS_FILE
 
 total_failures=$(grep FAIL $RESULTS_FILE | wc -l)
+total_warnings=$(grep WARN $RESULTS_FILE | wc -l)
 
-echo "TOTAL FAILURES: $total_failures" | tee -a $RESULTS_FILE 
+echo "TOTAL FAILURES: $total_failures" | tee -a $RESULTS_FILE
+echo "TOTAL WARNINGS: $total_warnings" | tee -a $RESULTS_FILE 
 
-if [[ $total_failures -eq 0 ]]; then
-	echo "Overall test result: PASS" | tee -a $RESULTS_FILE
-else
+if [[ $total_failures -gt 0 ]]; then
 	echo "Overall test result: FAIL" | tee -a $RESULTS_FILE
+elif [[ $total_failures -eq 0 ]] && [[ $total_warnings -gt 0 ]];then
+	echo "Overall test result: WARN" | tee -a $RESULTS_FILE
+else
+	echo "Overall test result: PASS" | tee -a $RESULTS_FILE
 fi
 echo "===========================================================================" | tee -a $RESULTS_FILE
 
 FDP_RELEASE=$(echo $FDP_RELEASE | tr '[:upper:]' '[:lower:]')
 
-if [[ ! $(ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com ls /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE) ]]; then
-	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
+if [[ $skip_upload != "yes" ]]; then
+	if [[ ! $(ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com ls /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE) ]]; then
+		ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com mkdir /home/www/html/ovs_upgrade_test_results/$FDP_RELEASE
+	fi
+	scp -o "StrictHostKeyChecking no" $RESULTS_FILE root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/$FDP_RELEASE/
+	RESULTS_FILE=$(echo $RESULTS_FILE | awk -F "/" '{print $NF}')
+	echo "Results file URL: http://netqe-infra01.knqe.lab.eng.bos.redhat.com/ovs_upgrade_test_results/$FDP_RELEASE/$RESULTS_FILE"
 fi
-scp -o "StrictHostKeyChecking no" $RESULTS_FILE root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/ovs_upgrade_test_results/$FDP_RELEASE/
-RESULTS_FILE=$(echo $RESULTS_FILE | awk -F "/" '{print $NF}')
-echo "Results file URL: http://netqe-infra01.knqe.lab.eng.bos.redhat.com/ovs_upgrade_test_results/$FDP_RELEASE/$RESULTS_FILE"
 

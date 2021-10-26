@@ -1,0 +1,24 @@
+
+# FDP fdp_release Packages
+
+OVS_SELINUX_fdp_release_RHEL7=ovs_selinux_rhel7
+
+OVS_SELINUX_fdp_release_RHEL8=ovs_selinux_rhel8
+
+OVS213_fdp_release_RHEL8=ovs_213_rhel8
+
+OVS215_fdp_release_RHEL8=ovs_215_rhel8
+
+OVS216_fdp_release_RHEL8=ovs_216_rhel8
+
+OVN_COMMON_213_fdp_release_RHEL8=ovn_common_213_rhel8
+
+OVN_CENTRAL_213_fdp_release_RHEL8=ovn_central_213_rhel8
+
+OVN_HOST_213_fdp_release_RHEL8=ovn_host_213_rhel8
+
+OVN_COMMON_2021_fdp_release_RHEL8=ovn_common_2021_rhel8
+
+OVN_CENTRAL_2021_fdp_release_RHEL8=ovn_central_2021_rhel8
+
+OVN_HOST_2021_fdp_release_RHEL8=ovn_host_2021_rhel8

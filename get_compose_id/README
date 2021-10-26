@@ -1,0 +1,15 @@
+Tool to report back compose ID and kernel version currently running on the target system.
+
+Installation: 
+Download "install" file to a local directory (typically a "tools" directory under your home directory but it doesn't matter) and run ./install (you will need to run "chmod +x install" first).  This will create a directory containing the necessary script file(s).
+
+Usage: ./report_compose_id.sh <FQDN of target_host> [root pw]
+Examples: ./report_compose_id.sh netqe20.knqe.lab.eng.bos.redhat.com 100yard-
+
+Note: Password "100yard-" will be used by default if no password is provided.  This default password can be changed by the user by modifying the "default_password" variable in report_nic_info.sh.
+
+Sample output:
+
+Compose ID on netqe20.knqe.lab.eng.bos.redhat.com is: RHEL-8.4.0-updates-20210914.1
+Running kernel version is: 4.18.0-305.17.1.el8_4.x86_64
+

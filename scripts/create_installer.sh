@@ -3,7 +3,6 @@
 # script to create installer file for a given utility/tool
 
 tool_path=$1
-tool_name=$(echo $tool_path | awk -F "/" '{print $NF}')
 
 if [[ $# -lt 1 ]]; then
 	echo "Please provide the full path to the target tool directory"
@@ -11,6 +10,8 @@ if [[ $# -lt 1 ]]; then
 	echo "Example: $0 ~/tools/my_utility_dir"
 	exit 0
 fi
+
+tool_name=$(echo $tool_path | awk -F "/" '{print $NF}')
 
 sedeasy ()
 {
@@ -26,8 +27,12 @@ sedeasy "tool_name_temp" "$tool_name" ~/installers/$tool_name/install.sh
 cat ~/installers/$tool_name/$tool_name.tar.xz >> ~/installers/$tool_name/install.sh
 chmod +x ~/installers/$tool_name/install.sh
 mv -f ~/installers/$tool_name/install.sh ~/installers/$tool_name/install
+pushd ~/installers/$tool_name/
+file_list=$(ls | egrep -iv 'install|README')
+for i in $file_list; do rm -f $i; done
+popd > /dev/null
 popd > /dev/null
 
 echo ""
-echo "Installer file for $tool_name is here: ~/installers/$tool_name/install"
+echo "Installer (install) and README files for $tool_name are here: ~/installers/$tool_name/"
 

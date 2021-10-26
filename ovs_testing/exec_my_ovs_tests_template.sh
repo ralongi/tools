@@ -134,7 +134,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh i40e
 #./exec_topo.sh enic
 #./exec_topo.sh mlx5_core cx5
-./exec_topo.sh mlx5_core cx6
+#./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
 #./exec_topo.sh nfp
@@ -145,16 +145,13 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_ovn_memory_leak_soak.sh
 
 ###############################################################################
-# set VM_IMAGE value to full URL for perf_ci test
-# may need to create proper image for westford or point to bj image
-# Best to just clone jobs from previous release and not use this automated method
-export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
+#export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
 #./exec_perf_ci.sh cx5
-#./exec_perf_ci_endurance.sh cx5
-#./exec_perf_ci.sh cx6
-#./exec_perf_ci_endurance.sh cx6
+#./exec_endurance.sh cx5
+./exec_perf_ci.sh cx6
+./exec_endurance.sh cx6
 #./exec_perf_ci_pensando_sriov.sh
-export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
+#export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
 ###############################################################################
 
 # Conntrack firewall rules Jiying Qiu (not related to driver)
