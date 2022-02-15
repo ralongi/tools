@@ -22,7 +22,7 @@ wget -O /etc/yum.repos.d/beaker-client.repo http://download.lab.bos.redhat.com/b
 (
 	echo [beaker-harness]
 	echo name=beaker-harness
-	echo baseurl=http://download.eng.bos.redhat.com/beakerrepos/harness-testing/RedHatEnterpriseLinux7/
+	echo baseurl=http://download.eng.bos.redhat.com/beakerrepos/harness-testing/RedHatEnterpriseLinux8/
 	echo enabled=1
 	echo gpgcheck=0
 	echo skip_if_unavailable=1
@@ -30,6 +30,8 @@ wget -O /etc/yum.repos.d/beaker-client.repo http://download.lab.bos.redhat.com/b
 
 # install beaker related packages
 yum -y install rhts-test-env beakerlib rhts-devel rhts-python beakerlib-redhat.noarch beaker-client beaker-redhat
+
+source /mnt/tests/kernel/networking/common/include.sh
 
 # install target packages (example below)
 yum -y install kernel-networking-common kernel-networking-openvswitch-common  kernel-networking-openvswitch-memory_leak_soak

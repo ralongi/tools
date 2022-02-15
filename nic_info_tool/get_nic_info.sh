@@ -3,13 +3,13 @@
 # Script to get info on interfaces on target host
 
 if [[ ! $(which lspci) ]]; then yum -y install pciutils; fi
-rm -f /home/nic_info.txt
+rm -f ~/nic_info.txt
 mgmt_iface=$(ip route | awk '/default/{match($0,"dev ([^ ]+)",M); print M[1]; exit}')
-echo "" >> /home/nic_info.txt
-echo "NIC and Interface list for $(hostname):" >> /home/nic_info.txt
-echo -e "Note that only physical interfaces are listed\n" >> /home/nic_info.txt
-echo -e "The management interface for $(hostname) is: $mgmt_iface\n" >> /home/nic_info.txt
-echo "---------------------------------------------------------------------" >> /home/nic_info.txt
+echo "" >> ~/nic_info.txt
+echo "NIC and Interface list for $(hostname):" >> ~/nic_info.txt
+echo -e "Note that only physical interfaces are listed\n" >> ~/nic_info.txt
+echo -e "The management interface for $(hostname) is: $mgmt_iface\n" >> ~/nic_info.txt
+echo "---------------------------------------------------------------------" >> ~/nic_info.txt
 
 for i in $(ls /sys/class/net | egrep -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
 	driver=$(ethtool -i $i | grep driver | awk '{print $2}')
@@ -21,16 +21,16 @@ for i in $(ls /sys/class/net | egrep -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
 	speed=$(ethtool $i | grep Speed | awk '{print $2}' | tr -d '[a-z A-Z /]')
 	if [[ $(echo $speed | grep '!') ]]; then speed="Unknown"; fi
 	link_detected=$(ethtool $i | grep 'Link detected' | awk '{print $NF}')
-	echo -e "Interface: $i\n" >> /home/nic_info.txt
-	echo "    Driver: $driver" >> /home/nic_info.txt
-	echo "    Driver version: $driver_version" >> /home/nic_info.txt
-	echo "    Firmware version: $firmware_version" >> /home/nic_info.txt
-	echo "    Card: $nic_name" >> /home/nic_info.txt
-	echo "    PCI Slot: $pci_slot" >> /home/nic_info.txt
-	echo "    Speed: $speed Mbps" >> /home/nic_info.txt
-	echo "    Link detected: $link_detected" >> /home/nic_info.txt
-	echo "---------------------------------------------------------------------" >> /home/nic_info.txt
+	echo -e "Interface: $i\n" >> ~/nic_info.txt
+	echo "    Driver: $driver" >> ~/nic_info.txt
+	echo "    Driver version: $driver_version" >> ~/nic_info.txt
+	echo "    Firmware version: $firmware_version" >> ~/nic_info.txt
+	echo "    Card: $nic_name" >> ~/nic_info.txt
+	echo "    PCI Slot: $pci_slot" >> ~/nic_info.txt
+	echo "    Speed: $speed Mbps" >> ~/nic_info.txt
+	echo "    Link detected: $link_detected" >> ~/nic_info.txt
+	echo "---------------------------------------------------------------------" >> ~/nic_info.txt
 done
 
-more /home/nic_info.txt
-
+more ~/nic_info.txt
+https://beaker.engineering.redhat.com/jobs/6203942#recipe-11312017-results

@@ -1,11 +1,11 @@
 # Helpful links:
-pbench.perf.lab.eng.bos.redhat.com/agent/installation.html
-http://pbench.perf.lab.eng.bos.redhat.com/agent/bootstrapping.html
-http://pbench.perf.lab.eng.bos.redhat.com/agent/installation.html#pbench:installing-using-ansible
+http://pbench.perf.lab.eng.bos.redhat.com/docs/agent/installation.html
+http://pbench.perf.lab.eng.bos.redhat.com/docs/agent/bootstrapping.html
+http://pbench.perf.lab.eng.bos.redhat.com/docs/agent/installation.html#pbench:installing-using-ansible
 
 ##### Run commands below on Ansible laptop (assuming perf-dept repo is already present):
 
-pushd ~/perf-dept
+pushd ~/pbench
 git checkout master
 git remote update
 git rebase
@@ -37,7 +37,8 @@ systemctl start tuned
 
 # select driver to use, pick one of the ifaces for that driver (on system a33: p1p1 for i40e, p8p1 for mlx5_core)
 #NIC1=p1p1 # for i40e
-NIC1=ens1f0 # for i40e
+NIC1=enp6s0f0
+#NIC1=ens1f0 # for i40e
 #NIC1=p8p1 # for mlx5_core
 #NIC1=ens8f0 # for mlx5_core
 NIC1_PCI_ADDR=$(ethtool -i $NIC1 | grep 'bus-info' | awk '{print $NF}')
@@ -78,11 +79,15 @@ yum -y install mlocate && updatedb
 ##### Run commands below on Ansible laptop
 
 copy ssh keys from laptop to target system for both regular user and root on laptop:
-    ssh-copy-id -f root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
-    sudo ssh-copy-id -f root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
+ssh-copy-id -f root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
+sudo ssh-copy-id -f root@wsfd-advnetlab33.anl.lab.eng.bos.redhat.com
     
 # Run repo bootstrap playbook to install necessary repos on target system (make sure repo-bootstrap.hosts has correct info):
-    inv=/home/ralongi/.config/Inventory/repo-bootstrap.hosts
+	[ralongi@ralongi Inventory]$ cat /home/ralongi/pbench/agent/ansible/Inventory/repo-bootstrap.hosts 
+	[servers]
+	netqe21.knqe.lab.eng.bos.redhat.com
+
+    inv=/home/ralongi/pbench/agent/ansible/Inventory/repo-bootstrap.hosts
     pushd ~/perf-dept/sysadmin/Ansible && ansible-playbook --user=root -i ${inv} repo-bootstrap.yml && popd
     
 # sample myhosts.inv file that works:
@@ -123,7 +128,7 @@ On laptop:
 	ansible-galaxy collection install pbench.agent # (updates any roles)
 	
 # Run pbench_agent installation playbook (playbooks are located in /home/ralongi/git/pbench/agent/ansible/)
-	ansible-playbook -i ~/.config/Inventory/myhosts.inv ~/git/pbench/agent/ansible/pbench_agent_install.yml
+	ansible-playbook -i ~/perf-dept/sysadmin/Inventory/myhosts.inv ~/pbench/agent/ansible/pbench_agent_install.yml
 	
 	# if above command fails due to ssh error, run command below instead
 	ansible-playbook -u root -i ~/.config/Inventory/myhosts.inv /home/ralongi/git/pbench/agent/ansible/pbench_agent_install.yml
@@ -137,16 +142,16 @@ source /etc/profile.d/pbench-agent.sh && pbench-register-tool-set
 # i40e
 pbench-trafficgen --devices=0000:3b:00.0,0000:3b:00.1 --frame-size=64 --traffic-direction=unidirectional --max-loss-pct=30 --num-flows=128 --rate=0.05 --samples=1 --one-shot --validation-runtime=10
 
+#pbench-trafficgen --devices=0000:06:00.0,0000:06:00.1 --frame-size=64 --traffic-direction=unidirectional --max-loss-pct=30 --num-flows=128 --rate=0.05 --samples=1 --one-shot --validation-runtime=10
+
 # mlx5_core
 pbench-trafficgen --devices=0000:d8:00.0,0000:d8:00.1 --frame-size=64 --traffic-direction=unidirectional --max-loss-pct=30 --num-flows=128 --rate=0.05 --samples=1 --one-shot --validation-runtime=10
 
+cp /opt/trafficgen/launch-trex.sh /opt/trafficgen/launch-trex_orig.sh
 sed -i 's/insecure_curl=0/insecure_curl=1/g' /opt/trafficgen/install-trex.sh
 #sed -i 's/trex_ver="v2.82"/trex_ver="v2.72"/g' /opt/trafficgen/install-trex.sh
-cp /opt/trafficgen/launch-trex.sh /opt/trafficgen/launch-trex_orig.sh
-
 
 # https://privatebin-it-iso.int.open.paas.redhat.com/?13f6ace6ec7cd3da#86Xk8mvR9sUKmorn7G88gXQ7resMkt92noFQ3mswwTTV
-
 
 ssh-keygen 
 ssh-copy-id root@wsfd-advnetlab34.anl.lab.eng.bos.redhat.com

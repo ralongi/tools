@@ -1,0 +1,20 @@
+216 is greater than 213
+~/github/tools/ovs_testing ~/github/tools/ovs_testing
+latest_compose_id=RHEL-8.4.0-updates-20211026.0
+Checking to see if a COMPOSE has been specified...
+
+The latest stable RHEL 8.4 compose available in beaker is: RHEL-8.4.0-updates-20211026.0
+The kernel associated with compose RHEL-8.4.0-updates-20211026.0 is: kernel-4.18.0-305.25.1.el8_4
+
+Using compose: RHEL-8.4.0-updates-20211026.0
+~/github/tools/ovs_testing ~/github/tools/ovs_testing
+FDP_STREAM2 is now set to 216
+FDP Stream is: 2.16
+RPM_OVS: 
+RPM_OVN_CENTRAL: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-central-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_HOST: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-host-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_COMMON: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_CENTRAL: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-central-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_HOST: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-host-21.12.0-11.el8fdp.x86_64.rpm
+~/github/tools/ovs_testing
+~/github/tools/ovs_testing

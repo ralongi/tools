@@ -55,31 +55,31 @@ if [[ $arch == "x86_64" ]]; then
 
 # To build stable system for RHEL7 x86_64
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd"
 
 # To build stable system for RHEL7 ppc64le:
 
 NOTE: For repo "rhel-7-for-power9-fast-datapath-rpms", use test profile "stable-rhel-alt-7-server"
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd"
 
 Note: use test profile "stable-rhel-alt-7-server" with above ppc64le command for RHEL ALT streams.
 
 # To build stable system for RHEL7 s390x:
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd"
 
 # To build stable system for RHEL8 x86_64
 
-bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=x86_64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd" --task '! dnf -y install libibverbs'
+bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=x86_64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task '! dnf -y install libibverbs'
 
 # To build stable system for RHEL8 ppc64le
 
-bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=ppc64le --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task '! systemctl restart tpsd' --task "! dnf -y install libibverbs"
+bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=ppc64le --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task '! systemctl restart tpsd' --task "! dnf -y install libibverbs"
 
 # To build stable system for RHEL8 s390x
 
-bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=s390x --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
+bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=s390x --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
 
 # to install selinux and libunbound packages
 
@@ -493,16 +493,25 @@ Run: oats-apply-test-profile -b -y
 
 # To clean up and set up for next test (and run manual test if necessary)
 
-errata=2021:80100
+errata=2022:86839
 
-# x86_64
+# x86_64, ppc64le, s390x
 
 for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
 for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
 errata=$errata
-repo=fast-datapath-for-rhel-8-x86_64-rpms
+arch=$(uname -m)
+if [[ $arch == "x86_64" ]]; then
+	repo=fast-datapath-for-rhel-8-x86_64-rpms
+elif [[ $arch == "ppc64le" ]]; then
+	repo=fast-datapath-for-rhel-8-ppc64le-rpms
+elif [[ $arch == "s390x" ]]; then
+	repo=fast-datapath-for-rhel-8-s390x-rpms
+fi
+echo "repo is: $repo"
+#repo=rhel-7-fast-datapath-rpms
 tps-cd -c $errata
-export export TPSQ_RHNDEST=$repo
+export TPSQ_RHNDEST=$repo
 yum install -y $(tps-filter-filelist -o -u)
 
 tps -m
@@ -515,9 +524,11 @@ tps -m
 for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
 for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
 errata=$errata
-repo=fast-datapath-for-rhel-8-ppc64le-rpms
+#repo=fast-datapath-for-rhel-8-ppc64le-rpms
+#repo=rhel-7-for-power-le-fast-datapath-rpms
+#repo=rhel-7-for-power9-fast-datapath-rpms
 tps-cd -c $errata
-export export TPSQ_RHNDEST=$repo
+export TPSQ_RHNDEST=$repo
 yum install -y $(tps-filter-filelist -o -u)
 
 tps -m
@@ -530,9 +541,10 @@ tps -m
 for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
 for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
 errata=$errata
-repo=fast-datapath-for-rhel-8-s390x-rpms
+#repo=fast-datapath-for-rhel-8-s390x-rpms
+#repo=rhel-7-for-system-z-fast-datapath-rpms
 tps-cd -c $errata
-export export TPSQ_RHNDEST=$repo
+export TPSQ_RHNDEST=$repo
 yum install -y $(tps-filter-filelist -o -u)
 
 tps -m
@@ -549,4 +561,33 @@ popd
 
 #########################################################################
 
+(03:14:07 PM) ralongi: Hi.  I've tried using bkr workflow-tomorrow as well as manually building a stable system from scratch but keep seeing the following error in /var/log/tpsd: Cannot find latest tps RPM  at /usr/local/bin/update-tps line 134.
+(03:14:42 PM) ralongi: tpsd: Error: directory /mnt/qa/scratch does not exist.
+(03:15:36 PM) ralongi: any suggestions?  it is only happening on an x86_64 system.  not seeing this issue on ppc64le or s390x system.
+(03:16:47 PM) jwl_home: NFS or system setup issue.
+(03:17:40 PM) jwl_home: what advisory?  Can it be run on a regular stable system?
+(03:18:35 PM) jwl_home: [Where 'NFS' could also involve firewall/networking/lab issues preventing proper use of NFS... the logs from oats-config-nfs, wherever they'd appear via beaker, might have more info.]
+(03:18:41 PM) ralongi: https://errata.devel.redhat.com/advisory/86957
+(03:19:08 PM) ralongi: /mnt/qa is there but nothing is present under it
+(03:19:28 PM) jwl_home: grep scratch /etc/fstab
+(03:19:40 PM) jwl_home: or rather, grep qa
+(03:20:22 PM) ralongi: .qa.[root@chelsio2 tpsdist]# grep qa /etc/fstab 
+(03:20:22 PM) ralongi: nest.test.redhat.com:/mnt/qa /mnt/qa nfs defaults,rsize=8192,wsize=8192,bg,auto,noatime,nosuid,nodev,intr 0 0
+(03:20:57 PM) ralongi: /mnt/tpsdist is also present but empty
+(03:21:26 PM) ralongi: no regular stable systems appear to be available for this job
+(03:22:43 PM) jwl_home: and so, what happens when you do 'mount -t nfs /mnt/qa' or 'mount -a -t nfs'?  Or a 'df -h' to check all mounted disks?
+(03:23:22 PM) jwl_home: or oats-config-nfs --check ?
+(03:23:35 PM) jwl_home: (or other oats-config-nfs options -- see the --help for it)
+(03:24:41 PM) ralongi: looks like mounting the drives again via command did the trick
+(03:25:11 PM) jwl_home: I wonder whether /mnt/redhat or other mounts also had issues, or if there was just some network issue when the machine was first setup.
+(03:25:13 PM) mstowell is now known as mstowell|away
+(03:25:24 PM) jwl_home: In any case, if it's now working... good; done! :-)
+(03:26:02 PM) ralongi: i'm not sure but i did try this on a couple of different systems with the same problem.  this will be added to my tps cheat sheet document :-)
+(03:26:04 PM) ralongi: thanks!
+(03:26:50 PM) jwl_home: quite possible that it's some issue with the workflow or beaker setup, then.  Might want to check the logs and report to the maintainers it if something seems weird.
+(03:28:01 PM) jwl_home: oh, and I'm probably going to break lots of stuff with the next oats release.  But that will have a beta cycle so that folks can adjust to it.
+(03:28:39 PM) jwl_home: (next release should support rhel-9 and remove support for RHN and RHN-related options.)
+(03:28:41 PM) ralongi: ok thanks for the heads up and info
+(03:29:00 PM) jwl_home: the nfs stuff, however, is unlikely to change.
+(03:29:24 PM) jwl_home: unless there's some weird bug that I'm not currently aware of, of course :)
 

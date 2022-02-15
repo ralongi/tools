@@ -6,6 +6,7 @@ $dbg_flag
 RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
 SELINUX=${SELINUX:-"yes"}
 COMPOSE=${COMPOSE:-""}
+GUEST_IMG_VALUE=$RHEL_VER
 /home/ralongi/gvar/bin/gvar $COMPOSE
 
 # Script to execute all of my ovs tests
@@ -74,6 +75,37 @@ else
 	export RPM_OVS=$RPM_OVS
 fi
 
+# OVN packages
+if [[ -z $RPM_OVN_COMMON ]]; then
+	if [[ $FDP_STREAM2 -gt 213 ]]; then
+		export RPM_OVN_COMMON=$OVN_COMMON_YEAR_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+	else
+		export RPM_OVN_COMMON=$OVN_COMMON_FDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+	fi
+else
+	export RPM_OVN_COMMON=$RPM_OVN_COMMON
+fi
+
+if [[ -z $RPM_OVN_CENTRAL ]]; then
+	if [[ $FDP_STREAM2 -gt 213 ]]; then
+		export RPM_OVN_CENTRAL=$OVN_CENTRAL_YEAR_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+	else
+		export RPM_OVN_CENTRAL=$OVN_CENTRAL_FDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+	fi
+else
+	export RPM_OVN_CENTRAL=$RPM_OVN_CENTRAL
+fi
+
+if [[ -z $RPM_OVN_HOST ]]; then
+	if [[ $FDP_STREAM2 -gt 213 ]]; then
+		export RPM_OVN_HOST=$OVN_HOST_YEAR_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+	else
+		export RPM_OVN_HOST=$OVN_HOST_FDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+	fi
+else
+	export RPM_OVN_HOST=$RPM_OVN_HOST
+fi
+
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
@@ -125,15 +157,16 @@ export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ip
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-#./exec_mcast_snoop.sh
-#./exec_ovs_qos.sh
-#./exec_forward_bpdu.sh
-#./exec_of_rules.sh
-#./exec_power_cycle_crash.sh
+./exec_mcast_snoop.sh
+./exec_ovs_qos.sh
+./exec_forward_bpdu.sh
+./exec_of_rules.sh
+./exec_power_cycle_crash.sh
+#./exec_ovs_upgrade.sh
 #./exec_topo.sh ixgbe
 #./exec_topo.sh i40e
 #./exec_topo.sh enic
-#./exec_topo.sh mlx5_core cx5
+./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
@@ -144,12 +177,14 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
+#./exec_regression_bug.sh
+
 ###############################################################################
 #export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
-#./exec_perf_ci.sh cx5
 #./exec_endurance.sh cx5
-./exec_perf_ci.sh cx6
-./exec_endurance.sh cx6
+#./exec_perf_ci.sh cx5
+#./exec_endurance.sh cx6
+#./exec_perf_ci.sh cx6
 #./exec_perf_ci_pensando_sriov.sh
 #export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
 ###############################################################################
@@ -183,7 +218,17 @@ pushd /home/ralongi/github/tools/ovs_testing
 # xena_conntrack/xena_dpdk
 #./exec_xena_dpdk.sh
 
-### need to add upgrade tests
-### need to add vm_100
+### may need to add vm_100
+
+#echo "FDP_STREAM2 is now set to $FDP_STREAM2"
+echo "COMPOSE is: $COMPOSE"
+echo "FDP Release is: $FDP_RELEASE"
+echo "FDP Stream is: $FDP_STREAM"
+echo "RPM_OVS: $RPM_OVS"
+echo "RPM_OVN_CENTRAL: $RPM_OVN_CENTRAL"
+echo "RPM_OVN_HOST: $RPM_OVN_HOST"
+echo "RPM_OVN_COMMON: $RPM_OVN_COMMON"
+echo "RPM_OVN_CENTRAL: $RPM_OVN_CENTRAL"
+echo "RPM_OVN_HOST: $RPM_OVN_HOST"
 
 popd

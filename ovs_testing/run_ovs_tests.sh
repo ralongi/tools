@@ -29,13 +29,17 @@ export RHEL_VER=${RHEL_VER:-"$2"}
 export RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
 
 export FDP_STREAM=${FDP_STREAM:-"$3"}
-export FDP_STREAM=$(echo $FDP_STREAM | tr -d '.')
+export FDP_STREAM2=$(echo $FDP_STREAM | tr -d '.')
+if [[ $FDP_STREAM2 -gt 213 ]]; then
+	YEAR=$(grep -i ovn /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh | grep $FDP_RELEASE | awk -F "_" '{print $3}' | grep -v 213 | tail -n1)
+fi
 
 pushd /home/ralongi/github/tools/ovs_testing
 /bin/cp -f exec_my_ovs_tests_template.sh exec_my_ovs_tests.sh
 sed -i "s/FDP_RELEASE_VALUE/$FDP_RELEASE/g" exec_my_ovs_tests.sh
 sed -i "s/RHEL_VER_VALUE/$RHEL_VER/g" exec_my_ovs_tests.sh
-sed -i "s/FDP_STREAM_VALUE/$FDP_STREAM/g" exec_my_ovs_tests.sh
+sed -i "s/FDP_STREAM_VALUE/$FDP_STREAM2/g" exec_my_ovs_tests.sh
+sed -i "s/YEAR_VALUE/$YEAR/g" exec_my_ovs_tests.sh
 sed -i "s/RHEL_VER_MAJOR_VALUE/$RHEL_VER_MAJOR/g" exec_my_ovs_tests.sh
 
 ./exec_my_ovs_tests.sh

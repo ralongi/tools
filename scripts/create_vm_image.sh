@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# usage: ./vm_image.sh
+# usage: ./create_vm_image.sh
 
 # if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing this script
 
@@ -12,6 +12,7 @@ skip_upload=${skip_upload:-"yes"}
 echo "Please provide the FQDN (hostname) of the target system (For example,netqe9.knqe.lab.eng.bos.redhat.com):"
 read target_system
 
+# If user has not specified a compose via "export COMPOSE=<COMPOSE ID>"
 if [[ -z $COMPOSE ]]; then
 	echo "Please provide the target RHEL minor version for the target system (For example, 8.5):"
 	read RHEL_VER
@@ -47,7 +48,41 @@ while [ 1 ]; do
 	fi
 done
 
-TERM=xterm sshpass -p 100yard- ssh -X -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$target_system << 'EOF'
+#TERM=xterm sshpass -p 100yard- ssh -XY -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$target_system << 'EOF'
+TERM=xterm ssh -XY -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$target_system << 'EOF'
+echo "sslverify=false" >> /etc/yum.conf
+
+# install wget in case it's missing
+yum -y install wget
+
+# install beaker-client.repo
+wget -O /etc/yum.repos.d/beaker-client.repo http://download.lab.bos.redhat.com/beakerrepos/beaker-client-RedHatEnterpriseLinux.repo
+
+# create beaker-tasks.repo file
+(
+	echo [beaker-tasks]
+	echo name=beaker-tasks
+	echo baseurl=http://beaker.engineering.redhat.com/rpms
+	echo enabled=1
+	echo gpgcheck=0
+	echo skip_if_unavailable=1
+) > /etc/yum.repos.d/beaker-tasks.repo
+
+# create beaker-harness.repo file
+(
+	echo [beaker-harness]
+	echo name=beaker-harness
+	echo baseurl=http://download.eng.bos.redhat.com/beakerrepos/harness-testing/RedHatEnterpriseLinux8/
+	echo enabled=1
+	echo gpgcheck=0
+	echo skip_if_unavailable=1
+) > /etc/yum.repos.d/beaker-harness.repo
+
+# install beaker related packages
+yum -y install rhts-test-env beakerlib rhts-devel rhts-python beakerlib-redhat.noarch beaker-client beaker-redhat
+yum -y install kernel-networking-common
+
+source /mnt/tests/kernel/networking/common/include.sh
 
 RHEL_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d \" -f 2 | cut -d . -f 1)
 if [[ $RHEL_VERSION -lt 8 ]]; then
@@ -84,9 +119,9 @@ while [ $SECONDS -lt 1800 ]; do
 		break
 	fi
 done
-sleep 2m
+sleep 1m
 image_size=$(ls -alth /var/lib/libvirt/images/master.qcow2 | awk '{print $5}')
-rlLog "Size of master.qcow2 image file that was created: $image_size"
+echo "Size of master.qcow2 image file that was created: $image_size"
 if [ ! $(echo "$image_size" | grep G) ]; then
 	echo "Guest image file size is only $image_size.  Printing out qemu master.log..."
 	echo "Current time: $(date +'%D %r')"
@@ -94,8 +129,17 @@ if [ ! $(echo "$image_size" | grep G) ]; then
 	cat /var/log/libvirt/qemu/master.log
 fi
 
-source /etc/os-release
-new_image_name=rhel"$VERSION_ID".qcow2
+# install automake on master
+virsh start master
+sleep 60
+vmsh run_cmd master "grep VERSION_ID /etc/os-release" > /tmp/vm_version.txt
+vm_version=$(grep VERSION_ID /tmp/vm_version.txt | awk -F "=" '{print $NF}' | tr -d '"')
+new_image_name=rhel"$vm_version".qcow2
+vmsh run_cmd master "yum -y install automake"
+sleep 15
+virsh destroy master
+sleep 15
+
 /bin/cp -f /var/lib/libvirt/images/master.qcow2 /var/lib/libvirt/images/$new_image_name
 
 epel_install()
@@ -120,24 +164,17 @@ epel_install()
 epel_install
 yum -y install sshpass
 
-yes "y" | ssh-keygen -o -t ed25519 -f ~/.ssh/id_rsa -N ""
-ssh -q -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com exit
+sshpass -p 100yard- ssh -q -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com exit
 if [[ $? -ne 0 ]]; then 
-    sshpass -p 100yard- ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@netqe-infra01.knqe.lab.eng.bos.redhat.com
-    wait
-    sleep 3
-fi
-
-if [[ $skip_upload != "yes ]]; then
 	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com "ls /home/www/html/share/vms/OVS/$new_image_name"
 	if [[ $? -ne 0 ]]; then
 		echo "Uploading $new_image_name..."
-		scp -o "StrictHostKeyChecking no" /var/lib/libvirt/images/$new_image_name root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/share/vms/OVS/
+		sshpass -p 100yard- scp -o "StrictHostKeyChecking no" /var/lib/libvirt/images/$new_image_name root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/share/vms/OVS/
+		wait
+		sleep 3
 	else
 		echo "/home/www/html/share/vms/OVS/$new_image_name already exists on netqe-infra01.knqe.lab.eng.bos.redhat.com so skipping automatic file upload."
 	fi
-else
-	echo "You have elected to skip upload of image file."
 fi
 
 exit

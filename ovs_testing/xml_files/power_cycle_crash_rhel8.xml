@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP 21I, openvswitch2.16-2.16.0-16.el8fdp.x86_64.rpm, RHEL-8.4.0-updates-20211013.0, openvswitch/power_cycle_crash</whiteboard>
+  <whiteboard>FDP 22A, openvswitch2.15-2.15.0-57.el8fdp.x86_64.rpm, RHEL-8.4.0-updates-20211026.0, openvswitch/power_cycle_crash</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP 21I, openvswitch2.16-2.16.0-16.el8fdp.x86_64.rpm, RHEL-8.4.0-updates-20211013.0, openvswitch/power_cycle_crash" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP 22A, openvswitch2.15-2.15.0-57.el8fdp.x86_64.rpm, RHEL-8.4.0-updates-20211026.0, openvswitch/power_cycle_crash" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -69,7 +69,7 @@ chmod 755 /usr/bin/rhts-power
                 <and>
                     <distro_variant op="=" value="BaseOS"/>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-8.4.0-updates-20211013.0"/>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
                 <or>
@@ -93,8 +93,8 @@ chmod 755 /usr/bin/rhts-power
           <param name="NAY" value="yes"/>
           <param name="NIC_NUM" value="3"/>
           <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/28.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-28.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/16.el8fdp/x86_64/openvswitch2.16-2.16.0-16.el8fdp.x86_64.rpm"/>
-          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211013.0"/>
+          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/57.el8fdp/x86_64/openvswitch2.15-2.15.0-57.el8fdp.x86_64.rpm"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
         </params>
       </task>
       <task name="/distribution/utils/power-cycle" role="STANDALONE"/>

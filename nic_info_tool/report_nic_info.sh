@@ -5,6 +5,7 @@ $dbg_flag
 
 # Script to log into target host and gather iface and driver info
 
+user=${user:-"root"}
 target=$1
 password=$2
 default_password="100yard-"
@@ -45,5 +46,5 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Logging into $target..."
-cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -q -o "StrictHostKeyChecking= no" root@$target 'bash -'
+cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -q -o "StrictHostKeyChecking= no" $user@$target 'bash -'
 
