@@ -44,6 +44,7 @@
           <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
           <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
+          <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>
@@ -91,6 +92,7 @@
           <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
           <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
+          <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>

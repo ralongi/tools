@@ -33,4 +33,3 @@ for i in $(ls /sys/class/net | egrep -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
 done
 
 more ~/nic_info.txt
-https://beaker.engineering.redhat.com/jobs/6203942#recipe-11312017-results

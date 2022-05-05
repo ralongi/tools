@@ -39,20 +39,28 @@ if [[ $RHEL_VERSION -eq 8 ]]; then
 	# To build stable system for RHEL8 s390x
 
 	bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=s390x --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
+	
+	# To build stable system for RHEL8 aarch64
+
+	bkr workflow-tomorrow 8 --split-buildroot --machine=dev-010.arm.eng.rdu2.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=aarch64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"	
 
 fi
 
 if [[ $RHEL_VERSION -eq 9 ]]; then
-	# To build stable system for RHEL8 x86_64
+	# To build stable system for RHEL9 x86_64
 
 	bkr workflow-tomorrow 9 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-9-rpms --arch=x86_64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
 
-	# To build stable system for RHEL8 ppc64le
+	# To build stable system for RHEL9 ppc64le
 
 	bkr workflow-tomorrow 9 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-9-rpms --arch=ppc64le --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
 
-	# To build stable system for RHEL8 s390x
+	# To build stable system for RHEL9 s390x
 
 	bkr workflow-tomorrow 9 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-9-rpms --arch=s390x --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
+	
+	# To build stable system for RHEL9 aarch64
+
+	bkr workflow-tomorrow 9 --split-buildroot --machine=dev-010.arm.eng.rdu2.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-9-rpms --arch=aarch64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
 
 fi

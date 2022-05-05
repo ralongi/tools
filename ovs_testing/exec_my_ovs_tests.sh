@@ -70,7 +70,7 @@ fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS216_22A_RHEL9
+	export RPM_OVS=$OVS217_22D_RHEL9
 else
 	export RPM_OVS=$RPM_OVS
 fi
@@ -78,9 +78,9 @@ fi
 # OVN packages
 if [[ -z $RPM_OVN_COMMON ]]; then
 	if [[ $FDP_STREAM2 -gt 213 ]]; then
-		export RPM_OVN_COMMON=$OVN_COMMON_2021_22A_RHEL9
+		export RPM_OVN_COMMON=$OVN_COMMON_2203_22D_RHEL9
 	else
-		export RPM_OVN_COMMON=$OVN_COMMON_216_22A_RHEL9
+		export RPM_OVN_COMMON=$OVN_COMMON_217_22D_RHEL9
 	fi
 else
 	export RPM_OVN_COMMON=$RPM_OVN_COMMON
@@ -88,9 +88,9 @@ fi
 
 if [[ -z $RPM_OVN_CENTRAL ]]; then
 	if [[ $FDP_STREAM2 -gt 213 ]]; then
-		export RPM_OVN_CENTRAL=$OVN_CENTRAL_2021_22A_RHEL9
+		export RPM_OVN_CENTRAL=$OVN_CENTRAL_2203_22D_RHEL9
 	else
-		export RPM_OVN_CENTRAL=$OVN_CENTRAL_216_22A_RHEL9
+		export RPM_OVN_CENTRAL=$OVN_CENTRAL_217_22D_RHEL9
 	fi
 else
 	export RPM_OVN_CENTRAL=$RPM_OVN_CENTRAL
@@ -98,9 +98,9 @@ fi
 
 if [[ -z $RPM_OVN_HOST ]]; then
 	if [[ $FDP_STREAM2 -gt 213 ]]; then
-		export RPM_OVN_HOST=$OVN_HOST_2021_22A_RHEL9
+		export RPM_OVN_HOST=$OVN_HOST_2203_22D_RHEL9
 	else
-		export RPM_OVN_HOST=$OVN_HOST_216_22A_RHEL9
+		export RPM_OVN_HOST=$OVN_HOST_217_22D_RHEL9
 	fi
 else
 	export RPM_OVN_HOST=$RPM_OVN_HOST
@@ -108,7 +108,7 @@ fi
 
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_22A_RHEL9
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_22D_RHEL9
 else
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
 fi
@@ -131,6 +131,9 @@ elif [[ $(echo $COMPOSE | grep RHEL-8.4) ]]; then
 elif [[ $(echo $COMPOSE | grep RHEL-8.5) ]]; then
 	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+elif [[ $(echo $COMPOSE | grep RHEL-8) ]]; then
+	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
 	export RPM_DPDK_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/2.el9/x86_64/dpdk-20.11-2.el9.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/2.el9/x86_64/dpdk-tools-20.11-2.el9.x86_64.rpm
@@ -147,7 +150,7 @@ export RPM_DPDK_TOOLS=$RPM_DPDK_TOOLS_RHEL9
 #export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN216_22A_RHEL9 
+export RPM_OVN=$OVN217_22D_RHEL9 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -157,16 +160,17 @@ export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ip
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-./exec_mcast_snoop.sh
-./exec_ovs_qos.sh
-./exec_forward_bpdu.sh
-./exec_of_rules.sh
-./exec_power_cycle_crash.sh
+#./exec_mcast_snoop.sh
+#./exec_ovs_qos.sh
+#./exec_forward_bpdu.sh
+#./exec_of_rules.sh
+#./exec_power_cycle_crash.sh
 #./exec_ovs_upgrade.sh
 #./exec_topo.sh ixgbe
+#./exec_topo.sh arm
 #./exec_topo.sh i40e
 #./exec_topo.sh enic
-./exec_topo.sh mlx5_core cx5
+#./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
@@ -183,8 +187,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel9.0.qcow2
 #./exec_endurance.sh cx5
 #./exec_perf_ci.sh cx5
-#./exec_endurance.sh cx6
-#./exec_perf_ci.sh cx6
+./exec_endurance.sh cx6
+./exec_perf_ci.sh cx6
 #./exec_perf_ci_pensando_sriov.sh
 #export VM_IMAGE="rhel9.0.qcow2"
 ###############################################################################

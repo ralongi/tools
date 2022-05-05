@@ -9,56 +9,42 @@
         <ks_append><![CDATA[
 %post --log=/root/my-ks-post.log
 
-test -f /etc/dnf/dnf.conf && echo strict=0 >>/etc/dnf/dnf.conf
-
-read type distro <<< $(awk -F/+ '/^baseurl/{ for (i=3;i<NF;i++) { if ($(i+1) ~ /RHEL-/) { print($i, $(i+1)); break }}}' /etc/yum.repos.d/beaker-BaseOS.repo)
-if [[ "$distro" = RHEL-8* ]]; then
+verx=$(rpm -E %rhel)
+case $verx in
+8|9)
+	[[ "$verx" = 8 ]] && R8=-RHEL-8
+	read dtype distro <<< $(awk -F/+ '/^baseurl/ {
+		for (i=3;i<NF;i++) {
+			if ($(i+1) ~ /RHEL-/) {
+				d=$(i+1)
+				if (d ~ /RHEL-[0-9]$/)
+					d=$(i+2)
+				print($i, d)
+				break
+			}
+		}
+	}' /etc/yum.repos.d/beaker-BaseOS.repo)
+	dtype=nightly
 	read prefix ver time <<< ${distro//-/ }
-	URL=http://download.devel.redhat.com/rhel-8/$type/BUILDROOT-8/BUILDROOT-$ver-RHEL-8-$time/compose/Buildroot/$(arch)/os
-	URL=http://download.devel.redhat.com/rhel-8/$type/BUILDROOT-8/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/$(arch)/os
+	buildrootUrl=http://download.devel.redhat.com/rhel-$verx/$dtype/BUILDROOT-$verx/latest-BUILDROOT-$ver$R8/compose/Buildroot/$(arch)/os
 	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
 	[beaker-buildroot]
 	name=beaker-buildroot
-	baseurl=$URL
-	enabled=1
+	baseurl=$buildrootUrl
+	enabled=0
 	gpgcheck=0
 	skip_if_unavailable=1
 	EOF
-fi
+	;;
+esac
 
-yum install -y gcc wget screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2
-yum install -y libnsl2 libtirpc-devel python-lxml
-
-[[ -f /usr/bin/python ]] || {
-	if [[ -f /usr/bin/python2 ]]; then
-		alternatives --set python /usr/bin/python2
-	elif [[ -f /usr/bin/python3 ]]; then
-		alternatives --set python /usr/bin/python3
-	fi
-}
-
+yum install --setopt=strict=0 -y git patch gcc wget bzip2 screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2 guestfs-tools
+yum install --setopt=strict=0 -y libnsl2 libtirpc-devel python2-lxml python3-lxml pciutils
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sed -i s/metalink?repo=epel-\$releasever/metalink?repo=epel-8/ /etc/yum.repos.d/epel.repo
+sed -i s/metalink?repo=epel-modular-\$releasever/metalink?repo=epel-modular-8/ /etc/yum.repos.d/epel-modular.repo
+setenforce 0
 #yum update -y pkg1 pkg2 --nogpgcheck --repofrompath=abc,http://x.y.z/path/to/repo
-set -x
-cat >/usr/bin/rhts-power <<EOF
-#!/bin/bash
-
-curl --insecure \\
-     --header "Content-Type: text/xml" \\
-     --data "<?xml version=\"1.0\"?>
-             <methodCall>
-               <methodName>power</methodName>
-               <params>
-                 <param>
-                   <value><string>\$(hostname)</string></value>
-                 </param>
-                 <param>
-                   <value><string>reboot</string></value>
-                 </param>
-               </params>
-             </methodCall>" \\
-     http://\${LAB_CONTROLLER}:8000/RPC2
-EOF
-chmod 755 /usr/bin/rhts-power
 %end
 
 
@@ -111,56 +97,42 @@ chmod 755 /usr/bin/rhts-power
         <ks_append><![CDATA[
 %post --log=/root/my-ks-post.log
 
-test -f /etc/dnf/dnf.conf && echo strict=0 >>/etc/dnf/dnf.conf
-
-read type distro <<< $(awk -F/+ '/^baseurl/{ for (i=3;i<NF;i++) { if ($(i+1) ~ /RHEL-/) { print($i, $(i+1)); break }}}' /etc/yum.repos.d/beaker-BaseOS.repo)
-if [[ "$distro" = RHEL-8* ]]; then
+verx=$(rpm -E %rhel)
+case $verx in
+8|9)
+	[[ "$verx" = 8 ]] && R8=-RHEL-8
+	read dtype distro <<< $(awk -F/+ '/^baseurl/ {
+		for (i=3;i<NF;i++) {
+			if ($(i+1) ~ /RHEL-/) {
+				d=$(i+1)
+				if (d ~ /RHEL-[0-9]$/)
+					d=$(i+2)
+				print($i, d)
+				break
+			}
+		}
+	}' /etc/yum.repos.d/beaker-BaseOS.repo)
+	dtype=nightly
 	read prefix ver time <<< ${distro//-/ }
-	URL=http://download.devel.redhat.com/rhel-8/$type/BUILDROOT-8/BUILDROOT-$ver-RHEL-8-$time/compose/Buildroot/$(arch)/os
-	URL=http://download.devel.redhat.com/rhel-8/$type/BUILDROOT-8/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/$(arch)/os
+	buildrootUrl=http://download.devel.redhat.com/rhel-$verx/$dtype/BUILDROOT-$verx/latest-BUILDROOT-$ver$R8/compose/Buildroot/$(arch)/os
 	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
 	[beaker-buildroot]
 	name=beaker-buildroot
-	baseurl=$URL
-	enabled=1
+	baseurl=$buildrootUrl
+	enabled=0
 	gpgcheck=0
 	skip_if_unavailable=1
 	EOF
-fi
+	;;
+esac
 
-yum install -y gcc wget screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2
-yum install -y libnsl2 libtirpc-devel python-lxml
-
-[[ -f /usr/bin/python ]] || {
-	if [[ -f /usr/bin/python2 ]]; then
-		alternatives --set python /usr/bin/python2
-	elif [[ -f /usr/bin/python3 ]]; then
-		alternatives --set python /usr/bin/python3
-	fi
-}
-
+yum install --setopt=strict=0 -y git patch gcc wget bzip2 screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2 guestfs-tools
+yum install --setopt=strict=0 -y libnsl2 libtirpc-devel python2-lxml python3-lxml pciutils
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sed -i s/metalink?repo=epel-\$releasever/metalink?repo=epel-8/ /etc/yum.repos.d/epel.repo
+sed -i s/metalink?repo=epel-modular-\$releasever/metalink?repo=epel-modular-8/ /etc/yum.repos.d/epel-modular.repo
+setenforce 0
 #yum update -y pkg1 pkg2 --nogpgcheck --repofrompath=abc,http://x.y.z/path/to/repo
-set -x
-cat >/usr/bin/rhts-power <<EOF
-#!/bin/bash
-
-curl --insecure \\
-     --header "Content-Type: text/xml" \\
-     --data "<?xml version=\"1.0\"?>
-             <methodCall>
-               <methodName>power</methodName>
-               <params>
-                 <param>
-                   <value><string>\$(hostname)</string></value>
-                 </param>
-                 <param>
-                   <value><string>reboot</string></value>
-                 </param>
-               </params>
-             </methodCall>" \\
-     http://\${LAB_CONTROLLER}:8000/RPC2
-EOF
-chmod 755 /usr/bin/rhts-power
 %end
 
 

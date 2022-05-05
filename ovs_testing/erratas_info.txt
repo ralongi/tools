@@ -81,6 +81,10 @@ bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02
 
 bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=s390x --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
 
+# To build stable system for RHEL8 aarch64
+
+bkr workflow-tomorrow 8 --split-buildroot --machine=dev-010.arm.eng.rdu2.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=aarch64 --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump network-scripts libatomic" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task "! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf" --task "! mount -a -t nfs" --task "! systemctl restart tpsd" --task "! dnf -y install libibverbs"
+
 # to install selinux and libunbound packages
 
 arch=$(uname -m)
@@ -160,14 +164,23 @@ yum -y install libibverbs
 bkr workflow-tomorrow --errata=43252 --variant=detect --tps-rpmtest --tps-srpmtest --profile=stable-openshift-enterprise-3.6 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --arch=x86_64 --reserve-if-fail
 
 ### DPDK / extras errata:
-# may need to reschedule x86_64 job even without making any changes to see if it passes
 
-# other issues:
+# best to build stable system manually:
 
+- provision system with target compose
+
+# Install:
 yum -y install numactl-devel
 yum -y install doxygen
-yum -y install python-devel
-yum -y install python-sphinx
+yum -y install python3-devel
+yum -y install python3-sphinx
+yum -y install meson
+yum -y install zlib-devel
+yum -y install gcc
+
+
+
+
 
 # stable system RHEL 8 ppc64le
 
@@ -340,7 +353,7 @@ DPDK errata File list error info:
 
 #########################################################################
 
-TPS installation  and tools info:
+TPS installation and tools info:
 
 From rbiba:
 
@@ -355,7 +368,7 @@ Drive should be mounted:
 [ralongi@ralongi-home tps-utils]$ mount | grep /mnt/qa
 nest.test.redhat.com:/mnt/qa on /mnt/qa type nfs4 (rw,nosuid,nodev,noatime,vers=4.0,rsize=8192,wsize=8192,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=10.3.114.112,local_lock=none,addr=10.16.115.148)
 
-fstab ebtry:
+fstab entry:
 
 nest.test.redhat.com:/mnt/qa /mnt/qa nfs defaults,rsize=8192,wsize=8192,bg,auto,noatime,nosuid,nodev,intr 0 0
 
@@ -403,10 +416,10 @@ Helpful links:
 
 #########################################################################
 
-To keep a recently built stable system extending reserve time by 99 hours every 72 hours:
+To keep a recently built stable system extending reserve time by 99 hours everyday at 5AM:
 
 - crontab -e
-- 0 */72 * * * /usr/bin/extendtesttime.sh 99
+- 0 5 * * * /usr/bin/extendtesttime.sh 99
 - systemctl restart crond
 
 #########################################################################
@@ -422,9 +435,17 @@ provision system using scheduler (reserve)
 yum -y install wget
 
 to install oats on RHEL-8: 
-	wget -O /etc/yum.repos.d/tps-deps.repo http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps.repo
+	#wget -O /etc/yum.repos.d/tps-deps.repo http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps.repo
+	wget -O /etc/yum.repos.d/tps-deps.repo http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/tps-deps.repo
 	yum -y install busybox
 	yum -y --nogpgcheck install http://nest.test.redhat.com/mnt/tpsdist/oats.noarch.rpm
+	
+to install oats on RHEL-9:
+	yum -y install wget
+	wget http://nest.test.redhat.com/mnt/tpsdist/test/install-oats.sh
+	chmod +x install-oats.sh
+	./install-oats.sh
+
 yum -y install nfs-utils ; service rpcbind start
 yum -y install perl-Date-Manip
 yum -y install rpm-build
@@ -432,7 +453,7 @@ yum -y install rpm-build
 # create /etc/yum.repos.d/myrepo.1.repo for compose being used (this is necessary to make sure the system installs the newest version of packages like libibverbs in case a package like dpdk relies on the newer version of libibverbs)
 [myrepo_1]
 name=myrepo_1
-baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/RHEL-8.4.0-20210309.1/compose/BaseOS/x86_64/os
+baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/latest-RHEL-8.6.0/compose/BaseOS/x86_64/os/
 enabled=1
 gpgcheck=0
 skip_if_unavailable=1
@@ -441,7 +462,7 @@ skip_if_unavailable=1
 echo OATS_TEST_PROFILE="<test profile name>" >> /etc/sysconfig/oats.conf
 #echo OATS_TEST_PROFILE="stable-rhv-4-mgmt-agent-for-power-le-rpms" >> /etc/sysconfig/oats.conf
 #echo OATS_TEST_PROFILE="rhel-7-server-rhv-4.2-mgmt-agent-for-power-le-eus-rpms" >> /etc/sysconfig/oats.conf
-#echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg | sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
+#echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg |  sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
 # OR
 # TREE=/mnt/redhat/released/rhel-6-7-8/rhel-8/RHEL-8/8.0.0/BaseOS/x86_64/os/
 # OR
@@ -453,7 +474,8 @@ tail -f /var/log/oatsd
 
 # after reboot:
 check to make sure /etc/yum.repos.d/ has expected repos:
-	ls -alth /etc/yum.repos.d/
+	ls -alth /etc/yum.repos.d/ | grep tps
+	yum repolist
 
 sedeasy ()
 {
@@ -493,21 +515,38 @@ Run: oats-apply-test-profile -b -y
 
 # To clean up and set up for next test (and run manual test if necessary)
 
-errata=2022:86839
+cd
+errata=2022:92713
 
-# x86_64, ppc64le, s390x
+# x86_64, ppc64le, s390x, aarch64
 
 for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
 for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
 errata=$errata
 arch=$(uname -m)
+
+# rhel8:
 if [[ $arch == "x86_64" ]]; then
 	repo=fast-datapath-for-rhel-8-x86_64-rpms
 elif [[ $arch == "ppc64le" ]]; then
 	repo=fast-datapath-for-rhel-8-ppc64le-rpms
 elif [[ $arch == "s390x" ]]; then
 	repo=fast-datapath-for-rhel-8-s390x-rpms
+elif [[ $arch == "aarch64" ]]; then
+	repo=fast-datapath-for-rhel-8-aarch64-rpms	
 fi
+
+#rhel9:
+if [[ $arch == "x86_64" ]]; then
+	repo=fast-datapath-for-rhel-9-x86_64-rpms
+elif [[ $arch == "ppc64le" ]]; then
+	repo=fast-datapath-for-rhel-9-ppc64le-rpms
+elif [[ $arch == "s390x" ]]; then
+	repo=fast-datapath-for-rhel-9-s390x-rpms
+elif [[ $arch == "aarch64" ]]; then
+	repo=fast-datapath-for-rhel-9-aarch64-rpms	
+fi
+
 echo "repo is: $repo"
 #repo=rhel-7-fast-datapath-rpms
 tps-cd -c $errata
@@ -542,6 +581,21 @@ for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; d
 for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
 errata=$errata
 #repo=fast-datapath-for-rhel-8-s390x-rpms
+#repo=rhel-7-for-system-z-fast-datapath-rpms
+tps-cd -c $errata
+export TPSQ_RHNDEST=$repo
+yum install -y $(tps-filter-filelist -o -u)
+
+tps -m
+#tps-rhnqa
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+# aarch640x
+
+for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
+for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
+errata=$errata
+#repo=fast-datapath-for-rhel-8-aarch64-rpms 	
 #repo=rhel-7-for-system-z-fast-datapath-rpms
 tps-cd -c $errata
 export TPSQ_RHNDEST=$repo
@@ -590,4 +644,27 @@ popd
 (03:28:41 PM) ralongi: ok thanks for the heads up and info
 (03:29:00 PM) jwl_home: the nfs stuff, however, is unlikely to change.
 (03:29:24 PM) jwl_home: unless there's some weird bug that I'm not currently aware of, of course :)
+
+#########################################################################
+
+# To build stable system for DPDK using a specific distro (useful for jobs requiring unreleased distro):
+
+bkr workflow-tomorrow --distro=RHEL-8.6.0-20220321.0 --split-buildroot --machine=netqe9.knqe.lab.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-8-baseos --arch=x86_64 --variant=BaseOS
+
+#########################################################################
+To skip a specific package as part of the TPS SRPM runs:
+
+vi new file: "/usr/local/lib/tps/srpm-local-cases.txt"
+copy/paste line below EXACTLY as is (correct spacing/tabs is critical):
+
+extra_built	pass	rpm_name	dpdk-devel	srpm_name	dpdk
+
+
+replace "dpdk-devel" with high level name of the sub package you want to ignore (don't include version info)
+replace dpdk with the parent package from the errata itself (again, no version info)
+
+
+Another example:
+
+extra_built	pass	rpm_name	network-scripts-openvswitch2.17	srpm_name	openvswitch2.17
 

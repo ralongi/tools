@@ -2,7 +2,8 @@
 
 # ovs_upgrade
 
-dbg_flag="set -x"
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
 
 ALPHA=( {A..Z} )
 alpha_increment () { echo ${ALPHA[${i:-0}]}; ((i++)) ;}
@@ -34,7 +35,8 @@ if [[ -z $STARTING_RPM_OVS ]]; then
 fi
 
 if [[ -z $OVS_LATEST_STREAM_PKG ]]; then
-	export OVS_LATEST_STREAM_PKG=$(tail ~/git/kernel/networking/openvswitch/common/package_list.sh | grep OVS | grep RHEL"$COMPOSE_VER" | tail -1 | awk -F "=" '{print$2}')
+	start_line=$(grep -n "FDP $FDP_RELEASE Packages" ~/git/kernel/networking/openvswitch/common/package_list.sh | awk -F":" '{print $1}')	
+	export OVS_LATEST_STREAM_PKG=$(tail -n +$start_line ~/git/kernel/networking/openvswitch/common/package_list.sh | grep OVS | grep RHEL"$COMPOSE_VER" | tail -1 | awk -F "=" '{print$2}')
 fi
 
 pushd ~/git/kernel/networking/openvswitch/ovs_upgrade

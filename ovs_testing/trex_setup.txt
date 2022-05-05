@@ -131,7 +131,7 @@ On laptop:
 	ansible-playbook -i ~/perf-dept/sysadmin/Inventory/myhosts.inv ~/pbench/agent/ansible/pbench_agent_install.yml
 	
 	# if above command fails due to ssh error, run command below instead
-	ansible-playbook -u root -i ~/.config/Inventory/myhosts.inv /home/ralongi/git/pbench/agent/ansible/pbench_agent_install.yml
+	ansible-playbook -u root -i ~/perf-dept/sysadmin/Inventory/myhosts.inv ~/pbench/agent/ansible/pbench_agent_install.yml
 	
 ##### Run commands below on Trex system
 

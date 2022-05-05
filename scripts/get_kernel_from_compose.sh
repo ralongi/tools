@@ -6,7 +6,7 @@ $dbg_flag
 
 compose_id=$1
 
-if [[ $(echo $compose_id | awk -F "." '{print $1}') == "RHEL-8" ]]; then
+if [[ $(echo $compose_id | awk -F "." '{print $1}' | awk -F "-" '{print $NF}') -ge 8 ]]; then
 	variant="BaseOS"
 else
 	variant="Server"
