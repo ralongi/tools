@@ -53,7 +53,7 @@ EOF
 # if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing the scripts to kick off tests
 echo "Checking to see if a COMPOSE has been specified..."
 if [[ -z $COMPOSE ]]; then
-	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
+	/home/ralongi/github/tools/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
 fi
 
 echo "Using compose: $COMPOSE"
@@ -131,6 +131,9 @@ elif [[ $(echo $COMPOSE | grep RHEL-8.4) ]]; then
 elif [[ $(echo $COMPOSE | grep RHEL-8.5) ]]; then
 	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+elif [[ $(echo $COMPOSE | grep RHEL-8.6) ]]; then
+	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-21.11-1.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-tools-21.11-1.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-8) ]]; then
 	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
@@ -162,15 +165,15 @@ pushd /home/ralongi/github/tools/ovs_testing
 
 #./exec_mcast_snoop.sh
 #./exec_ovs_qos.sh
-#./exec_forward_bpdu.sh
-#./exec_of_rules.sh
-#./exec_power_cycle_crash.sh
+./exec_forward_bpdu.sh
+./exec_of_rules.sh
+./exec_power_cycle_crash.sh
 #./exec_ovs_upgrade.sh
-#./exec_topo.sh ixgbe
+./exec_topo.sh ixgbe
 #./exec_topo.sh arm
-#./exec_topo.sh i40e
+./exec_topo.sh i40e
 #./exec_topo.sh enic
-#./exec_topo.sh mlx5_core cx5
+./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
@@ -187,8 +190,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
 #./exec_endurance.sh cx5
 #./exec_perf_ci.sh cx5
-./exec_endurance.sh cx6
-./exec_perf_ci.sh cx6
+#./exec_endurance.sh cx6
+#./exec_perf_ci.sh cx6
 #./exec_perf_ci_pensando_sriov.sh
 #export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
 ###############################################################################

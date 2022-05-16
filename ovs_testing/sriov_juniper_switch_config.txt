@@ -1,0 +1,68 @@
+ssh to switch
+cli
+conf
+edit interfaces et-0/0/2:0
+
+set mtu 9216
+set native-vlan-id 2999 (or whatever native-vlan-id actually is on the switch)
+set unit 0 family ethernet-switching interface-mode trunk vlan members native-vlan-group members 3-100
+set unit 0 family ethernet-switching storm-control default
+set description "wsfd-advnetlab31_E810_pci_5e:00.0"
+commit
+
+    et-0/0/2:0 {
+        description wsfd-advnetlab31_E810_pci_5e:00.0;
+        native-vlan-id 2999;
+        mtu 9216;
+        unit 0 {
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members [ 5-100 native-vlan-group vlan3 vlan4 ];
+                }
+                storm-control default;
+            }
+        }
+    }
+    et-0/0/2:1 {
+        description wsfd-advnetlab31_E810_pci_5e:00.1;
+        native-vlan-id 2999;
+        mtu 9216;
+        unit 0 {
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members [ 5-100 native-vlan-group vlan3 vlan4 ];
+                }
+                storm-control default;
+            }
+        }
+    }
+    et-0/0/2:2 {
+        description wsfd-advnetlab32_E810_pci_5e:00.0;
+        native-vlan-id 2999;
+        mtu 9216;
+        unit 0 {
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members [ 5-100 native-vlan-group vlan3 vlan4 ];
+                }
+                storm-control default;  
+            }
+        }
+    }
+    et-0/0/2:3 {
+        description wsfd-advnetlab32_E810_pci_5e:00.1;
+        native-vlan-id 2999;
+        mtu 9216;
+        unit 0 {
+            family ethernet-switching {
+                interface-mode trunk;
+                vlan {
+                    members [ 5-100 native-vlan-group vlan3 vlan4 ];
+                }
+                storm-control default;
+            }
+        }
+    }
