@@ -141,7 +141,7 @@ setenforce 0
                 <and>
                     <distro_variant op="=" value="BaseOS"/>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
                 <or>
@@ -169,6 +169,7 @@ setenforce 0
           <param name="NAY" value="no"/>
           <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>

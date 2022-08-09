@@ -10,16 +10,18 @@ $dbg_flag
 skip_upload=${skip_upload:-"yes"}
 
 echo "Please provide the FQDN (hostname) of the target system (For example,netqe9.knqe.lab.eng.bos.redhat.com):"
+echo "If using a specific compose, first execute: export COMPOSE=<target compose ID inside terminal window before executing this script"
+echo "Please note that this script WILL PROVISION the target system"
 read target_system
 
 # If user has not specified a compose via "export COMPOSE=<COMPOSE ID>"
 if [[ -z $COMPOSE ]]; then
 	echo "Please provide the target RHEL minor version for the target system (For example, 8.5):"
 	read RHEL_VER
-	/home/ralongi/inf_ralongi/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
+	/home/ralongi/github/tools/scripts/get_beaker_compose_id.sh $RHEL_VER && export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
 else
 	echo "You have specified compose $COMPOSE for use"
-	export COMPOSE=$(/home/ralongi/gvar/bin/gvar $COMPOSE)
+	#export COMPOSE=$(/home/ralongi/gvar/bin/gvar $COMPOSE)
 fi
 
 echo "Provisioning $target_system with compose $COMPOSE"
@@ -174,6 +176,7 @@ if [[ $? -ne 0 ]]; then
 		sleep 3
 	else
 		echo "/home/www/html/share/vms/OVS/$new_image_name already exists on netqe-infra01.knqe.lab.eng.bos.redhat.com so skipping automatic file upload."
+		echo "The new image can be found on $target_system in /var/lib/libvirt/images/$new_image_name"
 	fi
 fi
 

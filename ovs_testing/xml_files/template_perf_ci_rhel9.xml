@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
   <whiteboard>FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf CX6</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -78,7 +78,7 @@ setenforce 0
           <param name="nic_test" value="mlx5_100g_cx6"/>
           <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford"/>
           <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
-          <param name="rpm_dpdk" value="RPM_DPDK_RHEL9_VALUE"/>
+          <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="SELINUX" value="SELINUX_VALUE"/>
           <param name="NAY" value="no"/>
@@ -88,7 +88,7 @@ setenforce 0
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/perf CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/perf CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -142,7 +142,7 @@ setenforce 0
                 <and>
                     <distro_variant op="=" value="BaseOS"/>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
                 <or>
@@ -165,13 +165,14 @@ setenforce 0
           <param name="nic_test" value="mlx5_100g_cx6"/>
           <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford"/>
           <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
-          <param name="rpm_dpdk" value="RPM_DPDK_RHEL9_VALUE"/>
+          <param name="rpm_dpdk" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="SELINUX" value="SELINUX_VALUE"/>
           <param name="NAY" value="no"/>
           <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
-          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
         </params>
       </task>
     </recipe>

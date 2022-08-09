@@ -35,7 +35,7 @@ yum -y install kernel-networking-common
 source /mnt/tests/kernel/networking/common/include.sh
 
 # install target packages (example below)
-yum -y install kernel-networking-openvswitch-common kernel-networking-openvswitch-memory_leak_soak
+yum -y install kernel-networking-openvswitch-common kernel-networking-openvswitch-memory_leak_soak kernel-networking-openvswitch-topo
 
 # install git
 git_install()

@@ -516,7 +516,7 @@ Run: oats-apply-test-profile -b -y
 # To clean up and set up for next test (and run manual test if necessary)
 
 cd
-errata=2022:92713
+errata=2022:98144
 
 # x86_64, ppc64le, s390x, aarch64
 
@@ -548,12 +548,11 @@ elif [[ $arch == "aarch64" ]]; then
 fi
 
 echo "repo is: $repo"
-#repo=rhel-7-fast-datapath-rpms
 tps-cd -c $errata
 export TPSQ_RHNDEST=$repo
 yum install -y $(tps-filter-filelist -o -u)
 
-tps -m
+tps
 #tps-rhnqa
 /mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
 

@@ -31,7 +31,7 @@ sedeasy "RPM_OVS_VALUE" "$RPM_OVS" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.x
 sedeasy "COMPOSE_VALUE" "$COMPOSE" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "RPM_OVS_SELINUX_EXTRA_POLICY_VALUE" "$RPM_OVS_SELINUX_EXTRA_POLICY" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "SELINUX_VALUE" "$SELINUX" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
-sedeasy "RPM_DPDK_VALUE" "$RPM_DPDK_RHEL8" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "RPM_DPDK_VALUE" "$RPM_DPDK" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "VM_IMAGE_VALUE" "$VM_IMAGE" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "TEST_ENV_VALUE" "$test_env" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "NIC_TEST_VALUE" "$nic_test" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"

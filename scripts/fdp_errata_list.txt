@@ -1,0 +1,74 @@
+FDP Release: 22.F
+
+OVS-2.13 RHEL-7		
+OVS-2.13 RHEL-8		99517
+OVS-2.15 RHEL-8		99515
+OVS-2.16 RHEL-8		99514
+OVS-2.17 RHEL-8		99522
+OVS-2.15 RHEL-9		
+OVS-2.17 RHEL-9		99512
+OVN-2.13 RHEL-8		
+OVN-XXXX RHEL-8		99448
+OVN-XXXX RHEL-9		99449
+OVN-22.03 RHEL-8	99450
+OVN-22.03 RHEL-9	99451
+OVN-22.06 RHEL-8	99452
+OVN-22.06 RHEL-9	99453
+
+Test Lists:
+
+OVS-2.13-RHEL-7-Tests: 
+
+OVS-2.13-RHEL-8-Tests: "mcast_snoop"
+
+ "mcast_snoop ovs_qos forward_bpdu of_rules power_cycle_crash ovs_upgrade topo_ixgbe topo_i40e topo_arm topo_cx5 topo_cx6 endurance_cx6 perf_ci_cx6"
+
+OVS-2.15-RHEL-8-Tests: 
+
+OVS-2.16-RHEL-8-Tests: 
+
+OVS-2.17-RHEL-8-Tests: 
+
+OVS-2.15-RHEL-9-Tests: 
+
+OVS-2.17-RHEL-9-Tests: 
+
+release_list="OVS-2.13-RHEL-7 OVS-2.13-RHEL-8 OVS-2.15-RHEL-8 OVS-2.16-RHEL-8 OVS-2.17-RHEL-8 OVS-2.15-RHEL-9 OVS-2.17-RHEL-9"
+
+for release in $release_list; do
+	for i in $(grep $release /home/ralongi/github/tools/scripts/fdp_errata_list.txt | awk '{$1=$2=""; print $0}'); do
+		if [[ $(echo $i | grep topo) ]];then
+			if [[ $(echo $i | grep cx) ]]; then
+				driver_type="mlx5_core"
+				card_type=$(echo $i | awk -F "_" '{print $NF}')
+				executable=$(echo "exec_topo.sh" $driver_type $card_type; done)
+			else
+				driver_type=$(echo $i | awk -F "_" '{print $NF}')
+				executable=$(echo "exec_topo.sh" $driver_type; done)
+			fi
+		elif [[ $(echo $i | grep endurance) ]]; then
+			card_type=$(echo $i | awk -F "_" '{print $NF}')
+			executable="exec_endurance.sh $card_type"
+		elif [[ $(echo $i | grep perf_ci) ]]; then
+			card_type=$(echo $i | awk -F "_" '{print $NF}')
+			executable="exec_perf_ci.sh $card_type"
+		else
+			executable=$(echo "exec_"$i.sh; done)		
+		fi
+		echo "executable: $executable"
+	done
+done
+
+#grep '' ~/github/tools/scripts/fdp_errata_list.txt | cut -f 2- -d ' ')
+
+overall_test_result=$(bkr job-results $job_id --prettyxml | grep '<job id=' | awk '{print $4}' | awk -F "=" '{print $2}' | tr -d '"')
+
+
+for i in $ovs_213_rhel8_tests; do cmd=$(exec_$i.sh); echo "cmd is: $cmd"; done
+
+# List of possible tests:
+
+ovs_213_rhel8_test_list=mcast_snoop ovs_qos forward_bpdu of_rules power_cycle_crash ovs_upgrade topo_ixgbe topo_i40e topo_arm topo_mlx_cx5 topo_mlx_cx6 topo_mlx_cx6 topo_ice endurance_cx6 perf_ci_cx6 ovs_memory_leak_soak ovn_memory_leak_soak
+
+
+

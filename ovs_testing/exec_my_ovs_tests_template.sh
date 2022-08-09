@@ -138,8 +138,8 @@ elif [[ $(echo $COMPOSE | grep RHEL-8) ]]; then
 	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
 	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
-	export RPM_DPDK_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/2.el9/x86_64/dpdk-20.11-2.el9.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/2.el9/x86_64/dpdk-tools-20.11-2.el9.x86_64.rpm
+	export RPM_DPDK_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el9_0/x86_64/dpdk-21.11-1.el9_0.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el9_0/x86_64/dpdk-tools-21.11-1.el9_0.x86_64.rpm
 fi
 
 # For rpm_dpdk variable used by openvswitch/perf tests
@@ -165,23 +165,27 @@ pushd /home/ralongi/github/tools/ovs_testing
 
 #./exec_mcast_snoop.sh
 #./exec_ovs_qos.sh
-./exec_forward_bpdu.sh
-./exec_of_rules.sh
-./exec_power_cycle_crash.sh
+#./exec_forward_bpdu.sh
+#./exec_of_rules.sh
+#./exec_power_cycle_crash.sh
 #./exec_ovs_upgrade.sh
-./exec_topo.sh ixgbe
+#./exec_topo.sh ixgbe
+#./exec_topo.sh i40e
 #./exec_topo.sh arm
-./exec_topo.sh i40e
-#./exec_topo.sh enic
-./exec_topo.sh mlx5_core cx5
+#./exec_topo.sh mlx5_core cx5
 #./exec_topo.sh mlx5_core cx6
+#./exec_topo.sh mlx5_core cx7
+#./exec_endurance.sh cx6
+#./exec_perf_ci.sh cx6
+
+#./exec_topo.sh enic
 #./exec_topo.sh qede
 #./exec_topo.sh bnxt_en
 #./exec_topo.sh nfp
 #./exec_topo.sh ice
 #./exec_sanity_check.sh
 
-#./exec_ovs_memory_leak_soak.sh
+./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh
@@ -190,8 +194,6 @@ pushd /home/ralongi/github/tools/ovs_testing
 #export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
 #./exec_endurance.sh cx5
 #./exec_perf_ci.sh cx5
-#./exec_endurance.sh cx6
-#./exec_perf_ci.sh cx6
 #./exec_perf_ci_pensando_sriov.sh
 #export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
 ###############################################################################

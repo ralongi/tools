@@ -4,7 +4,8 @@
 
 echo "COMPOSE is: $COMPOSE"
 
-dbg_flag="set -x"
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
 pushd ~/git/kernel/networking/tools/runtest-network
 fdp_release=$FDP_RELEASE
 server="netqe21.knqe.lab.eng.bos.redhat.com"
