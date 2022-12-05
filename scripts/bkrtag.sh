@@ -15,9 +15,19 @@ else
 		tag=$(grep 'current tag' /tmp/bkrtag.tmp | awk '{print $4}')
 		echo "Got an error that $tag is not an ancestor of HEAD.  Trying to merge it now..."
 		git merge -m "" $tag HEAD
-		git push origin $tag
-		
-	echo "make tag command failed"; exit 1; fi
+		sleep 2
+		make tag > /tmp/bkrtag.tmp
+		if [[ $? -eq 0 ]]; then
+			echo "make tag command PASSED";
+		else
+			echo "make tag command failed again"
+			exit 1
+		fi
+	else
+		echo "make tag command failed"
+		exit 1
+	fi
+fi	
 
 tag=$(grep -i tagging /tmp/bkrtag.tmp | awk '{ print $4 }')
 
@@ -28,4 +38,3 @@ if [[ $? -eq 0 ]]; then echo "git push command PASSED"; else echo "git push comm
 make bkradd
 if [[ $? -eq 0 ]]; then echo "make bkradd command PASSED"; else echo "make bkradd command failed"; exit 1; fi
 popd
-

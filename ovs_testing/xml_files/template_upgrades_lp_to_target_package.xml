@@ -17,7 +17,7 @@
       </distroRequires>
       <hostRequires>
         <and>
-          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <hostname op="=" value="netqe40.knqe.lab.eng.bos.redhat.com"/>
           <system_type op="=" value="Machine"/>
         </and>
       </hostRequires>
@@ -25,10 +25,10 @@
       <task name="/distribution/install" role="STANDALONE"/>
       <task name="/kernel/networking/openvswitch/upgrades" role="STANDALONE">
         <params>
-          <param name="dbg_flag" value="set -x"/>
+          <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="use_dpdk" value="use_dpdk_setting"/>
-          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
-          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="netscout_pair1" value="netqe40_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe40_p3p2 xena_m5p1"/>
           <param name="openvswitch_rpm" value="openvswitch_rpm_location"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
           <param name="ovs_selinux_rpm" value="openvswitch_selinux rpm_value "/>
@@ -69,7 +69,7 @@
       </distroRequires>
       <hostRequires>
         <and>
-          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <hostname op="=" value="netqe40.knqe.lab.eng.bos.redhat.com"/>
           <system_type op="=" value="Machine"/>
         </and>
       </hostRequires>
@@ -77,10 +77,10 @@
       <task name="/distribution/install" role="STANDALONE"/>
       <task name="/kernel/networking/openvswitch/upgrades" role="STANDALONE">
         <params>
-          <param name="dbg_flag" value="set -x"/>
+          <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="use_dpdk" value="use_dpdk_setting"/>
-          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
-          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="netscout_pair1" value="netqe40_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe40_p3p2 xena_m5p1"/>
           <param name="openvswitch_rpm" value="openvswitch_rpm_location"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
           <param name="ovs_selinux_rpm" value="openvswitch_selinux rpm_value "/>
@@ -121,7 +121,7 @@
       </distroRequires>
       <hostRequires>
         <and>
-          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <hostname op="=" value="netqe40.knqe.lab.eng.bos.redhat.com"/>
           <system_type op="=" value="Machine"/>
         </and>
       </hostRequires>
@@ -131,8 +131,8 @@
         <params>
           <param name="dbg_flag" value="set -x"/>
           <param name="use_dpdk" value="use_dpdk_setting"/>
-          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
-          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="netscout_pair1" value="netqe40_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe40_p3p2 xena_m5p1"/>
           <param name="openvswitch_rpm" value="openvswitch_rpm_location"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
           <param name="ovs_selinux_rpm" value="openvswitch_selinux rpm_value "/>
@@ -174,7 +174,7 @@
       </distroRequires>
       <hostRequires>
         <and>
-          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <hostname op="=" value="netqe40.knqe.lab.eng.bos.redhat.com"/>
           <system_type op="=" value="Machine"/>
         </and>
       </hostRequires>
@@ -184,8 +184,8 @@
         <params>
           <param name="dbg_flag" value="set -x"/>
           <param name="use_dpdk" value="use_dpdk_setting"/>
-          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
-          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="netscout_pair1" value="netqe40_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe40_p3p2 xena_m5p1"/>
           <param name="openvswitch_rpm" value="openvswitch_rpm_location"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
           <param name="ovs_selinux_rpm" value="openvswitch_selinux rpm_value "/>

@@ -96,7 +96,7 @@ fi
 ### ixgbe tests without Netscout
 if [[ "$driver" == "ixgbe" ]]; then
 	server="netqe21.knqe.lab.eng.bos.redhat.com"
-	client="netqe20.knqe.lab.eng.bos.redhat.com"
+	client="netqe44.knqe.lab.eng.bos.redhat.com"
 	server_driver="ixgbe"
 	client_driver="ixgbe"
 fi
@@ -104,7 +104,7 @@ fi
 ### i40e with Netscout
 if [[ "$driver" == "i40e" ]]; then
 	server="netqe21.knqe.lab.eng.bos.redhat.com"
-	client="netqe20.knqe.lab.eng.bos.redhat.com"
+	client="netqe44.knqe.lab.eng.bos.redhat.com"
 	netscout_switch="bos_3903"
 	netscout_pair1="netqe20_p5p1 netqe21_p5p1"
 	netscout_pair2="netqe20_p5p2 netqe21_p5p2"
@@ -183,7 +183,7 @@ fi
 
 ### Cisco enic with Netscout, no bonding tests
 if [[ "$driver" == "enic" ]]; then
-	server="netqe20.knqe.lab.eng.bos.redhat.com"
+	server="netqe44.knqe.lab.eng.bos.redhat.com"
 	client="netqe26.knqe.lab.eng.bos.redhat.com"
 	netscout_switch="bos_3903"
 	netscout_pair1="netqe20_p5p1 netqe26_enp9s0"

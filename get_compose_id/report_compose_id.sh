@@ -39,7 +39,7 @@ if [[ $? -ne 0 ]]; then
      exit 0
 fi
 
-timeout 10s bash -c "until traceroute $target > /dev/null; do sleep 1s; done"
+timeout 10s bash -c "until ping -c1 $target > /dev/null; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
     echo "$target is not reachable.  Exiting test..."
     exit

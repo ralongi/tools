@@ -8,6 +8,9 @@ ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 
 VM_IMAGE="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/$VM_IMAGE"
 
+# Change format of $FDP_RELEASE due to change in Guan's code to upload db
+FDP_RELEASE=$(echo ${FDP_RELEASE:0:2}.${FDP_RELEASE:2:2})
+
 if [[ $card_type == "cx5" ]]; then
 	test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx5_westford_endurance
 	nic_test=mlx5_100g_cx5
@@ -35,6 +38,7 @@ sedeasy "RPM_DPDK_VALUE" "$RPM_DPDK" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type
 sedeasy "VM_IMAGE_VALUE" "$VM_IMAGE" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "TEST_ENV_VALUE" "$test_env" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 sedeasy "NIC_TEST_VALUE" "$nic_test" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "dbg_flag_value" "$dbg_flag" "endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
 bkr job-submit endurance_rhel"$RHEL_VER_MAJOR"_$card_type.xml
 
 popd

@@ -6,7 +6,7 @@ dbg_flag="set -x"
 pushd ~/git/kernel/networking/tools/runtest-network
 fdp_release=$FDP_RELEASE
 server="netqe21.knqe.lab.eng.bos.redhat.com"
-client="netqe20.knqe.lab.eng.bos.redhat.com"
+client="netqe44.knqe.lab.eng.bos.redhat.com"
 server_driver="i40e"
 client_driver="i40e"
 

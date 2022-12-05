@@ -1,0 +1,116 @@
+################################################################################
+Log started -- Tue Oct 11 17:00:33 2022 --
+
+ Welcome to the TestStream Management CLI ... Ver: 03.05.200.074
+
+=>
+ logon administrator
+Password:
+ *********
+administrator is now logged on.
+
+=>
+ show switch
+Available Switches:
+3903
+
+=>
+ show switch 3903
+
+Switch             :  3903
+Switch MAC         :  D8E72B000DE6
+Switch Model       :  3903, Ipv4: 10.19.15.65, Discovery: Auto Eth, Link Prop: Disabled, Status: Active     
+
+Power Supplies:
+   PSU 1 FRU PRESENT and status GOOD
+    PSU type.....: PSU_TYPE_3903_1200W_AC
+    PG_12V  .....: GOOD
+    PG_3_3V .....: GOOD
+    PG_1_2VA ....: GOOD
+    PG_1_2VB ....: GOOD
+
+   PSU 2 FRU PRESENT and status ERROR PRESENT
+    PSU type.....: PSU_TYPE_3903_1200W_AC
+    PG_12V  .....:  BAD
+    PG_3_3V .....: GOOD
+    PG_1_2VA ....: GOOD
+    PG_1_2VB ....: GOOD
+
+Power Budget: 
+   Available: 1200 W
+   Max. draw: 280 W
+
+FANs:
+   FAN 1 FRU PRESENT and status is GOOD
+
+   Results for FAN FRU 1 controller 1 :
+             FAN1     FAN2 
+    RPM     05106    05217
+    PWM       100      100
+
+
+Management ETH ports:
+   ETH Port 1 link is up
+   ETH Port 2 link is down
+
+Blade   Type             S/W               Product Information
+------  ---------------  ----------------  ----------------------------------------------
+* 1.01  S-Blade          03.05.200.074     UBoot 4      0234 E1:: PSB160488012   03.05.200.074
+
+For more detailed information, please use the command "diagstat".
+  1.02  *****
+  1.03  *****
+
+=>
+ show ports
+Defined Ports:
+NETQE9_SLOT3PORT1
+NETQE9_SLOT3PORT0
+XENA_M3P0
+XENA_M3P1
+XENA_M5P0
+XENA_M5P1
+XENA_M7P0
+XENA_M7P1
+NETQE26_ENP9S0
+NETQE26_ENP10S0
+NETQE21_P5P2
+NETQE21_P5P1
+NETQE20_P5P2
+NETQE20_P5P1
+NETQE19_P4P2
+NETQE19_P4P1
+NETQE18_ENS3F0
+NETQE18_ENS3F1
+NETQE18_ENS6F0
+NETQE18_ENS6F1
+NETQE17_P5P1
+NETQE17_P5P2
+NETQE29_STS2_1
+NETQE29_STS2_2
+NETQE22_P4P2
+NETQE22_P4P1
+NETQE22_P6P2
+NETQE22_P6P1
+NETQE22_P7P1
+NETQE22_P7P2
+NETQE14_P1P1
+NETQE14_P1P2
+NETQE13_P1P2
+NETQE13_P1P1
+NETQE13_P2P1
+NETQE13_P2P2
+NETQE29_STS2_3
+NETQE29_STS2_4
+NETQE32_P3P1
+NETQE32_P3P2
+NETQE32_P1P1
+NETQE32_P1P2
+EX4500_P0
+EX4500_P1
+EX4500_P2
+EX4500_P3
+CISCO_ENO2
+CISCO_ENO3
+
+=>

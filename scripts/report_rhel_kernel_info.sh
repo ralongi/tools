@@ -11,7 +11,7 @@ target=$1
 if [[ $# -lt 1 ]]; then
 	echo ""
 	echo "Please provide a valid host name or IP address."
-	echo "Example: $0 netqe20.knqe.lab.eng.bos.redhat.com"
+	echo "Example: $0 netqe44.knqe.lab.eng.bos.redhat.com"
 	echo "Example: $0 10.19.15.71"
 	echo ""
 	exit 1
@@ -38,7 +38,7 @@ if ! nslookup $target > /dev/null; then
 	echo ""
 	echo "$target does not appear to be a valid FQDN host name or IP address."
 	echo "Please provide a valid host name or IP address."
-	echo "Example: $0 netqe20.knqe.lab.eng.bos.redhat.com"
+	echo "Example: $0 netqe44.knqe.lab.eng.bos.redhat.com"
 	echo "Example: $0 10.19.15.71"
 	echo ""
 	exit 1

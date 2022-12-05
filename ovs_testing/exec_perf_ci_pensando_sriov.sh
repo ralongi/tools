@@ -5,7 +5,7 @@
 
 #card_type=$(echo $1 | tr '[:upper:]' '[:lower:]')
 #task="/kernel/networking/openvswitch/perf"
-#machine="netqe21.knqe.lab.eng.bos.redhat.com,netqe20.knqe.lab.eng.bos.redhat.com"
+#machine="netqe21.knqe.lab.eng.bos.redhat.com,netqe44.knqe.lab.eng.bos.redhat.com"
 #nic_test="i40e_sriov"
 nic_test="mlx5_core_sriov"
 

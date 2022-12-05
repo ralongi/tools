@@ -10,7 +10,7 @@ fdp_release=$FDP_RELEASE
 NIC_DRIVER=${NIC_DRIVER:-"i40e"}
 export loop_round=100
 server="netqe21.knqe.lab.eng.bos.redhat.com"
-client="netqe20.knqe.lab.eng.bos.redhat.com"
+client="netqe44.knqe.lab.eng.bos.redhat.com"
 #netscout_pair1="netqe20_p5p1 netqe21_p5p1"
 #netscout_pair2="netqe20_p5p2 netqe21_p5p2"
 #netscout_cable $netscout_pair1

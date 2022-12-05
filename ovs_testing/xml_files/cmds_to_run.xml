@@ -1,0 +1,15 @@
+      <task name="/distribution/command" role="STANDALONE">
+        <params>
+          <param name="CMDS_TO_RUN" value="yum -y install wget; wget -O /etc/yum.repos.d/openvswitch3.0-3.0.0-0.1.el9fdp-scratch.repo http://brew-task-repos.usersys.redhat.com/repos/scratch/tredaell/openvswitch3.0/3.0.0/0.1.el9fdp/openvswitch3.0-3.0.0-0.1.el9fdp-scratch.repo; yum install -y http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/31.el9fdp/noarch/openvswitch-selinux-extra-policy-1.0-31.el9fdp.noarch.rpm openvswitch3.0"/>
+        </params>
+      </task>
+      
+      
+      
+      
+      
+
+
+
+
+

@@ -79,7 +79,7 @@ chmod 755 /usr/bin/rhts-power
             </distroRequires>
       <hostRequires>
         <and>
-          <hostname value="netqe9.knqe.lab.eng.bos.redhat.com" op="="/>
+          <hostname value="netqe40.knqe.lab.eng.bos.redhat.com" op="="/>
           <system_type value="Machine" op="="/>
         </and>
       </hostRequires>
@@ -99,7 +99,7 @@ chmod 755 /usr/bin/rhts-power
       <task name="/distribution/utils/power-cycle" role="STANDALONE"/>
       <task name="/kernel/networking/openvswitch/power_cycle_crash/check_config" role="STANDALONE">
         <params>
-          <param name="dbg_flag" value="set -x"/>
+          <param name="dbg_flag" value="dbg_flag_value"/>
         </params>
       </task>
       <task name="/kernel/kdump/crash-sysrq-c" role="STANDALONE"/>

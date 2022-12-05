@@ -4,7 +4,7 @@ dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
 arch=${arch:-"x86_64"}
 
-machine_pool=${machine_pool:-'"netqe11.knqe.lab.eng.bos.redhat.com,netqe20.knqe.lab.eng.bos.redhat.com,netqe21.knqe.lab.eng.bos.redhat.com"'}
+machine_pool=${machine_pool:-'"netqe11.knqe.lab.eng.bos.redhat.com,netqe44.knqe.lab.eng.bos.redhat.com,netqe21.knqe.lab.eng.bos.redhat.com"'}
 
 display_usage()
 {

@@ -9,6 +9,8 @@ COMPOSE=${COMPOSE:-""}
 GUEST_IMG_VALUE=$RHEL_VER
 /home/ralongi/gvar/bin/gvar $COMPOSE
 
+if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
+
 # Script to execute all of my ovs tests
 
 source ~/git/kernel/networking/openvswitch/common/package_list.sh > /dev/null
@@ -48,6 +50,30 @@ EOF
 	fi
 }
 
+# Get the latest driverctl package URLs
+
+get_latest_driverctl()
+{
+	latest_build_id=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl | grep -B1 '<hr></pre>' | grep DIR | awk -F '"' '{print $6}' | tr -d '/')
+
+	latest_el8_package_id=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el8 | head -n1 |  awk -F '"' '{print $6}' | tr -d '/')
+
+	latest_el9_package_id=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el9 | tail -n1 |  awk -F '"' '{print $6}' | tr -d '/')
+
+	el8_rpm=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/ | grep rpm | awk -F '"' '{print $6}')
+
+	el9_rpm=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/ | grep rpm | awk -F '"' '{print $6}')
+
+	export DRIVERCTL_RHEL8="http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"
+	export DRIVERCTL_RHEL9="http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"
+}
+
+get_latest_driverctl
+
+export RPM_DRIVERCTL=$DRIVERCTL_RHELRHEL_VER_MAJOR_VALUE
+export RPM_OVS_TCPDUMP_PYTHON=$OVSFDP_STREAM_VALUE_PYTHON_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+export RPM_OVS_TCPDUMP_TEST=$OVSFDP_STREAM_VALUE_TCPDUMP_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
+
 # RHEL composes
 
 # if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing the scripts to kick off tests
@@ -57,6 +83,24 @@ if [[ -z $COMPOSE ]]; then
 fi
 
 echo "Using compose: $COMPOSE"
+
+# Z stream repos from https://gitlab.cee.redhat.com/kernel-qe/core-kernel/kernel-general/-/blob/master/Sustaining/ZConfig.yaml:
+
+if [[ $(echo $COMPOSE | grep 'RHEL-8.4') ]]; then
+	export zstream_repo_list_x86_64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/codeready-builder/debug/"
+	export zstream_repo_list_aarch64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/codeready-builder/debug/"
+# Most current shipping RHEL-8 is below
+elif [[ $(echo $COMPOSE | grep 'RHEL-8.6') ]]; then
+	export zstream_repo_list_x86_64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/codeready-builder/os/"
+	export zstream_repo_list_aarch64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/aarch64/appstream/os/ --repo=hhttp://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/aarch64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/aarch64/codeready-builder/os/"
+# Most current shipping RHEL-9 is below
+elif [[ $(echo $COMPOSE | grep 'RHEL-9.0') ]]; then
+	export zstream_repo_list_x86_64="--repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/codeready-builder/debug/"
+	export zstream_repo_list_aarch64="--repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/codeready-builder/debug/"
+fi
+
+echo Z Stream x86_64 repo list is: $(echo "$zstream_repo_list_x86_64")
+echo Z Stream aarch64 repo list is: $(echo "$zstream_repo_list_aarch64")
 
 # Netperf package
 export SRC_NETPERF="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20210121.tar.bz2"
@@ -157,6 +201,8 @@ export RPM_OVN=$OVNFDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
+export BONDING_CPU_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp ovs_test_ns_enable_nomlockall_CPUAffinity_test"
+
 export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ipv6 ovs_test_vlan_gre_ipv6 ovs_test_vlan_gre1_ipv6 ovs_test_vm_gre_ipv6 ovs_test_vm_gre1_ipv6 ovs_test_vm_gre_flow_ipv6 ovs_test_vm_vlan_gre_ipv6 ovs_test_vm_vlan_gre1_ipv6"
 
 #pushd /home/ralongi/Documents/ovs_testing
@@ -169,11 +215,10 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_of_rules.sh
 #./exec_power_cycle_crash.sh
 #./exec_ovs_upgrade.sh
+# To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
 #./exec_topo.sh ixgbe
-#./exec_topo.sh i40e
+./exec_topo.sh i40e
 #./exec_topo.sh arm
-#./exec_topo.sh mlx5_core cx5
-#./exec_topo.sh mlx5_core cx6
 #./exec_topo.sh mlx5_core cx7
 #./exec_endurance.sh cx6
 #./exec_perf_ci.sh cx6
@@ -185,7 +230,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh ice
 #./exec_sanity_check.sh
 
-./exec_ovs_memory_leak_soak.sh
+#./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh

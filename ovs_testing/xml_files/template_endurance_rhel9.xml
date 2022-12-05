@@ -74,9 +74,9 @@ setenforce 0
       <task name="/distribution/install" role="SERVERS"/>
       <task name="/kernel/networking/openvswitch/perf" role="SERVERS">
         <params>
-          <param name="dbg_flag" value="set -x"/>
-          <param name="nic_test" value="mlx5_100g_cx6"/>
-          <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford_endurance"/>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="nic_test" value="NIC_TEST_VALUE"/>
+          <param name="test_env" value="TEST_ENV_VALUE"/>
           <param name="image" value="VM_IMAGE_VALUE"/>
           <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
@@ -162,7 +162,7 @@ setenforce 0
       <task name="/distribution/install" role="CLIENTS"/>
       <task name="/kernel/networking/openvswitch/perf" role="CLIENTS">
         <params>
-          <param name="dbg_flag" value="set -x"/>
+          <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="nic_test" value="NIC_TEST_VALUE"/>
           <param name="test_env" value="TEST_ENV_VALUE"/>
           <param name="image" value="VM_IMAGE_VALUE"/>

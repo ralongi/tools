@@ -32,7 +32,8 @@ rhel_major_ver=$(echo $rhel_minor_ver | awk -F "." '{print $1}')
 
 if [[ $(echo $rhel_minor_ver | grep -i RHEL) ]]; then
 	compose_id=$rhel_minor_ver
-	distro_id=$(bkr distro-trees-list --name=$compose_id --arch=$arch | grep -B2 "Variant: $variant" | grep ID | awk '{print $NF}')
+	#distro_id=$(bkr distro-trees-list --name=$compose_id --arch=$arch | grep -B2 "Variant: $variant" | grep ID | awk '{print $NF}')
+	distro_id=$(bkr distro-trees-list --name=$compose_id --arch=$arch | grep ID | awk '{print $NF}')
 	build_url=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep -A 12 rhts.eng.bos.redhat.com | grep http | grep -v href | tr -d " ")
 else
 	view_id=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/?simplesearch=rhel-$rhel_minor_ver | grep '/distros/view' | grep -v '\.n' | egrep -v '\.n|\.d' | head -n1 | awk -F ">" '{print $1}' | awk -F "=" '{print $NF}' | tr -d '"')
@@ -63,12 +64,12 @@ arch=$(echo $build_url | awk -F "/os" '{print $1}' | awk -F "/" '{print $NF}')
 
 if [[ $package ]]; then
 	#package_list=$(curl -sL "$build_url"Packages | egrep $package | head -n1 | awk -F ">" '{print $2}' | awk -F "=" '{print $NF}' | tr -d '"')
-	package_list=$(curl -sL "$build_url"Packages | egrep $package | head | awk -F ">" '{print $2}' | awk -F "=" '{print $NF}' | tr -d '"')
+	package_list=$(curl -sL "$build_url"Packages | egrep -w $package | head | awk -F ">" '{print $6}' | awk -F '"' '{print $2}')
 fi
 
 #curl -sL "$build_url"Packages | egrep NetworkManager-[0-9] | head | awk -F ">" '{print $2}' | awk -F "=" '{print $NF}' | tr -d '"'
 
-kernel_id=$(curl -sL "$build_url"Packages | egrep kernel-[0-9] | head -n1 | awk -F ">" '{print $2}' | awk -F "=" '{print $NF}' | tr -d '"')
+kernel_id=$(curl -sL "$build_url"Packages | egrep -w kernel | head -n1 | awk -F ">" '{print $6}' | awk -F '"' '{print $2}')
 echo $kernel_id > ~/kernel_id.tmp
 kernel_id=$(sed "s/.$arch.rpm//g" ~/kernel_id.tmp)
 rm -f ~/kernel_id.tmp

@@ -30,7 +30,7 @@ echo "10.19.40.183 cube1" >> /etc/hosts
 echo "10.19.40.108 cube2" >> /etc/hosts
 echo "qe18 netqe18.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "qe19 netqe19.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
-echo "qe20 netqe20.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
+echo "qe20 netqe44.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "qe21 netqe21.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "qe22 netqe22.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "qe23 netqe23.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases

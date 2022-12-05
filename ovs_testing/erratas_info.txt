@@ -55,19 +55,19 @@ if [[ $arch == "x86_64" ]]; then
 
 # To build stable system for RHEL7 x86_64
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
 
 # To build stable system for RHEL7 ppc64le:
 
 NOTE: For repo "rhel-7-for-power9-fast-datapath-rpms", use test profile "stable-rhel-alt-7-server"
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
 
 Note: use test profile "stable-rhel-alt-7-server" with above ppc64le command for RHEL ALT streams.
 
 # To build stable system for RHEL7 s390x:
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
 
 # To build stable system for RHEL8 x86_64
 
@@ -299,7 +299,6 @@ Wait until CAT tests are passed before debugging RHNQA TPS tests
 (11:44:17 AM) ralongi: sgraf: Thanks.  So it seems that best practice is to wait until after CAT passes before working on TPS jobs.
 (11:44:42 AM) sgraf: ralongi: right...
 (11:46:22 AM) ralongi: sgraf: I thought TPS wouldn't even start to run at all until after CAT passed so I learned something new :-)  I'll definitely keep that in mind going forward.  thanks again.
-(11:47:28 AM) bkhomuts_ left the room (quit: Ping timeout: 615 seconds).
 (11:48:01 AM) sgraf: ralongi: you're welcome
 
 #########################################################################
@@ -515,93 +514,19 @@ Run: oats-apply-test-profile -b -y
 
 # To clean up and set up for next test (and run manual test if necessary)
 
-cd
-errata=2022:98144
+# run step below only once and script will be available for all erratas
+wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh
 
-# x86_64, ppc64le, s390x, aarch64
+# run steps below specifying target errata as necessary
+export errata=2022:99452
+. ~/stable_cleanup.sh
 
-for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
-for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
-errata=$errata
-arch=$(uname -m)
-
-# rhel8:
-if [[ $arch == "x86_64" ]]; then
-	repo=fast-datapath-for-rhel-8-x86_64-rpms
-elif [[ $arch == "ppc64le" ]]; then
-	repo=fast-datapath-for-rhel-8-ppc64le-rpms
-elif [[ $arch == "s390x" ]]; then
-	repo=fast-datapath-for-rhel-8-s390x-rpms
-elif [[ $arch == "aarch64" ]]; then
-	repo=fast-datapath-for-rhel-8-aarch64-rpms	
-fi
-
-#rhel9:
-if [[ $arch == "x86_64" ]]; then
-	repo=fast-datapath-for-rhel-9-x86_64-rpms
-elif [[ $arch == "ppc64le" ]]; then
-	repo=fast-datapath-for-rhel-9-ppc64le-rpms
-elif [[ $arch == "s390x" ]]; then
-	repo=fast-datapath-for-rhel-9-s390x-rpms
-elif [[ $arch == "aarch64" ]]; then
-	repo=fast-datapath-for-rhel-9-aarch64-rpms	
-fi
-
-echo "repo is: $repo"
-tps-cd -c $errata
-export TPSQ_RHNDEST=$repo
-yum install -y $(tps-filter-filelist -o -u)
+# To run tests manually:
 
 tps
+
 #tps-rhnqa
-/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
 
-
-# ppc64le
-
-for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
-for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
-errata=$errata
-#repo=fast-datapath-for-rhel-8-ppc64le-rpms
-#repo=rhel-7-for-power-le-fast-datapath-rpms
-#repo=rhel-7-for-power9-fast-datapath-rpms
-tps-cd -c $errata
-export TPSQ_RHNDEST=$repo
-yum install -y $(tps-filter-filelist -o -u)
-
-tps -m
-#tps-rhnqa
-/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
-
-
-# s390x
-
-for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
-for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
-errata=$errata
-#repo=fast-datapath-for-rhel-8-s390x-rpms
-#repo=rhel-7-for-system-z-fast-datapath-rpms
-tps-cd -c $errata
-export TPSQ_RHNDEST=$repo
-yum install -y $(tps-filter-filelist -o -u)
-
-tps -m
-#tps-rhnqa
-/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
-
-# aarch640x
-
-for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
-for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
-errata=$errata
-#repo=fast-datapath-for-rhel-8-aarch64-rpms 	
-#repo=rhel-7-for-system-z-fast-datapath-rpms
-tps-cd -c $errata
-export TPSQ_RHNDEST=$repo
-yum install -y $(tps-filter-filelist -o -u)
-
-tps -m
-#tps-rhnqa
 /mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
 
 #########################################################################
@@ -645,6 +570,63 @@ popd
 (03:29:24 PM) jwl_home: unless there's some weird bug that I'm not currently aware of, of course :)
 
 #########################################################################
+
+UPDATED INFO PER JEFF BASTIAN: RHEL-9 BASED ERRATAS (I.E. DPDK) DO NOT REQUIRE THAT TPS OR DISTQA TPS JOBS BE RUN AS THEY HAVE ALREADY BEEN TESTED VIA RTT.  YOU CAN JUST PUSH TO STAGING AND WHEN THAT PROCESS IS COMPLETE, SET TO REL PREP.  YOU WILL SEE THAT TPS IS ONLY INFORMATIONAL WHEN YOU CLICK CHANGE STATE BUTTON
+
+
+From Jeff on 10-11-2022:
+
+Jeff Bastian, 20 min
+@Rick Alongi the "problem" is the /distribution/install/stable-system task disables the beaker yum repos
+
+Mike Boswell, 20 min
+phew.  Thanks Jeff.
+
+Jeff Bastian, 20 min
+you can see in the taskout.log for that task::: [ 08:45:05 ] :: [  BEGIN   ] :: Disable local beaker repositories :: actually running 'sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/beaker*repo'
+
+so when reservesys tries to run, it can't find those packages
+
+I see you're trying to build a RHEL9 Stable System - is this for a manual TPS run?
+
+Rick Alongi, 18 min
+correct
+
+Jeff Bastian, 17 min
+If so, you don't have to bother with it: TPS is no longer necessary on RHEL9. RTT does a TPS-equivalent so we can skip it.
+
+Click on the "Change State" button in Errata Tool and you'll see the ⓘ icon next to TPS which means it's "information only", it's not a required step
+
+Rick Alongi, 14 min
+cool.  i checked the errata state for https://errata.devel.redhat.com/advisory/100631 and it does have REL PREP blocked off.
+
+Jeff Bastian, 14 min
+you need to push  to CDN staging first
+
+that's the blocking step
+
+Jeff Bastian, 11 min, Edited
+the blocking steps have the "no smoking" ⊘ symbol if they're not completed
+
+Rick Alongi, 10 min
+ok.  so i should be able to push it to staging because TPS is not required.  will DistQA TPS be required?
+
+Jeff Bastian, 10 min
+no, DistQA-TPS is also not required
+
+all you have to do is push-to-CDN-staging and wait for CAT (Content Availability Testing) to finish (it will start automatically when the push finishes)
+
+Rick Alongi, 9 min
+nice 🙂  i'll just push it to Staging and then set it to REL PREP accordingly.  Thanks!
+
+Jeff Bastian, 9 min
+you're welcome!
+
+(RHEL8 still requires TPS and DistQA-TPS, of course, but RHEL9 is much easier to deal with in Errata Tool)
+
+Rick Alongi, 8 min
+that is great news 🙂
+
 
 # To build stable system for DPDK using a specific distro (useful for jobs requiring unreleased distro):
 

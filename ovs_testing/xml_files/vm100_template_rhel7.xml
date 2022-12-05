@@ -56,7 +56,7 @@
       </distroRequires>
       <hostRequires>
                 <and>
-                    <hostname op="=" value="netqe20.knqe.lab.eng.bos.redhat.com"/>
+                    <hostname op="=" value="netqe44.knqe.lab.eng.bos.redhat.com"/>
                     <system_type op="=" value="machine"/>
                 </and>
       </hostRequires>

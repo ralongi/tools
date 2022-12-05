@@ -21,10 +21,8 @@
 #[root@localhost dpdkrpms]# ls  /root/dpdkrpms/
 #1711-15  1811-2  el8-1811-2
 
-#dbg_flag=${dbg_flag=:-"set +x"}
-#$dbg_flag
-
-set -x
+dbg_flag=${dbg_flag=:-"set +x"}
+$dbg_flag
 
 fdp_version="FDP 20.B"
 dpdk_version_info="1811-4"
@@ -120,6 +118,7 @@ while true; do
 					sedeasy "openvswitch_selinux rpm_value" "$openvswitch_selinux_rpm" "$new_filename";
 					sedeasy "skip_traffic_tests_value" "$skip_traffic_tests_value" "$new_filename";
 					sedeasy "use_latest_rhel_repo_value" "$use_latest_rhel_repo_value" "$new_filename";
+					sedeasy "dbg_flag_value" "$dbg_flag" "$new_filename";
 					for i in $(grep "SELinux Enabled:" "$new_filename"); do
 						sedeasy "selinux_setting" "$selinux_setting" "$new_filename"
 					done

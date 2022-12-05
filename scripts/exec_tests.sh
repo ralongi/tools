@@ -1,5 +1,5 @@
 test_list=${test_list:-""}
-machine_pool=${machine_pool:-"netqe11.knqe.lab.eng.bos.redhat.com,netqe12.knqe.lab.eng.bos.redhat.com,netqe20.knqe.lab.eng.bos.redhat.com,netqe21.knqe.lab.eng.bos.redhat.com"}
+machine_pool=${machine_pool:-"netqe11.knqe.lab.eng.bos.redhat.com,netqe12.knqe.lab.eng.bos.redhat.com,netqe44.knqe.lab.eng.bos.redhat.com,netqe21.knqe.lab.eng.bos.redhat.com"}
 subtest=$(lstest $test | awk '{print $2}' | tr -d ':')
 test_parent=$(pwd | awk -F "/" '{print $NF}')
 
