@@ -74,10 +74,10 @@ pw_file="./password_list.txt"
 rm -f $pw_file
 
 cat <<-EOF > $pw_file
+	fo0m4nchU
 	QwAo2U6GRxyNPKiZaOCx
 	100yard-
 	redhat
-	fo0m4nchU
 	qum5net
 EOF
 

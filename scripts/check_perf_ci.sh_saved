@@ -11,11 +11,10 @@ fi
 
 get_delta_values()
 {
-	$dbg_flag
 	result=$1
 	threshold=$2
 	delta=$(($result - $threshold))
-	pct=$(awk "BEGIN { pc=100*${delta}/${threshold}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
+	pct=$(awk "BEGIN { pc=100*${delta}/${start}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
 }
 
 log=$(bkr job-results J:$job_id --prettyxml | grep -A40 '"/kernel/networking/openvswitch/perf" role="CLIENTS"' | grep taskout.log | awk -F '"' '{print $2}')
@@ -34,6 +33,11 @@ frame_size=64
 flows=1024
 loss_rate=0
 
+echo "Frame size: $frame_size" | tee -a pass_fail.txt
+echo "Flows: $flows" | tee -a pass_fail.txt
+echo "Loss-rate: $loss_rate" | tee -a pass_fail.txt
+echo "" | tee -a pass_fail.txt
+
 fr64_fl1024_123_vno_vlan11_threshold=3562674
 fr64_fl1024_143_vno_vlan11_threshold=7404755
 fr64_fl1024_245_vno_vlan11_threshold=7404755
@@ -46,6 +50,8 @@ fr64_fl1024_sriov_13_vyes_vlan0_threshold=41223341
 fr64_fl1024_testpmd_vno_vlan0_threshold=2496184
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11
+echo "Tests: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11" | tee -a pass_fail.txt
+echo "" | tee -a pass_fail.txt
 
 fr64_fl1024_123_vno_vlan11_testname=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $1}' | awk -F '"' '{print $2}')
 fr64_fl1024_123_vno_vlan11_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
@@ -61,6 +67,8 @@ fr64_fl1024_489_vno_vlan11_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $res
 
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0
+echo "Tests: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0" | tee -a pass_fail.txt
+echo "" | tee -a pass_fail.txt
 
 fr64_fl1024_123_vyes_vlan0_testname=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $9}' | awk -F '"' '{print $2}')
 fr64_fl1024_123_vyes_vlan0_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $10}' | awk -F "." '{print $1}')
@@ -75,77 +83,58 @@ fr64_fl1024_489_vyes_vlan0_testname=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $r
 fr64_fl1024_489_vyes_vlan0_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $16}' | awk -F "." '{print $1}')
 
 # sriov_pvp
+echo "Tests: sriov_pvp" | tee -a pass_fail.txt
+echo "" | tee -a pass_fail.txt
 
 fr64_fl1024_sriov_13_vyes_vlan0_testname=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $17}' | awk -F '"' '{print $2}')
 fr64_fl1024_sriov_13_vyes_vlan0_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $18}' | awk -F "." '{print $1}')
 
 # testpmd as switch
+echo "Tests: testpmd_as_switch" | tee -a pass_fail.txt
+echo "" | tee -a pass_fail.txt
 
 fr64_fl1024_testpmd_vno_vlan0_testname=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $19}' | awk -F '"' '{print $2}')
 fr64_fl1024_testpmd_vno_vlan0_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $20}' | awk -F "." '{print $1}')
 
-# Report Results
+echo "Test: $fr64_fl1024_123_vno_vlan11_testname" | tee -a pass_fail.txt
+if [[ $fr64_fl1024_123_vno_vlan11_result -ge $fr64_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_123_vno_vlan11_threshold, Result: $fr64_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else get_delta_values $fr64_fl1024_123_vno_vlan11_result $fr64_fl1024_123_vno_vlan11_threshold; echo "Result: FAIL Threshold: $fr64_fl1024_123_vno_vlan11_threshold, Result: $fr64_fl1024_123_vno_vlan11_result ($delta, $pct%)" | tee -a pass_fail.txt; fi
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=64 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_123_vno_vlan11_result $fr64_fl1024_123_vno_vlan11_threshold
-if [[ $fr64_fl1024_123_vno_vlan11_result -ge $fr64_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_123_vno_vlan11_threshold, Result: $fr64_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_123_vno_vlan11_threshold, Result: $fr64_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo "Test: $fr64_fl1024_143_vno_vlan11_testname" | tee -a pass_fail.txt
+if [[ $fr64_fl1024_143_vno_vlan11_result -ge $fr64_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_143_vno_vlan11_threshold, Result: $fr64_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else get_delta_values $fr64_fl1024_143_vno_vlan11_result; echo "Result: FAIL Threshold: $fr64_fl1024_143_vno_vlan11_threshold, Result: $fr64_fl1024_143_vno_vlan11_result ($delta, $pct%)" | tee -a pass_fail.txt; fi
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=64 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_143_vno_vlan11_result $fr64_fl1024_143_vno_vlan11_threshold
-if [[ $fr64_fl1024_143_vno_vlan11_result -ge $fr64_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_143_vno_vlan11_threshold, Result: $fr64_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_143_vno_vlan11_threshold, Result: $fr64_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=64 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_245_vno_vlan11_result $fr64_fl1024_245_vno_vlan11_threshold
+echo "Test: $fr64_fl1024_245_vno_vlan11_testname"| tee -a pass_fail.txt
 if [[ $fr64_fl1024_245_vno_vlan11_result -ge $fr64_fl1024_245_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_245_vno_vlan11_threshold, Result: $fr64_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_245_vno_vlan11_threshold, Result: $fr64_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=64 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_489_vno_vlan11_result $fr64_fl1024_489_vno_vlan11_threshold
+echo "Test: $fr64_fl1024_489_vno_vlan11_testname"| tee -a pass_fail.txt
 if [[ $fr64_fl1024_489_vno_vlan11_result -ge $fr64_fl1024_489_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_489_vno_vlan11_threshold, Result: $fr64_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_489_vno_vlan11_threshold, Result: $fr64_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=64 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_123_vyes_vlan0_result $fr64_fl1024_123_vyes_vlan0_threshold
+echo "Test: $fr64_fl1024_123_vyes_vlan0_testname" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_123_vyes_vlan0_result -ge $fr64_fl1024_123_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_123_vyes_vlan0_threshold, Result: $fr64_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_123_vyes_vlan0_threshold, Result: $fr64_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=64 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_143_vyes_vlan0_result $fr64_fl1024_143_vyes_vlan0_threshold
+echo "Test: $fr64_fl1024_143_vyes_vlan0_testname" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_143_vyes_vlan0_result -ge $fr64_fl1024_143_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_143_vyes_vlan0_threshold, Result: $fr64_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_143_vyes_vlan0_threshold, Result: $fr64_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=64 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_245_vyes_vlan0_result $fr64_fl1024_245_vyes_vlan0_threshold
+echo "Test: $fr64_fl1024_245_vyes_vlan0_testname" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_245_vyes_vlan0_result -ge $fr64_fl1024_245_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_245_vyes_vlan0_threshold, Result: $fr64_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_245_vyes_vlan0_threshold, Result: $fr64_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=64 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_489_vyes_vlan0_result $fr64_fl1024_489_vyes_vlan0_threshold
+echo "Test: $fr64_fl1024_489_vyes_vlan0_testname" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_489_vyes_vlan0_result -ge $fr64_fl1024_489_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_489_vyes_vlan0_threshold, Result: $fr64_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_489_vyes_vlan0_threshold, Result: $fr64_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: sriov_pvp vIOMMU=yes vlan=0 frame=64 queues=1 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_sriov_13_vyes_vlan0_result $fr64_fl1024_sriov_13_vyes_vlan0_threshold
+echo "Test: $fr64_fl1024_sriov_13_vyes_vlan0_testname" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_sriov_13_vyes_vlan0_result -ge $fr64_fl1024_sriov_13_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_sriov_13_vyes_vlan0_threshold, Result: $fr64_fl1024_sriov_13_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_sriov_13_vyes_vlan0_threshold, Result: $fr64_fl1024_sriov_13_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
-echo "Test: testpmd_as_switch vIOMMU=no vlan=0 frame=64 queues=1" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_testpmd_vno_vlan0_result $fr64_fl1024_testpmd_vno_vlan0_threshold
+echo "Test: $fr64_fl1024_testpmd_vno_vlan0_testname" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_testpmd_vno_vlan0_result -ge $fr64_fl1024_testpmd_vno_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_testpmd_vno_vlan0_threshold, Result: $fr64_fl1024_testpmd_vno_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_testpmd_vno_vlan0_threshold, Result: $fr64_fl1024_testpmd_vno_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # frame size=64, flows=1024 ovs_kernel, loss-rate=0.002
 frame_size=64
@@ -154,18 +143,15 @@ loss_rate=0.002
 
 # ovs_kernel_pvp
 echo "Tests: ovs_kernel_pvp" | tee -a pass_fail.txt
-
+echo "" | tee -a pass_fail.txt
 
 fr64_fl1024_kernel_13_vno_vlan0_threshold=391619
 
 fr64_fl1024_kernel_13_vno_vlan0_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $2}' | awk -F "." '{print $1}' | tail -n1)
 
-echo "" | tee -a pass_fail.txt
-echo "Test: ovs_kernel_pvp vIOMMU=no vlan=0 frame=64 queues=1 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr64_fl1024_kernel_13_vno_vlan0_result $fr64_fl1024_kernel_13_vno_vlan0_threshold
+echo "Test: fr64_fl1024_kernel_13_vno_vlan0" | tee -a pass_fail.txt
 if [[ $fr64_fl1024_kernel_13_vno_vlan0_result -ge $fr64_fl1024_kernel_13_vno_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr64_fl1024_kernel_13_vno_vlan0_threshold, Result: $fr64_fl1024_kernel_13_vno_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr64_fl1024_kernel_13_vno_vlan0_threshold, Result: $fr64_fl1024_kernel_13_vno_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # frame size=128, flows=1024, loss-rate=0
 fr128_fl1024_123_vno_vlan11_threshold=3387958
@@ -189,54 +175,37 @@ fr128_fl1024_143_vyes_vlan0_result=$(grep -A8 'jq --arg sz 128 --arg fl 1024' $r
 fr128_fl1024_245_vyes_vlan0_result=$(grep -A8 'jq --arg sz 128 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $14}' | awk -F "." '{print $1}')
 fr128_fl1024_489_vyes_vlan0_result=$(grep -A8 'jq --arg sz 128 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $16}' | awk -F "." '{print $1}')
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=128 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_123_vno_vlan11_result $fr128_fl1024_123_vno_vlan11_threshold
 if [[ $fr128_fl1024_123_vno_vlan11_result -ge $fr128_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_123_vno_vlan11_threshold, Result: $fr128_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_123_vno_vlan11_threshold, Result: $fr128_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=128 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_143_vno_vlan11_result $fr128_fl1024_143_vno_vlan11_threshold
 if [[ $fr128_fl1024_143_vno_vlan11_result -ge $fr128_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_143_vno_vlan11_threshold, Result: $fr128_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_143_vno_vlan11_threshold, Result: $fr128_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=128 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_245_vno_vlan11_result $fr128_fl1024_245_vno_vlan11_threshold
 if [[ $fr128_fl1024_245_vno_vlan11_result -ge $fr128_fl1024_245_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_245_vno_vlan11_threshold, Result: $fr128_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_245_vno_vlan11_threshold, Result: $fr128_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=128 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_489_vno_vlan11_result $fr128_fl1024_489_vno_vlan11_threshold
 if [[ $fr128_fl1024_489_vno_vlan11_result -ge $fr128_fl1024_489_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_489_vno_vlan11_threshold, Result: $fr128_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_489_vno_vlan11_threshold, Result: $fr128_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=128 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_123_vyes_vlan0_result $fr128_fl1024_123_vyes_vlan0_threshold
 if [[ $fr128_fl1024_123_vyes_vlan0_result -ge $fr128_fl1024_123_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_123_vyes_vlan0_threshold, Result: $fr128_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_123_vyes_vlan0_threshold, Result: $fr128_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=128 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_143_vyes_vlan0_result $fr128_fl1024_143_vyes_vlan0_threshold
 if [[ $fr128_fl1024_143_vyes_vlan0_result -ge $fr128_fl1024_143_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_143_vyes_vlan0_threshold, Result: $fr128_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_143_vyes_vlan0_threshold, Result: $fr128_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=128 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_245_vyes_vlan0_result $fr128_fl1024_245_vyes_vlan0_threshold
 if [[ $fr128_fl1024_245_vyes_vlan0_result -ge $fr128_fl1024_245_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_245_vyes_vlan0_threshold, Result: $fr128_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_245_vyes_vlan0_threshold, Result: $fr128_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=128 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr128_fl1024_489_vyes_vlan0_result $fr128_fl1024_489_vyes_vlan0_threshold
 if [[ $fr128_fl1024_489_vyes_vlan0_result -ge $fr128_fl1024_489_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr128_fl1024_489_vyes_vlan0_threshold, Result: $fr128_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr128_fl1024_489_vyes_vlan0_threshold, Result: $fr128_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # frame size=256, flows=1024, loss-rate=0
 fr256_fl1024_123_vno_vlan11_threshold=3201156
@@ -260,54 +229,37 @@ fr256_fl1024_143_vyes_vlan0_result=$(grep -A8 'jq --arg sz 256 --arg fl 1024' $r
 fr256_fl1024_245_vyes_vlan0_result=$(grep -A8 'jq --arg sz 256 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $14}' | awk -F "." '{print $1}')
 fr256_fl1024_489_vyes_vlan0_result=$(grep -A8 'jq --arg sz 256 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $16}' | awk -F "." '{print $1}')
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=256 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_123_vno_vlan11_result $fr256_fl1024_123_vno_vlan11_threshold
 if [[ $fr256_fl1024_123_vno_vlan11_result -ge $fr256_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_123_vno_vlan11_threshold, Result: $fr256_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_123_vno_vlan11_threshold, Result: $fr256_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=256 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_143_vno_vlan11_result $fr256_fl1024_143_vno_vlan11_threshold
 if [[ $fr256_fl1024_143_vno_vlan11_result -ge $fr256_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_143_vno_vlan11_threshold, Result: $fr256_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_143_vno_vlan11_threshold, Result: $fr256_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=256 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_245_vno_vlan11_result $fr256_fl1024_245_vno_vlan11_threshold
 if [[ $fr256_fl1024_245_vno_vlan11_result -ge $fr256_fl1024_245_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_245_vno_vlan11_threshold, Result: $fr256_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_245_vno_vlan11_threshold, Result: $fr256_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=256 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_489_vno_vlan11_result $fr256_fl1024_489_vno_vlan11_threshold
 if [[ $fr256_fl1024_489_vno_vlan11_result -ge $fr256_fl1024_489_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_489_vno_vlan11_threshold, Result: $fr256_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_489_vno_vlan11_threshold, Result: $fr256_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=256 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_123_vyes_vlan0_result $fr256_fl1024_123_vyes_vlan0_threshold
 if [[ $fr256_fl1024_123_vyes_vlan0_result -ge $fr256_fl1024_123_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_123_vyes_vlan0_threshold, Result: $fr256_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_123_vyes_vlan0_threshold, Result: $fr256_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=256 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_143_vyes_vlan0_result $fr256_fl1024_143_vyes_vlan0_threshold
 if [[ $fr256_fl1024_143_vyes_vlan0_result -ge $fr256_fl1024_143_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_143_vyes_vlan0_threshold, Result: $fr256_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_143_vyes_vlan0_threshold, Result: $fr256_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=256 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_245_vyes_vlan0_result $fr256_fl1024_245_vyes_vlan0_threshold
 if [[ $fr256_fl1024_245_vyes_vlan0_result -ge $fr256_fl1024_245_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_245_vyes_vlan0_threshold, Result: $fr256_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_245_vyes_vlan0_threshold, Result: $fr256_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=256 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_489_vyes_vlan0_result $fr256_fl1024_489_vyes_vlan0_threshold
 if [[ $fr256_fl1024_489_vyes_vlan0_result -ge $fr256_fl1024_489_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr256_fl1024_489_vyes_vlan0_threshold, Result: $fr256_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr256_fl1024_489_vyes_vlan0_threshold, Result: $fr256_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # frame size=1500, flows=1024, loss-rate=0
 
@@ -332,54 +284,37 @@ fr1500_fl1024_143_vyes_vlan0_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' 
 fr1500_fl1024_245_vyes_vlan0_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $14}' | awk -F "." '{print $1}')
 fr1500_fl1024_489_vyes_vlan0_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $16}' | awk -F "." '{print $1}')
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=1500 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr256_fl1024_245_vyes_vlan0_result $fr256_fl1024_245_vyes_vlan0_threshold
 if [[ $fr1500_fl1024_123_vno_vlan11_result -ge $fr1500_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_123_vno_vlan11_threshold, Result: $fr1500_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_123_vno_vlan11_threshold, Result: $fr1500_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=1500 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_143_vno_vlan11_result $fr1500_fl1024_143_vno_vlan11_threshold
 if [[ $fr1500_fl1024_143_vno_vlan11_result -ge $fr1500_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_143_vno_vlan11_threshold, Result: $fr1500_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_143_vno_vlan11_threshold, Result: $fr1500_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=1500 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_245_vno_vlan11_result $fr1500_fl1024_245_vno_vlan11_threshold
 if [[ $fr1500_fl1024_245_vno_vlan11_result -ge $fr1500_fl1024_245_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_245_vno_vlan11_threshold, Result: $fr1500_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_245_vno_vlan11_threshold, Result: $fr1500_fl1024_245_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=1500 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_489_vno_vlan11_result $fr1500_fl1024_489_vno_vlan11_threshold
 if [[ $fr1500_fl1024_489_vno_vlan11_result -ge $fr1500_fl1024_489_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_489_vno_vlan11_threshold, Result: $fr1500_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_489_vno_vlan11_threshold, Result: $fr1500_fl1024_489_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=1500 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_123_vyes_vlan0_result $fr1500_fl1024_123_vyes_vlan0_threshold
 if [[ $fr1500_fl1024_123_vyes_vlan0_result -ge $fr1500_fl1024_123_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_123_vyes_vlan0_threshold, Result: $fr1500_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_123_vyes_vlan0_threshold, Result: $fr1500_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=1500 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_143_vyes_vlan0_result $fr1500_fl1024_143_vyes_vlan0_threshold
 if [[ $fr1500_fl1024_143_vyes_vlan0_result -ge $fr1500_fl1024_143_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_143_vyes_vlan0_threshold, Result: $fr1500_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_143_vyes_vlan0_threshold, Result: $fr1500_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=1500 queues=2 pmds=4 vcpus=5" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_245_vyes_vlan0_result $fr1500_fl1024_245_vyes_vlan0_threshold
 if [[ $fr1500_fl1024_245_vyes_vlan0_result -ge $fr1500_fl1024_245_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_245_vyes_vlan0_threshold, Result: $fr1500_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_245_vyes_vlan0_threshold, Result: $fr1500_fl1024_245_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=1500 queues=4 pmds=8 vcpus=9" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_489_vyes_vlan0_result $fr1500_fl1024_489_vyes_vlan0_threshold
 if [[ $fr1500_fl1024_489_vyes_vlan0_result -ge $fr1500_fl1024_489_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_489_vyes_vlan0_threshold, Result: $fr1500_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_489_vyes_vlan0_threshold, Result: $fr1500_fl1024_489_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # sriov_pvp
 # Frame=1500
@@ -387,12 +322,9 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 fr1500_fl1024_sriov_13_vyes_vlan0_threshold=8163449
 fr1500_fl1024_sriov_13_vyes_vlan0_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $18}' | awk -F "." '{print $1}')
 
-echo "" | tee -a pass_fail.txt
 echo "Test: sriov_pvp vIOMMU=yes vlan=0 frame=1500 queues=1 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr1500_fl1024_sriov_13_vyes_vlan0_result $fr1500_fl1024_sriov_13_vyes_vlan0_threshold
 if [[ $fr1500_fl1024_sriov_13_vyes_vlan0_result -ge $fr1500_fl1024_sriov_13_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr1500_fl1024_sriov_13_vyes_vlan0_threshold, Result: $fr1500_fl1024_sriov_13_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr1500_fl1024_sriov_13_vyes_vlan0_threshold, Result: $fr1500_fl1024_sriov_13_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # frame size=2000, flows=1024, loss-rate=0
 fr2000_fl1024_123_vno_vlan11_threshold=1426327
@@ -408,30 +340,21 @@ fr2000_fl1024_143_vno_vlan11_result=$(grep -A8 'jq --arg sz 2000 --arg fl 1024' 
 fr2000_fl1024_123_vyes_vlan0_result=$(grep -A8 'jq --arg sz 2000 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $6}' | awk -F "." '{print $1}')
 fr2000_fl1024_143_vyes_vlan0_result=$(grep -A8 'jq --arg sz 2000 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $8}' | awk -F "." '{print $1}')
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=2000 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr2000_fl1024_123_vno_vlan11_result $fr2000_fl1024_123_vno_vlan11_threshold
 if [[ $fr2000_fl1024_123_vno_vlan11_result -ge $fr2000_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr2000_fl1024_123_vno_vlan11_threshold, Result: $fr2000_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr2000_fl1024_123_vno_vlan11_threshold, Result: $fr2000_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=2000 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr2000_fl1024_143_vno_vlan11_result $fr2000_fl1024_143_vno_vlan11_threshold
 if [[ $fr2000_fl1024_143_vno_vlan11_result -ge $fr2000_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr2000_fl1024_143_vno_vlan11_threshold, Result: $fr2000_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr2000_fl1024_143_vno_vlan11_threshold, Result: $fr2000_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=2000 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr2000_fl1024_123_vyes_vlan0_result $fr2000_fl1024_123_vyes_vlan0_threshold
 if [[ $fr2000_fl1024_123_vyes_vlan0_result -ge $fr2000_fl1024_123_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr2000_fl1024_123_vyes_vlan0_threshold, Result: $fr2000_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr2000_fl1024_123_vyes_vlan0_threshold, Result: $fr2000_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=2000 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr2000_fl1024_143_vyes_vlan0_result $fr2000_fl1024_143_vyes_vlan0_threshold
 if [[ $fr2000_fl1024_143_vyes_vlan0_result -ge $fr2000_fl1024_143_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr2000_fl1024_143_vyes_vlan0_threshold, Result: $fr2000_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr2000_fl1024_143_vyes_vlan0_threshold, Result: $fr2000_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 # frame size=9200, flows=1024, loss-rate=0
 
@@ -448,53 +371,46 @@ fr9200_fl1024_143_vno_vlan11_result=$(grep -A8 'jq --arg sz 9200 --arg fl 1024' 
 fr9200_fl1024_123_vyes_vlan0_result=$(grep -A8 'jq --arg sz 9200 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $6}' | awk -F "." '{print $1}')
 fr9200_fl1024_143_vyes_vlan0_result=$(grep -A8 'jq --arg sz 9200 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $8}' | awk -F "." '{print $1}')
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=9200 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr9200_fl1024_123_vno_vlan11_result $fr9200_fl1024_123_vno_vlan11_threshold
 if [[ $fr9200_fl1024_123_vno_vlan11_result -ge $fr9200_fl1024_123_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr9200_fl1024_123_vno_vlan11_threshold, Result: $fr9200_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr9200_fl1024_123_vno_vlan11_threshold, Result: $fr9200_fl1024_123_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=9200 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr9200_fl1024_143_vno_vlan11_result $fr9200_fl1024_143_vno_vlan11_threshold
 if [[ $fr9200_fl1024_143_vno_vlan11_result -ge $fr9200_fl1024_143_vno_vlan11_threshold ]]; then echo "Result: PASS Threshold: $fr9200_fl1024_143_vno_vlan11_threshold, Result: $fr9200_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr9200_fl1024_143_vno_vlan11_threshold, Result: $fr9200_fl1024_143_vno_vlan11_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=9200 queues=1 pmds=2 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr9200_fl1024_123_vyes_vlan0_result $fr9200_fl1024_123_vyes_vlan0_threshold
 if [[ $fr9200_fl1024_123_vyes_vlan0_result -ge $fr9200_fl1024_123_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr9200_fl1024_123_vyes_vlan0_threshold, Result: $fr9200_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr9200_fl1024_123_vyes_vlan0_threshold, Result: $fr9200_fl1024_123_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
+echo ""
 
-echo "" | tee -a pass_fail.txt
 echo "Test: ovs_dpdk_vhostuser_pvp vIOMMU=yes vlan=0 frame=9200 queues=1 pmds=4 vcpus=3" | tee -a pass_fail.txt
-get_delta_values $fr9200_fl1024_143_vyes_vlan0_result $fr9200_fl1024_143_vyes_vlan0_threshold
 if [[ $fr9200_fl1024_143_vyes_vlan0_result -ge $fr9200_fl1024_143_vyes_vlan0_threshold ]]; then echo "Result: PASS Threshold: $fr9200_fl1024_143_vyes_vlan0_threshold, Result: $fr9200_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; else echo "Result: FAIL Threshold: $fr9200_fl1024_143_vyes_vlan0_threshold, Result: $fr9200_fl1024_143_vyes_vlan0_result" | tee -a pass_fail.txt; fi
-echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a pass_fail.txt
-
+echo ""
 
 total_tests=$(grep 'Result:' pass_fail.txt | wc -l)
 total_failed_tests=$(grep 'Result: FAIL' pass_fail.txt | wc -l)
-
-echo "" | tee -a pass_fail.txt
-if [[ $(grep -i fail pass_fail.txt) ]]; then	
+if [[ $(grep -i fail pass_fail.txt) ]]; then
+	echo ""
 	echo "Overall Result: $total_failed_tests of $total_tests tests FAILED"
-	echo "" | tee -a pass_fail.txt
 	echo "FAILED tests:"
-	echo "" | tee -a pass_fail.txt	
-	grep -B1 -A1 'Result: FAIL' pass_fail.txt
+	grep -B1 'Result: FAIL' pass_fail.txt
 else
 	echo "Overall Result: All tests PASSED"
 fi
+echo ""
 
 if [[ $(grep -i fail pass_fail.txt) ]]; then
-	echo "" | tee -a pass_fail.txt	
-	echo "Overall Result: $total_failed_tests of $total_tests tests FAILED"	
+	echo ""
+	echo "Overall Result: $total_failed_tests of $total_tests tests FAILED"
+	echo ""
 fi
 
-echo "" | tee -a pass_fail.txt
-echo "Beaker Job: https://beaker.engineering.redhat.com/jobs/$job_id"
-echo "Results: $html_result_file"
-echo "" | tee -a pass_fail.txt
+echo ""
+echo "Results:"
+echo ""
+echo "https://beaker.engineering.redhat.com/jobs/$job_id"
+echo "$html_result_file"
+echo ""
 
 popd
+

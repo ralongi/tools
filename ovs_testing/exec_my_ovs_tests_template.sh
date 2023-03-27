@@ -14,6 +14,7 @@ if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 # Script to execute all of my ovs tests
 
 source ~/git/kernel/networking/openvswitch/common/package_list.sh > /dev/null
+#source ~/.bashrc > /dev/null
 
 use_hpe_synergy=${use_hpe_synergy:-"no"}
 
@@ -84,23 +85,45 @@ fi
 
 echo "Using compose: $COMPOSE"
 
-# Z stream repos from https://gitlab.cee.redhat.com/kernel-qe/core-kernel/kernel-general/-/blob/master/Sustaining/ZConfig.yaml:
+get_zstream_repos()
+{
+	$dbg_flag
+	arch=${arch:-"x86_64"}
+	z_stream_base=$(echo $COMPOSE | awk -F '-' '{print $2}' | tr -d . | cut -c-2)
+	z_stream_base=$(echo $z_stream_base)z
+	pushd ~/temp
+	alias rm='rm' 
+	rm -f zstream_repos.txt
+	wget -O ZConfig.yaml https://gitlab.cee.redhat.com/kernel-qe/core-kernel/kernel-general/-/raw/master/Sustaining/ZConfig.yaml
+	if [[ $(grep -w "$z_stream_base" ZConfig.yaml) ]]; then
+		 zstream_repos=$(grep -A35 -w "$z_stream_base" ZConfig.yaml | grep "$arch": | tr -d "'" | awk '{$1="";print $0}' | sed 's/^ //g')
+	fi
+	echo "Zstream repos: $zstream_repos"    
+	for i in $zstream_repos; do echo "--repo=$i" >> zstream_repos.txt; done
+	export zstream_repo_list=$(cat zstream_repos.txt)
+	rm -f ZConfig.yaml
+	alias rm='rm -i'
+	popd
+}
 
-if [[ $(echo $COMPOSE | grep 'RHEL-8.4') ]]; then
-	export zstream_repo_list_x86_64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/x86_64/codeready-builder/debug/"
-	export zstream_repo_list_aarch64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.4/aarch64/codeready-builder/debug/"
-# Most current shipping RHEL-8 is below
-elif [[ $(echo $COMPOSE | grep 'RHEL-8.6') ]]; then
-	export zstream_repo_list_x86_64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/codeready-builder/os/"
-	export zstream_repo_list_aarch64="--repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/aarch64/appstream/os/ --repo=hhttp://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/aarch64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/aarch64/codeready-builder/os/"
-# Most current shipping RHEL-9 is below
-elif [[ $(echo $COMPOSE | grep 'RHEL-9.0') ]]; then
-	export zstream_repo_list_x86_64="--repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/x86_64/codeready-builder/debug/"
-	export zstream_repo_list_aarch64="--repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/appstream/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/baseos/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/codeready-builder/os/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/appstream/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/baseos/debug/ --repo=http://rhsm-pulp.corp.redhat.com/content/dist/rhel9/9.0/aarch64/codeready-builder/debug/"
-fi
+get_dpdk_package_versions()
+{
+	$dbg_flag
+	target_rhel_version=$1
+	if [[ $2 ]]; then arch=$2; else arch=x86_64; fi
+	x_tmp=$(curl -su : --negotiate  https://errata.devel.redhat.com/package/show/dpdk | grep $target_rhel_version.0 | head -n1)
+	errata=$(curl -su : --negotiate  https://errata.devel.redhat.com/package/show/dpdk | grep -B1 "$x_tmp"| head -n1 | awk -F '"' '{print $(NF-1)}' | sed 's/\/advisory\///g')
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	build_id=$(grep "id" ~/temp/builds.txt | awk '{print $NF}' | tr -d ,)
+	curl -su : --negotiate https://brewweb.engineering.redhat.com/brew/buildinfo?buildID=$build_id > ~/temp/builds2.txt
+	export RPM_DPDK=$(grep $arch.rpm ~/temp/builds2.txt | egrep -v 'devel|tools|debug' | awk -F '"' '{print $4}')
+	export RPM_DPDK_TOOLS=$(grep $arch.rpm ~/temp/builds2.txt | grep tools | awk -F '"' '{print $4}')
+	echo "RPM_DPDK: $RPM_DPDK"
+	echo "RPM_DPDK_TOOLS: $RPM_DPDK_TOOLS"
+	rm -f ~/temp/builds.txt ~/temp/builds2.txt
+}
 
-echo Z Stream x86_64 repo list is: $(echo "$zstream_repo_list_x86_64")
-echo Z Stream aarch64 repo list is: $(echo "$zstream_repo_list_aarch64")
+get_zstream_repos
 
 # Netperf package
 export SRC_NETPERF="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20210121.tar.bz2"
@@ -192,6 +215,23 @@ export rpm_dpdk_tools=$RPM_DPDK_TOOLS_RHELRHEL_VER_MAJOR_VALUE
 export RPM_DPDK=$RPM_DPDK_RHELRHEL_VER_MAJOR_VALUE
 export RPM_DPDK_TOOLS=$RPM_DPDK_TOOLS_RHELRHEL_VER_MAJOR_VALUE
 
+get_dpdk_package_versions $RHEL_VER
+
+if [[ -z $RPM_DPDK ]] || [[ -z $RPM_DPDK_TOOLS ]]; then
+	if [[ $(echo $COMPOSE | grep RHEL-8) ]]; then
+		export RPM_DPDK=https://download.eng.bos.redhat.com/brewroot/vol/rhel-8/packages/dpdk/21.11/2.el8_6/x86_64/dpdk-21.11-2.el8_6.x86_64.rpm
+		export RPM_DPDK_TOOLS=https://download.eng.bos.redhat.com/brewroot/vol/rhel-8/packages/dpdk/21.11/2.el8_6/x86_64/dpdk-tools-21.11-2.el8_6.x86_64.rpm
+	elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
+		export RPM_DPDK=https://download.eng.bos.redhat.com/brewroot/vol/rhel-9/packages/dpdk/21.11/2.el9_0/x86_64/dpdk-21.11-2.el9_0.x86_64.rpm
+		export RPM_DPDK_TOOLS=https://download.eng.bos.redhat.com/brewroot/vol/rhel-9/packages/dpdk/21.11/2.el9_0/x86_64/dpdk-tools-21.11-2.el9_0.x86_64.rpm
+	fi
+fi
+
+http_code=$(curl --silent --head --write-out '%{http_code}' "$RPM_DPDK" | grep HTTP | awk '{print $2}')
+if [[ "$http_code" -ne 200 ]]; then echo "$RPM_DPDK is NOT a valid link. Exiting..."; exit 1; fi
+
+http_code=$(curl --silent --head --write-out '%{http_code}' "$RPM_DPDK_TOOLS" | grep HTTP | awk '{print $2}')
+if [[ "$http_code" -ne 200 ]]; then echo "$RPM_DPDK_TOOLS is NOT a valid link. Exiting..."; exit 1; fi
 
 # QEMU packages
 #export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
@@ -205,6 +245,10 @@ export BONDING_CPU_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_s
 
 export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ipv6 ovs_test_vlan_gre_ipv6 ovs_test_vlan_gre1_ipv6 ovs_test_vm_gre_ipv6 ovs_test_vm_gre1_ipv6 ovs_test_vm_gre_flow_ipv6 ovs_test_vm_vlan_gre_ipv6 ovs_test_vm_vlan_gre1_ipv6"
 
+# Insert $FDP release into exec_perf_ci.sh and exec_endurance.sh
+sedeasy "FDP_RELEASE_VALUE" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_perf_ci.sh
+sedeasy "FDP_RELEASE_VALUE" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
+
 #pushd /home/ralongi/Documents/ovs_testing
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
@@ -216,32 +260,39 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_power_cycle_crash.sh
 #./exec_ovs_upgrade.sh
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
-#./exec_topo.sh ixgbe
-./exec_topo.sh i40e
-#./exec_topo.sh arm
-#./exec_topo.sh mlx5_core cx7
+#./exec_topo.sh ixgbe ovs_env=kernel
+#./exec_topo.sh ixgbe ovs_env=ovs-dpdk
+#./exec_topo.sh i40e ovs_env=kernel
+#./exec_topo.sh i40e ovs_env=ovs-dpdk
+#./exec_topo.sh ice ovs_env=kernel
+#./exec_topo.sh ice ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx5 ovs_env=kernel
+#./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx6 ovs_env=kernel
+#./exec_topo.sh mlx5_core cx6 ovs_env=ovs-dpdk
+#./exec_topo.sh arm ovs_env=kernel
+#./exec_topo.sh arm ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx7 ovs_env=kernel
+#./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
+#./exec_endurance.sh cx5
+#./exec_perf_ci.sh cx5
 #./exec_endurance.sh cx6
 #./exec_perf_ci.sh cx6
 
-#./exec_topo.sh enic
-#./exec_topo.sh qede
-#./exec_topo.sh bnxt_en
-#./exec_topo.sh nfp
-#./exec_topo.sh ice
+#./exec_topo.sh enic ovs_env=kernel
+#./exec_topo.sh enic ovs_env=ovs-dpdk
+#./exec_topo.sh qede ovs_env=kernel
+#./exec_topo.sh qede ovs_env=ovs-dpdk
+#./exec_topo.sh bnxt_en ovs_env=kernel
+#./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
+#./exec_topo.sh nfp ovs_env=kernel
+#./exec_topo.sh nfp ovs_env=ovs-dpdk
 #./exec_sanity_check.sh
 
 #./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh
-
-###############################################################################
-#export VM_IMAGE=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhelRHEL_VER_VALUE.qcow2
-#./exec_endurance.sh cx5
-#./exec_perf_ci.sh cx5
-#./exec_perf_ci_pensando_sriov.sh
-#export VM_IMAGE="rhelRHEL_VER_VALUE.qcow2"
-###############################################################################
 
 # Conntrack firewall rules Jiying Qiu (not related to driver)
 # openvswitch/conntrack2 and openvswitch/conntrack_dpdk

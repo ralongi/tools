@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Perf CI
+
+echo "COMPOSE is: $COMPOSE"
+
+dbg_flag=${dbg_flag:-"set +x"}
+$dbg_flag
+pushd ~/git/kernel/networking/openvswitch/perf
+rhel_minor_ver=$(echo $COMPOSE | awk -F - '{print $2}' | sed 's/.0//g')
+card_type=$(echo $1 | tr '[:upper:]' '[:lower:]')
+ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+server="netqe24.knqe.lab.eng.bos.redhat.com"
+client="netqe25.knqe.lab.eng.bos.redhat.com"
+image="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel$rhel_minor_ver.qcow2"
+trex_url="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"
+
+# Change format of $FDP_RELEASE due to change in Guan's code to upload db
+FDP_RELEASE=$(echo ${FDP_RELEASE:0:2}.${FDP_RELEASE:2:2})
+
+if [[ $card_type == "cx5" ]]; then
+	nic_test=mlx5_100g_cx5
+	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx5_westford_rhel9
+	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx5_westford
+	fi
+elif [[ $card_type == "cx6" ]]; then
+	nic_test=mlx5_100g_cx6
+	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford_rhel9
+	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford
+	fi
+fi
+
+lstest | runtest $COMPOSE --retention-tag=active+1 --variant=BaseOS --arch=x86_64 --servers=1 --clients=1 --systype=machine --machine="$server,$client" $(echo "$zstream_repo_list") --kernel-options-post="pci=realloc intel_iommu=on" --task="/kernel/networking/openvswitch/perf" --param=test_env=$test_env --param=nic_test=$nic_test --param=image=$image --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX --param=rpm_ovs=$RPM_OVS --param=rpm_dpdk=$RPM_DPDK --param=rpm_dpdk_tools=$RPM_DPDK_TOOLS --param=DISTRO_BUILD=$COMPOSE 
+--param=fdp_release="$FDP_RELEASE" --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf $special_info"
+
+popd

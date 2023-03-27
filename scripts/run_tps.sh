@@ -9,12 +9,18 @@ errata=${errata:-""}
 
 display_usage()
 {
-	echo "Usage: run_tps [rhn]"
-	echo "The 'rhn' switch is optional.  If specified, the tps-rhnqa tests will be run on the stable systems."
-	echo "Be sure to execute: export errata=<errata ID> in terminal window before running this"
+	echo ""
+	echo "Usage: run_tps [rhn] [arch=<arch>]"
+	echo "The 'rhn' and 'arch=' switches are optional."
+	echo "If 'rhn' is specified, the tps-rhnqa tests will be run on all of the stable systems."
+	echo "If 'arch=<arch>' is specified, the tps or tps-rhnqa tests will be run on all of the specific stable systems runing that arch."
+	echo "Examples: run_tps, run_tps rhn, run_tps arch=ppc64le, run_tps rhn arch=aarch64"
+	echo "Be sure to execute: export errata=<errata ID> in terminal window before running this."
+	echo ""
+	exit 0
 }
 
-if [[ $1 = "-h" ]] || [[ $1 = "--help" ]]	|| [[ $1 = "-?" ]]; then
+if [[ $1 = "-h" ]] || [[ $1 = "--h" ]] || [[ $1 = "--help" ]] || [[ $1 = "-help" ]] || [[ $1 = "-?" ]] || [[ $1 = "--?" ]]; then
 	display_usage
 fi
 
@@ -24,10 +30,12 @@ if [[ -z $errata ]]; then
 	exit 1
 fi
 
+pushd ~
+
 if [[ $(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq | grep RHEL-8) ]]; then
-	pssh_hosts_file="/home/ralongi/temp/pssh_stable_hosts_rhel8"
+	pssh_hosts_file="pssh_stable_hosts_rhel8.txt"
 elif [[ $(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq | grep RHEL-9) ]]; then
-	pssh_hosts_file="/home/ralongi/temp/pssh_stable_hosts_rhel9"
+	pssh_hosts_file="pssh_stable_hosts_rhel9.txt"
 fi
 
 while true; do
@@ -39,74 +47,116 @@ while true; do
         esac
 done
 
-rm -f ~/temp/stable_jobs*
-bkr job-list --mine --w "Stable system RHEL-8" | tee -a ~/temp/stable_jobs_rhel8.txt
-bkr job-list --mine --w "Stable system RHEL-9" | tee -a ~/temp/stable_jobs_rhel9.txt
-stable_job_list_rhel8=$(cat /home/ralongi/temp/stable_jobs_rhel8.txt | tr -d '[",]]')
-stable_job_list_rhel9=$(cat /home/ralongi/temp/stable_jobs_rhel9.txt | tr -d '[",]]') 
+rm -f stable_jobs*
+bkr job-list --mine --w "Stable system RHEL-8" >> stable_jobs_rhel8.txt
+bkr job-list --mine --w "Stable system RHEL-9" >> stable_jobs_rhel9.txt
+stable_job_list_rhel8=$(cat stable_jobs_rhel8.txt | tr -d '[",]]')
+stable_job_list_rhel9=$(cat stable_jobs_rhel9.txt | tr -d '[",]]')
 
-# RHEL-8
-if [[ $pssh_hosts_file == "/home/ralongi/temp/pssh_stable_hosts_rhel8" ]]; then
-	if [[ $stable_job_list_rhel8 ]] && [[ ! -s $pssh_hosts_file ]]; then
+create_pssh_hosts_file()
+{
+	if [[ $pssh_hosts_file == "pssh_stable_hosts_rhel8.txt" ]]; then
 		for i in $stable_job_list_rhel8; do
 			reservesys_status=$(bkr job-results --no-logs --prettyxml $i | grep /distribution/reservesys | grep 'status="Running"' | awk '{print $7}' | awk -F '"' '{print $2}')
 			reservesys_result=$(bkr job-results --no-logs --prettyxml $i | grep '<result path="/distribution/reservesys"' | awk '{print $6}' | awk -F '"' '{print $2}')
 			beaker_system=$(bkr job-results --no-logs --prettyxml $i | grep 'system value=' | awk -F'"' '{print $2}' | tail -n1)
+			beaker_system_arch=$(bkr job-results --no-logs --prettyxml $i | grep distro_arch | awk -F '"' '{print $(NF-1)}')
 			if [[ $reservesys_status == "Running" ]] && [[ $reservesys_result == "Pass" ]] ; then
-				echo $beaker_system >> $pssh_hosts_file
+				echo "$beaker_system $beaker_system_arch" >> $pssh_hosts_file
 			fi
 		done
 		sleep 2
-	else
-		# check $pssh_hosts_file to confirm at least two of your systems are present
-		if [[ $(bkr system-list --mine | grep $(head -n1 $pssh_hosts_file)) ]] && [[ $(bkr system-list --mine | grep $(tail -n1 $pssh_hosts_file)) ]]; then
-			echo "Skipping creation of $pssh_hosts_file as it already exists and a beaker job list has been specified..."
-		else
-			echo "You better check $pssh_hosts_file to make sure it's correct"
-			echo "There may be an old file laying around that needs to be deleted"
-			exit 1
-		fi
-	fi
-fi
-
-# RHEL-9
-if [[ $pssh_hosts_file == "/home/ralongi/temp/pssh_stable_hosts_rhel9" ]]; then
-	if [[ $stable_job_list_rhel9 ]] && [[ ! -s $pssh_hosts_file ]]; then
+	elif [[ $pssh_hosts_file == "pssh_stable_hosts_rhel9.txt" ]]; then
 		for i in $stable_job_list_rhel9; do
 			reservesys_status=$(bkr job-results --no-logs --prettyxml $i | grep /distribution/reservesys | grep 'status="Running"' | awk '{print $7}' | awk -F '"' '{print $2}')
 			reservesys_result=$(bkr job-results --no-logs --prettyxml $i | grep '<result path="/distribution/reservesys"' | awk '{print $6}' | awk -F '"' '{print $2}')
 			beaker_system=$(bkr job-results --no-logs --prettyxml $i | grep 'system value=' | awk -F'"' '{print $2}' | tail -n1)
+			beaker_system_arch=$(bkr job-results --no-logs --prettyxml $i | grep distro_arch | awk -F '"' '{print $(NF-1)}')
 			if [[ $reservesys_status == "Running" ]] && [[ $reservesys_result == "Pass" ]] ; then
-				echo $beaker_system >> $pssh_hosts_file
+				echo "$beaker_system $beaker_system_arch" >> $pssh_hosts_file
 			fi
 		done
 		sleep 2
-	else
-		# check $pssh_hosts_file to confirm at least two of your systems are present
-		if [[ $(bkr system-list --mine | grep $(head -n1 $pssh_hosts_file)) ]] && [[ $(bkr system-list --mine | grep $(tail -n1 $pssh_hosts_file)) ]]; then
-			echo "Skipping creation of $pssh_hosts_file as it already exists and a beaker job list has been specified..."
-		else
-			echo "You better check $pssh_hosts_file to make sure it's correct"
-			echo "There may be an old file laying around that needs to be deleted"
-			exit 1
-		fi
 	fi
+}
+
+check_pssh_hosts_file()
+{
+	# check $pssh_hosts_file to confirm at least two of your systems are present
+	if [[ $(bkr system-list --mine | grep $(head -n1 $pssh_hosts_file | awk '{print $1}')) ]] && [[ $(bkr system-list --mine | grep $(tail -n1 $pssh_hosts_file | awk '{print $1}')) ]]; then
+		echo ""
+		echo "Skipping creation of $pssh_hosts_file as it already exists and a beaker job list has been specified..."
+		echo ""
+	else
+		echo ""
+		echo "It looks like $pssh_hosts_file already exists but is incorrect.  Deleting and re-creating it now..."
+		echo ""
+		rm -f $pssh_hosts_file
+		create_pssh_hosts_file
+	fi
+}
+
+if [[ ! -s $pssh_hosts_file ]]; then
+	create_pssh_hosts_file
 fi
 
-if [[ $(cat $pssh_hosts_file | wc -l) -ne 4 ]]; then
+check_pssh_hosts_file
+
+if [[ ! "$*" == *"arch="* ]] && [[ $(cat $pssh_hosts_file | wc -l) -ne 4 ]]; then
 	echo "Looks like not all of the stable systems have been built yet.  Exiting..."
 	exit 0
 fi
 
 echo "pssh hosts file to be used: $pssh_hosts_file"
+echo ""
 echo "Contents of $pssh_hosts_file:"
+echo ""
 cat $pssh_hosts_file
+echo ""
 
-pssh -h $pssh_hosts_file -t 0 -l root sed -i \"/^export errata=/c export errata=$errata\" /root/tps_run_tests.sh > /dev/null
-pssh -h $pssh_hosts_file -t 0 -l root sed -i \"/^export errata=/c export errata=$errata\" /root/tps_run_rhnqa_tests.sh > /dev/null
+cat $pssh_hosts_file | awk '{print $1}' > pssh_hosts_file_full.tmp
 
-if [[ "$*" == *"rhn"* ]]; then
-	pssh -h $pssh_hosts_file -t 0 -l root /root/tps_run_rhnqa_tests.sh
+pssh -O StrictHostKeyChecking=no -p 4 -h pssh_hosts_file_full.tmp -t 0 -l root sed -i \"/^export errata=/c export errata=$errata\" /root/tps_run_tests.sh > /dev/null
+pssh -O StrictHostKeyChecking=no -p 4 -h pssh_hosts_file_full.tmp -t 0 -l root sed -i \"/^export errata=/c export errata=$errata\" /root/tps_run_rhnqa_tests.sh > /dev/null
+
+if [[ "$*" == *"rhn"* ]] && [[ "$*" == *"arch="* ]]; then
+	arch=$(echo "$*" | awk -F 'arch=' '{print $NF}')
+	system=$(grep "$arch" $pssh_hosts_file | awk '{print $1}')
+	echo "$system" > pssh_hosts_file.tmp
+	echo ""
+	echo "System to be used: $system"
+	echo ""
+	echo "Running rhnqa-tps on $system..."
+	echo ""
+	pssh -O StrictHostKeyChecking=no -h pssh_hosts_file.tmp -t 0 -l root /root/tps_run_rhnqa_tests.sh
+elif [[ "$*" == *"arch="* ]]; then
+	arch=$(echo "$*" | awk -F 'arch=' '{print $NF}')
+	system=$(grep "$arch" $pssh_hosts_file | awk '{print $1}')
+	echo "$system" > pssh_hosts_file.tmp
+	echo ""
+	echo "System to be used: $system"
+	echo ""
+	echo "Running tps on $system..."
+	echo ""
+	pssh -O StrictHostKeyChecking=no -h pssh_hosts_file.tmp -t 0 -l root /root/tps_run_tests.sh
+elif [[ "$*" == *"rhn"* ]]; then
+	echo ""
+	echo "Systems to be used:"
+	echo ""
+	cat pssh_hosts_file_full.tmp
+	echo ""
+	echo "Running rhnqa-tps on systems listed above..."
+	echo ""
+	pssh -O StrictHostKeyChecking=no -p 4 -h pssh_hosts_file_full.tmp -t 0 -l root /root/tps_run_rhnqa_tests.sh
 else
-	pssh -h $pssh_hosts_file -t 0 -l root /root/tps_run_tests.sh
+	echo ""
+	echo "Systems to be used:"
+	echo ""
+	cat pssh_hosts_file_full.tmp
+	echo ""
+	echo "Running tps on systems listed above..."
+	echo ""
+	pssh -O StrictHostKeyChecking=no -p 4 -h pssh_hosts_file_full.tmp -t 0 -l root /root/tps_run_tests.sh
 fi
+
+popd

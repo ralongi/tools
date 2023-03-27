@@ -46,7 +46,9 @@ sed -i "s/YEAR_VALUE/$YEAR/g" exec_my_ovs_tests.sh
 sed -i "s/RHEL_VER_MAJOR_VALUE/$RHEL_VER_MAJOR/g" exec_my_ovs_tests.sh
 
 # new code
-tests=$(grep "OVS-$FDP_STREAM-RHEL-$RHEL_VER_MAJOR-Tests" ~/github/tools/scripts/fdp_errata_list.txt | awk -F ":" '{print $NF}')
+if [[ -z $tests ]]; then
+	tests=$(grep "^OVS-$FDP_STREAM-RHEL-$RHEL_VER_MAJOR-Tests" ~/github/tools/scripts/fdp_errata_list.txt | awk -F ":" '{print $NF}')
+fi
 
 for i in $tests; do
 	if [[ $i == *"mcast_snoop"* ]]; then
@@ -65,16 +67,24 @@ for i in $tests; do
 		sed -i '/exec_topo.sh ixgbe/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"topo_i40e"* ]]; then
 		sed -i '/exec_topo.sh i40e/s/^#//g' exec_my_ovs_tests.sh
+	elif [[ $i == *"topo_ice"* ]]; then
+		sed -i '/exec_topo.sh ice/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"topo_arm"* ]]; then
 		sed -i '/exec_topo.sh arm/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"topo_mlx5_core_cx5"* ]]; then
 		sed -i '/exec_topo.sh mlx5_core cx5/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"topo_mlx5_core_cx6"* ]]; then
 		sed -i '/exec_topo.sh mlx5_core cx6/s/^#//g' exec_my_ovs_tests.sh
+	elif [[ $i == *"endurance_cx5"* ]]; then
+		sed -i '/exec_endurance.sh cx5/s/^#//g' exec_my_ovs_tests.sh
+	elif [[ $i == *"perf_ci_cx5"* ]]; then
+		sed -i '/exec_perf_ci.sh cx5/s/^#//g' exec_my_ovs_tests.sh	
 	elif [[ $i == *"endurance_cx6"* ]]; then
 		sed -i '/exec_endurance.sh cx6/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"perf_ci_cx6"* ]]; then
 		sed -i '/exec_perf_ci.sh cx6/s/^#//g' exec_my_ovs_tests.sh
+	elif [[ $i == *"sanity_check"* ]]; then
+		sed -i '/exec_sanity_check.sh/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"ovs_memory_leak_soak_i40e"* ]]; then
 		/bin/cp -f exec_ovs_memory_leak_soak_template.sh exec_ovs_memory_leak_soak.sh
 		sed -i '/exec_ovs_memory_leak_soak.sh/s/^#//g' exec_my_ovs_tests.sh

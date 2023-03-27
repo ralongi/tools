@@ -59,9 +59,14 @@ else
 fi
 
 # Tests to be run for $FDP_RELEASE:
-/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.4 2.13
-/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.6 2.15
-#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.4 2.16
-#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.6 2.17
-#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 9.0 2.17
+#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.4 2.13
+#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.6 2.15
+#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.6 2.16
+/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.6 2.17
+/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.6 3.10
+/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 9.2 2.17
+/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 9.2 3.10
+
+#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 8.8 2.17
+#/home/ralongi/github/tools/ovs_testing/run_ovs_tests.sh $FDP_RELEASE 9.2 2.17
 

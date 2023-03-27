@@ -34,16 +34,16 @@ frame_size=64
 flows=1024
 loss_rate=0
 
-fr64_fl1024_123_vno_vlan11_threshold=3562674
-fr64_fl1024_143_vno_vlan11_threshold=7404755
-fr64_fl1024_245_vno_vlan11_threshold=7404755
-fr64_fl1024_489_vno_vlan11_threshold=14577097
-fr64_fl1024_123_vyes_vlan0_threshold=3712539
-fr64_fl1024_143_vyes_vlan0_threshold=7404755
-fr64_fl1024_245_vyes_vlan0_threshold=7404755
-fr64_fl1024_489_vyes_vlan0_threshold=14577097
-fr64_fl1024_sriov_13_vyes_vlan0_threshold=41223341
-fr64_fl1024_testpmd_vno_vlan0_threshold=2496184
+fr64_fl1024_123_vno_vlan11_threshold=2943507
+fr64_fl1024_143_vno_vlan11_threshold=5990018
+fr64_fl1024_245_vno_vlan11_threshold=5883166
+fr64_fl1024_489_vno_vlan11_threshold=11567980
+fr64_fl1024_123_vyes_vlan0_threshold=2756997
+fr64_fl1024_143_vyes_vlan0_threshold=6363430
+fr64_fl1024_245_vyes_vlan0_threshold=6449406
+fr64_fl1024_489_vyes_vlan0_threshold=10910681
+fr64_fl1024_sriov_13_vyes_vlan0_threshold=34255389
+fr64_fl1024_testpmd_vno_vlan0_threshold=6247242
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11
 
@@ -156,7 +156,7 @@ loss_rate=0.002
 echo "Tests: ovs_kernel_pvp" | tee -a pass_fail.txt
 
 
-fr64_fl1024_kernel_13_vno_vlan0_threshold=391619
+fr64_fl1024_kernel_13_vno_vlan0_threshold=452413
 
 fr64_fl1024_kernel_13_vno_vlan0_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $2}' | awk -F "." '{print $1}' | tail -n1)
 
@@ -168,14 +168,14 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 
 
 # frame size=128, flows=1024, loss-rate=0
-fr128_fl1024_123_vno_vlan11_threshold=3387958
-fr128_fl1024_143_vno_vlan11_threshold=6281071
-fr128_fl1024_245_vno_vlan11_threshold=6449290
-fr128_fl1024_489_vno_vlan11_threshold=13512063
-fr128_fl1024_123_vyes_vlan0_threshold=3562674
-fr128_fl1024_143_vyes_vlan0_threshold=6733462
-fr128_fl1024_245_vyes_vlan0_threshold=6887803
-fr128_fl1024_489_vyes_vlan0_threshold=13512063
+fr128_fl1024_123_vno_vlan11_threshold=2846454
+fr128_fl1024_143_vno_vlan11_threshold=5508501
+fr128_fl1024_245_vno_vlan11_threshold=5531634
+fr128_fl1024_489_vno_vlan11_threshold=10817131
+fr128_fl1024_123_vyes_vlan0_threshold=2681148
+fr128_fl1024_143_vyes_vlan0_threshold=6194070
+fr128_fl1024_245_vyes_vlan0_threshold=6141253
+fr128_fl1024_489_vyes_vlan0_threshold=10281561
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=128
 fr128_fl1024_123_vno_vlan11_result=$(grep -A8 'jq --arg sz 128 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
@@ -239,14 +239,14 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 
 
 # frame size=256, flows=1024, loss-rate=0
-fr256_fl1024_123_vno_vlan11_threshold=3201156
-fr256_fl1024_143_vno_vlan11_threshold=5898425
-fr256_fl1024_245_vno_vlan11_threshold=6013655
-fr256_fl1024_489_vno_vlan11_threshold=12254144
-fr256_fl1024_123_vyes_vlan0_threshold=3387958
-fr256_fl1024_143_vyes_vlan0_threshold=6131303
-fr256_fl1024_245_vyes_vlan0_threshold=6384379
-fr256_fl1024_489_vyes_vlan0_threshold=12254144
+fr256_fl1024_123_vno_vlan11_threshold=2693700
+fr256_fl1024_143_vno_vlan11_threshold=5569695
+fr256_fl1024_245_vno_vlan11_threshold=5243224
+fr256_fl1024_489_vno_vlan11_threshold=9979452
+fr256_fl1024_123_vyes_vlan0_threshold=2518092
+fr256_fl1024_143_vyes_vlan0_threshold=5879763
+fr256_fl1024_245_vyes_vlan0_threshold=5911685
+fr256_fl1024_489_vyes_vlan0_threshold=9431380
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=256
 fr256_fl1024_123_vno_vlan11_result=$(grep -A8 'jq --arg sz 256 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
@@ -311,14 +311,14 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 
 # frame size=1500, flows=1024, loss-rate=0
 
-fr1500_fl1024_123_vno_vlan11_threshold=1662354
-fr1500_fl1024_143_vno_vlan11_threshold=1595899
-fr1500_fl1024_245_vno_vlan11_threshold=2667958
-fr1500_fl1024_489_vno_vlan11_threshold=3780318
-fr1500_fl1024_123_vyes_vlan0_threshold=1890764
-fr1500_fl1024_143_vyes_vlan0_threshold=3159973
-fr1500_fl1024_245_vyes_vlan0_threshold=3159973
-fr1500_fl1024_489_vyes_vlan0_threshold=4301208
+fr1500_fl1024_123_vno_vlan11_threshold=1533901
+fr1500_fl1024_143_vno_vlan11_threshold=2884844
+fr1500_fl1024_245_vno_vlan11_threshold=2794363
+fr1500_fl1024_489_vno_vlan11_threshold=3480766
+fr1500_fl1024_123_vyes_vlan0_threshold=1342070
+fr1500_fl1024_143_vyes_vlan0_threshold=2980076
+fr1500_fl1024_245_vyes_vlan0_threshold=2907351
+fr1500_fl1024_489_vyes_vlan0_threshold=3149420
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=1500 
 fr1500_fl1024_123_vno_vlan11_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
@@ -384,7 +384,7 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 # sriov_pvp
 # Frame=1500
 
-fr1500_fl1024_sriov_13_vyes_vlan0_threshold=8163449
+fr1500_fl1024_sriov_13_vyes_vlan0_threshold=4419072
 fr1500_fl1024_sriov_13_vyes_vlan0_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' $result_file | grep 'result=' | grep vlan0 | awk -F "," '{print $18}' | awk -F "." '{print $1}')
 
 echo "" | tee -a pass_fail.txt
@@ -395,10 +395,10 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 
 
 # frame size=2000, flows=1024, loss-rate=0
-fr2000_fl1024_123_vno_vlan11_threshold=1426327
-fr2000_fl1024_143_vno_vlan11_threshold=2048498
-fr2000_fl1024_123_vyes_vlan0_threshold=1595899
-fr2000_fl1024_143_vyes_vlan0_threshold=2496184
+fr2000_fl1024_123_vno_vlan11_threshold=1303543
+fr2000_fl1024_143_vno_vlan11_threshold=2451125
+fr2000_fl1024_123_vyes_vlan0_threshold=1158367
+fr2000_fl1024_143_vyes_vlan0_threshold=2513781
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=2000
 fr2000_fl1024_123_vno_vlan11_result=$(grep -A8 'jq --arg sz 2000 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
@@ -435,10 +435,10 @@ echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a p
 
 # frame size=9200, flows=1024, loss-rate=0
 
-fr9200_fl1024_123_vno_vlan11_threshold=391619
-fr9200_fl1024_143_vno_vlan11_threshold=616877
-fr9200_fl1024_123_vyes_vlan0_threshold=399015
-fr9200_fl1024_143_vyes_vlan0_threshold=590154
+fr9200_fl1024_123_vno_vlan11_threshold=367944
+fr9200_fl1024_143_vno_vlan11_threshold=492589
+fr9200_fl1024_123_vyes_vlan0_threshold=357393
+fr9200_fl1024_143_vyes_vlan0_threshold=528866
 
 # ovs_dpdk_vhostuser_pvp vIOMMU=no vlan=11 frame=9200
 fr9200_fl1024_123_vno_vlan11_result=$(grep -A8 'jq --arg sz 9200 --arg fl 1024' $result_file | grep 'result=' | grep vlan11 | awk -F "," '{print $2}' | awk -F "." '{print $1}')

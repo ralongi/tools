@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash</whiteboard>
+  <whiteboard>FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash special_info_value</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash special_info_value" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -85,7 +85,12 @@ chmod 755 /usr/bin/rhts-power
       </hostRequires>
       <partitions>
             </partitions>
-      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/distribution/check-install" role="STANDALONE"/>
+      <task name="/distribution/brew-build-install" role="SERVERS">
+        <params>
+          <param name="BUILDID" value="BREW_BUILD_VALUE"/>
+        </params>
+      </task>
       <task name="/kernel/networking/openvswitch/power_cycle_crash/set_config" role="STANDALONE">
         <params>
           <param name="dbg_flag" value="dbg_flag_value"/>

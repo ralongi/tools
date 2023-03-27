@@ -22,7 +22,9 @@ sedeasy "OVS_RPM_VALUE" "$ovs_rpm_name" "power_cycle_crash_rhel$RHEL_VER_MAJOR.x
 sedeasy "COMPOSE_VALUE" "$COMPOSE" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 sedeasy "RPM_OVS_SELINUX_EXTRA_POLICY_VALUE" "$RPM_OVS_SELINUX_EXTRA_POLICY" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 sedeasy "RPM_OVS_VALUE" "$RPM_OVS" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
+sedeasy "BREW_BUILD_VALUE" "$brew_build" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 sedeasy "dbg_flag_value" "$dbg_flag" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
+sedeasy "special_info_value" "$special_info" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
 bkr job-submit power_cycle_crash_rhel$RHEL_VER_MAJOR.xml
 
 popd

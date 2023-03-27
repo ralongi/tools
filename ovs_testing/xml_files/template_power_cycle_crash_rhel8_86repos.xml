@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP 23C, openvswitch3.1-3.1.0-8.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20230319.4, openvswitch/power_cycle_crash </whiteboard>
+  <whiteboard>FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP 23C, openvswitch3.1-3.1.0-8.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20230319.4, openvswitch/power_cycle_crash " role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -69,7 +69,7 @@ chmod 755 /usr/bin/rhts-power
                 <and>
                     <distro_variant op="=" value="BaseOS"/>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-8.6.0-updates-20230319.4"/>
+                    <distro_name op="=" value="COMPOSE_VALUE"/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
                 <or>
@@ -88,17 +88,17 @@ chmod 755 /usr/bin/rhts-power
       <task name="/distribution/check-install" role="STANDALONE"/>
       <task name="/distribution/brew-build-install" role="SERVERS">
         <params>
-          <param name="BUILDID" value=""/>
+          <param name="BUILDID" value="BREW_BUILD_VALUE"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/power_cycle_crash/set_config" role="STANDALONE">
         <params>
-          <param name="dbg_flag" value="set +x"/>
-          <param name="SELINUX" value=""/>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="SELINUX" value="SELINUX_VALUE"/>
           <param name="NAY" value="yes"/>
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/30.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-30.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/8.el8fdp/x86_64/openvswitch3.1-3.1.0-8.el8fdp.x86_64.rpm"/>
-          <param name="DISTRO_BUILD" value="RHEL-8.6.0-updates-20230319.4"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
+          <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>
       <task name="/distribution/utils/power-cycle" role="STANDALONE"/>

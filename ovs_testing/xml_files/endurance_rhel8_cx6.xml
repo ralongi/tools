@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP 22.L, openvswitch2.15-2.15.0-128.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20221201.2, openvswitch/perf Endurance CX6</whiteboard>
+  <whiteboard>FDP 23.B, openvswitch2.17-2.17.0-77.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20230216.4, openvswitch/perf Endurance CX6</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP 22.L, openvswitch2.15-2.15.0-128.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20221201.2, openvswitch/perf Endurance CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP 23.B, openvswitch2.17-2.17.0-77.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20230216.4, openvswitch/perf Endurance CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -69,7 +69,7 @@ chmod 755 /usr/bin/rhts-power
                 <and>
                     <distro_variant op="=" value="BaseOS"/>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-8.6.0-updates-20221201.2"/>
+                    <distro_name op="=" value="RHEL-8.6.0-updates-20230216.4"/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
                 <or>
@@ -93,17 +93,17 @@ chmod 755 /usr/bin/rhts-power
           <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford_endurance"/>
           <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel8.6.qcow2"/>
           <param name="rpm_dpdk" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-21.11-1.el8.x86_64.rpm"/>
-          <param name="fdp_release" value="22.L"/>
+          <param name="fdp_release" value="23.B"/>
           <param name="SELINUX" value=""/>
           <param name="NAY" value="no"/>
-          <param name="rpm_openvswitch_selinux_extra_policy" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/29.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-29.el8fdp.noarch.rpm"/>
-          <param name="rpm_ovs" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/128.el8fdp/x86_64/openvswitch2.15-2.15.0-128.el8fdp.x86_64.rpm"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/30.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-30.el8fdp.noarch.rpm"/>
+          <param name="rpm_ovs" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/77.el8fdp/x86_64/openvswitch2.17-2.17.0-77.el8fdp.x86_64.rpm"/>
           <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
-          <param name="DISTRO_BUILD" value="RHEL-8.6.0-updates-20221201.2"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.6.0-updates-20230216.4"/>
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="FDP 22.L, openvswitch2.15-2.15.0-128.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20221201.2, openvswitch/perf Endurance CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP 23.B, openvswitch2.17-2.17.0-77.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20230216.4, openvswitch/perf Endurance CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -195,11 +195,11 @@ chmod 755 /usr/bin/rhts-power
           <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford_endurance"/>
           <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel8.6.qcow2"/>
           <param name="rpm_dpdk" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-21.11-1.el8.x86_64.rpm"/>
-          <param name="fdp_release" value="22.L"/>
+          <param name="fdp_release" value="23.B"/>
           <param name="SELINUX" value=""/>
           <param name="NAY" value="no"/>
-          <param name="rpm_openvswitch_selinux_extra_policy" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/29.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-29.el8fdp.noarch.rpm"/>
-          <param name="rpm_ovs" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/128.el8fdp/x86_64/openvswitch2.15-2.15.0-128.el8fdp.x86_64.rpm"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/30.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-30.el8fdp.noarch.rpm"/>
+          <param name="rpm_ovs" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/77.el8fdp/x86_64/openvswitch2.17-2.17.0-77.el8fdp.x86_64.rpm"/>
           <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
           <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
         </params>

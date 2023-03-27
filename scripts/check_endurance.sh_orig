@@ -20,10 +20,10 @@ rm -f $result_file
 rm -f pass_fail.txt
 wget --quiet -O $result_file $log
 
-frame64_threshold=4500000
+frame64_threshold=5000000
 frame576_threshold=5000000
-frame1218_threshold=3500000
-frame1500_threshold=3500000
+frame1218_threshold=4000000
+frame1500_threshold=4000000
 
 frame64_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | tail -n1 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
 frame576_result=$(grep -A8 'jq --arg sz 576 --arg fl 1024' $result_file | tail -n1 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
@@ -51,12 +51,9 @@ if [[ $(grep -i fail pass_fail.txt) ]]; then
 else
 	echo "Overall Result: All tests PASSED"
 fi
+echo ""
 
-echo ""
-echo "Results:"
-echo ""
-echo "https://beaker.engineering.redhat.com/jobs/$job_id"
-echo "$html_result_file"
+echo "Result file: $html_result_file"
 echo ""
 
 popd

@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance CX6</whiteboard>
+  <whiteboard>FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance card_type_value</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance card_type_value" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -65,7 +65,7 @@ setenforce 0
             </distroRequires>
       <hostRequires>
         <and>
-          <hostname value="netqe24.knqe.lab.eng.bos.redhat.com" op="="/>
+          <hostname value="server_system_value" op="="/>
           <system_type value="Machine" op="="/>
         </and>
       </hostRequires>
@@ -77,7 +77,7 @@ setenforce 0
           <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="nic_test" value="NIC_TEST_VALUE"/>
           <param name="test_env" value="TEST_ENV_VALUE"/>
-          <param name="image" value="VM_IMAGE_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
           <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="SELINUX" value="SELINUX_VALUE"/>
@@ -89,7 +89,7 @@ setenforce 0
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance CX6" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance card_type_value" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog panic="None"/>
       <packages/>
@@ -153,7 +153,7 @@ setenforce 0
             </distroRequires>
       <hostRequires>
         <and>
-          <hostname value="netqe25.knqe.lab.eng.bos.redhat.com" op="="/>
+          <hostname value="client_system_value" op="="/>
           <system_type value="Machine" op="="/>
         </and>
       </hostRequires>
@@ -165,7 +165,7 @@ setenforce 0
           <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="nic_test" value="NIC_TEST_VALUE"/>
           <param name="test_env" value="TEST_ENV_VALUE"/>
-          <param name="image" value="VM_IMAGE_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
           <param name="rpm_dpdk" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="SELINUX" value="SELINUX_VALUE"/>

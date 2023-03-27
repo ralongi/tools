@@ -1,3 +1,9 @@
+*************************************************************************************************************************
+
+******************* USEFUL REFERENCE LINK: https://tps-server.lab.bos.redhat.com/pages/man/index.html *******************
+
+*************************************************************************************************************************
+
 main password: fo0m4nchU
 
 password for RHV EUS stable system (tps-rhv-7s-4-h.rhev.lab.eng.brq.redhat.com): qum5net
@@ -163,6 +169,29 @@ yum -y install libibverbs
 
 bkr workflow-tomorrow --errata=43252 --variant=detect --tps-rpmtest --tps-srpmtest --profile=stable-openshift-enterprise-3.6 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --arch=x86_64 --reserve-if-fail
 
+bkr workflow-tomorrow --errata=108133 --variant=detect --tps-failed --tps-rpm --profile=fast-datapath-for-rhel-8-rpms --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86
+
+# DPDK RHEL-8
+bkr workflow-tomorrow --task "! dnf -y install libibverbs" --errata=107215 --variant=detect --tps-failed --tps --profile=stable-rhel-8-baseos --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86_64 --reserve-if-fail
+
+$ To upload results to errata tool when using above method: tps-results  --job <beaker job ID> (tps-results  --job 7392762)
+
+Hi Rick,
+Happy new year.
+
+You emailed the correct person. 
+We have another tool to upload results to the errata tool called 'tps-results' ([1]).
+It is in qa-tools-workstation package (qa-tools-workstation-tps-results if you prefer split packages).
+
+Brief documentation for running TPS tests in beaker is [2].
+In short: Run `tps-results  --job 7392762`.
+Tool will read errata number from job results, no need to specify it on the cmdline.
+
+Hope that helps,
+
+[1] https://wiki.test.redhat.com/tcerna/tps-results#TPSresults
+[2]  https://wiki.test.redhat.com/BaseOs/Projects/Automation/TpsInBeakerUserDocs
+
 ### DPDK / extras errata:
 
 # best to build stable system manually:
@@ -170,17 +199,9 @@ bkr workflow-tomorrow --errata=43252 --variant=detect --tps-rpmtest --tps-srpmte
 - provision system with target compose
 
 # Install:
-yum -y install numactl-devel
-yum -y install doxygen
-yum -y install python3-devel
-yum -y install python3-sphinx
-yum -y install meson
-yum -y install zlib-devel
-yum -y install gcc
-
-
-
-
+sed -i 's/enabled = 0/enabled = 1/g' /etc/yum.repos.d/beaker-CRB.repo
+yum -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs
+sed -i 's/enabled = 1/enabled = 0/g' /etc/yum.repos.d/beaker-CRB.repo
 
 # stable system RHEL 8 ppc64le
 
@@ -431,23 +452,30 @@ DPDK errata x86_64 system: x86-64-8-v1.ss.eng.bos.redhat.com (fo0m4nchU)
 http://wiki.test.redhat.com/Faq/Beaker/Erratify
 
 provision system using scheduler (reserve)
-yum -y install wget
 
-to install oats on RHEL-8: 
-	#wget -O /etc/yum.repos.d/tps-deps.repo http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps.repo
-	wget -O /etc/yum.repos.d/tps-deps.repo http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/tps-deps.repo
-	yum -y install busybox
-	yum -y --nogpgcheck install http://nest.test.redhat.com/mnt/tpsdist/oats.noarch.rpm
-	
-to install oats on RHEL-9:
-	yum -y install wget
-	wget http://nest.test.redhat.com/mnt/tpsdist/test/install-oats.sh
-	chmod +x install-oats.sh
-	./install-oats.sh
+to install oats:
+
+yum -y install wget
+wget http://nest.test.redhat.com/mnt/tpsdist/install-oats.sh
+chmod +x install-oats.sh
+./install-oats.sh
 
 yum -y install nfs-utils ; service rpcbind start
 yum -y install perl-Date-Manip
 yum -y install rpm-build
+
+sed -i 's/enabled = 0/enabled = 1/g' /etc/yum.repos.d/beaker-CRB.repo
+yum -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs
+sed -i 's/enabled = 1/enabled = 0/g' /etc/yum.repos.d/beaker-CRB.repo
+
+echo OATS_TEST_PROFILE="stable-rhel-8.4-eus-baseos " >> /etc/sysconfig/oats.conf
+echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg |  sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
+echo OATS_INSTALL_STAR='false' >> /etc/sysconfig/oats.conf
+
+sed -i 's/# STREAM=3/STREAM=4/g' /etc/sysconfig/oats.conf
+#sed -i 's/# STREAMEXT=AUS/STREAMEXT=EUS/g' /etc/sysconfig/oats.conf
+
+systemctl restart oatsd && tail -f /var/log/oatsd
 
 # create /etc/yum.repos.d/myrepo.1.repo for compose being used (this is necessary to make sure the system installs the newest version of packages like libibverbs in case a package like dpdk relies on the newer version of libibverbs)
 [myrepo_1]
@@ -459,7 +487,7 @@ skip_if_unavailable=1
 
 
 echo OATS_TEST_PROFILE="<test profile name>" >> /etc/sysconfig/oats.conf
-#echo OATS_TEST_PROFILE="stable-rhv-4-mgmt-agent-for-power-le-rpms" >> /etc/sysconfig/oats.conf
+#echo OATS_TEST_PROFILE="stable-rhel-8.6-tus-baseos " >> /etc/sysconfig/oats.conf
 #echo OATS_TEST_PROFILE="rhel-7-server-rhv-4.2-mgmt-agent-for-power-le-eus-rpms" >> /etc/sysconfig/oats.conf
 #echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg |  sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
 # OR
@@ -468,8 +496,15 @@ echo OATS_TEST_PROFILE="<test profile name>" >> /etc/sysconfig/oats.conf
 #TREE=/devops_engarchive2_nfs/redhat/released/rhel-6-7-8/rhel-8/RHEL-8/8.3.0/BaseOS/x86_64/os/
 echo OATS_INSTALL_STAR='false' >> /etc/sysconfig/oats.conf
 
-systemctl start oatsd	
-tail -f /var/log/oatsd
+
+sed -i 's/# STREAM=3/STREAM=6/g' /etc/sysconfig/oats.conf
+sed -i 's/# STREAMEXT=AUS/STREAMEXT=TUS/g' /etc/sysconfig/oats.conf
+
+systemctl restart oatsd && tail -f /var/log/oatsd
+
+extendtesttime.sh 99 && sleep 3m; tps-setup-channel-cache && tps-channel-cache && update-tpsd-settings && systemctl stop tpsd
+
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
 
 # after reboot:
 check to make sure /etc/yum.repos.d/ has expected repos:
@@ -486,9 +521,7 @@ sedeasy "ONBOOT=0" "ONBOOT=1" /etc/sysconfig/oats.conf
 systemctl restart oatsd
 
 # Else
-tps-setup-channel-cache
-tps-channel-cache
-update-tpsd-settings
+tps-setup-channel-cache && tps-channel-cache && update-tpsd-settings
 
 yum -y install rpm-build
 yum -y install autoconf automake git libtool openssl-devel selinux-policy-devel
@@ -630,7 +663,15 @@ that is great news 🙂
 
 # To build stable system for DPDK using a specific distro (useful for jobs requiring unreleased distro):
 
-bkr workflow-tomorrow --distro=RHEL-8.6.0-20220321.0 --split-buildroot --machine=netqe9.knqe.lab.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-8-baseos --arch=x86_64 --variant=BaseOS
+arch=<arch>
+
+bkr workflow-tomorrow --distro=RHEL-8.6.0-20220321.0 --split-buildroot --machine=netqe9.knqe.lab.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-8-baseos --arch=$arch --variant=BaseOS
+
+bkr workflow-tomorrow --distro=RHEL-8.6.0-updates-20230104.0 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-8.6-eus-baseos --arch=$arch --variant=BaseOS
+
+bkr workflow-tomorrow --distro=RHEL-7.9-updates-20221213.0 --split-buildroot --machine=kvm-01-guest04.lab.eng.rdu2.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-7-server --arch=$arch --variant=Server
+
+
 
 #########################################################################
 To skip a specific package as part of the TPS SRPM runs:
@@ -649,3 +690,50 @@ Another example:
 
 extra_built	pass	rpm_name	network-scripts-openvswitch2.17	srpm_name	openvswitch2.17
 
+#########################################################################
+
+When you need to create new TPS test profile and there are no repos available:
+
+Summary of steps:
+
+
+
+From JWL:
+
+Always works better to send a ticket, especially when I’m on PTO… 😄
+
+A quick glance shows that the pulp channel 'rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_6’ is a target of the advisory.
+
+Looking at https://tps-server.lab.bos.redhat.com/pulp_channels/rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_6 shows that the TpsRepo is: https://tps-server.lab.bos.redhat.com/repos/11075
+
+And that page shows “Is Base: false” — which is not correct, and is the source of the problem.  Editing that and setting it to ’true’ should fix it.
+
+Now… why is that, you might ask…
+
+A TestProfile starts with “What do I install first?”  In tps-speak, that’s called a “base repo”.  (A Stream, as you’ve seen, typically has a lot of Repos.  “Base” is simply used to indicate the one that should be configured/installed first.)
+
+So if a Stream has no Repo marked ‘Base = true’, TPS has no idea what to start with — and thus you can’t create a TestProfile for it.
+
+The error message for this condition is… um.  Terrible?  Awful?  Rotten?  Pick your favorite description.
+
+If there’s a good way to mark this automatically, that would be an excellent enhancement — but I’ve not spotted it yet.
+
+That said, I’ve fixed the issue for rhel-8-baseos-aus-rpms-8.6 (actually for all existing 8.* AUS/EUS/E4S/TUS ones), so you should be good to go for that.
+
+  — John
+
+A technical example, using the rails console in place of a video of a bunch of GUI clicking:
+irb(main):044:0> PulpChannel.find_by_idname('rhel-8-for-x86_64-appstream-aus-rpms__8_DOT_2').stream.repos.where(base: true)
+=> [#<Repo id: 8820, name: "rhel-8-baseos-aus-rpms-8.2", stream_id: 78, active: true, relevant: true, base: true, created_at: "2020-02-19 11:03:40", updated_at: "2020-11-11 03:56:11", dist_method_id: 3>]
+
+irb(main):045:0> PulpChannel.find_by_idname('rhel-8-for-x86_64-appstream-aus-rpms__8_DOT_6').stream.repos.where(base: true)
+=> []
+
+After fixes:
+irb(main):067:0> pp PulpChannel.where('idname like "rhel-8-for-x86_64-baseos-aus-rpms__8_DOT%"').collect{|x| "#{x.idname}: #{x.repos.where(base:true).collect(&:name).first}"}.sort ; true
+
+["rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_2: rhel-8-baseos-aus-rpms-8.2",
+ "rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_4: rhel-8-baseos-aus-rpms-8.4",
+ "rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_6: rhel-8-baseos-aus-rpms-8.6",
+ "rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_8: rhel-8-baseos-aus-rpms-8.8"]
+=> true

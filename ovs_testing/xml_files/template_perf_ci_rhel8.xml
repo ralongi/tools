@@ -1,5 +1,5 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf CX6</whiteboard>
+  <whiteboard>FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Perf CI card_type_value</whiteboard>
   <recipeSet priority="Urgent">
     <recipe whiteboard="" role="None" ks_meta="harness='restraint-rhts beakerlib' disabled_root_access" kernel_options="" kernel_options_post="pci=realloc intel_iommu=on">
       <autopick random="false"/>
@@ -23,7 +23,7 @@
             </distroRequires>
       <hostRequires>
                 <and>
-                    <hostname op="like" value="netqe24.knqe.lab.eng.bos.redhat.com"/>
+                    <hostname op="like" value="server_system_value"/>
                 </and>
                 <system_type op="=" value="Machine"/>
             </hostRequires>
@@ -39,7 +39,7 @@
           <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="nic_test" value="NIC_TEST_VALUE"/>
           <param name="test_env" value="TEST_ENV_VALUE"/>
-          <param name="image" value="VM_IMAGE_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
           <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
           <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
@@ -71,7 +71,7 @@
             </distroRequires>
       <hostRequires>
                 <and>
-                    <hostname op="like" value="netqe25.knqe.lab.eng.bos.redhat.com"/>
+                    <hostname op="like" value="client_system_value"/>
                 </and>
                 <system_type op="=" value="Machine"/>
             </hostRequires>
@@ -87,7 +87,7 @@
           <param name="dbg_flag" value="dbg_flag_value"/>
           <param name="nic_test" value="NIC_TEST_VALUE"/>
           <param name="test_env" value="TEST_ENV_VALUE"/>
-          <param name="image" value="VM_IMAGE_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
           <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
           <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
