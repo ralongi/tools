@@ -1,5 +1,7 @@
 #!/bin/bash
 
+$dbg_flag
+
 pushd ~
 
 rm -f rhel8_pssh_hosts_file_full.tmp rhel9_pssh_hosts_file_full.tmp rhel_all_pssh_hosts_file_full.tmp

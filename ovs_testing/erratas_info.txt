@@ -200,7 +200,7 @@ Hope that helps,
 
 # Install:
 sed -i 's/enabled = 0/enabled = 1/g' /etc/yum.repos.d/beaker-CRB.repo
-yum -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs
+yum -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs libarchive-devel python3-pyelftools
 sed -i 's/enabled = 1/enabled = 0/g' /etc/yum.repos.d/beaker-CRB.repo
 
 # stable system RHEL 8 ppc64le
@@ -671,7 +671,11 @@ bkr workflow-tomorrow --distro=RHEL-8.6.0-updates-20230104.0 --split-buildroot -
 
 bkr workflow-tomorrow --distro=RHEL-7.9-updates-20221213.0 --split-buildroot --machine=kvm-01-guest04.lab.eng.rdu2.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-7-server --arch=$arch --variant=Server
 
+bkr workflow-tomorrow --distro=RHEL-9.2.0-20230329.11 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-9-baseos --arch=$arch --variant=BaseOS --task '! dnf -y install libibverbs'
 
+bkr workflow-tomorrow --distro=RHEL-9.2.0-20230329.11 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-9-baseos --arch=$arch --variant=BaseOS --task '! sed -i "s/enabled = 0/enabled = 1/g" /etc/yum.repos.d/beaker-CRB.repo; dnf -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs libarchive-devel python3-pyelftools; sed -i "s/enabled = 1/enabled = 0/g" /etc/yum.repos.d/beaker-CRB.repo'
+
+bkr workflow-tomorrow --distro=RHEL-9.2.0-20230329.11 --errata=109641 --variant=detect --tps-rpmtest --tps-srpmtest --profile=stable-rhel-9-baseos --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86_64 --reserve-if-fail --task '! sed -i "s/enabled = 0/enabled = 1/g" /etc/yum.repos.d/beaker-CRB.repo; dnf -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs libarchive-devel python3-pyelftools; sed -i "s/enabled = 1/enabled = 0/g" /etc/yum.repos.d/beaker-CRB.repo'
 
 #########################################################################
 To skip a specific package as part of the TPS SRPM runs:
@@ -737,3 +741,27 @@ irb(main):067:0> pp PulpChannel.where('idname like "rhel-8-for-x86_64-baseos-aus
  "rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_6: rhel-8-baseos-aus-rpms-8.6",
  "rhel-8-for-x86_64-baseos-aus-rpms__8_DOT_8: rhel-8-baseos-aus-rpms-8.8"]
 => true
+
+#########################################################################
+
+# BEST WAY TO DEAL WITH DPDK ERRATAS BELOW! (3-30-2023)
+
+# build stable systems using bkr-workflow-tomorrow (aliased to wow):
+
+export arch=<arch>
+
+wow --distro=RHEL-9.2.0-20230329.11 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-9-baseos --arch=$arch --variant=BaseOS --task '! sed -i "s/enabled = 0/enabled = 1/g" /etc/yum.repos.d/beaker-CRB.repo; dnf -y install numactl-devel doxygen python3-devel python3-sphinx meson zlib-devel gcc libibverbs libarchive-devel python3-pyelftools; sed -i "s/enabled = 1/enabled = 0/g" /etc/yum.repos.d/beaker-CRB.repo'
+
+# log into each stable systems and run TPS manually:
+
+# create errata directory and run tps-make-lists:
+tps-cd -c <errata> (Example: tps-cd -c 2023:109641)
+
+# run tps:
+tps
+
+# upload results to errata tool:
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+#########################################################################
+

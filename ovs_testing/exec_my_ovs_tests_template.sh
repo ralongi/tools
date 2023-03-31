@@ -253,12 +253,14 @@ sedeasy "FDP_RELEASE_VALUE" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endur
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-#./exec_mcast_snoop.sh
+#./exec_ovs_upgrade.sh
+#./exec_sanity_check.sh
 #./exec_ovs_qos.sh
+#./exec_mcast_snoop.sh
+#./exec_power_cycle_crash.sh
 #./exec_forward_bpdu.sh
 #./exec_of_rules.sh
-#./exec_power_cycle_crash.sh
-#./exec_ovs_upgrade.sh
+
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
 #./exec_topo.sh ixgbe ovs_env=kernel
 #./exec_topo.sh ixgbe ovs_env=ovs-dpdk
@@ -287,7 +289,6 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
 #./exec_topo.sh nfp ovs_env=kernel
 #./exec_topo.sh nfp ovs_env=ovs-dpdk
-#./exec_sanity_check.sh
 
 #./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
