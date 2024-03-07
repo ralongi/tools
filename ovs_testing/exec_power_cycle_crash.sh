@@ -1,30 +1,16 @@
 #!/bin/bash
 
 # power_cycle_crash
-# confirm that the correct DUT is specified in the template XML file referenced below
 
-dbg_flag=${dbg_flag:-"set +x"}
+dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-
+dut=${dut:-"netqe21.knqe.lab.eng.bos.redhat.com"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+product="cpe:/o:redhat:enterprise_linux"
+retention_tag="active+1"
 
-sedeasy ()
-{
-sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
-}
+pushd ~/temp
 
-pushd /home/ralongi/github/tools/ovs_testing/xml_files
-
-/bin/cp -f template_power_cycle_crash_rhel$RHEL_VER_MAJOR.xml power_cycle_crash_rhel$RHEL_VER_MAJOR.xml
-sedeasy "SELINUX_VALUE" "$SELINUX" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "FDP_RELEASE_VALUE" "$FDP_RELEASE" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "OVS_RPM_VALUE" "$ovs_rpm_name" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "COMPOSE_VALUE" "$COMPOSE" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "RPM_OVS_SELINUX_EXTRA_POLICY_VALUE" "$RPM_OVS_SELINUX_EXTRA_POLICY" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "RPM_OVS_VALUE" "$RPM_OVS" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "BREW_BUILD_VALUE" "$brew_build" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "dbg_flag_value" "$dbg_flag" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-sedeasy "special_info_value" "$special_info" "power_cycle_crash_rhel$RHEL_VER_MAJOR.xml"
-bkr job-submit power_cycle_crash_rhel$RHEL_VER_MAJOR.xml
+lstest ~/git/kernel/networking/openvswitch/power_cycle_crash/set_config | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --ks-post "$(cat ~/temp/rhts_power.sh)" --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=dbg_flag="$dbg_flag" --param=SELINUX=$SELINUX --param=FDP_STREAM=$FDP_STREAM --param=NAY=yes --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --wb "(Standalone: $dut), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/power_cycle_crash $brew_build $special_info" --append-task="/distribution/utils/power-cycle" --append-task="/kernel/networking/openvswitch/power_cycle_crash/check_config {dbg_flag=set -x}" --append-task="/distribution/crashes/crash-sysrq-c" --append-task="/kernel/networking/openvswitch/power_cycle_crash/check_config {dbg_flag=set -x}"
 
 popd

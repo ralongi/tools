@@ -22,7 +22,7 @@ fi
 # Install EPEL repo and sshpass package
 pvt_epel_install
 pvt_sshpass_install
-wget -O ~/temp/junk.txt http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/junk.txt
+wget -O ~/temp/junk.txt http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/junk.txt
 sleep 3
 sshpass -f ~/temp/junk.txt ssh-copy-id -o "StrictHostKeyChecking no" -i ~/.ssh/id_rsa.pub root@$target
 wait

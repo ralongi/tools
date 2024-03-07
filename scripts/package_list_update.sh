@@ -1,11 +1,12 @@
 #! /bin/bash
 
-# Script to update kernel/networking/openvswitch/common/package_list.sh
+# Script to update package_list.sh
 # Script reads /home/ralongi/github/tools/scripts/fdp_errata_list.txt so be sure to update that file with the correct errata info before running script
 
 dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
-checkin_git=${checkin_git:-"yes"}
+script_directory=~/git/kernel/networking/common/tools
+#checkin_git=${checkin_git:-"no"}
 fdp_release=$1
 if [[ $# -lt 1 ]]; then echo "Please provide FDP release (21I, 21j, etc):"; read fdp_release; fi
 fdp_release=$(echo "$fdp_release" | awk '{print toupper($0)}')
@@ -32,6 +33,8 @@ rm -f ~/temp/builds.txt
 rm -f $new_package_list_temp_file $new_package_list_file
 echo "" >> $new_package_list_file
 echo "# FDP $fdp_release Packages" >> $new_package_list_file
+
+pushd $script_directory
 
 selinux_version=$(curl -sL http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el7 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
 package_url=http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
@@ -65,10 +68,11 @@ if [[ -z $errata ]]; then
 	echo "No errata provided so OVS 2.13 RHEL-7 package will not be added for FDP $fdp_release"
 	echo ""
 else
+	./get_errata_packages.sh -e $errata
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')	
-	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el7" '{print $1}')
-	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el7fdp/x86_64/$build"
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
+	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	echo "OVS213_$fdp_release"_RHEL7=${package_url} >> $new_package_list_file
@@ -82,10 +86,13 @@ if [[ -z $errata ]]; then
 	echo "No errata provided so OVS 2.13 RHEL-8 package will not be added for FDP $fdp_release"
 	echo ""
 else
+	./get_errata_packages.sh -e $errata ~/temp/builds.txt
+	egrep -v 'scripts|devel|ipsec|debugsource|debuginfo' ~/temp/builds.txt
+	build=$(egrep -v 'scripts|devel|ipsec|debugsource|debuginfo' ~/temp/builds.txt | egrep -v 'test|python')
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
-	python_package=$(grep -A5 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/x86_64/$python_package"
@@ -112,9 +119,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
-	python_package=$(grep -A5 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/x86_64/$python_package"
@@ -141,9 +148,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
-	python_package=$(grep -A5 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/x86_64/$python_package"
@@ -170,9 +177,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
-	python_package=$(grep -A5 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/x86_64/$python_package"
@@ -199,9 +206,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
-	python_package=$(grep -A4 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/x86_64/$python_package"
@@ -228,9 +235,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
-	python_package=$(grep -A4 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/x86_64/$python_package"
@@ -257,9 +264,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
-	python_package=$(grep -A4 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/x86_64/$python_package"
@@ -286,9 +293,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
-	python_package=$(grep -A4 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/x86_64/$python_package"
@@ -315,9 +322,9 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
-	python_package=$(grep -A4 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
 	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/x86_64/$build"
 	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/x86_64/$python_package"
@@ -338,15 +345,44 @@ else
 	echo ""
 fi
 
+errata=$(grep 'OVS-3.20 RHEL-9' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVS 3.20 RHEL-9 package will not be added for FDP $fdp_release"
+	echo ""
+else
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	build=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
+	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
+	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
+	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$python_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$tcpdump_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$tcpdump_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	echo "OVS320_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
+	echo "OVS320_PYTHON_$fdp_release"_RHEL9=${python_package_url} >> $new_package_list_file
+	echo "OVS320_TCPDUMP_$fdp_release"_RHEL9=${tcpdump_package_url} >> $new_package_list_file
+	echo ""
+	echo OVS320_$fdp_release"_RHEL9 package location: $package_url"
+	echo OVS320_PYTHON_$fdp_release"_RHEL9 package location: $python_package_url"
+	echo OVS320_TCPDUMP_$fdp_release"_RHEL9 package location: $tcpdump_package_url"
+	echo ""
+fi
+
 errata=$(grep 'OVN-2.13 RHEL-8' $fdp_errata_list_file | awk '{print $3}')
 if [[ -z $errata ]]; then
 	echo "No errata provided so OVN 2.13 RHEL-8 package will not be added for FDP $fdp_release"
 	echo ""
 else
 	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
-	ovn_common_build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	ovn_central_build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	ovn_host_build=$(grep -A3 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_common_build=$(grep -A9 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'vtep|debugsource|debuginfo|\[' | head -n1 | awk -F '"' '{print $2}')
+	ovn_central_build=$(grep -A9 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'vtep|debugsource|debuginfo|\[' | tail -n2 | head -n1 | awk -F '"' '{print $2}')
+	ovn_host_build=$(grep -A9 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'vtep|debugsource|debuginfo|\[' | tail -n1 | awk -F '"' '{print $2}')
 	directory_id=$(echo $ovn_common_build | awk -F "-" '{print $2}')
 	build_id=$(echo $ovn_common_build | awk -F "." '{print $4}'  | awk -F "-" '{print $NF}')
 	ovn_common_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_common_build"
@@ -389,13 +425,13 @@ else
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_central_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_host_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_host_package_url is NOT a valid link.  Exiting..."; exit 1; fi
-	echo "OVN_COMMON_"$revised_year"_$fdp_release"_RHEL8=${ovn_common_package_url} >> $new_package_list_file
-	echo "OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL8=${ovn_central_package_url} >> $new_package_list_file
-	echo "OVN_HOST_"$revised_year"_$fdp_release"_RHEL8=${ovn_host_package_url} >> $new_package_list_file
+	echo "OVN_COMMON_"$year"_$fdp_release"_RHEL8=${ovn_common_package_url} >> $new_package_list_file
+	echo "OVN_CENTRAL_"$year"_$fdp_release"_RHEL8=${ovn_central_package_url} >> $new_package_list_file
+	echo "OVN_HOST_"$year"_$fdp_release"_RHEL8=${ovn_host_package_url} >> $new_package_list_file
 	echo ""
-	echo ""OVN_COMMON_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_common_package_url"
-	echo ""OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_central_package_url"
-	echo ""OVN_HOST_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_host_package_url"
+	echo ""OVN_COMMON_"$year"_$fdp_release"_RHEL8 package location: $ovn_common_package_url"
+	echo ""OVN_CENTRAL_"$year"_$fdp_release"_RHEL8 package location: $ovn_central_package_url"
+	echo ""OVN_HOST_"$year"_$fdp_release"_RHEL8 package location: $ovn_host_package_url"
 	echo ""
 fi
 
@@ -663,17 +699,172 @@ else
 	echo ""
 fi
 
-cat $new_package_list_file >> /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh
-
-if [[ $checkin_git == "yes" ]]; then
-	pushd /home/ralongi/git/kernel/networking/
-	git add openvswitch/common/package_list.sh
-	git commit -o openvswitch/common/package_list.sh -m "Added FDP $fdp_relase packages."
-	git pull --rebase && git push
-	/home/ralongi/github/tools/scripts/bkrtag.sh openvswitch/common/
-	popd
+errata=$(grep 'OVN-23.03 RHEL-8' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVN-23.03 RHEL-8 package will not be added for FDP $fdp_release"
+	echo ""
 else
-	echo "Skipping check-in of code to git..."
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	ovn_common_build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_central_build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_host_build=$(grep -A3 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	year=$(echo $ovn_common_build | awk -F "-" '{print $1}' | tr -d 'ovn')
+	revised_year=$(echo $year | tr -d ".")
+	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
+	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
+	
+	ovn_common_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_central_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_host_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_host_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	echo "OVN_COMMON_"$revised_year"_$fdp_release"_RHEL8=${ovn_common_package_url} >> $new_package_list_file
+	echo "OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL8=${ovn_central_package_url} >> $new_package_list_file
+	echo "OVN_HOST_"$revised_year"_$fdp_release"_RHEL8=${ovn_host_package_url} >> $new_package_list_file
+	echo ""
+	echo ""OVN_COMMON_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_common_package_url"
+	echo ""OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_central_package_url"
+	echo ""OVN_HOST_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_host_package_url"
+	echo ""
 fi
+
+errata=$(grep 'OVN-23.06 RHEL-8' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVN-23.06 RHEL-8 package will not be added for FDP $fdp_release"
+	echo ""
+else
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	ovn_common_build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_central_build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_host_build=$(grep -A3 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	year=$(echo $ovn_common_build | awk -F "-" '{print $1}' | tr -d 'ovn')
+	revised_year=$(echo $year | tr -d ".")
+	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
+	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
+	
+	ovn_common_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_central_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_host_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_host_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	echo "OVN_COMMON_"$revised_year"_$fdp_release"_RHEL8=${ovn_common_package_url} >> $new_package_list_file
+	echo "OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL8=${ovn_central_package_url} >> $new_package_list_file
+	echo "OVN_HOST_"$revised_year"_$fdp_release"_RHEL8=${ovn_host_package_url} >> $new_package_list_file
+	echo ""
+	echo ""OVN_COMMON_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_common_package_url"
+	echo ""OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_central_package_url"
+	echo ""OVN_HOST_"$revised_year"_$fdp_release"_RHEL8 package location: $ovn_host_package_url"
+	echo ""
+fi
+
+errata=$(grep 'OVN-23.03 RHEL-9' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVN-23.03 RHEL-9 package will not be added for FDP $fdp_release"
+	echo ""
+else
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	ovn_common_build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_central_build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_host_build=$(grep -A3 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	year=$(echo $ovn_common_build | awk -F "-" '{print $1}' | tr -d 'ovn')
+	revised_year=$(echo $year | tr -d ".")
+	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
+	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
+	
+	ovn_common_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_central_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_host_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_host_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	echo "OVN_COMMON_"$revised_year"_$fdp_release"_RHEL9=${ovn_common_package_url} >> $new_package_list_file
+	echo "OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL9=${ovn_central_package_url} >> $new_package_list_file
+	echo "OVN_HOST_"$revised_year"_$fdp_release"_RHEL9=${ovn_host_package_url} >> $new_package_list_file
+	echo ""
+	echo ""OVN_COMMON_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_common_package_url"
+	echo ""OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_central_package_url"
+	echo ""OVN_HOST_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_host_package_url"
+	echo ""
+fi
+
+errata=$(grep 'OVN-23.06 RHEL-9' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVN-23.06 RHEL-9 package will not be added for FDP $fdp_release"
+	echo ""
+else
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	ovn_common_build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_central_build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_host_build=$(grep -A3 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	year=$(echo $ovn_common_build | awk -F "-" '{print $1}' | tr -d 'ovn')
+	revised_year=$(echo $year | tr -d ".")
+	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
+	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
+	
+	ovn_common_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_central_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_host_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_host_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	echo "OVN_COMMON_"$revised_year"_$fdp_release"_RHEL9=${ovn_common_package_url} >> $new_package_list_file
+	echo "OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL9=${ovn_central_package_url} >> $new_package_list_file
+	echo "OVN_HOST_"$revised_year"_$fdp_release"_RHEL9=${ovn_host_package_url} >> $new_package_list_file
+	echo ""
+	echo ""OVN_COMMON_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_common_package_url"
+	echo ""OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_central_package_url"
+	echo ""OVN_HOST_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_host_package_url"
+	echo ""
+fi
+
+errata=$(grep 'OVN-23.09 RHEL-9' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVN-23.09 RHEL-9 package will not be added for FDP $fdp_release"
+	echo ""
+else
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq > ~/temp/builds.txt
+	ovn_common_build=$(grep -A1 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_central_build=$(grep -A2 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	ovn_host_build=$(grep -A3 '"x86_64": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
+	year=$(echo $ovn_common_build | awk -F "-" '{print $1}' | tr -d 'ovn')
+	revised_year=$(echo $year | tr -d ".")
+	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
+	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
+	
+	ovn_common_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_central_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_host_package_url" | grep HTTP | awk '{print $2}')
+	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_host_package_url is NOT a valid link.  Exiting..."; exit 1; fi
+	echo "OVN_COMMON_"$revised_year"_$fdp_release"_RHEL9=${ovn_common_package_url} >> $new_package_list_file
+	echo "OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL9=${ovn_central_package_url} >> $new_package_list_file
+	echo "OVN_HOST_"$revised_year"_$fdp_release"_RHEL9=${ovn_host_package_url} >> $new_package_list_file
+	echo ""
+	echo ""OVN_COMMON_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_common_package_url"
+	echo ""OVN_CENTRAL_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_central_package_url"
+	echo ""OVN_HOST_"$revised_year"_$fdp_release"_RHEL9 package location: $ovn_host_package_url"
+	echo ""
+fi
+
+cat $new_package_list_file >> /home/ralongi/git/my_fork/kernel/networking/openvswitch/common/package_list.sh
+
 
 

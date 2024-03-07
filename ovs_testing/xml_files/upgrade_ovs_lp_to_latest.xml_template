@@ -28,7 +28,7 @@
           <param name="dbg_flag" value="set -x"/>
           <param name="install_latest_ovs_rpm" value="yes"/>
           <param name="ovs_rpm_version" value="2.9.0"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="10"/>
           <param name="lp_target_version" value="13"/>
@@ -75,7 +75,7 @@
           <param name="dbg_flag" value="set -x"/>
           <param name="install_latest_ovs_rpm" value="yes"/>
           <param name="ovs_rpm_version" value="2.9.0"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="11"/>
           <param name="lp_target_version" value="13"/>
@@ -122,7 +122,7 @@
           <param name="dbg_flag" value="set -x"/>
           <param name="install_latest_ovs_rpm" value="yes"/>
           <param name="ovs_rpm_version" value="2.9.0"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="12"/>
           <param name="lp_target_version" value="13"/>

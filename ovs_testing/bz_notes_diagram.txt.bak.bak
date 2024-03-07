@@ -1,0 +1,160 @@
+Description of problem:
+A significant drop in network throughput is observed when using a Chelsio cxgb4 port in an OVS bridge that has a VLAN tag assigned.
+
+Version-Release number of selected component (if applicable):
+RHEL 6.8 Kernel 2.6.32-642.el6.x86_64
+ovs_version: "2.3.1-git3282e51"
+
+How reproducible:
+100%
+
+Steps to Reproduce:
+
+Configuration:
+
+        HOST1                                HOST2
+       ovsbr0                               ovsbr0
+-------------------		      -------------------
+|     intport0    |                   |    intport0 	|
+|      tag=10	  |cxgb4<------->cxgb4|     tag=10      |
+|    192.168.1.7  |(p5p1)       (p5p1)|   192.168.1.8	|
+-------------------	              -------------------
+
+1.Configure HOST1 and HOST2 as noted above using the following commands:
+
+Host configuration (commands identical on each host except for IP address assignment):
+
+ovs-vsctl --if-exists del-br ovsbr0
+ovs-vsctl add-br ovsbr0
+ip link set dev ovsbr0 up
+ovs-vsctl --if-exists del-port p5p1
+ovs-vsctl add-port ovsbr0 p5p1
+ip link set dev p5p1 mtu 1500
+ip link set dev p5p1 up
+ovs-vsctl --if-exists del-port intport0
+ovs-vsctl add-port ovsbr0 intport0 -- set interface intport0 type=internal
+ip link set dev intport0 mtu 1500
+ip link set dev intport0 up
+ip addr flush dev intport0
+ip addr add 192.168.100.7/24 dev intport0
+
+2. run netperf from HOST1 to HOST2
+netperf -H 192.168.1.8 -L 192.168.1.7
+ 
+MIGRATED TCP STREAM TEST from 192.168.100.7 () port 0 AF_INET to 192.168.100.8 () port 0 AF_INET
+Recv   Send    Send                          
+Socket Socket  Message  Elapsed              
+Size   Size    Size     Time     Throughput  
+bytes  bytes   bytes    secs.    10^6bits/sec  
+
+ 87380  16384  16384    10.00    33237.45
+
+Note the throughout of ~33.2Gbps
+
+3. now add a VLAN tag to intport0 via the following command on each host:
+ovs-vsctl set port intport0 tag=10
+
+4. run netperf again
+netperf -H 192.168.1.8 -L 192.168.1.7
+
+MIGRATED TCP STREAM TEST from 192.168.100.7 () port 0 AF_INET to 192.168.100.8 () port 0 AF_INET
+Recv   Send    Send                          
+Socket Socket  Message  Elapsed              
+Size   Size    Size     Time     Throughput  
+bytes  bytes   bytes    secs.    10^6bits/sec  
+
+ 87380  16384  16384    10.00    11779.75
+
+Note that the observed throughput of ~11.8Gbps is ~66% lower than without the VLAN tag.  This behavior is not observed on other network adapters tested.  The drop in throughput is seen whether it is a host-to-host test (as noted above) or VM-to-VM using the same configuration.
+
+Actual results:
+The netperf throughput drops by ~66% when using a OVS VLAN tag and a cxgb4 port.
+
+Expected results:
+The netperf throughput should be the same whether there is an OVS VLAN tag or not.
+
+Additional info:
+
+[root@netqe7 home]# ethtool p5p1
+Settings for p5p1:
+	Supported ports: [ FIBRE ]
+	Supported link modes:   40000baseSR4/Full 
+	Supported pause frame use: No
+	Supports auto-negotiation: No
+	Advertised link modes:  40000baseSR4/Full 
+	Advertised pause frame use: No
+	Advertised auto-negotiation: No
+	Speed: 40000Mb/s
+	Duplex: Full
+	Port: Direct Attach Copper
+	PHYAD: 0
+	Transceiver: internal
+	Auto-negotiation: off
+	Current message level: 0x000000ff (255)
+			       drv probe link timer ifdown ifup rx_err tx_err
+	Link detected: yes
+
+[root@netqe7 home]# ethtool -i p5p1
+driver: cxgb4
+version: 2.0.0-ko
+firmware-version: 1.14.4.0, TP 0.1.4.8
+bus-info: 0000:05:00.4
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no
+
+[root@netqe7 home]# ethtool -k p5p1
+Features for p5p1:
+rx-checksumming: on
+tx-checksumming: on
+	tx-checksum-ipv4: on
+	tx-checksum-unneeded: off
+	tx-checksum-ip-generic: off
+	tx-checksum-ipv6: on
+	tx-checksum-fcoe-crc: off [fixed]
+	tx-checksum-sctp: off [fixed]
+scatter-gather: on
+	tx-scatter-gather: on
+	tx-scatter-gather-fraglist: off [fixed]
+tcp-segmentation-offload: on
+	tx-tcp-segmentation: on
+	tx-tcp-ecn-segmentation: on
+	tx-tcp6-segmentation: on
+udp-fragmentation-offload: off [fixed]
+generic-segmentation-offload: on
+generic-receive-offload: on
+large-receive-offload: off
+rx-vlan-offload: on
+tx-vlan-offload: on
+ntuple-filters: off
+receive-hashing: on
+highdma: on [fixed]
+rx-vlan-filter: off [fixed]
+vlan-challenged: off [fixed]
+tx-lockless: off [fixed]
+netns-local: off [fixed]
+tx-gso-robust: off [fixed]
+tx-fcoe-segmentation: off [fixed]
+tx-gre-segmentation: off [fixed]
+tx-udp_tnl-segmentation: off [fixed]
+fcoe-mtu: off [fixed]
+loopback: off [fixed]
+
+[root@netqe7 home]# lspci -vv | grep -i chelsio
+05:00.0 Ethernet controller: Chelsio Communications Inc T580-CR Unified Wire Ethernet Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+05:00.1 Ethernet controller: Chelsio Communications Inc T580-CR Unified Wire Ethernet Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+05:00.2 Ethernet controller: Chelsio Communications Inc T580-CR Unified Wire Ethernet Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+05:00.3 Ethernet controller: Chelsio Communications Inc T580-CR Unified Wire Ethernet Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+05:00.4 Ethernet controller: Chelsio Communications Inc T580-CR Unified Wire Ethernet Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+05:00.5 SCSI storage controller: Chelsio Communications Inc T580-CR Unified Wire Storage Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+05:00.6 Fibre Channel: Chelsio Communications Inc T580-CR Unified Wire Storage Controller
+	Subsystem: Chelsio Communications Inc Device 0000
+

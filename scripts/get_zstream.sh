@@ -13,7 +13,7 @@ function get_zinfo(){
 }
 
 if [[ $# -ne 1 ]]; then
-	echo "You must specify RHEL to check for z strem info"
+	echo "You must specify RHEL to check for z stream info"
 	echo "USAGE: zinfo.sh RHEL-7.8"
 else
 	get_zinfo $1

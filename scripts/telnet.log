@@ -601,3 +601,135 @@ NETQE25_P5P1
 NETQE25_P5P2
 
 =>
+################################################################################
+Log started -- Thu May  4 11:10:53 2023 --
+
+
+ Welcome to the TestStream Management CLI ... Ver: 05.02.000.030
+
+=>
+ logon administrator
+Password:
+ *********
+administrator is now logged on.
+
+=>
+ show switch
+Available Switches:
+HS-3200
+
+=>
+ show switch HS-3200
+
+Switch             :  HS-3200
+Switch MAC         :  0C42A17EFE04
+Switch Model       :  HS-3200, Ipv4: 10.19.15.102, Discovery: Auto Eth, Link Prop: Enabled, Status: Active     
+Default S-Blade Pro Mode        :  Utilization
+S-Blade Pro Extended Fabric Mode:  Disabled
+
+Power Supplies:
+   PSU 1 FRU PRESENT and status GOOD
+   PSU type.....: PSU_TYPE_AC
+   PSU Status...: GOOD
+   PSU Input....: AC
+   PSU Measurements:  
+     Vin...:  208000 mV
+     Vout..:  11964 mV
+     Iin...:  253 mA
+     Iout..:  3062 mA
+     Pin...:  50562500 uW
+     Pout..:  36625000 uW
+   PSU Fan...:
+      RPM....:    10224
+      Per....:    60
+      Status.:    GOOD
+   PSU Thermal Sensor:
+      Description: PSU-1 Thermal Sensor 1
+      Status.....: GOOD
+      Temperature: 32.5 C
+
+   PSU 2 FRU PRESENT and status GOOD
+   PSU type.....: PSU_TYPE_AC
+   PSU Status...: GOOD
+   PSU Input....: AC
+   PSU Measurements:  
+     Vin...:  208000 mV
+     Vout..:  11980 mV
+     Iin...:  293 mA
+     Iout..:  3750 mA
+     Pin...:  59062500 uW
+     Pout..:  44875000 uW
+   PSU Fan...:
+      RPM....:    10256
+      Per....:    60
+      Status.:    GOOD
+   PSU Thermal Sensor:
+      Description: PSU-2 Thermal Sensor 1
+      Status.....: GOOD
+      Temperature: 31.5 C
+
+FANs:
+   FAN 1 FRU PRESENT and status is GOOD
+
+   Results for FAN FRU 1:
+             FAN1     FAN2 
+    RPM     10775    12562
+    PWM       060      066
+
+   FAN 2 FRU PRESENT and status is GOOD
+
+   Results for FAN FRU 2:
+             FAN1     FAN2 
+    RPM     10691    12679
+    PWM       060      066
+
+   FAN 3 FRU PRESENT and status is GOOD
+
+   Results for FAN FRU 3:
+             FAN1     FAN2 
+    RPM     10861    12562
+    PWM       061      066
+
+   FAN 4 FRU PRESENT and status is GOOD
+
+   Results for FAN FRU 4:
+             FAN1     FAN2 
+    RPM     10861    12562
+    PWM       061      066
+
+
+Management ETH:
+   ETH Port 1 link is up
+
+Blade   Type             S/W               Product Information
+------  ---------------  ----------------  ----------------------------------------------
+  1.01  HS-Bank          05.02.000.030     HS-Bank 32x100G, 64x50G, 32x40G, 64x25G, 64x10G    05.02.000.030
+
+
+For more detailed information, please use the command "diagstat".
+
+=>
+ show connection details port [NETQE20_P5P1
+Switch: HS-3200 [ 1 ]
+
+Connection not found
+
+=>
+ show connection details port NETQE21_P5P1
+Switch: HS-3200 [ 1 ]
+
+Connection not found
+
+=>
+ show connection details port NETQE20_P5P2
+Switch: HS-3200 [ 1 ]
+
+Connection not found
+
+=>
+ show connection details port NETQE21_P5P2]
+Switch: HS-3200 [ 1 ]
+
+Connection not found
+
+=>

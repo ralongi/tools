@@ -5,11 +5,11 @@
 dbg_flag="set -x"
 pushd ~/git/kernel/networking/openvswitch/ovs_qos
 server="netqe21.knqe.lab.eng.bos.redhat.com"
-client="netqe44.knqe.lab.eng.bos.redhat.com"
+client="netqe44.knqe.eng.rdu2.dc.redhat.com"
 server_driver="i40e"
 client_driver="i40e"
 
-lstest | runtest $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+lstest | runtest $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 if [[ "$skip_rhel7_ovs29" != "yes" ]]; then
 	# OVS 2.9, RHEL-7
@@ -19,7 +19,7 @@ if [[ "$skip_rhel7_ovs29" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	rhos_test_version="14"
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
@@ -30,7 +30,7 @@ if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	rhos_test_version="14"
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
@@ -41,7 +41,7 @@ if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	rhos_test_version="14"
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
@@ -53,7 +53,7 @@ if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
 	rhos_test_version="14"
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
@@ -65,7 +65,7 @@ if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
 	rhos_test_version="14"
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
@@ -76,7 +76,7 @@ if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
@@ -88,7 +88,7 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 	SELINUX=no
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=yes --param=PVT=no --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovs_qos, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 	
 popd

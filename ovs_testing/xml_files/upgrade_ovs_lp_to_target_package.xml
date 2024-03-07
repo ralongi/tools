@@ -29,9 +29,9 @@
           <param name="use_dpdk" value="yes"/>
           <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/3.el7fdp/x86_64/openvswitch2.11-2.11.0-3.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/3.el7fdp/x86_64/openvswitch2.11-2.11.0-3.el7fdp.x86_64.rpm"/>
           <param name="ovs_rpm_version" value="2.9.0"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="10"/>
           <param name="lp_target_version" value="14"/>
@@ -83,9 +83,9 @@
           <param name="use_dpdk" value="yes"/>
           <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/3.el7fdp/x86_64/openvswitch2.11-2.11.0-3.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/3.el7fdp/x86_64/openvswitch2.11-2.11.0-3.el7fdp.x86_64.rpm"/>
           <param name="ovs_rpm_version" value="2.9.0"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="12"/>
           <param name="lp_target_version" value="14"/>
@@ -137,9 +137,9 @@
           <param name="use_dpdk" value="yes"/>
           <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/3.el7fdp/x86_64/openvswitch2.11-2.11.0-3.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/3.el7fdp/x86_64/openvswitch2.11-2.11.0-3.el7fdp.x86_64.rpm"/>
           <param name="ovs_rpm_version" value="2.9.0"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="13"/>
            <param name="dpdk_version" value="1711-15"/>

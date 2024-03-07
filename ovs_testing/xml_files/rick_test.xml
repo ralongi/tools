@@ -35,7 +35,7 @@
           <param name="NAY" value="yes"/>
           <param name="NM_CTL" value="yes"/>
           <param name="start_ovs_ver" value="2.4.0.1"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/upgrade_systemd_check" role="STANDALONE">
@@ -45,7 +45,7 @@
           <param name="NAY" value="yes"/>
           <param name="NM_CTL" value="yes"/>
           <param name="start_ovs_ver" value="2.5.0.14"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/upgrade_systemd_check" role="STANDALONE">
@@ -55,7 +55,7 @@
           <param name="NAY" value="yes"/>
           <param name="NM_CTL" value="yes"/>
           <param name="start_ovs_ver" value="2.5.0.22"/>
-           <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"/>
+           <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"/>
         </params>
       </task>
     </recipe>

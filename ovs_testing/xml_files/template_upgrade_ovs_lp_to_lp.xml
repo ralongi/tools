@@ -31,7 +31,7 @@
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
           <param name="install_latest_ovs_rpm" value="no"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="10"/>
           <param name="lp_target_version" value="14"/>
@@ -84,7 +84,7 @@
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
           <param name="install_latest_ovs_rpm" value="no"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="11"/>
           <param name="lp_target_version" value="14"/>
@@ -137,7 +137,7 @@
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
           <param name="install_latest_ovs_rpm" value="no"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="12"/>
           <param name="lp_target_version" value="14"/>
@@ -190,7 +190,7 @@
           <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
           <param name="install_latest_ovs_rpm" value="no"/>
           <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
-          <param name="ovs_selinux_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
           <param name="lp_test_type" value="RHELOSP"/>
           <param name="lp_starting_version" value="13"/>
           <param name="lp_target_version" value="14"/>

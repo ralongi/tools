@@ -6,13 +6,21 @@
 
 dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
-
+skip_provision=${skip_provision:-"no"}
 skip_upload=${skip_upload:-"yes"}
 
-echo "Please provide the FQDN (hostname) of the target system (For example,netqe9.knqe.lab.eng.bos.redhat.com):"
+echo ""
 echo "If using a specific compose, first execute: export COMPOSE=<target compose ID inside terminal window before executing this script"
-echo "Please note that this script WILL PROVISION the target system"
+echo "Please provide the FQDN (hostname) of the target system now (For example,netqe9.knqe.lab.eng.bos.redhat.com):"
 read target_system
+if [[ $skip_provision == "no" ]]; then
+	echo "Please note that this script WILL PROVISION $target_system"
+else
+	#/home/ralongi/github/tools/get_compose_id/report_compose_id.sh $target_system > /dev/null
+	. ~/.bashrc
+	gci $target_system
+	echo "The VM image will be created using the compose currently running on $target_system ($compose_id)."	
+fi
 
 # If user has not specified a compose via "export COMPOSE=<COMPOSE ID>"
 if [[ -z $COMPOSE ]]; then
@@ -24,31 +32,41 @@ else
 	#export COMPOSE=$(/home/ralongi/gvar/bin/gvar $COMPOSE)
 fi
 
-echo "Provisioning $target_system with compose $COMPOSE"
+if [[ $skip_provision == "no" ]]; then
+	echo "Provisioning $target_system with compose $COMPOSE"
 
-# Provison target system
-/home/ralongi/github/tools/scripts/provision.sh $target_system $COMPOSE
-total_sleep=20
-echo "Sleeping $total_sleep minutes while system is being provisioned..."
-count=1
+	# Provison target system
+	/home/ralongi/github/tools/scripts/provision.sh $target_system $COMPOSE
+	total_sleep=10
+	echo "Sleeping $total_sleep minutes while system is being provisioned..."
+	count=1
 
-while [[ $count -le $total_sleep ]]; do
-	sleep 1m
-	echo "Time remaining: $((( $total_sleep - $count ))) minutes"
-	let count++
-done
-
-# Test SSH to target system
-while [ 1 ]; do
+	while [[ $count -le $total_sleep ]]; do
+		sleep 1m
+		echo "Time remaining: $((( $total_sleep - $count ))) minutes"
+		let count++
+	done
+	
+	# Test SSH to target system
+	while [ 1 ]; do
+		ssh -q -o "StrictHostKeyChecking no" root@$target_system exit
+		if [[ $? -ne 0 ]]; then
+			echo "SSH to $target_system was unsuccessful.  Sleeping 2 minutes and will try again..."
+			sleep 2m
+		else
+			echo "SSH to $target_system was successful."
+			break
+		fi
+	done
+	fi
+else
+	# Test SSH to target system
 	ssh -q -o "StrictHostKeyChecking no" root@$target_system exit
 	if [[ $? -ne 0 ]]; then
-		echo "SSH to $target_system was unsuccessful.  Sleeping 2 minutes and will try again..."
-		sleep 2m
-	else
-		echo "SSH to $target_system was successful."
-		break
+		echo "SSH to $target_system was unsuccessful. Please check status of that system before proceeding.  Exiting..."
+		exit 1
 	fi
-done
+fi
 
 #TERM=xterm sshpass -p 100yard- ssh -XY -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$target_system << 'EOF'
 TERM=xterm ssh -XY -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@$target_system << 'EOF'
@@ -166,16 +184,16 @@ epel_install()
 epel_install
 yum -y install sshpass
 
-sshpass -p 100yard- ssh -q -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com exit
+sshpass -p 100yard- ssh -q -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com exit
 if [[ $? -ne 0 ]]; then 
-	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com "ls /home/www/html/share/vms/OVS/$new_image_name"
+	ssh -o "StrictHostKeyChecking no" root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com "ls /home/www/html/share/vms/OVS/$new_image_name"
 	if [[ $? -ne 0 ]]; then
 		echo "Uploading $new_image_name..."
-		sshpass -p 100yard- scp -o "StrictHostKeyChecking no" /var/lib/libvirt/images/$new_image_name root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/share/vms/OVS/
+		sshpass -p 100yard- scp -o "StrictHostKeyChecking no" /var/lib/libvirt/images/$new_image_name root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/share/vms/OVS/
 		wait
 		sleep 3
 	else
-		echo "/home/www/html/share/vms/OVS/$new_image_name already exists on netqe-infra01.knqe.lab.eng.bos.redhat.com so skipping automatic file upload."
+		echo "/home/www/html/share/vms/OVS/$new_image_name already exists on netqe-infra01.knqe.eng.rdu2.dc.redhat.com so skipping automatic file upload."
 		echo "The new image can be found on $target_system in /var/lib/libvirt/images/$new_image_name"
 	fi
 fi

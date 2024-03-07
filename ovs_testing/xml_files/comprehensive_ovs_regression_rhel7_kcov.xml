@@ -36,7 +36,7 @@
           <param name="NAY" value="yes"/>
           <param name="protocol" value="stp"/>
           <param name="use_path_cost" value="no"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/spanning_tree" role="STANDALONE">
@@ -45,7 +45,7 @@
           <param name="NAY" value="yes"/>
           <param name="protocol" value="stp"/>
           <param name="use_path_cost" value="yes"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/spanning_tree" role="STANDALONE">
@@ -54,7 +54,7 @@
           <param name="NAY" value="yes"/>        
           <param name="protocol" value="rstp"/>
           <param name="use_path_cost" value="no"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/spanning_tree" role="STANDALONE">
@@ -63,7 +63,7 @@
           <param name="NAY" value="yes"/>        
           <param name="protocol" value="rstp"/>
           <param name="use_path_cost" value="yes"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/add_del_ports" role="STANDALONE">
@@ -73,7 +73,7 @@
           <param name="total_batches" value="200"/>
           <param name="ports_per_batch" value="50"/>
           <param name="iterations" value="1"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/power_cycle_crash/set_config" role="STANDALONE">
@@ -82,7 +82,7 @@
           <param name="NIC_NUM" value="all"/>
           <param name="NAY" value="yes"/>        
           <param name="vm_version" value="7.3"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/distribution/utils/power-cycle" role="STANDALONE"/>
@@ -92,14 +92,14 @@
           <param name="NIC_NUM" value="all"/>
           <param name="NAY" value="yes"/>        
           <param name="vm_version" value="7.3"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/conntrack" role="STANDALONE">
         <params>
           <param name="NM_CTL" value="yes"/>
           <param name="NAY" value="yes"/>        
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/userspace_commands" role="STANDALONE">
@@ -107,7 +107,7 @@
           <param name="NM_CTL" value="yes"/>
           <param name="NIC_NUM" value="all"/>
           <param name="NAY" value="yes"/>        
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/ovs_systemd" role="STANDALONE">
@@ -117,7 +117,7 @@
           <param name="NAY" value="yes"/>        
           <param name="service" value="openvswitch"/>
           <param name="vm_version" value="7.4"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/networking/openvswitch/upgrade_systemd_check" role="STANDALONE">
@@ -125,7 +125,7 @@
           <param name="NAY" value="yes"/>
           <param name="NIC_NUM" value="all"/>
           <param name="NM_CTL" value="yes"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
       <task name="/kernel/kcov/end" role="STANDALONE"/>

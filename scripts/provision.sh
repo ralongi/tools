@@ -17,6 +17,16 @@ if [[ $# -lt 2 ]] || [[ $1 = "-h" ]] || [[ $1 = "--help" ]]	|| [[ $1 = "-?" ]]; 
 fi
 
 system_name=$1
+
+nslookup $system_name > /dev/null
+if [[ $? -ne 0 ]]; then
+	system_name=$(grep "alias $system_name" ~/.bashrc 2> /dev/null | awk '{print $NF}' | awk -F "@" '{print $NF}' | tr -d "'")
+	nslookup $system_name > /dev/null
+	if [[ $? -ne 0 ]]; then
+		echo "$system_name does not appear to be a valid FQDN.  Please enter a valid FQDN target."
+		exit 0
+	fi
+fi
 distro=$2
 arch=$(bkr system-details $system_name | grep '#arch' | grep -v 'i386' | awk -F "/" '{print $NF}' | awk -F "#" '{print $1}')
 

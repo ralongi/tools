@@ -58,8 +58,8 @@ EOF
           <param name="NAY" value="yes"/>
           <param name="PVT" value="no"/>
           <param name="image_name" value="rhel8.3.qcow2"/>
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/23.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-23.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/65.el8fdp/x86_64/openvswitch2.13-2.13.0-65.el8fdp.x86_64.rpm"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/23.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-23.el8fdp.noarch.rpm"/>
+          <param name="RPM_OVS" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/65.el8fdp/x86_64/openvswitch2.13-2.13.0-65.el8fdp.x86_64.rpm"/>
           <param name="OVS_SKIP_CLEANUP_ENV" value="yes"/>
           <param name="NIC_DRIVER" value="i40e"/>
           <param name="DISTRO_BUILD" value="RHEL-8.3.0-updates-20201031.0"/>
@@ -103,7 +103,7 @@ EOF
       </distroRequires>
       <hostRequires>
         <and>
-          <hostname value="netqe44.knqe.lab.eng.bos.redhat.com" op="="/>
+          <hostname value="netqe44.knqe.eng.rdu2.dc.redhat.com" op="="/>
           <system_type value="Machine" op="="/>
         </and>
       </hostRequires>
@@ -123,8 +123,8 @@ EOF
           <param name="NAY" value="yes"/>
           <param name="PVT" value="no"/>
           <param name="image_name" value="rhel8.3.qcow2"/>
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/23.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-23.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/65.el8fdp/x86_64/openvswitch2.13-2.13.0-65.el8fdp.x86_64.rpm"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/23.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-23.el8fdp.noarch.rpm"/>
+          <param name="RPM_OVS" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/65.el8fdp/x86_64/openvswitch2.13-2.13.0-65.el8fdp.x86_64.rpm"/>
           <param name="OVS_SKIP_CLEANUP_ENV" value="yes"/>
           <param name="NIC_DRIVER" value="i40e"/>
           <param name="DISTRO_BUILD" value="RHEL-8.3.0-updates-20201031.0"/>

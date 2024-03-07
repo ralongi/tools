@@ -6,7 +6,7 @@ dbg_flag="set -x"
 pushd ~/git/kernel/networking/openvswitch/of_rules
 fdp_release=$FDP_RELEASE
 server="netqe21.knqe.lab.eng.bos.redhat.com"
-client="netqe44.knqe.lab.eng.bos.redhat.com"
+client="netqe44.knqe.eng.rdu2.dc.redhat.com"
 server_driver="i40e"
 client_driver="i40e"
 NIC_TX="3c:fd:fe:ad:82:11,3c:fd:fe:ad:82:44"
@@ -27,7 +27,7 @@ if [[ "$skip_rhel7_ovs29" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	rhos_test_version="14"
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --cmd="yum install -y policycoreutils-python; yum -y install $RPM_CONTAINER_SELINUX_POLICY; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7" --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --cmd="yum install -y policycoreutils-python; yum -y install $RPM_CONTAINER_SELINUX_POLICY; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7" --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
@@ -38,7 +38,7 @@ if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	rhos_test_version="14"
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --cmd="yum install -y policycoreutils-python; yum -y install $RPM_CONTAINER_SELINUX_POLICY; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7" --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --cmd="yum install -y policycoreutils-python; yum -y install $RPM_CONTAINER_SELINUX_POLICY; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7" --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
@@ -49,7 +49,7 @@ if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	rhos_test_version="14"
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --cmd="yum install -y policycoreutils-python; yum -y install $RPM_CONTAINER_SELINUX_POLICY; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7" --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --cmd="yum install -y policycoreutils-python; yum -y install $RPM_CONTAINER_SELINUX_POLICY; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7" --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
@@ -61,7 +61,7 @@ if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
 	rhos_test_version="14"
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 
@@ -74,7 +74,7 @@ if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
 	rhos_test_version="14"
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
@@ -85,7 +85,7 @@ if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
@@ -97,7 +97,7 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 	SELINUX=no
 
-	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver"
+	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 	
 popd

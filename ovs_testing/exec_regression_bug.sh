@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dbg_flag=${dbg_flag:-"set +x"}
+dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')

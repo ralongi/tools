@@ -41,7 +41,7 @@
           <param name="RPM_OVS" value="rpm_ovs"/>
           <param name="RPM_DPDK" value="rpm_dpdk"/>
           <param name="RPM_DPDK_TOOLS" value="rpm_dpdk_tools"/>
-          <param name="QEMU_KVM_RHEV" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/18.el7/x86_64/qemu-kvm-rhev-2.12.0-18.el7.x86_64.rpm"/>
+          <param name="QEMU_KVM_RHEV" value="http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/18.el7/x86_64/qemu-kvm-rhev-2.12.0-18.el7.x86_64.rpm"/>
           <param name="OVS_EXTRA" value="ovs_selinux"/>
           <param name="image_name" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
           <param name="GUEST_IMAGE" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
@@ -89,7 +89,7 @@
           <param name="RPM_OVS" value="rpm_ovs"/>
           <param name="RPM_DPDK" value="rpm_dpdk"/>
           <param name="RPM_DPDK_TOOLS" value="rpm_dpdk_tools"/>
-          <param name="QEMU_KVM_RHEV" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/18.el7/x86_64/qemu-kvm-rhev-2.12.0-18.el7.x86_64.rpm"/>
+          <param name="QEMU_KVM_RHEV" value="http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/18.el7/x86_64/qemu-kvm-rhev-2.12.0-18.el7.x86_64.rpm"/>
           <param name="OVS_EXTRA" value="ovs_selinux"/>
           <param name="image_name" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>
           <param name="GUEST_IMAGE" value="rhel7.7-vsperf-1Q-viommu.qcow2"/>

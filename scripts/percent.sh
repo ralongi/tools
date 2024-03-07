@@ -6,8 +6,9 @@
 # Using portfolio value (Commonwealth FR + Fidelity 401k's) as of Dec 31, 2021 as a starting value of highest known overall portfolio value
 # Note that the overall portfolio value of $2,230,243 on Sep 30, 2022 is the current lowest
 
-start=2956882
-end=$1
+#start=2956882
+start=$1
+end=$2
 
 #if [[ $# -lt 2 ]]; then
 #	echo "Please provide a starting and ending value"

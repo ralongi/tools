@@ -34,8 +34,8 @@
           <param name="NAY" value="yes"/>
           <param name="NIC_NUM" value="all"/>
           <param name="NM_CTL" value="yes"/>
-          <param name="baseline_openvswitch_rpm_url" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.6.1/10.git20161206.el7fdp/x86_64/openvswitch-2.6.1-10.git20161206.el7fdp.x86_64.rpm"/>
-          <param name="openvswitch_rpm" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="baseline_openvswitch_rpm_url" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.6.1/10.git20161206.el7fdp/x86_64/openvswitch-2.6.1-10.git20161206.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
         </params>
       </task>
     </recipe>

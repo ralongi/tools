@@ -69,7 +69,7 @@ vm2=${vm2:-"g2"}
 vm3=${vm3:-"g3"}
 vm_list1=$(echo $vm1 $vm2 $vm3)
 vm_list2=$(echo $vm2 $vm3)
-file_server="netqe-infra01.knqe.lab.eng.bos.redhat.com"
+file_server="netqe-infra01.knqe.eng.rdu2.dc.redhat.com"
 
 if [ -z "$JOBID" ]; then
 	ipaddr=120
@@ -89,7 +89,7 @@ intport="intport1"
 mtu=${mtu:-"1500"}
 
 iperf_rpm=${iperf_rpm:-"iperf-2.0.4-1.el7.rf.x86_64.rpm"}
-iperf_location=${iperf_location:-"http://netqe-infra01.knqe.lab.eng.bos.redhat.com"}
+iperf_location=${iperf_location:-"http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com"}
 vm_tmp_result_file="/tmp/vm_tmp_result.tmp"
 
 #############################################################################

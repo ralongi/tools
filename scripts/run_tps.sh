@@ -13,8 +13,8 @@ display_usage()
 	echo "Usage: run_tps [rhn] [arch=<arch>]"
 	echo "The 'rhn' and 'arch=' switches are optional."
 	echo "If 'rhn' is specified, the tps-rhnqa tests will be run on all of the stable systems."
-	echo "If 'arch=<arch>' is specified, the tps or tps-rhnqa tests will be run on all of the specific stable systems runing that arch."
-	echo "Examples: run_tps, run_tps rhn, run_tps arch=ppc64le, run_tps rhn arch=aarch64"
+	echo "If 'arch=<arch>' is specified, the tps or tps-rhnqa tests will be run on all of the specific stable systems running that arch(s)."
+	echo '"Examples: run_tps, run_tps rhn, run_tps arch=ppc64le, run_tps rhn arch="x86_64 aarch64"'
 	echo "Be sure to execute: export errata=<errata ID> in terminal window before running this."
 	echo ""
 	exit 0
@@ -39,7 +39,7 @@ elif [[ $(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/
 fi
 
 while true; do
-    read -p "Have you confirmed that you have exported the correct errata ID in this window?" yn
+    read -p "Is errata $errata correct? " yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) exit;;
@@ -121,22 +121,26 @@ pssh -O StrictHostKeyChecking=no -p 4 -h pssh_hosts_file_full.tmp -t 0 -l root s
 
 if [[ "$*" == *"rhn"* ]] && [[ "$*" == *"arch="* ]]; then
 	arch=$(echo "$*" | awk -F 'arch=' '{print $NF}')
-	system=$(grep "$arch" $pssh_hosts_file | awk '{print $1}')
-	echo "$system" > pssh_hosts_file.tmp
+	rm -f pssh_hosts_file.tmp
+	for i in $arch; do
+		grep "$i" $pssh_hosts_file | awk '{print $1}' >> pssh_hosts_file.tmp
+	done
 	echo ""
-	echo "System to be used: $system"
 	echo ""
-	echo "Running rhnqa-tps on $system..."
+	echo "Running rhnqa-tps on:"
+	cat pssh_hosts_file.tmp
 	echo ""
 	pssh -O StrictHostKeyChecking=no -h pssh_hosts_file.tmp -t 0 -l root /root/tps_run_rhnqa_tests.sh
 elif [[ "$*" == *"arch="* ]]; then
 	arch=$(echo "$*" | awk -F 'arch=' '{print $NF}')
-	system=$(grep "$arch" $pssh_hosts_file | awk '{print $1}')
-	echo "$system" > pssh_hosts_file.tmp
+	rm -f pssh_hosts_file.tmp
+	for i in $arch; do
+		grep "$i" $pssh_hosts_file | awk '{print $1}' >> pssh_hosts_file.tmp
+	done
 	echo ""
-	echo "System to be used: $system"
 	echo ""
-	echo "Running tps on $system..."
+	echo "Running tps on:"
+	cat pssh_hosts_file.tmp
 	echo ""
 	pssh -O StrictHostKeyChecking=no -h pssh_hosts_file.tmp -t 0 -l root /root/tps_run_tests.sh
 elif [[ "$*" == *"rhn"* ]]; then

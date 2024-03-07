@@ -1,14 +1,14 @@
 
 rm -f /tmp/junk.txt
-wget -O /tmp/junk.txt http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/junk.txt
+wget -O /tmp/junk.txt http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/junk.txt
 password=$(cat /tmp/junk.txt)
 
 update_infra01_repo()
 {
 	ovs_target=$1
-	file_server="netqe-infra01.knqe.lab.eng.bos.redhat.com"
+	file_server="netqe-infra01.knqe.eng.rdu2.dc.redhat.com"
 	if [[ ! -e /etc/yum.repos.d/infra01-server.repo ]]; then
-		wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/infra01-server.repo
+		wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/infra01-server.repo
 	fi
 	rm -f /tmp/yum*
 
@@ -34,7 +34,7 @@ update_infra01_repo()
 	if [[ $ovs_target == "openvswitch-2.5.0-22.git20160727.el7fdp.bz1403958.fbl.2.x86_64.rpm" ]]; then
 		sshpass -p $password ssh root@$file_server "rm -f /home/www/html/repo/packages/openvswitch*.rpm && wget -q -O /home/www/html/repo/packages/$ovs_target http://file.bos.redhat.com/~fleitner/bz1403958/$ovs_target && createrepo --update /home/www/html/repo/"
 	else
-		sshpass -p $password ssh root@$file_server "rm -f /home/www/html/repo/packages/openvswitch*.rpm && wget -q -O /home/www/html/repo/packages/$ovs_target http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/$ovs_rpm_location/x86_64/$ovs_target && createrepo --update /home/www/html/repo/"
+		sshpass -p $password ssh root@$file_server "rm -f /home/www/html/repo/packages/openvswitch*.rpm && wget -q -O /home/www/html/repo/packages/$ovs_target http://download.devel.redhat.com/brewroot/packages/openvswitch/$ovs_rpm_location/x86_64/$ovs_target && createrepo --update /home/www/html/repo/"
 	fi
 
 	yum clean all expire-cache

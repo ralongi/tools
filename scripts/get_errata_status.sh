@@ -36,13 +36,28 @@ for i in $errata_list; do
 	echo "" >> ~/temp/$errata"_bz_info.tmp"
 	for i in $(cat ~/temp/$errata_"bz_list.tmp"); do
 		bz_status=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata | jq | grep -B2 short_desc | grep -A1 $i | tail -n1 | awk '{print $NF}' | tr -d '",')
-		bz_description=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata | jq | grep -A3 $i | grep short_desc | awk -F ':' '{print $NF}' | awk -F '"' '{print $2}')
+		bz_description=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata | jq | grep -A3 $i | grep short_desc | awk -F ':' '{print $NF}' | awk -F '"' '{print $1}')
 		bz_url="https://bugzilla.redhat.com/show_bug.cgi?id=$i"
 		echo "BZ URL: $bz_url" >> ~/temp/$errata"_bz_info.tmp"
 		echo "BZ Description: $bz_description" >> ~/temp/$errata"_bz_info.tmp"
 		echo "BZ Status: $bz_status" >> ~/temp/$errata"_bz_info.tmp"
 		echo "" >> ~/temp/$errata"_bz_info.tmp"
 	done
+	
+	curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata | jq | grep '"key":' | awk -F '"' '{print $4}' >  ~/temp/$errata"_jira_list.tmp"
+	echo "" >> ~/temp/$errata"_jira_info.tmp"
+	echo "Jira List for Errata $i:" >> ~/temp/$errata"_jira_info.tmp"
+	echo "" >> ~/temp/$errata"_jira_info.tmp"
+	for i in $(cat ~/temp/$errata"_jira_list.tmp"); do
+		jira_status=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata | jq | grep -A2 $i | tail -n1 | awk -F '"' '{print $4}')
+		jira_summary=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata | jq | grep -A1 $i | tail -n1 | awk -F '"' '{print $4}')
+		jira_url="https://issues.redhat.com/browse/$i"
+		echo "Jira URL: $jira_url" >> ~/temp/$errata"_jira_info.tmp"
+		echo "Jira Summary: $jira_summary" >> ~/temp/$errata"_jira_info.tmp"
+		echo "Jira Status: $jira_status" >> ~/temp/$errata"_jira_info.tmp"
+		echo "" >> ~/temp/$errata"_jira_info.tmp"
+	done
+	
 	echo "###################################################################################" >>  ~/temp/errata_status_info.tmp
 	echo "" >>  ~/temp/errata_status_info.tmp
 	errata_flags=$(echo $errata_flags | tr -d "")
@@ -51,6 +66,7 @@ for i in $errata_list; do
 	echo "Package: $build" >>  ~/temp/errata_status_info.tmp
 	echo "Outstanding Items: $errata_flags" >>  ~/temp/errata_status_info.tmp
 	cat ~/temp/$errata"_bz_info.tmp" >> ~/temp/errata_status_info.tmp
+	cat ~/temp/$errata"_jira_info.tmp" >> ~/temp/errata_status_info.tmp
 done
 
 echo ""
@@ -60,5 +76,6 @@ echo ""
 cat ~/temp/errata_status_info.tmp
 rm -f ~/temp/errata_status_info.tmp
 rm -f ~/temp/*bz_info.tmp
+rm -f ~/temp/*jira_info.tmp
 alias 'rm=rm-i'
 popd

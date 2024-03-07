@@ -11,11 +11,11 @@ fi
 job_xml_file="job.xml"
 
 FDP_RELEASE="19.G"
-RPM_OVS29_RHEL7="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/122.el7fdp/x86_64/openvswitch-2.9.0-122.el7fdp.x86_64.rpm"
-RPM_OVS211_RHEL7="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el7fdp/x86_64/openvswitch2.11-2.11.0-24.el7fdp.x86_64.rpm"
-RPM_OVS211_RHEL8="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"
-RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm"
-RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"
+RPM_OVS29_RHEL7="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/122.el7fdp/x86_64/openvswitch-2.9.0-122.el7fdp.x86_64.rpm"
+RPM_OVS211_RHEL7="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el7fdp/x86_64/openvswitch2.11-2.11.0-24.el7fdp.x86_64.rpm"
+RPM_OVS211_RHEL8="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"
+RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm"
+RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"
 RHEL7_COMPOSE="RHEL-7.7-updates-20191008.0"
 RHEL8_COMPOSE="RHEL-8.0.0-20190404.2"
 

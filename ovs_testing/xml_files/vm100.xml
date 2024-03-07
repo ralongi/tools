@@ -33,11 +33,11 @@
       <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
         <params>
           <param name="dbg_flag" value="set -x"/>        
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
+          <param name="RPM_OVS" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
           <param name="NAY" value="yes"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>
@@ -59,7 +59,7 @@
       </distroRequires>
       <hostRequires>
                 <and>
-                    <hostname op="=" value="netqe44.knqe.lab.eng.bos.redhat.com"/>
+                    <hostname op="=" value="netqe44.knqe.eng.rdu2.dc.redhat.com"/>
                     <system_type op="=" value="machine"/>
                 </and>
       </hostRequires>
@@ -73,11 +73,11 @@
       <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
         <params>
           <param name="dbg_flag" value="set -x"/>        
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
+          <param name="RPM_OVS" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
           <param name="NAY" value="yes"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>
@@ -113,11 +113,11 @@
       <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
         <params>
           <param name="dbg_flag" value="set -x"/>        
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
+          <param name="RPM_OVS" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
           <param name="NAY" value="yes"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>
@@ -153,12 +153,12 @@
       <task name="/kernel/networking/openvswitch/vm100" role="CLIENTS">
         <params>
           <param name="dbg_flag" value="set -x"/>        
-          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
-          <param name="RPM_OVS" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"/>
+          <param name="RPM_OVS" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/24.el8fdp/x86_64/openvswitch2.11-2.11.0-24.el8fdp.x86_64.rpm"/>
           <param name="NAY" value="yes"/>
           <param name="NIC_ixgbe" value="ixgbe"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>

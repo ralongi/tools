@@ -3,7 +3,7 @@
 # script to create a new qcow2 guest image based on the compose on the host system
 # provision host system with target compose, then run this script on the host system
 # once master image is created, copy it to infra01 (example for RHEL-8.3 image below)
-# scp /var/lib/libvirt/images/master.qcow2 root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/share/vms/OVS/rhel8.3.qcow2
+# scp /var/lib/libvirt/images/master.qcow2 root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/share/vms/OVS/rhel8.3.qcow2
 
 RHEL_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d \" -f 2 | cut -d . -f 1)
 if [[ $RHEL_VERSION -eq 7 ]]; then

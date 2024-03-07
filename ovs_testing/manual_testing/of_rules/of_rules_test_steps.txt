@@ -82,8 +82,8 @@ export PVT="no"
 export JOBID="12345"
 export image_name="rhel8.0.qcow2"
 #export image_name="rhel7.6.qcow2"
-export RPM_OVS_SELINUX_EXTRA_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el8fdp.noarch.rpm"
-export RPM_OVS="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/4.el8fdp/x86_64/openvswitch2.11-2.11.0-4.el8fdp.x86_64.rpm"
+export RPM_OVS_SELINUX_EXTRA_POLICY="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el8fdp.noarch.rpm"
+export RPM_OVS="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/4.el8fdp/x86_64/openvswitch2.11-2.11.0-4.el8fdp.x86_64.rpm"
 
 #netqe6
 export NIC_TX="a0:36:9f:4f:1e:aa"

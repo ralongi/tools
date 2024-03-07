@@ -1,0 +1,194 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance card_type_value</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance card_type_value" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post --log=/root/my-ks-post.log
+
+verx=$(rpm -E %rhel)
+case $verx in
+8|9)
+	[[ "$verx" = 8 ]] && R8=-RHEL-8
+	read dtype distro <<< $(awk -F/+ '/^baseurl/ {
+		for (i=3;i<NF;i++) {
+			if ($(i+1) ~ /RHEL-/) {
+				d=$(i+1)
+				if (d ~ /RHEL-[0-9]$/)
+					d=$(i+2)
+				print($i, d)
+				break
+			}
+		}
+	}' /etc/yum.repos.d/beaker-BaseOS.repo)
+	dtype=nightly
+	read prefix ver time <<< ${distro//-/ }
+	buildrootUrl=http://download.devel.redhat.com/rhel-$verx/$dtype/BUILDROOT-$verx/latest-BUILDROOT-$ver$R8/compose/Buildroot/$(arch)/os
+	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
+	[beaker-buildroot]
+	name=beaker-buildroot
+	baseurl=$buildrootUrl
+	enabled=0
+	gpgcheck=0
+	skip_if_unavailable=1
+	EOF
+	;;
+esac
+
+yum install --setopt=strict=0 -y git patch gcc wget bzip2 screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2 guestfs-tools
+yum install --setopt=strict=0 -y libnsl2 libtirpc-devel python2-lxml python3-lxml pciutils
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sed -i s/metalink?repo=epel-\$releasever/metalink?repo=epel-8/ /etc/yum.repos.d/epel.repo
+sed -i s/metalink?repo=epel-modular-\$releasever/metalink?repo=epel-modular-8/ /etc/yum.repos.d/epel-modular.repo
+setenforce 0
+#yum update -y pkg1 pkg2 --nogpgcheck --repofrompath=abc,http://x.y.z/path/to/repo
+%end
+
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="server_system_value" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS"/>
+      <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="SERVERS">
+        <params>
+          <param name="netscout_pair1" value=""/>
+          <param name="netscout_pair2" value=""/>
+        </params>
+      </task>      
+      <task name="/kernel/networking/openvswitch/perf" role="SERVERS">
+        <params>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="nic_test" value="NIC_TEST_VALUE"/>
+          <param name="test_env" value="TEST_ENV_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
+          <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
+          <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
+          <param name="SELINUX" value="SELINUX_VALUE"/>
+          <param name="NAY" value="no"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
+          <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Endurance card_type_value" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'} !grubport=0x02f8" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post --log=/root/my-ks-post.log
+
+verx=$(rpm -E %rhel)
+case $verx in
+8|9)
+	[[ "$verx" = 8 ]] && R8=-RHEL-8
+	read dtype distro <<< $(awk -F/+ '/^baseurl/ {
+		for (i=3;i<NF;i++) {
+			if ($(i+1) ~ /RHEL-/) {
+				d=$(i+1)
+				if (d ~ /RHEL-[0-9]$/)
+					d=$(i+2)
+				print($i, d)
+				break
+			}
+		}
+	}' /etc/yum.repos.d/beaker-BaseOS.repo)
+	dtype=nightly
+	read prefix ver time <<< ${distro//-/ }
+	buildrootUrl=http://download.devel.redhat.com/rhel-$verx/$dtype/BUILDROOT-$verx/latest-BUILDROOT-$ver$R8/compose/Buildroot/$(arch)/os
+	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
+	[beaker-buildroot]
+	name=beaker-buildroot
+	baseurl=$buildrootUrl
+	enabled=0
+	gpgcheck=0
+	skip_if_unavailable=1
+	EOF
+	;;
+esac
+
+yum install --setopt=strict=0 -y git patch gcc wget bzip2 screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2 guestfs-tools
+yum install --setopt=strict=0 -y libnsl2 libtirpc-devel python2-lxml python3-lxml pciutils
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sed -i s/metalink?repo=epel-\$releasever/metalink?repo=epel-8/ /etc/yum.repos.d/epel.repo
+sed -i s/metalink?repo=epel-modular-\$releasever/metalink?repo=epel-modular-8/ /etc/yum.repos.d/epel-modular.repo
+setenforce 0
+#yum update -y pkg1 pkg2 --nogpgcheck --repofrompath=abc,http://x.y.z/path/to/repo
+%end
+
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="client_system_value" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="CLIENTS"/>
+      <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="CLIENTS">
+        <params>
+          <param name="netscout_pair1" value="netscout_pair1_value"/>
+          <param name="netscout_pair2" value="netscout_pair2_value"/>
+        </params>
+      </task>      
+      <task name="/kernel/networking/openvswitch/perf" role="CLIENTS">
+        <params>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="nic_test" value="NIC_TEST_VALUE"/>
+          <param name="test_env" value="TEST_ENV_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
+          <param name="rpm_dpdk" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
+          <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
+          <param name="SELINUX" value="SELINUX_VALUE"/>
+          <param name="NAY" value="no"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
+          <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

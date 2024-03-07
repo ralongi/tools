@@ -1,0 +1,122 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>(Server/DUT: netqe24.knqe.eng.rdu2.dc.redhat.com, Client/Trex: netqe25.knqe.eng.rdu2.dc.redhat.com) FDP 23.J, openvswitch3.1-3.1.0-81.el8fdp.x86_64.rpm, RHEL-8.6.0-updates-20231114.59, openvswitch/perf Perf CI cx6dx (100G CX6 DX)</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="" role="None" ks_meta="harness='restraint-rhts beakerlib' disabled_root_access" kernel_options="" kernel_options_post="pci=realloc intel_iommu=on">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="RHEL-8.6.0-updates-20231114.59"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                    <or>
+                    </or>
+                </not>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="like" value="netqe24.knqe.eng.rdu2.dc.redhat.com"/>
+                </and>
+                <system_type op="=" value="Machine"/>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.6.0-updates-20231114.59"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/netscout_connect_ports"/>
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="netscout_pair1" value=""/>
+          <param name="netscout_pair2" value=""/>
+        </params>
+      </task>    
+      <task name="/kernel/networking/openvswitch/perf" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/perf"/>
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="nic_test" value="mlx5_100g_cx6"/>
+          <param name="test_env" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel8"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/rhel8.6.qcow2"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/31.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-31.el8fdp.noarch.rpm"/>
+          <param name="rpm_ovs" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/81.el8fdp/x86_64/openvswitch3.1-3.1.0-81.el8fdp.x86_64.rpm"/>
+          <param name="rpm_dpdk" value=""/>
+          <param name="fdp_release" value="23.J"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.6.0-updates-20231114.59"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="" role="None" ks_meta="harness='restraint-rhts beakerlib' disabled_root_access" kernel_options="" kernel_options_post="pci=realloc intel_iommu=on">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                    <or>
+                    </or>
+                </not>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="like" value="netqe25.knqe.eng.rdu2.dc.redhat.com"/>
+                </and>
+                <system_type op="=" value="Machine"/>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/netscout_connect_ports"/>
+        <params>
+          <param name="netscout_pair1" value=""/>
+          <param name="netscout_pair2" value=""/>
+        </params>
+      </task>      
+      <task name="/kernel/networking/openvswitch/perf" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/perf"/>
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="nic_test" value="mlx5_100g_cx6"/>
+          <param name="test_env" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel8"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/rhel8.6.qcow2"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/31.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-31.el8fdp.noarch.rpm"/>
+          <param name="rpm_ovs" value="http://download.hosts.prod.psi.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/81.el8fdp/x86_64/openvswitch3.1-3.1.0-81.el8fdp.x86_64.rpm"/>
+          <param name="rpm_dpdk" value=""/>
+          <param name="fdp_release" value="23.J"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

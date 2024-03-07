@@ -1,0 +1,8 @@
+      <repos>
+        <repo name="myrepo_1" url="http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/appstream/os/"/>
+        <repo name="myrepo_2" url="http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/baseos/os/"/>
+        <repo name="myrepo_3" url="http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/codeready-builder/os/"/>
+        <repo name="myrepo_4" url="http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/appstream/os/"/>
+        <repo name="myrepo_5" url="http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/baseos/os/"/>
+        <repo name="myrepo_6" url="http://rhsm-pulp.corp.redhat.com/content/eus/rhel8/8.6/x86_64/codeready-builder/os/"/>
+      </repos>

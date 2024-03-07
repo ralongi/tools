@@ -36,9 +36,9 @@ git_install
 
 # download test files from repo
 rm -f /home/runtest.sh /home/Makefile /home/PURPOSE
-wget -nv -O /home/runtest.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/temp/runtest.sh
-wget -nv -O /home/Makefile http://netqe-infra01.knqe.lab.eng.bos.redhat.com/temp/Makefile
-wget -nv -O /home/PURPOSE http://netqe-infra01.knqe.lab.eng.bos.redhat.com/temp/PURPOSE
+wget -nv -O /home/runtest.sh http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/temp/runtest.sh
+wget -nv -O /home/Makefile http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/temp/Makefile
+wget -nv -O /home/PURPOSE http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/temp/PURPOSE
 
 export vm_image_name="rhel7.2.qcow2"
 export vm_xml_file="vm_rhel72.xml"

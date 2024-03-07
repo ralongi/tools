@@ -25,7 +25,7 @@ echo "qe16 netqe16.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "qe17 netqe17.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "spirent spirentimpair.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
 echo "pnate pnate-control-01.lab.bos.redhat.com"  >> /etc/host.aliases
-echo "inf netqe-infra01.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
+echo "inf netqe-infra01.knqe.eng.rdu2.dc.redhat.com" >> /etc/host.aliases
 echo "10.19.40.183 cube1" >> /etc/hosts
 echo "10.19.40.108 cube2" >> /etc/hosts
 echo "qe18 netqe18.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases

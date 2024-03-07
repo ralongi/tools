@@ -17,7 +17,7 @@ netscout_cable()
 	if [[ "$rhel_version" -eq 8 ]]; then
 		pushd /home/NetScout/
 		rm -f settings.cfg
-		wget -O ./settings.cfg http://netqe-infra01.knqe.lab.eng.bos.redhat.com/NSConn/"$netscout_switch".cfg
+		wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
 		sleep 2
 		python3 /home/ralongi/github/NetScout/NSConnect.py --connect $port1 $port2
 		popd
@@ -25,7 +25,7 @@ netscout_cable()
 		scl enable rh-python34 - << EOF
 			pushd /home/NetScout/
 			rm -f settings.cfg
-			wget -O ./settings.cfg http://netqe-infra01.knqe.lab.eng.bos.redhat.com/NSConn/"$netscout_switch".cfg
+			wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
 			sleep 2
 			python /home/ralongi/github/NetScout/NSConnect.py --connect $port1 $port2
 			popd
@@ -46,7 +46,7 @@ export RHEL8_COMPOSE="RHEL-8.1.0-20191015.0"
 export FDP_RELEASE="FDP 20.B"
 
 # 2.9
-export RPM_OVS29_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/125.el7fdp/x86_64/openvswitch-2.9.0-125.el7fdp.x86_64.rpm
+export RPM_OVS29_RHEL7=http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/125.el7fdp/x86_64/openvswitch-2.9.0-125.el7fdp.x86_64.rpm
 
 # 2.11 (RHEL 7)
 export RPM_OVS211_RHEL7=http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/47.el7fdp/x86_64/openvswitch2.11-2.11.0-47.el7fdp.x86_64.rpm
@@ -70,21 +70,21 @@ export RPM_OVS213_RHEL8=http://download.eng.bos.redhat.com/brewroot/packages/ope
 
 export RPM_OVS212_RHEL8=$RPM_OVS213_RHEL8
 
-export RPM_CONTAINER_SELINUX_POLICY=http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm
+export RPM_CONTAINER_SELINUX_POLICY=http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm
 
-export RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/15.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-15.el7fdp.noarch.rpm
+export RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7=http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/15.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-15.el7fdp.noarch.rpm
 
-export RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm
+export RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8=http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm
 
-export RPM_DPDK_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.2/1.el7/x86_64/dpdk-18.11.2-1.el7.x86_64.rpm
+export RPM_DPDK_RHEL7=http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.2/1.el7/x86_64/dpdk-18.11.2-1.el7.x86_64.rpm
 
-export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/1.el8/x86_64/dpdk-19.11-1.el8.x86_64.rpm
+export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/19.11/1.el8/x86_64/dpdk-19.11-1.el8.x86_64.rpm
 
-export RPM_DPDK_TOOLS_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.2/1.el7/x86_64/dpdk-tools-18.11.2-1.el7.x86_64.rpm
+export RPM_DPDK_TOOLS_RHEL7=http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.2/1.el7/x86_64/dpdk-tools-18.11.2-1.el7.x86_64.rpm
 
-export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/1.el8/x86_64/dpdk-tools-19.11-1.el8.x86_64.rpm
+export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/19.11/1.el8/x86_64/dpdk-tools-19.11-1.el8.x86_64.rpm
 
-export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/43.el7/x86_64/qemu-kvm-rhev-2.12.0-43.el7.x86_64.rpm
+export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/43.el7/x86_64/qemu-kvm-rhev-2.12.0-43.el7.x86_64.rpm
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 

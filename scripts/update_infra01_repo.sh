@@ -24,7 +24,7 @@ update_infra01_repo()
 		echo "No valid OVS target version was specified."
 	fi
 
-	ssh root@$file_server "rm -f /home/www/html/repo/packages/openvswitch*.rpm && wget -q -O /home/www/html/repo/packages/$ovs_target http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/$ovs_rpm_location/x86_64/$ovs_target && createrepo --update /home/www/html/repo/"
+	ssh root@$file_server "rm -f /home/www/html/repo/packages/openvswitch*.rpm && wget -q -O /home/www/html/repo/packages/$ovs_target http://download.devel.redhat.com/brewroot/packages/openvswitch/$ovs_rpm_location/x86_64/$ovs_target && createrepo --update /home/www/html/repo/"
 
 	yum clean all expire-cache
 	yum provides openvswitch

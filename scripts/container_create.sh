@@ -12,19 +12,45 @@ sudo podman image trust set -f /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-beta registry
     
 - Create a docker file on the target system (i.e. dockerfile.ubi9, dockerfile.ubi8) using the exact content below:
 
-# RHEL-9.0 Beta:
-From registry.access.redhat.com/ubi9-beta/ubi
-RUN printf '[beaker-AppStream]\nname=beaker-AppStream\nbaseurl=http://download.eng.bos.redhat.com/rhel-9/rel-eng/RHEL-9/latest-RHEL-9.0/compose/AppStream/$basearch/os/\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-AppStream.repo
-RUN printf '[beaker-BaseOS]\nname=beaker-BaseOS\nbaseurl=http://download.eng.bos.redhat.com/rhel-9/rel-eng/RHEL-9/latest-RHEL-9.0/compose/BaseOS/$basearch/os/\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-BaseOS.repo
-RUN printf '[infra01-server]\nname=infra01-server\nbaseurl=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/infra01-server.repo
-RUN yum -y install iproute iputils procps-ng netperf-2.7.0-2.20210803git3bc455b.el9 automake
+appstream_baseurl=$(grep baseurl /etc/yum.repos.d/beaker-AppStream.repo | awk -F "=" '{print $2}')
+baseos_baseurl=$(grep baseurl /etc/yum.repos.d/beaker-BaseOS.repo | awk -F "=" '{print $2}')
+
+
+
+cat > ContainerFile <<-EOF
+FROM ${registry}
+ARG RPM_DPDK
+ARG RPM_DPDK_TOOLS
+ARG rpm_driverctl
+COPY repos/* /etc/dnf.repos.d/
+RUN dnf -y install \
+	$RPM_DPDK \
+	$RPM_DPDK_TOOLS \
+	$rpm_driverctl \
+	iproute iputils procps-ng netperf automake \
+	&& dnf clean all
+WORKDIR /root/
+CMD ["/bin/bash"]
+EOF
+
+
+
+
+cat > ContainerFile <<-EOF
+FROM ${registry}
+RUN printf '[beaker-AppStream]\nname=beaker-AppStream\nbaseurl=$appstream_baseurl\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-AppStream.repo
+RUN printf '[beaker-BaseOS]\nname=beaker-BaseOS\nbaseurl=$baseos_baseurl\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-BaseOS.repo
+RUN printf '[infra01-server]\nname=infra01-server\nbaseurl=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/infra01-server.repo
+RUN printf '[epel]\nname=Extra Packages for Enterprise Linux $releasever - $basearch\nmetalink=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch&infra=$infra&content=$contentdir\nenabled=1\ngpgcheck=1\ncountme=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever' > /etc/yum.repos.d/epel.repo
+RUN dnf -y install iproute iputils procps-ng netperf automake $RPM_DPDK _RPM_DPDK_TOOLS
 CMD ["sleep", "infinity"]
+EOF
 
 # RHEL-9.0 GA:
 From registry.access.redhat.com/ubi9/ubi
 RUN printf '[beaker-AppStream]\nname=beaker-AppStream\nbaseurl=http://download.eng.rdu.redhat.com/released/RHEL-9/9.0.0/AppStream/$basearch/os/\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-AppStream.repo
 RUN printf '[beaker-BaseOS]\nname=beaker-BaseOS\nbaseurl=http://download.eng.rdu.redhat.com/released/RHEL-9/9.0.0/BaseOS/$basearch/os/\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-BaseOS.repo
-RUN printf '[infra01-server]\nname=infra01-server\nbaseurl=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/infra01-server.repo
+RUN printf '[infra01-server]\nname=infra01-server\nbaseurl=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/infra01-server.repo
 RUN yum -y install iproute iputils procps-ng netperf-2.7.0-2.20210803git3bc455b.el9 automake
 CMD ["sleep", "infinity"]
 
@@ -32,7 +58,7 @@ CMD ["sleep", "infinity"]
 From registry.access.redhat.com/ubi8/ubi
 RUN printf '[beaker-AppStream]\nname=beaker-AppStream\nbaseurl=http://download.eng.rdu.redhat.com/released/rhel-6-7-8/rhel-8/RHEL-8/8.6.0/AppStream/$basearch/os/\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-AppStream.repo
 RUN printf '[beaker-BaseOS]\nname=beaker-BaseOS\nbaseurl=http://download.eng.rdu.redhat.com/released/rhel-6-7-8/rhel-8/RHEL-8/8.6.0/BaseOS/$basearch/os/\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/beaker-BaseOS.repo
-RUN printf '[infra01-server]\nname=infra01-server\nbaseurl=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/infra01-server.repo
+RUN printf '[infra01-server]\nname=infra01-server\nbaseurl=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo\nenabled=1\ngpgcheck=0' > /etc/yum.repos.d/infra01-server.repo
 RUN yum -y install iproute iputils procps-ng netperf-2.7.0-1.20210803git3bc455b.el8 automake
 CMD ["sleep", "infinity"]
 
@@ -57,7 +83,7 @@ podman exec container1 pgrep -V
 podman exec container1 pkill -V
 podman exec container1 rpm -q automake
 
-scp rhel9.0_$(uname -m) root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/container_images
+scp rhel9.0_$(uname -m) root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/container_images
 
 podman stop container1
 podman rm container1

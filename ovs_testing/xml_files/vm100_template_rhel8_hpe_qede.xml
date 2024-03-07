@@ -38,7 +38,7 @@
           <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
           <param name="NAY" value="yes"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>
@@ -79,7 +79,7 @@
           <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
           <param name="NAY" value="yes"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>
@@ -120,7 +120,7 @@
           <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
           <param name="NAY" value="yes"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>
@@ -162,7 +162,7 @@
           <param name="NAY" value="yes"/>
           <param name="NIC_DRIVER" value="DRIVER"/>
           <param name="image_name" value="rhel7.5.qcow2"/>
-          <param name="pkg_netperf" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
         </params>
       </task>
     </recipe>

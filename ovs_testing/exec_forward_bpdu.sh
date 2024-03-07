@@ -1,17 +1,21 @@
 #!/bin/bash
 
-# forward-bpdu
+# forward_bpdu
 
-dbg_flag=${dbg_flag:-"set +x"}
+dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-pushd ~/git/kernel/networking/openvswitch/forward-bpdu
-server="netqe21.knqe.lab.eng.bos.redhat.com"
-client="netqe44.knqe.lab.eng.bos.redhat.com"
-server_driver="i40e"
+product="cpe:/o:redhat:enterprise_linux"
+retention_tag="active+1"
+#pushd ~/git/kernel/networking/openvswitch/forward_bpdu
+pushd ~/temp
+server="netqe2.knqe.lab.eng.bos.redhat.com"
+client="netqe3.knqe.lab.eng.bos.redhat.com"
+server_driver="ice"
 client_driver="i40e"
-NIC_TX="3c:fd:fe:ad:82:11,3c:fd:fe:ad:82:44"
-NIC_RX="3c:fd:fe:ad:82:10,3c:fd:fe:ad:82:45"
+NIC_TX="b4:96:91:a0:3f:7e,40:a6:b7:2f:b9:21"
+NIC_RX="b4:96:91:a0:3f:7f,40:a6:b7:2f:b9:20"
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+NIC_NUM=2
 
 #server="netqe6.knqe.lab.eng.bos.redhat.com"
 #client="netqe5.knqe.lab.eng.bos.redhat.com"
@@ -20,6 +24,6 @@ ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 #NIC_TX="a0:36:9f:4f:1e:aa,a0:36:9f:08:2b:c4"
 #NIC_RX="a0:36:9f:4f:1e:a8,a0:36:9f:08:2b:c6"
 
-lstest | runtest $COMPOSE  --arch=x86_64 --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=dbg_flag="$dbg_flag" --param=SELINUX=$SELINUX --param=NAY=yes --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY" --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/forward-bpdu, Client driver: $client_driver, Server driver: $server_driver $brew_build $special_info"
+lstest ~/git/kernel/networking/openvswitch/forward_bpdu| runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=x86_64 --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=dbg_flag="$dbg_flag" --param=SELINUX=$SELINUX --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY" --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/forward_bpdu, Client driver: $client_driver, Server driver: $server_driver $brew_build $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
 popd

@@ -55,18 +55,18 @@ EOF
 
 get_latest_driverctl()
 {
-	latest_build_id=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl | grep -B1 '<hr></pre>' | grep DIR | awk -F '"' '{print $6}' | tr -d '/')
+	latest_build_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl | grep -B1 '<hr></pre>' | grep DIR | awk -F '"' '{print $6}' | tr -d '/')
 
-	latest_el8_package_id=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el8 | head -n1 |  awk -F '"' '{print $6}' | tr -d '/')
+	latest_el8_package_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el8 | head -n1 |  awk -F '"' '{print $6}' | tr -d '/')
 
-	latest_el9_package_id=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el9 | tail -n1 |  awk -F '"' '{print $6}' | tr -d '/')
+	latest_el9_package_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el9 | tail -n1 |  awk -F '"' '{print $6}' | tr -d '/')
 
-	el8_rpm=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/ | grep rpm | awk -F '"' '{print $6}')
+	el8_rpm=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/ | grep rpm | awk -F '"' '{print $6}')
 
-	el9_rpm=$(curl -sL http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/ | grep rpm | awk -F '"' '{print $6}')
+	el9_rpm=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/ | grep rpm | awk -F '"' '{print $6}')
 
-	export DRIVERCTL_RHEL8="http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"
-	export DRIVERCTL_RHEL9="http://download-node-02.eng.bos.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"
+	export DRIVERCTL_RHEL8="http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"
+	export DRIVERCTL_RHEL9="http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"
 }
 
 get_latest_driverctl
@@ -144,31 +144,31 @@ fi
 
 #DPDK packages
 
-export RPM_DPDK_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-18.11.8-1.el7_8.x86_64.rpm
-export RPM_DPDK_TOOLS_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-tools-18.11.8-1.el7_8.x86_64.rpm
+export RPM_DPDK_RHEL7=http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-18.11.8-1.el7_8.x86_64.rpm
+export RPM_DPDK_TOOLS_RHEL7=http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-tools-18.11.8-1.el7_8.x86_64.rpm
 
 if [[ $(echo $COMPOSE | grep RHEL-8.2) ]]; then
-	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/5.el8_2/x86_64/dpdk-19.11-5.el8_2.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/5.el8_2/x86_64/dpdk-tools-19.11-5.el8_2.x86_64.rpm
+	export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/19.11/5.el8_2/x86_64/dpdk-19.11-5.el8_2.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/19.11/5.el8_2/x86_64/dpdk-tools-19.11-5.el8_2.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-8.3) ]]; then
-	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11.3/1.el8/x86_64/dpdk-19.11.3-1.el8.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11.3/1.el8/x86_64/dpdk-tools-19.11.3-1.el8.x86_64.rpm
+	export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/19.11.3/1.el8/x86_64/dpdk-19.11.3-1.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/19.11.3/1.el8/x86_64/dpdk-tools-19.11.3-1.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-8.4) ]]; then
-	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 # use 8.4 packages for RHEL-8.5 until updated info is available on https://errata.devel.redhat.com/package/show/dpdk
 elif [[ $(echo $COMPOSE | grep RHEL-8.5) ]]; then
-	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-8.6) ]]; then
-	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-21.11-1.el8.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-tools-21.11-1.el8.x86_64.rpm
+	export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-21.11-1.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/21.11/1.el8/x86_64/dpdk-tools-21.11-1.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-8) ]]; then
-	export RPM_DPDK_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL8=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL8=http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
-	export RPM_DPDK_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el9_0/x86_64/dpdk-21.11-1.el9_0.x86_64.rpm
-	export RPM_DPDK_TOOLS_RHEL9=http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/21.11/1.el9_0/x86_64/dpdk-tools-21.11-1.el9_0.x86_64.rpm
+	export RPM_DPDK_RHEL9=http://download.devel.redhat.com/brewroot/packages/dpdk/21.11/1.el9_0/x86_64/dpdk-21.11-1.el9_0.x86_64.rpm
+	export RPM_DPDK_TOOLS_RHEL9=http://download.devel.redhat.com/brewroot/packages/dpdk/21.11/1.el9_0/x86_64/dpdk-tools-21.11-1.el9_0.x86_64.rpm
 fi
 
 # For rpm_dpdk variable used by openvswitch/perf tests
@@ -179,7 +179,7 @@ export RPM_DPDK_TOOLS=$RPM_DPDK_TOOLS_RHELRHEL_VER_MAJOR_VALUE
 
 
 # QEMU packages
-#export QEMU_KVM_RHEV_RHEL7=http://download-node-02.eng.bos.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
+#export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
 export RPM_OVN=$OVNFDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE 

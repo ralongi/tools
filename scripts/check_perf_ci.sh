@@ -3,22 +3,12 @@
 $dbg_flag
 
 job_id=$1
-card_type=$2
-if [[ $# -lt 2 ]]; then
-	echo "Usage: $0 <Job ID> <Card Type>"
-	echo "Example: $0 6863212 cx6"
-	exit 0
-fi
 
-threshold_file=${threshold_file:-""}
-card_type=$(echo "$card_type" | awk '{print toupper($0)}')
-if [[ $card_type == "CX5" ]]; then
-	threshold_file= ~/github/tools/scripts/cx5_perf_ci_threshold.txt
-elif [[ $card_type == "CX6" ]]; then
-	threshold_file=~/github/tools/scripts/cx6_perf_ci_threshold.txt
-fi
+echo ""
+echo "Checking results.  This may take a minute or two..."
+echo ""
 
-source $threshold_file
+baseline_file=${baseline_file:-""}
 
 test1=ovs_dpdk_vhostuser_pvp_queues1_pmds2_vcpus3_vIOMMU_no_vlan11
 test2=ovs_dpdk_vhostuser_pvp_queues1_pmds4_vcpus3_vIOMMU_no_vlan11
@@ -36,13 +26,13 @@ calc_pass_fail()
 {
 	$dbg_flag
 	result=$1
-	threshold=$2
-	pf_pct_threshold=${pf_pct_threshold:-"-10"}
-	delta=$(($result - $threshold))
-	pct=$(awk "BEGIN { pc=100*${delta}/${threshold}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
+	baseline=$2
+	pf_pct_baseline=${pf_pct_baseline:-"-10"}
+	delta=$(($result - $baseline))
+	pct=$(awk "BEGIN { pc=100*${delta}/${baseline}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
 	if [[ $pct -gt 0 ]]; then pct="+"$pct; fi	
-	if [[ $pct -ge $pf_pct_threshold ]]; then echo "Result: PASS Threshold: $threshold, Result: $result" | tee -a $pass_fail_result_file; else echo "Result: FAIL Threshold: $threshold, Result: $result" | tee -a $pass_fail_result_file; fi
-	echo "Difference between actual result and threshold: $delta ($pct%)" | tee -a $pass_fail_result_file
+	if [[ $pct -ge $pf_pct_baseline ]]; then echo "Result: PASS baseline: $baseline, Result: $result" | tee -a $pass_fail_result_file; else echo "Result: FAIL baseline: $baseline, Result: $result" | tee -a $pass_fail_result_file; fi
+	echo "Difference between actual result and baseline: $delta ($pct%)" | tee -a $pass_fail_result_file
 }
 
 get_result()
@@ -52,17 +42,29 @@ get_result()
 	grep -A8 "jq --arg sz $frame_size --arg fl $flows" $result_file | grep "$test" | awk -F "$test" '{print $2}' | awk -F '.' '{print $1}' | tr -d '",'
 }
 
+pushd ~
+dpdk_rpm=$(bkr job-results J:$job_id --prettyxml | grep -i rpm_dpdk | head -n1 | awk -F '/' '{print $(NF-1)}' | tr -d '"')
+ovs_rpm=$(bkr job-results J:$job_id --prettyxml | grep -i rpm_ovs | head -n1 | awk -F '/' '{print $(NF-1)}' | tr -d '"')
+compose=$(bkr job-results J:$job_id --prettyxml | grep -i distro_name | head -n1 | awk -F '"' '{print $(NF-1)}')
+arch=$(bkr job-results J:$job_id --prettyxml | grep -i distro_arch | head -n1 | awk -F '"' '{print $(NF-1)}')
+whiteboard=$(bkr job-results J:$job_id --prettyxml | grep '<whiteboard>' | awk -F '>' '{print $2}' | awk -F '<' '{print $1}')
 log=$(bkr job-results J:$job_id --prettyxml | grep -A40 '"/kernel/networking/openvswitch/perf" role="CLIENTS"' | grep taskout.log | awk -F '"' '{print $2}')
-
 html_result_file=$(bkr job-results J:$job_id --prettyxml | grep -A40 '"/kernel/networking/openvswitch/perf" role="CLIENTS"' | grep html | awk '{print $2}' | awk -F "=" '{print $2}' | sed 's/"//g')
-
-log=${log=:-""}
-pass_fail_result_file=~/temp/pass_fail.txt
-pushd ~/temp
+#pass_fail_result_file=$(mktemp)
+pass_fail_result_file=pass_fail_results.txt
 result_file=$(basename $log)
-rm -f $result_file
-rm -f $pass_fail_result_file
+rm -f $html_result_file $result_file $pass_fail_result_file
 wget --quiet -O $result_file $log
+kernel_id=$(grep kernel_version taskout.log | awk -F "=" '{print $NF}' | tail -n1)
+
+nic_model=$(grep -i '"nic_info":' taskout.log  | head -n1)
+if [[ $(echo $nic_model | grep -i cx5) ]]; then
+	baseline_file=~/github/tools/scripts/cx5_perf_ci_baseline.txt
+elif [[ $(echo $nic_model | grep -i cx6) ]]; then
+	baseline_file=~/github/tools/scripts/cx6_perf_ci_baseline.txt
+fi
+
+source $baseline_file
 
 # frame size=64, flows=1024, loss-rate=0
 frame_size=64
@@ -95,61 +97,61 @@ echo "" | tee -a $pass_fail_result_file
 if [[ $fr64_fl1024_123_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test1 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_123_vno_vlan11_result $fr64_fl1024_123_vno_vlan11_threshold
+	calc_pass_fail $fr64_fl1024_123_vno_vlan11_result $fr64_fl1024_123_vno_vlan11_baseline
 fi
 
 if [[ $fr64_fl1024_143_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test2 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_143_vno_vlan11_result $fr64_fl1024_143_vno_vlan11_threshold
+	calc_pass_fail $fr64_fl1024_143_vno_vlan11_result $fr64_fl1024_143_vno_vlan11_baseline
 fi
 
 if [[ $fr64_fl1024_245_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test3 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_245_vno_vlan11_result $fr64_fl1024_245_vno_vlan11_threshold
+	calc_pass_fail $fr64_fl1024_245_vno_vlan11_result $fr64_fl1024_245_vno_vlan11_baseline
 fi
 
 if [[ $fr64_fl1024_489_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test4 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_489_vno_vlan11_result $fr64_fl1024_489_vno_vlan11_threshold
+	calc_pass_fail $fr64_fl1024_489_vno_vlan11_result $fr64_fl1024_489_vno_vlan11_baseline
 fi
 
 if [[ $fr64_fl1024_123_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test5 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_123_vyes_vlan0_result $fr64_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_123_vyes_vlan0_result $fr64_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr64_fl1024_143_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test6 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_143_vyes_vlan0_result $fr64_fl1024_143_vyes_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_143_vyes_vlan0_result $fr64_fl1024_143_vyes_vlan0_baseline
 fi
 
 if [[ $fr64_fl1024_245_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test7 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_245_vyes_vlan0_result $fr64_fl1024_245_vyes_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_245_vyes_vlan0_result $fr64_fl1024_245_vyes_vlan0_baseline
 fi
 
 if [[ $fr64_fl1024_489_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test8 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_489_vyes_vlan0_result $fr64_fl1024_489_vyes_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_489_vyes_vlan0_result $fr64_fl1024_489_vyes_vlan0_baseline
 fi
 
 if [[ $fr64_fl1024_sriov_13_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test9 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_sriov_13_vyes_vlan0_result $fr64_fl1024_sriov_13_vyes_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_sriov_13_vyes_vlan0_result $fr64_fl1024_sriov_13_vyes_vlan0_baseline
 fi
 
 if [[ $fr64_fl1024_testpmd_vno_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test10 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_testpmd_vno_vlan0_result $fr64_fl1024_testpmd_vno_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_testpmd_vno_vlan0_result $fr64_fl1024_testpmd_vno_vlan0_baseline
 fi
 
 # frame size=64, flows=1024 ovs_kernel, loss-rate=0.002
@@ -163,7 +165,7 @@ fr64_fl1024_kernel_13_vno_vlan0_result=$(get_result $test11)
 if [[ $fr64_fl1024_kernel_13_vno_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test11 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr64_fl1024_kernel_13_vno_vlan0_result $fr64_fl1024_kernel_13_vno_vlan0_threshold
+	calc_pass_fail $fr64_fl1024_kernel_13_vno_vlan0_result $fr64_fl1024_kernel_13_vno_vlan0_baseline
 fi
 
 # frame size=128, flows=1024, loss-rate=0
@@ -186,49 +188,49 @@ fr128_fl1024_489_vyes_vlan0_result=$(get_result $test8)
 if [[ $fr128_fl1024_123_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test1 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_123_vno_vlan11_result $fr128_fl1024_123_vno_vlan11_threshold
+	calc_pass_fail $fr128_fl1024_123_vno_vlan11_result $fr128_fl1024_123_vno_vlan11_baseline
 fi
 
 if [[ $fr128_fl1024_143_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test2 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_143_vno_vlan11_result $fr128_fl1024_143_vno_vlan11_threshold
+	calc_pass_fail $fr128_fl1024_143_vno_vlan11_result $fr128_fl1024_143_vno_vlan11_baseline
 fi
 
 if [[ $fr128_fl1024_245_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test3 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_245_vno_vlan11_result $fr128_fl1024_245_vno_vlan11_threshold
+	calc_pass_fail $fr128_fl1024_245_vno_vlan11_result $fr128_fl1024_245_vno_vlan11_baseline
 fi
 
 if [[ $fr128_fl1024_489_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test4 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_489_vno_vlan11_result $fr128_fl1024_489_vno_vlan11_threshold
+	calc_pass_fail $fr128_fl1024_489_vno_vlan11_result $fr128_fl1024_489_vno_vlan11_baseline
 fi
 
 if [[ $fr128_fl1024_123_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test5 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_123_vyes_vlan0_result $fr128_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr128_fl1024_123_vyes_vlan0_result $fr128_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr128_fl1024_143_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test6 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_143_vyes_vlan0_result $fr128_fl1024_143_vyes_vlan0_threshold
+	calc_pass_fail $fr128_fl1024_143_vyes_vlan0_result $fr128_fl1024_143_vyes_vlan0_baseline
 fi
 
 if [[ $fr128_fl1024_245_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test7 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_245_vyes_vlan0_result $fr128_fl1024_245_vyes_vlan0_threshold
+	calc_pass_fail $fr128_fl1024_245_vyes_vlan0_result $fr128_fl1024_245_vyes_vlan0_baseline
 fi
 
 if [[ $fr128_fl1024_489_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test8 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr128_fl1024_489_vyes_vlan0_result $fr128_fl1024_489_vyes_vlan0_threshold
+	calc_pass_fail $fr128_fl1024_489_vyes_vlan0_result $fr128_fl1024_489_vyes_vlan0_baseline
 fi
 
 # frame size=256, flows=1024, loss-rate=0
@@ -251,49 +253,49 @@ fr256_fl1024_489_vyes_vlan0_result=$(get_result $test8)
 if [[ $fr256_fl1024_123_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test1 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_123_vno_vlan11_result $fr256_fl1024_123_vno_vlan11_threshold
+	calc_pass_fail $fr256_fl1024_123_vno_vlan11_result $fr256_fl1024_123_vno_vlan11_baseline
 fi
 
 if [[ $fr256_fl1024_143_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test2 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_143_vno_vlan11_result $fr256_fl1024_143_vno_vlan11_threshold
+	calc_pass_fail $fr256_fl1024_143_vno_vlan11_result $fr256_fl1024_143_vno_vlan11_baseline
 fi
 
 if [[ $fr256_fl1024_245_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test3 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_245_vno_vlan11_result $fr256_fl1024_245_vno_vlan11_threshold
+	calc_pass_fail $fr256_fl1024_245_vno_vlan11_result $fr256_fl1024_245_vno_vlan11_baseline
 fi
 
 if [[ $fr256_fl1024_489_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test4 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_489_vno_vlan11_result $fr256_fl1024_489_vno_vlan11_threshold
+	calc_pass_fail $fr256_fl1024_489_vno_vlan11_result $fr256_fl1024_489_vno_vlan11_baseline
 fi
 
 if [[ $fr256_fl1024_123_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test5 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_123_vyes_vlan0_result $fr256_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr256_fl1024_123_vyes_vlan0_result $fr256_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr256_fl1024_143_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test6 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_143_vyes_vlan0_result $fr256_fl1024_143_vyes_vlan0_threshold
+	calc_pass_fail $fr256_fl1024_143_vyes_vlan0_result $fr256_fl1024_143_vyes_vlan0_baseline
 fi
 
 if [[ $fr256_fl1024_245_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test7 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_245_vyes_vlan0_result $fr256_fl1024_245_vyes_vlan0_threshold
+	calc_pass_fail $fr256_fl1024_245_vyes_vlan0_result $fr256_fl1024_245_vyes_vlan0_baseline
 fi
 
 if [[ $fr256_fl1024_489_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test8 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr256_fl1024_489_vyes_vlan0_result $fr256_fl1024_489_vyes_vlan0_threshold
+	calc_pass_fail $fr256_fl1024_489_vyes_vlan0_result $fr256_fl1024_489_vyes_vlan0_baseline
 fi
 
 # frame size=1500, flows=1024, loss-rate=0
@@ -316,49 +318,49 @@ fr1500_fl1024_489_vyes_vlan0_result=$(get_result $test8)
 if [[ $fr1500_fl1024_123_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test1 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_123_vyes_vlan0_result $fr1500_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr1500_fl1024_123_vyes_vlan0_result $fr1500_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr1500_fl1024_143_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test2 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_143_vno_vlan11_result $fr1500_fl1024_143_vno_vlan11_threshold
+	calc_pass_fail $fr1500_fl1024_143_vno_vlan11_result $fr1500_fl1024_143_vno_vlan11_baseline
 fi
 
 if [[ $fr1500_fl1024_245_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test3 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_245_vno_vlan11_result $fr1500_fl1024_245_vno_vlan11_threshold
+	calc_pass_fail $fr1500_fl1024_245_vno_vlan11_result $fr1500_fl1024_245_vno_vlan11_baseline
 fi
 
 if [[ $fr1500_fl1024_489_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test4 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_489_vno_vlan11_result $fr1500_fl1024_489_vno_vlan11_threshold
+	calc_pass_fail $fr1500_fl1024_489_vno_vlan11_result $fr1500_fl1024_489_vno_vlan11_baseline
 fi
 
 if [[ $fr1500_fl1024_123_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test5 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_123_vyes_vlan0_result $fr1500_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr1500_fl1024_123_vyes_vlan0_result $fr1500_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr1500_fl1024_143_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test6 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_143_vyes_vlan0_result $fr1500_fl1024_143_vyes_vlan0_threshold
+	calc_pass_fail $fr1500_fl1024_143_vyes_vlan0_result $fr1500_fl1024_143_vyes_vlan0_baseline
 fi
 
 if [[ $fr1500_fl1024_245_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test7 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_245_vyes_vlan0_result $fr1500_fl1024_245_vyes_vlan0_threshold
+	calc_pass_fail $fr1500_fl1024_245_vyes_vlan0_result $fr1500_fl1024_245_vyes_vlan0_baseline
 fi
 
 if [[ $fr1500_fl1024_489_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test8 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_489_vyes_vlan0_result $fr1500_fl1024_489_vyes_vlan0_threshold
+	calc_pass_fail $fr1500_fl1024_489_vyes_vlan0_result $fr1500_fl1024_489_vyes_vlan0_baseline
 fi
 
 # sriov_pvp
@@ -372,7 +374,7 @@ fr1500_fl1024_sriov_13_vyes_vlan0_result=$(get_result $test9)
 if [[ $fr1500_fl1024_sriov_13_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test9 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr1500_fl1024_sriov_13_vyes_vlan0_result $fr1500_fl1024_sriov_13_vyes_vlan0_threshold
+	calc_pass_fail $fr1500_fl1024_sriov_13_vyes_vlan0_result $fr1500_fl1024_sriov_13_vyes_vlan0_baseline
 fi
 
 # frame size=2000, flows=1024, loss-rate=0
@@ -391,25 +393,25 @@ fr2000_fl1024_143_vyes_vlan0_result=$(get_result $test6)
 if [[ $fr2000_fl1024_123_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test1 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr2000_fl1024_123_vno_vlan11_result $fr2000_fl1024_123_vno_vlan11_threshold
+	calc_pass_fail $fr2000_fl1024_123_vno_vlan11_result $fr2000_fl1024_123_vno_vlan11_baseline
 fi
 
 if [[ $fr2000_fl1024_143_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test2 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr2000_fl1024_143_vno_vlan11_result $fr2000_fl1024_143_vno_vlan11_threshold
+	calc_pass_fail $fr2000_fl1024_143_vno_vlan11_result $fr2000_fl1024_143_vno_vlan11_baseline
 fi
 
 if [[ $fr2000_fl1024_123_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test5 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr2000_fl1024_123_vyes_vlan0_result $fr2000_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr2000_fl1024_123_vyes_vlan0_result $fr2000_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr2000_fl1024_143_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test6 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr2000_fl1024_143_vyes_vlan0_result $fr2000_fl1024_143_vyes_vlan0_threshold
+	calc_pass_fail $fr2000_fl1024_143_vyes_vlan0_result $fr2000_fl1024_143_vyes_vlan0_baseline
 fi
 
 # frame size=9200, flows=1024, loss-rate=0
@@ -428,25 +430,25 @@ fr9200_fl1024_143_vyes_vlan0_result=$(get_result $test6)
 if [[ $fr9200_fl1024_123_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test1 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr9200_fl1024_123_vno_vlan11_result $fr9200_fl1024_123_vno_vlan11_threshold
+	calc_pass_fail $fr9200_fl1024_123_vno_vlan11_result $fr9200_fl1024_123_vno_vlan11_baseline
 fi
 
 if [[ $fr9200_fl1024_143_vno_vlan11_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test2 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr9200_fl1024_143_vno_vlan11_result $fr9200_fl1024_143_vno_vlan11_threshold
+	calc_pass_fail $fr9200_fl1024_143_vno_vlan11_result $fr9200_fl1024_143_vno_vlan11_baseline
 fi
 
 if [[ $fr9200_fl1024_123_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test5 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr9200_fl1024_123_vyes_vlan0_result $fr9200_fl1024_123_vyes_vlan0_threshold
+	calc_pass_fail $fr9200_fl1024_123_vyes_vlan0_result $fr9200_fl1024_123_vyes_vlan0_baseline
 fi
 
 if [[ $fr9200_fl1024_143_vyes_vlan0_result ]]; then
 	echo "" | tee -a $pass_fail_result_file
 	echo "Test: $test6 (Frame size: $frame_size)" | tee -a $pass_fail_result_file
-	calc_pass_fail $fr9200_fl1024_143_vyes_vlan0_result $fr9200_fl1024_143_vyes_vlan0_threshold
+	calc_pass_fail $fr9200_fl1024_143_vyes_vlan0_result $fr9200_fl1024_143_vyes_vlan0_baseline
 fi
 
 total_tests=$(grep 'Result:' $pass_fail_result_file | wc -l)
@@ -469,8 +471,16 @@ if [[ $(grep -i fail $pass_fail_result_file) ]]; then
 fi
 
 echo "" | tee -a $pass_fail_result_file
+echo "Compose: $compose"
+echo "OVS RPM: $ovs_rpm"
+#echo "DPDK RPM: $dpdk_rpm"
+echo "Kernel: $kernel_id"
+echo ""
 echo "Beaker Job: https://beaker.engineering.redhat.com/jobs/$job_id"
 echo "Results: $html_result_file"
+echo "Whiteboard: $whiteboard"
 echo "" | tee -a $pass_fail_result_file
 
 popd
+
+#rm -f $html_result_file $result_file $pass_fail_result_file

@@ -1,0 +1,92 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux:7:5">
+  <whiteboard>ralongi@redhat.com, MTU=1500 and 9000, 1 percent loss with 60ms delay scenario regression test, RHEL-7.5-20171215.0</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="MTU=1500 and 9000, 1 percent loss with 60ms delay scenario regression test, RHEL-7.5-20171215.0" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux7" op="="/>
+          <distro_name value="RHEL-7.5-20171215.0" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="impairment2.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="SERVERS"/>
+      <task name="/kernel/networking/impairment" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="IMP_TOPO" value="nic"/>
+          <param name="IMP_TEST" value="1_pct_loss_delay"/>
+          <param name="iface" value="p2p1"/>
+          <param name="mtu" value="1500"/>
+          <param name="file_size" value="250"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/impairment" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="IMP_TOPO" value="nic"/>
+          <param name="IMP_TEST" value="1_pct_loss_delay"/>
+          <param name="iface" value="p2p1"/>
+          <param name="mtu" value="9000"/>
+          <param name="file_size" value="250"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="MTU=1500 and 9000, 1 percent loss with 60ms delay scenario regression test, RHEL-7.5-20171215.0" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux7" op="="/>
+          <distro_name value="RHEL-7.5-20171215.0" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="impairment1.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="CLIENTS"/>
+      <task name="/kernel/networking/impairment" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="IMP_TOPO" value="nic"/>
+          <param name="IMP_TEST" value="1_pct_loss_delay"/>
+          <param name="iface" value="p2p1"/>
+          <param name="mtu" value="1500"/>
+          <param name="file_size" value="250"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/impairment" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="IMP_TOPO" value="nic"/>
+          <param name="IMP_TEST" value="1_pct_loss_delay"/>
+          <param name="iface" value="p2p1"/>
+          <param name="mtu" value="9000"/>
+          <param name="file_size" value="250"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

@@ -1,0 +1,267 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post --log=/root/my-ks-post.log
+
+downhostname=download.devel.redhat.com
+
+#generate buildroot repo
+rtype=rel-eng
+rtype=nightly
+verx=$(rpm -E %rhel)
+case $verx in
+8|9)
+	buildrootUrl=http://$downhostname/rhel-$verx/$rtype/BUILDROOT-$verx/latest-BUILDROOT-$verx-RHEL-$verx/compose/Buildroot/$(arch)/os/
+	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
+	[beaker-buildroot]
+	name=beaker-buildroot
+	baseurl=$buildrootUrl
+	enabled=1
+	gpgcheck=0
+	skip_if_unavailable=1
+	EOF
+	;;
+esac
+
+#update restraint plugins
+_rpath=share/restraint/plugins/task_run.d
+_path=qa/rhts/lookaside/bkr-client-improved/$_rpath
+(cd /usr/$_rpath && curl -k -Ls --retry 64 --retry-delay 2 --remote-name-all http://$downhostname/$_path/{25_environment,27_task_require})
+(cd /usr/${_rpath%/*}/completed.d && curl -k -Ls --retry 64 --retry-delay 2 -O http://$downhostname/${_path%/*}/completed.d/85_sync_multihost_tasks)
+chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
+
+#add more post actions:
+
+%end
+
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_variant op="=" value=""/>
+                    <distro_arch op="=" value="ARCH_VALUE"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                    <or>
+                    </or>
+                </not>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="like" value="SERVER_VALUE"/>
+                </and>
+                <system_type op="=" value="machine"/>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+        </params>
+      </task>
+      <task name="/distribution/brew-build-install" role="SERVERS">
+        <params>
+          <param name="BUILDID" value="BREW_BUILD_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ebpf_xdp/sanity" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
+        <params>
+          <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
+          <param name="NAY" value="NAY_VALUE"/>
+          <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
+          <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/crash_check" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/crash_check"/>
+        <params>
+          <param name="dbg_flag" value="DBG_FLAG_VALUE"/>
+        </params>
+      </task>
+            <task name="/kernel/networking/ebpf_xdp/xdp_tools" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/xdp_tools"/>
+        <params>
+          <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
+          <param name="NAY" value="NAY_VALUE"/>
+          <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
+          <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/crash_check" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/crash_check"/>
+        <params>
+          <param name="dbg_flag" value="DBG_FLAG_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ebpf_xdp/af_xdp" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/af_xdp"/>
+        <params>
+          <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
+          <param name="NAY" value="NAY_VALUE"/>
+          <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
+          <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
+         </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/crash_check" role="SERVERS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/crash_check"/>
+        <params>
+          <param name="dbg_flag" value="DBG_FLAG_VALUE"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post --log=/root/my-ks-post.log
+
+downhostname=download.devel.redhat.com
+
+#generate buildroot repo
+rtype=rel-eng
+rtype=nightly
+verx=$(rpm -E %rhel)
+case $verx in
+8|9)
+	buildrootUrl=http://$downhostname/rhel-$verx/$rtype/BUILDROOT-$verx/latest-BUILDROOT-$verx-RHEL-$verx/compose/Buildroot/$(arch)/os/
+	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
+	[beaker-buildroot]
+	name=beaker-buildroot
+	baseurl=$buildrootUrl
+	enabled=1
+	gpgcheck=0
+	skip_if_unavailable=1
+	EOF
+	;;
+esac
+
+#update restraint plugins
+_rpath=share/restraint/plugins/task_run.d
+_path=qa/rhts/lookaside/bkr-client-improved/$_rpath
+(cd /usr/$_rpath && curl -k -Ls --retry 64 --retry-delay 2 --remote-name-all http://$downhostname/$_path/{25_environment,27_task_require})
+(cd /usr/${_rpath%/*}/completed.d && curl -k -Ls --retry 64 --retry-delay 2 -O http://$downhostname/${_path%/*}/completed.d/85_sync_multihost_tasks)
+chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
+
+#add more post actions:
+
+%end
+
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_variant op="=" value=""/>
+                    <distro_arch op="=" value="ARCH_VALUE"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                    <or>
+                    </or>
+                </not>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="like" value="CLIENT_VALUE"/>
+                </and>
+                <system_type op="=" value="machine"/>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+        </params>
+      </task>
+      <task name="/distribution/brew-build-install" role="CLIENTS">
+        <params>
+          <param name="BUILDID" value="BREW_BUILD_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ebpf_xdp/sanity" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
+        <params>
+          <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
+          <param name="NAY" value="NAY_VALUE"/>
+          <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
+          <param name="NIC_DRIVER" value="CLIENT_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="CLIENT_DRIVER_VALUE"/>
+          <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
+          <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/crash_check" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/crash_check"/>
+        <params>
+          <param name="dbg_flag" value="DBG_FLAG_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ebpf_xdp/xdp_tools" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/xdp_tools"/>
+        <params>
+          <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
+          <param name="NAY" value="NAY_VALUE"/>
+          <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
+          <param name="NIC_DRIVER" value="CLIENT_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="CLIENT_DRIVER_VALUE"/>
+          <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
+          <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/crash_check" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/crash_check"/>
+        <params>
+          <param name="dbg_flag" value="DBG_FLAG_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ebpf_xdp/af_xdp" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/af_xdp"/>
+        <params>
+          <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
+          <param name="NAY" value="NAY_VALUE"/>
+          <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
+          <param name="NIC_DRIVER" value="CLIENT_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="CLIENT_DRIVER_VALUE"/>
+          <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
+          <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/crash_check" role="CLIENTS">
+        <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/crash_check"/>
+        <params>
+          <param name="dbg_flag" value="DBG_FLAG_VALUE"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>

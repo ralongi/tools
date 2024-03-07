@@ -76,8 +76,8 @@ setenforce 0
         <params>
           <param name="dbg_flag" value="set -x"/>
           <param name="nic_test" value="mlx5_100g_cx6"/>
-          <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford"/>
-          <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
+          <param name="test_env" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6_westford"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
           <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="SELINUX" value="SELINUX_VALUE"/>
@@ -163,15 +163,15 @@ setenforce 0
         <params>
           <param name="dbg_flag" value="set -x"/>
           <param name="nic_test" value="mlx5_100g_cx6"/>
-          <param name="test_env" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6_westford"/>
-          <param name="image" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
-          <param name="rpm_dpdk" value="http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
+          <param name="test_env" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6_westford"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
+          <param name="rpm_dpdk" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
           <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
           <param name="SELINUX" value="SELINUX_VALUE"/>
           <param name="NAY" value="no"/>
           <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
           <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
-          <param name="trex_url" value="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
           <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
         </params>
       </task>

@@ -10,13 +10,13 @@ sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\
 } 
 
 FDP_RELEASE="20.A"
-RPM_OVS29_RHEL7="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/124.el7fdp/x86_64/openvswitch-2.9.0-124.el7fdp.x86_64.rpm"
+RPM_OVS29_RHEL7="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/124.el7fdp/x86_64/openvswitch-2.9.0-124.el7fdp.x86_64.rpm"
 RPM_OVS211_RHEL7="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/35.el7fdp/x86_64/openvswitch2.11-2.11.0-35.el7fdp.x86_64.rpm"
 RPM_OVS212_RHEL7="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.12/2.12.0/12.el7fdp/x86_64/openvswitch2.12-2.12.0-12.el7fdp.x86_64.rpm"
 RPM_OVS211_RHEL8="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/35.el8fdp/x86_64/openvswitch2.11-2.11.0-35.el8fdp.x86_64.rpm"
 RPM_OVS212_RHEL8="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.12/2.12.0/12.el8fdp/x86_64/openvswitch2.12-2.12.0-12.el8fdp.x86_64.rpm"
-RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm"
-RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"
+RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm"
+RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/19.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-19.el8fdp.noarch.rpm"
 RHEL7_COMPOSE="RHEL-7.7-updates-20191119.2"
 RHEL8_COMPOSE="RHEL-8.1.0-20191015.0"
 

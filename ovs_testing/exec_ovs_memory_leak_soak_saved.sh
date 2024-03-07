@@ -2,12 +2,12 @@
 
 # memory_leak_soak
 
-dbg_flag=${dbg_flag:-"set +x"}
+dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 pushd ~/git/kernel/networking/openvswitch/memory_leak_soak
 fdp_release=$FDP_RELEASE
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
-dut="wsfd-advnetlab34.anl.lab.eng.bos.redhat.com"
+dut="wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"
 NIC_DRIVER=${NIC_DRIVER:-"i40e"}
 
 if [[ "$skip_rhel7_ovs29" != "yes" ]]; then
@@ -18,7 +18,7 @@ if [[ "$skip_rhel7_ovs29" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 	OVS_TOPO=${OVS_TOPO:-""}	
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
@@ -29,7 +29,7 @@ if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 	OVS_TOPO=${OVS_TOPO:-""}	
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
@@ -40,7 +40,7 @@ if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 	OVS_TOPO=${OVS_TOPO:-""}	
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
@@ -52,7 +52,7 @@ if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 	OVS_TOPO=${OVS_TOPO:-""}
 
-	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=10800 --param=mem_check_interval=1h --param=num_mem_checks=3 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
@@ -66,10 +66,10 @@ if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
 	OVS_TOPO=${OVS_TOPO:-""}
 
 	# Full test
-	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
 	# All tests, short duration
-#	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+#	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
@@ -83,7 +83,7 @@ if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
 	OVS_TOPO=${OVS_TOPO:-""}
 
 	# Full test
-	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
@@ -98,13 +98,13 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	OVS_TOPO=${OVS_TOPO:-""}
 
 	# Full test
-	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=selinux_enable=$selinux_enable --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=OVS_TOPO=$OVS_TOPO --param=selinux_enable=$selinux_enable --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 # All tests, short duration
-#lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+#lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 # 1K flow tests only, short duration (sanity check)
-#lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=skip_5k_flows=yes --param=skip_10k_flows=yes --param=skip_25k_flows=yes --param=skip_100k_flows=yes --param=skip_1m_flows=yes --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER"
+#lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=skip_5k_flows=yes --param=skip_10k_flows=yes --param=skip_25k_flows=yes --param=skip_100k_flows=yes --param=skip_1m_flows=yes --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
 popd

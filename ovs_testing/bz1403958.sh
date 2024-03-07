@@ -24,7 +24,7 @@ pgrep ovsdb-server
 check_result
 rpm -e openvswitch
 
-rpm -ivh http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
+rpm -ivh http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
 systemctl enable openvswitch.service
 systemctl restart openvswitch.service
 sleep 3
@@ -33,7 +33,7 @@ pgrep ovsdb-server && check_result
 ovs-vsctl add-br $ovsbr && check_result
 ovs-vsctl show | grep $ovsbr && check_result
 
-rpm -Uvh http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
+rpm -Uvh http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
 sleep 3
 pgrep ovs-vswitchd
 check_result

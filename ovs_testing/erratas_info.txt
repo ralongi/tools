@@ -61,19 +61,19 @@ if [[ $arch == "x86_64" ]]; then
 
 # To build stable system for RHEL7 x86_64
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=x86_64 --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/x86_64/python-twisted-web-12.1.0-5.el7_2.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/x86_64/python-twisted-core-12.2.0-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/x86_64/python-zope-interface-4.0.5-4.el7.x86_64.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
 
 # To build stable system for RHEL7 ppc64le:
 
 NOTE: For repo "rhel-7-for-power9-fast-datapath-rpms", use test profile "stable-rhel-alt-7-server"
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=ppc64le --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/ppc64le/python-twisted-web-12.1.0-5.el7_2.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/ppc64le/python-twisted-core-12.2.0-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/ppc64le/python-zope-interface-4.0.5-4.el7.ppc64le.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
 
 Note: use test profile "stable-rhel-alt-7-server" with above ppc64le command for RHEL ALT streams.
 
 # To build stable system for RHEL7 s390x:
 
-bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
+bkr workflow-tomorrow 7 --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-7-rpms --arch=s390x --task "! yum -y install http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-web/12.1.0/5.el7_2/s390x/python-twisted-web-12.1.0-5.el7_2.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-twisted-core/12.2.0/4.el7/s390x/python-twisted-core-12.2.0-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-zope-interface/4.0.5/4.el7/s390x/python-zope-interface-4.0.5-4.el7.s390x.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/SOAPpy/0.11.6/17.el7/noarch/SOAPpy-0.11.6-17.el7.noarch.rpm http://download.eng.bos.redhat.com/brewroot/vol/rhel-7/packages/python-fpconst/0.7.3/12.el7/noarch/python-fpconst-0.7.3-12.el7.noarch.rpm http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm tcpdump python-netifaces libibverbs python3" --task "! /bin/cp -f /etc/tpsd.conf /etc/tpsd.conf_orig" --task '! wget -O /etc/tpsd.conf http://netqe-infra01.knqe.lab.eng.bos.redhat.com/misc/tpsd.conf' --task "! mount -a -t nfs" --task "! systemctl restart tpsd --task "!  wget -O ~/stable_cleanup.sh http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/stable_cleanup.sh; chmod +x ~/stable_cleanup.sh"
 
 # To build stable system for RHEL8 x86_64
 
@@ -94,8 +94,8 @@ bkr workflow-tomorrow 8 --split-buildroot --machine=dev-010.arm.eng.rdu2.redhat.
 # to install selinux and libunbound packages
 
 arch=$(uname -m)
-RPM_OVS_SELINUX_EXTRA_POLICY=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm
-RPM_OVS=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.12/2.12.0/4.el7fdp/$arch/openvswitch2.12-2.12.0-4.el7fdp.$arch.rpm
+RPM_OVS_SELINUX_EXTRA_POLICY=http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/14.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-14.el7fdp.noarch.rpm
+RPM_OVS=http://download.devel.redhat.com/brewroot/packages/openvswitch2.12/2.12.0/4.el7fdp/$arch/openvswitch2.12-2.12.0-4.el7fdp.$arch.rpm
 yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY
 yum -y install $RPM_OVS
 for i in $(rpm -qa | grep openvswitch | grep -v selinux); do yum -y remove $i; done
@@ -128,9 +128,9 @@ yum -y install tcpdump
 
 yum -y install python-netifaces
 
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm
 
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el7fdp.noarch.rpm
 
 # to remove all ovs and ovn packages except for selinux (do this before each test run)
 for i in $(rpm -qa | grep ovn); do yum -y remove $i; done
@@ -172,7 +172,13 @@ bkr workflow-tomorrow --errata=43252 --variant=detect --tps-rpmtest --tps-srpmte
 bkr workflow-tomorrow --errata=108133 --variant=detect --tps-failed --tps-rpm --profile=fast-datapath-for-rhel-8-rpms --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86
 
 # DPDK RHEL-8
-bkr workflow-tomorrow --task "! dnf -y install libibverbs" --errata=107215 --variant=detect --tps-failed --tps --profile=stable-rhel-8-baseos --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86_64 --reserve-if-fail
+errata=115872
+
+# for TPS
+bkr workflow-tomorrow --task "! dnf -y install libibverbs" --errata=$errata --variant=detect --tps-failed --tps-rpmtest --tps-srpmtest --profile=stable-rhel-8-baseos --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86_64 --reserve-if-fail
+
+# for DistQA TPS
+bkr workflow-tomorrow --task "! dnf -y install libibverbs" --errata=$errata --variant=detect --tps-failed --tps-rhnqa --profile=stable-rhel-8-baseos --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --arch=x86_64 --reserve-if-fail
 
 $ To upload results to errata tool when using above method: tps-results  --job <beaker job ID> (tps-results  --job 7392762)
 
@@ -210,7 +216,7 @@ Hi,
 I'm sending an email to ask for a "permanent" TPS stable system for
 RHEL8 on ppc64le, but in the meanwhile I created a stable system:
 
-# bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.bos.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=ppc64le --variant=BaseOS
+# bkr workflow-tomorrow 8 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=fast-datapath-for-rhel-8-rpms --arch=ppc64le --variant=BaseOS
 
 Then I had to install some needed packages:
 
@@ -762,6 +768,67 @@ tps
 
 # upload results to errata tool:
 /mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive
+
+#########################################################################
+
+arch=<arch>
+
+for bcc:
+
+# Note: Don't need to specify distro below if the errata is for a released verson of RHEL.
+
+wow --distro=RHEL-8.9.0-updates-20230829.48 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-8-crb  --arch=$arch --variant=BaseOS --task '! dnf -y install bcc* elfutils-devel elfutils-libelf-devel llvm'
+
+# For libbpf:
+
+wow --distro=RHEL-9.3.0-20230714.2 --split-buildroot --hostrequire=hostlabcontroller=lab-02.rhts.eng.rdu.redhat.com --stable-system --taskparam OATS_TPS_STABLE=true --profile=stable-rhel-9-crb  --arch=$arch --variant=BaseOS --task '! dnf -y install clang elfutils-devel elfutils-libelf-devel'
+
+#########################################################################
+
+(03:33:42 PM) jwl_home: man oats-apply-test-profile => can show what's in an existing profile by fetching an arbitrary profile as a yum.repo file
+(03:35:40 PM) jwl_home: finding systems: https://tps-server.lab.bos.redhat.com/wiki/TPSSysSearch
+(03:38:10 PM) jwl_home: you can check to see what profiles a particular pulp channel is in
+(03:38:47 PM) jwl_home: like: https://tps-server.lab.bos.redhat.com/pulp_channels/8639
+(03:39:52 PM) ralongi: i messed up while i was typing and didn't bother to correct it.  sorry.
+(03:39:55 PM) jwl_home: If you have the name of a TPS Repo, you can check it thusly: https://tps-server.lab.bos.redhat.com/repos/codeready-builder-for-rhel-8-rpms-8
+(03:40:14 PM) jwl_home: And then click on one of the pulp channels to see what test profiles have it
+(03:40:41 PM) jwl_home: So... there are a few answers, hopefully interesting/useful, and maybe answering the initial question 
+
+#########################################################################
+
+# ========== Make it possible to use Pulp HTTPS repos ==========
+# /etc/pki/ca-trust/source/anchors/2015-RH-IT-Root-CA.pem
+# /etc/pki/tls/certs/2015-RH-IT-Root-CA.pem
+# /usr/local/lib/tps/certs/2015-RH-IT-Root-CA.pem
+for i in /etc/pki/ca-trust/source/anchors /etc/pki/tls/certs /usr/local/lib/tps/certs ; do
+  if ! [ -d $i ]; then
+    mkdir -p "$i" || true
+  fi
+done
+TPS_CERT=/usr/local/lib/tps/certs/2015-RH-IT-Root-CA.pem
+if ! [ -r $TPS_CERT ] ; then
+  wget -qO $TPS_CERT http://tps-server.lab.bos.redhat.com/2015-RH-IT-Root-CA.pem
+fi
+for i in /etc/pki/ca-trust/source/anchors/2015-RH-IT-Root-CA.pem /etc/pki/tls/certs/2015-RH-IT-Root-CA.pem ; do
+  if ! [ -r $i ]; then
+    cp $TPS_CERT $i
+  fi
+done
+
+if [ -d /etc/openldap/cacerts ]; then
+  if [ ! -h /etc/openldap/cacerts/7e757f6a.0 ]; then 
+    ln -s /etc/pki/tls/certs/2015-RH-IT-Root-CA.pem /etc/openldap/cacerts/7e757f6a.0
+  fi
+fi
+PKI_DIR=/etc/pki/CA/certs
+if ! [ -d $PKI_DIR ]; then
+  mkdir -p $PKI_DIR || true
+fi
+cp $TPS_CERT /etc/pki/CA/certs/
+if command -v update-ca-trust >/dev/null 2>&1 ; then
+  update-ca-trust
+fi
+# =============== end Pulp HTTPS stuff
 
 #########################################################################
 

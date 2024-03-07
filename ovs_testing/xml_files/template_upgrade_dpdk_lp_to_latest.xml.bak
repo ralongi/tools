@@ -1,0 +1,208 @@
+<job retention_tag="60days">
+  <whiteboard>ralongi@redhat.com, OVS-DPDK upgrade test - starting_compose to ending_compose with OVS for RHOSP 10,11,12,13 to latest available openvswitch package (SELinux Enabled: selinux_setting)</whiteboard>
+  <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, OVS-DPDK upgrade test - starting_compose to ending_compose with OVS for RHOSP 10 to latest available openvswitch package" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+          <distro_name op="=" value="starting_compose"/>
+          <distro_variant op="=" value="Server"/>
+          <distro_arch op="=" value="x86_64"/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <system_type op="=" value="Machine"/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/upgrade_dpdk" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="install_latest_ovs_rpm" value="yes"/>
+          <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="lp_test_type" value="RHELOSP"/>
+          <param name="lp_starting_version" value="10"/>
+          <param name="lp_target_version" value="14"/>
+          <param name="dpdk_version" value="1711"/>
+          <param name="selinux_enable" value="no"/>
+          <param name="install_ofed" value="yes"/>
+          <param name="repo_target_compose_id" value="ending_compose"/>
+          <param name="vm_version" value="7.5"/>
+          <param name="create_many_flows" value="yes"/>
+          <param name="traffic_topo" value="pvp"/>
+          <param name="xena_test_duration" value="600"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="skip_test1" value="no"/>
+          <param name="skip_test2" value="no"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+  <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, OVS-DPDK upgrade test - starting_compose to ending_compose with OVS for RHOSP 11 to latest available openvswitch package" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+          <distro_name op="=" value="starting_compose"/>
+          <distro_variant op="=" value="Server"/>
+          <distro_arch op="=" value="x86_64"/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <system_type op="=" value="Machine"/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/upgrade_dpdk" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="install_latest_ovs_rpm" value="yes"/>
+          <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="lp_test_type" value="RHELOSP"/>
+          <param name="lp_starting_version" value="11"/>
+          <param name="lp_target_version" value="14"/>
+          <param name="dpdk_version" value="1711"/>
+          <param name="selinux_enable" value="no"/>
+          <param name="install_ofed" value="yes"/>
+          <param name="repo_target_compose_id" value="ending_compose"/>
+          <param name="vm_version" value="7.5"/>
+          <param name="create_many_flows" value="yes"/>
+          <param name="traffic_topo" value="pvp"/>
+          <param name="xena_test_duration" value="600"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="skip_test1" value="no"/>
+          <param name="skip_test2" value="no"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+  <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, OVS-DPDK upgrade test - starting_compose to ending_compose with OVS for RHOSP 12 to latest available openvswitch package" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+          <distro_name op="=" value="starting_compose"/>
+          <distro_variant op="=" value="Server"/>
+          <distro_arch op="=" value="x86_64"/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <system_type op="=" value="Machine"/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/upgrade_dpdk" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="install_latest_ovs_rpm" value="yes"/>
+          <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="lp_test_type" value="RHELOSP"/>
+          <param name="lp_starting_version" value="12"/>
+          <param name="lp_target_version" value="14"/>
+          <param name="dpdk_version" value="1711"/>
+          <param name="selinux_enable" value="no"/>
+          <param name="install_ofed" value="yes"/>
+          <param name="repo_target_compose_id" value="ending_compose"/>
+          <param name="vm_version" value="7.5"/>
+          <param name="create_many_flows" value="yes"/>
+          <param name="traffic_topo" value="pvp"/>
+          <param name="xena_test_duration" value="600"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="skip_test1" value="no"/>
+          <param name="skip_test2" value="no"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+    <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, OVS-DPDK upgrade test - starting_compose to ending_compose with OVS for RHOSP 13 to latest available openvswitch package" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+          <distro_name op="=" value="starting_compose"/>
+          <distro_variant op="=" value="Server"/>
+          <distro_arch op="=" value="x86_64"/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname op="=" value="netqe9.knqe.lab.eng.bos.redhat.com"/>
+          <system_type op="=" value="Machine"/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/upgrade_dpdk" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="netscout_pair1" value="netqe9_p3p1 xena_m5p0"/>
+          <param name="netscout_pair2" value="netqe9_p3p2 xena_m5p1"/>
+          <param name="install_latest_ovs_rpm" value="yes"/>
+          <param name="ovs_rpm_version" value="ovs_rpm_version_temp"/>
+          <param name="ovs_selinux_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/7.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-7.el7fdp.noarch.rpm "/>
+          <param name="lp_test_type" value="RHELOSP"/>
+          <param name="lp_starting_version" value="13"/>
+          <param name="lp_target_version" value="14"/>
+          <param name="dpdk_version" value="1711"/>
+          <param name="selinux_enable" value="no"/>
+          <param name="install_ofed" value="yes"/>
+          <param name="repo_target_compose_id" value="ending_compose"/>
+          <param name="vm_version" value="7.5"/>
+          <param name="create_many_flows" value="yes"/>
+          <param name="traffic_topo" value="pvp"/>
+          <param name="xena_test_duration" value="600"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="skip_test1" value="no"/>
+          <param name="skip_test2" value="no"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

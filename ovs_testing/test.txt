@@ -11,10 +11,10 @@ Using compose: RHEL-8.4.0-updates-20211026.0
 FDP_STREAM2 is now set to 216
 FDP Stream is: 2.16
 RPM_OVS: 
-RPM_OVN_CENTRAL: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-central-21.12.0-11.el8fdp.x86_64.rpm
-RPM_OVN_HOST: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-host-21.12.0-11.el8fdp.x86_64.rpm
-RPM_OVN_COMMON: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-21.12.0-11.el8fdp.x86_64.rpm
-RPM_OVN_CENTRAL: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-central-21.12.0-11.el8fdp.x86_64.rpm
-RPM_OVN_HOST: http://download-node-02.eng.bos.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-host-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_CENTRAL: http://download.devel.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-central-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_HOST: http://download.devel.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-host-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_COMMON: http://download.devel.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_CENTRAL: http://download.devel.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-central-21.12.0-11.el8fdp.x86_64.rpm
+RPM_OVN_HOST: http://download.devel.redhat.com/brewroot/packages/ovn-2021/21.12.0/11.el8fdp/x86_64/ovn-2021-host-21.12.0-11.el8fdp.x86_64.rpm
 ~/github/tools/ovs_testing
 ~/github/tools/ovs_testing

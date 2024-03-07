@@ -1,0 +1,140 @@
+#!/bin/bash
+
+# Perf CI
+
+sedeasy ()
+{
+sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+}
+
+create_zstream_repos_xml()
+{
+	$dbg_flag
+	arch=${arch:-"x86_64"}
+	z_stream_base=$(echo $COMPOSE | awk -F '-' '{print $2}' | tr -d . | cut -c-2)
+	z_stream_base=$(echo $z_stream_base)z
+	pushd ~/temp
+	alias rm='rm' 
+	rm -f zstream_repos.txt
+	wget -O ZConfig.yaml https://gitlab.cee.redhat.com/kernel-qe/core-kernel/kernel-general/-/raw/master/Sustaining/ZConfig.yaml
+	if [[ $(grep -w "$z_stream_base" ZConfig.yaml) ]]; then
+		 zstream_repos=$(grep -A35 -w "$z_stream_base" ZConfig.yaml | grep "$arch": | tr -d "'" | awk '{$1="";print $0}' | sed 's/^ //g')
+	fi
+	echo "      <repos>" >> zstream_repos.txt  
+	total_repos=$(echo $zstream_repos | wc -w)
+	count=1
+	for i in $zstream_repos; do
+		while [[ $count -le $total_repos ]]; do
+			echo "        <repo name='"myrepo_$count"' url='"$i"'/>" >> zstream_repos.txt
+            let count++
+		done
+    done	
+	echo "      </repos>" >> zstream_repos.txt 
+	cat zstream_repos.txt
+	alias rm='rm -i'
+	popd
+}
+
+echo "COMPOSE is: $COMPOSE"
+
+dbg_flag=${dbg_flag:-"set -x"}
+$dbg_flag
+pushd ~/git/kernel/networking/openvswitch/perf
+task="~/git/kernel/networking/openvswitch/perf"
+rhel_minor_ver=$(echo $COMPOSE | awk -F - '{print $2}' | sed 's/.0//g')
+card_type=$(echo $1 | tr '[:upper:]' '[:lower:]')
+ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+server="netqe24.knqe.eng.rdu2.dc.redhat.com"
+client="netqe25.knqe.eng.rdu2.dc.redhat.com"
+trex_url="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/trex/v2.52.tar.gz"
+
+# strip any spaces from $COMPOSE value
+COMPOSE=$(echo $COMPOSE | tr -d " ")
+
+# Change format of $FDP_RELEASE due to change in Guan's code to upload db
+FDP_RELEASE=$(echo ${FDP_RELEASE:0:2}.${FDP_RELEASE:2:2})
+#####FDP_RELEASE="'$FDP_RELEASE'"
+
+if [[ $card_type == "cx5" ]]; then
+	nic_test=mlx5_100g_cx5
+	special_info="(100G CX5)"
+	netscout_pair1="NETQE24_P4P1 NETQE25_P5P1"
+	netscout_pair2="NETQE24_P4P2 NETQE25_P5P2"
+	server=netqe24.knqe.eng.rdu2.dc.redhat.com
+	client=netqe25.knqe.eng.rdu2.dc.redhat.com
+	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel9
+	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel8
+	fi
+	# May switch to using netqe1 and netqe4 (ens1f0/ens1f0np0 on both)
+elif [[ $card_type == "cx6dx" ]]; then
+	nic_test=mlx5_100g_cx6
+	special_info="(100G CX6 DX)"
+	netscout_pair1=""
+	netscout_pair2=""
+	server=netqe24.knqe.eng.rdu2.dc.redhat.com
+	client=netqe25.knqe.eng.rdu2.dc.redhat.com
+	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel9
+	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel8
+	fi
+	# May switch to using netqe1 and netqe4 (ens1f0/ens1f0np0 on both)
+elif [[ $card_type == "cx6lx" ]]; then
+	nic_test=mlx5_25g_cx6lx
+	special_info="(100G CX6 LX)"
+	netscout_pair1=""
+	netscout_pair2=""
+	server=wsfd-advnetlab35.anl.eng.rdu2.dc.redhat.com
+	client=wsfd-advnetlab36.anl.eng.rdu2.dc.redhat.com
+	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_25g_cx6lx_anl35_anl36_rhel9
+	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_25g_cx6lx_anl35_anl36_rhel8
+	fi
+elif [[ $card_type == "bf2" ]]; then
+	nic_test=mlx5_25g_bf2
+	special_info="(25G BF2)"
+	netscout_pair1="netqe29_p3p1 netqe30_p7p1"
+	netscout_pair2="netqe29_p3p2 netqe30_p7p2"
+	server=netqe30.knqe.eng.rdu2.dc.redhat.com
+	client=netqe29.knqe.eng.rdu2.dc.redhat.com
+	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_25g_bf2_netqe30_netqe29_rhel9
+	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
+		test_env=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/ralongi/mlx5_25g_bf2_netqe30_netqe29_rhel8
+	fi
+fi
+
+sedeasy ()
+{
+sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+}
+
+pushd /home/ralongi/github/tools/ovs_testing/xml_files
+
+#/bin/cp -f template_perf_ci_rhel"$RHEL_VER_MAJOR".xml perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml
+/bin/cp -f template_perf_ci_rhel8.xml perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml
+sedeasy "netscout_pair1_value" "$netscout_pair1" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "netscout_pair2_value" "$netscout_pair2" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "card_type_value" "$card_type" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "card_type_value" "$card_type" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "server_system_value" "$server" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "client_system_value" "$client" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "SPECIAL_INFO_VALUE" "$special_info" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "SELINUX_VALUE" "$SELINUX" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "RPM_OVS_NAME_VALUE" "$ovs_rpm_name" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "FDP_RELEASE_VALUE" "$FDP_RELEASE" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "RPM_OVS_VALUE" "$RPM_OVS" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "COMPOSE_VALUE" "$COMPOSE" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "RPM_OVS_SELINUX_EXTRA_POLICY_VALUE" "$RPM_OVS_SELINUX_EXTRA_POLICY" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "SELINUX_VALUE" "$SELINUX" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "RPM_DPDK_VALUE" "$RPM_DPDK" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "VM_IMAGE_VALUE" "$VM_IMAGE" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "TEST_ENV_VALUE" "$test_env" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "NIC_TEST_VALUE" "$nic_test" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+sedeasy "dbg_flag_value" "$dbg_flag" "perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml"
+bkr job-submit perf_ci_rhel"$RHEL_VER_MAJOR"_$card_type.xml 
+
+popd

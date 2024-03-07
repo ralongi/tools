@@ -40,12 +40,12 @@ if [[ $# -lt 6 ]]; then skip_traffic_tests_value="no"; fi
 # use_latest_rhel_repo typically only used when pointing to RHEL release still under test and not yet released
 use_latest_rhel_repo_value=$7
 if [[ $# -lt 7 ]]; then use_latest_rhel_repo_value="no"; fi
-#openvswitch_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/117.el7fdp/x86_64/openvswitch-2.9.0-117.el7fdp.x86_64.rpm"
+#openvswitch_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/117.el7fdp/x86_64/openvswitch-2.9.0-117.el7fdp.x86_64.rpm"
 openvswitch_rpm="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/48.el7fdp/x86_64/openvswitch2.11-2.11.0-48.el7fdp.x86_64.rpm"
-#openvswitch_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/21.el8fdp/x86_64/openvswitch2.11-2.11.0-21.el8fdp.x86_64.rpm"
-openvswitch_selinux_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/15.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-15.el7fdp.noarch.rpm"
-#openvswitch_selinux_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/18.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-18.el8fdp.noarch.rpm"
-container_selinux_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
+#openvswitch_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/21.el8fdp/x86_64/openvswitch2.11-2.11.0-21.el8fdp.x86_64.rpm"
+openvswitch_selinux_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/15.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-15.el7fdp.noarch.rpm"
+#openvswitch_selinux_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/18.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-18.el8fdp.noarch.rpm"
+container_selinux_rpm="http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
 openvswitch_rpm_value=$(echo $openvswitch_rpm | awk -F "/" '{print $NF}')
 
 if [[ $# -lt 5 ]]; then

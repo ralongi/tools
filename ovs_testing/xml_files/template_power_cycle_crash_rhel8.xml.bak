@@ -1,0 +1,119 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash special_info_value</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="FDP FDP_RELEASE_VALUE, OVS_RPM_VALUE, COMPOSE_VALUE, openvswitch/power_cycle_crash special_info_value" role="None" ks_meta="harness='restraint-rhts beakerlib' {harness='restraint-rhts beakerlib beakerlib-redhat'}" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends>
+        <ks_append><![CDATA[
+%post --log=/root/my-ks-post.log
+
+test -f /etc/dnf/dnf.conf && echo strict=0 >>/etc/dnf/dnf.conf
+
+read type distro <<< $(awk -F/+ '/^baseurl/{ for (i=3;i<NF;i++) { if ($(i+1) ~ /RHEL-/) { print($i, $(i+1)); break }}}' /etc/yum.repos.d/beaker-BaseOS.repo)
+if [[ "$distro" = RHEL-8* ]]; then
+	read prefix ver time <<< ${distro//-/ }
+	URL=http://download.devel.redhat.com/rhel-8/$type/BUILDROOT-8/BUILDROOT-$ver-RHEL-8-$time/compose/Buildroot/$(arch)/os
+	URL=http://download.devel.redhat.com/rhel-8/$type/BUILDROOT-8/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/$(arch)/os
+	cat <<-EOF >/etc/yum.repos.d/beaker-buildroot.repo
+	[beaker-buildroot]
+	name=beaker-buildroot
+	baseurl=$URL
+	enabled=1
+	gpgcheck=0
+	skip_if_unavailable=1
+	EOF
+fi
+
+yum install -y gcc wget screen bc redhat-lsb-core sg3_utils sg3_utils-libs sg3_utils-devel rsyslog python2
+yum install -y libnsl2 libtirpc-devel python-lxml
+
+[[ -f /usr/bin/python ]] || {
+	if [[ -f /usr/bin/python2 ]]; then
+		alternatives --set python /usr/bin/python2
+	elif [[ -f /usr/bin/python3 ]]; then
+		alternatives --set python /usr/bin/python3
+	fi
+}
+
+#yum update -y pkg1 pkg2 --nogpgcheck --repofrompath=abc,http://x.y.z/path/to/repo
+set -x
+cat >/usr/bin/rhts-power <<EOF
+#!/bin/bash
+
+curl --insecure \\
+     --header "Content-Type: text/xml" \\
+     --data "<?xml version=\"1.0\"?>
+             <methodCall>
+               <methodName>power</methodName>
+               <params>
+                 <param>
+                   <value><string>\$(hostname)</string></value>
+                 </param>
+                 <param>
+                   <value><string>reboot</string></value>
+                 </param>
+               </params>
+             </methodCall>" \\
+     http://\${LAB_CONTROLLER}:8000/RPC2
+EOF
+chmod 755 /usr/bin/rhts-power
+%end
+
+
+                ]]></ks_append>
+      </ks_appends>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="wsfd-advnetlab33.anl.eng.rdu2.dc.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="STANDALONE"/>
+      <task name="/distribution/brew-build-install" role="SERVERS">
+        <params>
+          <param name="BUILDID" value="BREW_BUILD_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/power_cycle_crash/set_config" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="SELINUX" value="SELINUX_VALUE"/>
+          <param name="NAY" value="yes"/>
+          <param name="RPM_OVS_SELINUX_EXTRA_POLICY" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
+          <param name="RPM_OVS" value="RPM_OVS_VALUE"/>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/power-cycle" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/power_cycle_crash/check_config" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+        </params>
+      </task>
+      <task name="/kernel/kdump/crash-sysrq-c" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/power_cycle_crash/check_config" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

@@ -2,7 +2,7 @@
 
 # sanity_check
 
-dbg_flag=${dbg_flag:-"set +x"}
+dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 pushd ~/git/kernel/networking/openvswitch/sanity_check
 fdp_release=$FDP_RELEASE
@@ -16,7 +16,7 @@ if [[ "$skip_rhel7_ovs29" != "yes" ]]; then
 	RPM_OVS=$RPM_OVS29_RHEL7
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
@@ -25,7 +25,7 @@ if [[ "$skip_rhel7_ovs211" != "yes" ]]; then
 	RPM_OVS=$RPM_OVS211_RHEL7
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
@@ -34,7 +34,7 @@ if [[ "$skip_rhel7_ovs213" != "yes" ]]; then
 	RPM_OVS=$RPM_OVS213_RHEL7
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 
-	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose  --variant=server --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
@@ -44,7 +44,7 @@ if [[ "$skip_rhel8_ovs211" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
@@ -55,7 +55,7 @@ if [[ "$skip_rhel8_ovs213" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
@@ -66,7 +66,7 @@ if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
 	ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 
-	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
@@ -78,7 +78,7 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	ks_meta="{harness='restraint-rhts beakerlib beakerlib-redhat'}"
 	selinux_enable=no
 
-	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=selinux_enable=$selinux_enable --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER"
+	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=selinux_enable=$selinux_enable --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 	
 popd

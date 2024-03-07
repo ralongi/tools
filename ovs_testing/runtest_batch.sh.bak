@@ -1,0 +1,32 @@
+#!/bin/bash
+
+distro=$1
+base_dir="/home/ralongi/kernel/networking/openvswitch"
+ovs_pkg_location="http://download.devel.redhat.com/brewroot/packages/openvswitch"
+
+# Tests
+runtest $distro $base_dir/upgrade_systemd_check/ -- --variant=Server --param=start_ovs_ver="2.5.0.14" --param=target_upgrade_ver="2.6.1.3"
+
+runtest $distro $base_dir/ovs_systemd/ -- --variant=Server --param=dbg_flag="set -x" --param=selinux_enable="no" --param=vm_version="7.3" --param=openvswitch_rpm="$ovs_pkg_location/2.6.1/3.git20161206.el7fdb/x86_64/openvswitch-2.6.1-3.git20161206.el7fdb.x86_64.rpm"
+
+runtest $distro --wb "ralongi@redhat.com, OVS Comprehensive regression test - RHEL 7.4 Pegas with OVS FDB 2.6.1.4" $base_dir /upgrade_systemd_check/ --param=start_ovs_ver="2.5.0.14" --param=target_upgrade_ver="2.6.1.4" $base_dir/ovs_systemd/ $base_dir/spanning_tree/ $base_dir/userspace_commands $base_dir/conntrack/ $base_dir/add_del_ports/-- --variant=Server --param=openvswitch_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm"  --machine="netqe18.knqe.lab.eng.bos.redhat.com"
+
+base_dir="/home/ralongi/kernel/networking/openvswitch"
+dir_list="$base_dir/conntrack/  $base_dir/userspace_commands/ $base_dir/spanning_tree/ $base_dir/ovs_systemd/ $base_dir/upgrade_systemd_check/ $base_dir/add_del_ports/ $base_dir/mcast_snoop/"
+for i in $dir_list; do /bin/cp -Rf $i /home/ralongi/temp/runtest_batch; done
+
+#delete_dir_list=$(find /home/ralongi/temp/runtest_batch -name subtest.desc)
+#for dir in $delete_dir_list; do rm -f $dir; done
+#new_subtest_desc_file="/home/ralongi/temp/runtest_batch/subtest.desc"
+#rm -f $new_subtest_desc_file
+(
+	echo name=infra01-server
+	echo baseurl=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo
+	echo enabled=1
+	echo gpgcheck=0
+	echo skip_if_unavailable=1
+) > $new_subtest_desc_file
+
+runtest Pegas-7.4-20170206.n.0 -m mcast_snoop/ add_del_ports/ upgrade_systemd_check/ ovs_systemd/ spanning_tree/ userspace_commands/ conntrack/ --wb "ralongi@redhat.com, OVS general regression regression test - RHEL 7.4 Pegas with OVS FDB 2.6.1.4" -- --variant=Server --param=selinux_enable=no --param=openvswitch_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.6.1/4.git20161206.el7fdb/x86_64/openvswitch-2.6.1-4.git20161206.el7fdb.x86_64.rpm" --param=start_ovs_ver="2.5.0.14" --param=target_upgrade_ver="2.6.1.4"
+
+

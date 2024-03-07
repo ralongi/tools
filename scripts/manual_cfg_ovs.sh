@@ -77,7 +77,7 @@ echo "The driver to be used is: $iface_driver."
 echo "The MTU to be used is: $mtu."
 
 vm=${vm:-"g1"}
-vm_image_location=${vm_image_location:-"http://netqe-infra01.knqe.lab.eng.bos.redhat.com"}
+vm_image_location=${vm_image_location:-"http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com"}
 
 ### Modify settings below as necessary ###
 vm_image_name=${vm_image_name:-"rhel7.1.qcow2"}
@@ -171,7 +171,7 @@ alias_cfg()
     echo "qe12 netqe12.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
     echo "spirent spirentimpair.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
     echo "pnate pnate-control-01.lab.bos.redhat.com"  >> /etc/host.aliases
-    echo "inf netqe-infra01.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
+    echo "inf netqe-infra01.knqe.eng.rdu2.dc.redhat.com" >> /etc/host.aliases
 
     #Add entry to /etc/profile
     echo "export HOSTALIASES=/etc/host.aliases" >> /etc/profile

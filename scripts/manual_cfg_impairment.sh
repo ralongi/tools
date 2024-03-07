@@ -215,7 +215,7 @@ alias_cfg()
     echo "qe12 netqe12.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
     echo "spirent spirentimpair.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
     echo "pnate pnate-control-01.lab.bos.redhat.com"  >> /etc/host.aliases
-    echo "inf netqe-infra01.knqe.lab.eng.bos.redhat.com" >> /etc/host.aliases
+    echo "inf netqe-infra01.knqe.eng.rdu2.dc.redhat.com" >> /etc/host.aliases
 
     #Add entry to /etc/profile
     echo "export HOSTALIASES=/etc/host.aliases" >> /etc/profile

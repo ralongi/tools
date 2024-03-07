@@ -1,46 +1,53 @@
-OVS-2.13 RHEL-7		
-OVS-2.13 RHEL-8			
-OVS-2.15 RHEL-8			
+OVS-2.13 RHEL-7		    
+OVS-2.13 RHEL-8						
+OVS-2.15 RHEL-8						
 OVS-2.16 RHEL-8			
-OVS-2.17 RHEL-8			111077
-OVS-3.10 RHEL-8			111079
+OVS-2.17 RHEL-8			126846
+OVS-3.10 RHEL-8			126848
 OVS-2.15 RHEL-9		
-OVS-2.17 RHEL-9			111078
+OVS-2.17 RHEL-9			126847
 OVS-3.00 RHEL-9			
-OVS-3.10 RHEL-9			111080
+OVS-3.10 RHEL-9			126850
+OVS-3.20 RHEL-9			126851
 OVN-2.13 RHEL-8			
 OVN-XXXX RHEL-8					
 OVN-XXXX RHEL-9						
-OVN-22.03 RHEL-8		111162
-OVN-22.03 RHEL-9		111163
-OVN-22.06 RHEL-8		
+OVN-22.03 RHEL-8		126929
+OVN-22.03 RHEL-9		126930
+OVN-22.06 RHEL-8        		
 OVN-22.06 RHEL-9		
 OVN-22.09 RHEL-8		
 OVN-22.09 RHEL-9		
-OVN-22.12 RHEL-8		111164
-OVN-22.12 RHEL-9		111165
+OVN-22.12 RHEL-8		
+OVN-22.12 RHEL-9		126931
+OVN-23.03 RHEL-8		
+OVN-23.03 RHEL-9		
+OVN-23.06 RHEL-8        126932
+OVN-23.06 RHEL-9        126933
+OVN-23.09 RHEL-9		126934
 
 MISC dummy_field		
 
-All possible tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_arm.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_endurance_cx5.sh exec_perf_ci_cx5.sh exec_endurance_cx6.sh exec_perf_ci_cx6.sh exec_ovs_memory_leak_soak_i40e.sh exec_ovs_memory_leak_soak_mlx5_core.sh exec_topo_ice.sh"
+All possible tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_ixgbe exec_topo_i40e exec_topo_arm exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6_dx exec_topo_mlx5_core_cx6_lx exec_topo_mlx5_core_bf2 exec_topo_mlx5_core_cx7 exec_endurance_cx5 exec_perf_ci_cx5 exec_endurance_cx6dx exec_perf_ci_cx6dx exec_endurance_cx6lx exec_perf_ci_cx6lx exec_endurance_bf2 exec_perf_ci_bf2 exec_ovs_memory_leak_soak_i40e exec_ovs_memory_leak_soak_mlx5_core exec_ovs_memory_leak_soak_qede exec_topo_ice exec_topo_enic exec_topo_qede exec_topo_bnxt_en exec_topo_ice_sts exec_topo_i40e_t4l exec_topo_empire exec_topo_6820c exec_topo_bmc57504"
 
-OVS-2.13-RHEL-7-Tests:
+#OVS-2.13-RHEL-7-Tests:
 
-OVS-2.13-RHEL-8-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh"
+#OVS-2.13-RHEL-8-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_ixgbe exec_topo_i40e exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6"
 
-OVS-2.15-RHEL-8-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_perf_ci_cx6.sh"
+#OVS-2.15-RHEL-8-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_ixgbe exec_topo_i40e exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6 exec_perf_ci_cx6"
 
-OVS-2.16-RHEL-8-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh"
+#OVS-2.16-RHEL-8-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_ixgbe exec_topo_i40e exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6"
 
-OVS-2.17-RHEL-8-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_endurance_cx5.sh exec_perf_ci_cx5.sh exec_perf_ci_cx6.sh exec_topo_ice.sh"
+OVS-2.17-RHEL-8-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_i40e exec_topo_ice exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6_dx exec_topo_mlx5_core_cx6_lx exec_topo_mlx5_core_bf2 exec_perf_ci_cx5 exec_perf_ci_cx6dx exec_perf_ci_cx6lx exec_endurance_cx6dx exec_endurance_cx6lx"
 
-OVS-3.10-RHEL-8-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_arm.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_perf_ci_cx5.sh exec_perf_ci_cx6.sh exec_ovs_memory_leak_soak_i40e.sh exec_topo_ice.sh"
+OVS-3.10-RHEL-8-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_i40e exec_topo_ice exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6_dx exec_topo_mlx5_core_cx6_lx exec_topo_mlx5_core_bf2 exec_perf_ci_cx5 exec_perf_ci_cx6dx exec_perf_ci_bf2"
 
-OVS-2.15-RHEL-9-Tests:
+#OVS-2.15-RHEL-9-Tests:
 
-OVS-2.17-RHEL-9-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_arm.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_perf_ci_cx5.sh exec_perf_ci_cx6.sh exec_topo_ice.sh"
+OVS-2.17-RHEL-9-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_ixgbe exec_topo_i40e exec_topo_ice exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6_dx exec_topo_mlx5_core_cx6_lx exec_topo_mlx5_core_bf2 exec_topo_arm exec_perf_ci_cx5 exec_perf_ci_cx6dx exec_perf_ci_bf2"
 
-OVS-3.00-RHEL-9-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_perf_ci_cx6.sh exec_ovs_memory_leak_soak_i40e.sh exec_topo_ice.sh"
+#OVS-3.00-RHEL-9-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_ixgbe exec_topo_i40e exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6 exec_perf_ci_cx6 exec_ovs_memory_leak_soak_i40e exec_topo_ice"
 
-OVS-3.10-RHEL-9-Tests:"exec_mcast_snoop.sh exec_ovs_qos.sh exec_forward_bpdu.sh exec_of_rules.sh exec_power_cycle_crash.sh exec_ovs_upgrade.sh exec_sanity_check.sh exec_topo_ixgbe.sh exec_topo_i40e.sh exec_topo_arm.sh exec_topo_mlx5_core_cx5.sh exec_topo_mlx5_core_cx6.sh exec_perf_ci_cx5.sh exec_perf_ci_cx6.sh exec_ovs_memory_leak_soak_i40e.sh exec_topo_ice.sh"
+OVS-3.10-RHEL-9-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_i40e exec_topo_ice exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6_dx exec_topo_mlx5_core_cx6_lx exec_topo_mlx5_core_bf2 exec_topo_arm exec_perf_ci_cx5 exec_perf_ci_cx6lx"
 
+OVS-3.20-RHEL-9-Tests:"exec_mcast_snoop exec_ovs_qos exec_forward_bpdu exec_of_rules exec_power_cycle_crash exec_ovs_upgrade exec_sanity_check exec_topo_i40e exec_topo_ice exec_topo_mlx5_core_cx5 exec_topo_mlx5_core_cx6_dx exec_topo_mlx5_core_cx6_lx exec_topo_mlx5_core_bf2 exec_topo_arm exec_perf_ci_cx5 exec_perf_ci_cx6lx"

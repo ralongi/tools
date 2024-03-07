@@ -2,8 +2,8 @@
 
  2935 pts/0    S+     0:00 grep --color=auto ovs
  
-[root@netqe2 ~]# rpm -ivh http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
-Retrieving http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
+[root@netqe2 ~]# rpm -ivh http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
+Retrieving http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
 Preparing...                          ################################# [100%]
 Updating / installing...
    1:openvswitch-2.5.0-14.git20160727.################################# [100%]
@@ -27,8 +27,8 @@ Created symlink from /etc/systemd/system/multi-user.target.wants/openvswitch.ser
         Port "ovsbr0"
             Interface "ovsbr0"
             
-[root@netqe2 ~]# rpm -Uvh http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
-Retrieving http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
+[root@netqe2 ~]# rpm -Uvh http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
+Retrieving http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
 Preparing...                          ################################# [100%]
 Updating / installing...
    1:openvswitch-2.5.0-22.git20160727.################################# [ 50%]

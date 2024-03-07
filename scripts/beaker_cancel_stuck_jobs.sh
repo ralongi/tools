@@ -24,7 +24,8 @@ done
 
 echo "Running jobs: $running_job_list"
 for i in $running_job_list; do
-	bkr job-results --no-logs --prettyxml $i | grep task | grep 'status=' | awk '{print $7}' | grep -v openvswitch | awk -F '"' '{print $2}' > ~/temp/bkr_results.txt
+	#bkr job-results --no-logs --prettyxml $i | grep task | grep 'status=' | awk '{print $7}' | grep -v openvswitch | awk -F '"' '{print $2}' > ~/temp/bkr_results.txt
+	bkr job-results --no-logs --prettyxml $i | grep task | grep 'status=' | awk -F 'status=' '{print $2}' | awk '{print $1}' > ~/temp/bkr_results.txt
 	if [[ ! $(grep -v Completed ~/temp/bkr_results.txt) ]]; then
 		echo "Cancelling stuck beaker job: $i"
 		bkr job-cancel $i

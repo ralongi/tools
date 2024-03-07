@@ -79,7 +79,7 @@ chmod 755 /usr/bin/rhts-power
             </distroRequires>
       <hostRequires>
         <and>
-          <hostname value="netqe40.knqe.lab.eng.bos.redhat.com" op="="/>
+          <hostname value="wsfd-advnetlab33.anl.eng.rdu2.dc.redhat.com" op="="/>
           <system_type value="Machine" op="="/>
         </and>
       </hostRequires>

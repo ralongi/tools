@@ -1,0 +1,73 @@
+#!/bin/bash
+$dbg_flag
+
+job_id=$1
+card_type=$2
+if [[ $# -lt 2 ]]; then
+	echo "Usage: $0 <Job ID> <Card Type>"
+	echo "Example: $0 6863212 cx6"
+	exit 0
+fi
+
+log=$(bkr job-results J:$job_id --prettyxml | grep -A40 '"/kernel/networking/openvswitch/perf" role="CLIENTS"' | grep taskout.log | awk -F '"' '{print $2}')
+
+html_result_file=$(bkr job-results J:$job_id --prettyxml | grep -A40 '"/kernel/networking/openvswitch/perf" role="CLIENTS"' | grep 'mlx5_100_cx6.html' | awk '{print $2}' | awk -F "=" '{print $2}' | sed 's/"//g')
+
+pushd ~
+result_file=$(basename $log)
+rm -f $result_file
+rm -f pass_fail.txt
+wget --quiet -O $result_file $log
+
+test1=ovs_dpdk_vhostuser_pvp_queue1_pmds4_vcpus3_size64_vIOMMU_yes_vlan0
+test2=ovs_dpdk_vhostuser_pvp_queue1_pmds4_vcpus3_size576_vIOMMU_yes_vlan0
+test3=ovs_dpdk_vhostuser_pvp_queue1_pmds4_vcpus3_size1218_vIOMMU_yes_vlan0
+test4=ovs_dpdk_vhostuser_pvp_queue1_pmds4_vcpus3_size1500_vIOMMU_yes_vlan0
+
+
+
+frame64_baseline=4500000
+frame576_baseline=5000000
+frame1218_baseline=3500000
+frame1500_baseline=3500000
+
+frame64_result=$(grep -A8 'jq --arg sz 64 --arg fl 1024' $result_file | tail -n1 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
+frame576_result=$(grep -A8 'jq --arg sz 576 --arg fl 1024' $result_file | tail -n1 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
+frame1218_result=$(grep -A8 'jq --arg sz 1218 --arg fl 1024' $result_file | tail -n1 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
+frame1500_result=$(grep -A8 'jq --arg sz 1500 --arg fl 1024' $result_file | tail -n1 | awk -F "," '{print $2}' | awk -F "." '{print $1}')
+
+frame_size=64
+echo "Test: ovs-dpdk-vhostuser-pvp-queue1-pmds4-vcpus3-size64-vIOMMU-yes-vlan0"
+if [[ $frame64_result -ge $frame64_baseline ]]; then echo "Result: PASS (baseline: $frame64_baseline, Result: $frame64_result" | tee -a pass_fail.txt; else echo "Result: FAIL (baseline: $frame64_baseline, Result: $frame64_result" | tee -a pass_fail.txt; fi
+echo ""
+
+frame_size=576
+echo "Test: ovs-dpdk-vhostuser-pvp-queue1-pmds4-vcpus3-size576-vIOMMU-yes-vlan0"
+if [[ $frame576_result -ge $frame576_baseline ]]; then echo "Result: PASS (baseline: $frame576_baseline, Result: $frame576_result" | tee -a pass_fail.txt; else echo "Result: FAIL (baseline: $frame576_baseline, Result: $frame576_result" | tee -a pass_fail.txt; fi
+echo ""
+
+frame_size=1218
+echo "Test: ovs-dpdk-vhostuser-pvp-queue1-pmds4-vcpus3-size1218-vIOMMU-yes-vlan0"
+if [[ $frame1218_result -ge $frame1218_baseline ]]; then echo "Result: PASS (baseline: $frame1218_baseline, Result: $frame1218_result" | tee -a pass_fail.txt; else echo "Result: FAIL (baseline: $frame1218_baseline, Result: $frame1218_result" | tee -a pass_fail.txt; fi
+echo ""
+
+frame_size=1500
+echo "Test: ovs-dpdk-vhostuser-pvp-queue1-pmds4-vcpus3-size1500-vIOMMU-yes-vlan0"
+if [[ $frame1500_result -ge $frame1500_baseline ]]; then echo "Result: PASS (baseline: $frame1500_baseline, Result: $frame1500_result" | tee -a pass_fail.txt; else echo "Result: FAIL (baseline: $frame1500_baseline, Result: $frame1500_result" | tee -a pass_fail.txt; fi
+echo ""
+
+if [[ $(grep -i fail pass_fail.txt) ]]; then
+	echo "Overall Result: One or more tests FAILED"
+else
+	echo "Overall Result: All tests PASSED"
+fi
+
+echo ""
+echo "Results:"
+echo ""
+echo "https://beaker.engineering.redhat.com/jobs/$job_id"
+echo "$html_result_file"
+echo ""
+
+popd
+

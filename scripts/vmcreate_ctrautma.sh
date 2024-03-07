@@ -2,7 +2,7 @@
 
 # Example: ./vmcreate.sh -c 3 -l http://download.eng.bos.redhat.com/rel-eng/RHEL-7.4-20170630.1/compose/Server/x86_64/os -d
 
-LOCATION="http://download-node-02.eng.bos.redhat.com/released/RHEL-7/7.4-Beta/Server/x86_64/os/"CPUS=3
+LOCATION="http://download.devel.redhat.com/released/RHEL-7/7.4-Beta/Server/x86_64/os/"CPUS=3
 DEBUG="no"
 
 progname=$0

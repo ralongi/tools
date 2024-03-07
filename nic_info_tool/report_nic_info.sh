@@ -5,15 +5,28 @@ $dbg_flag
 
 # Script to log into target host and gather iface and driver info
 
+. ~/.bashrc
+
+fq()
+{
+    $dbg_flag
+    target=$1;
+    fqdn=$(alias $target 2> /dev/null | awk '{print $NF}' | awk -F "@" '{print $NF}' | tr -d "'");
+    echo $fqdn
+}
+
 user=${user:-"root"}
 target=$1
+if [[ ! $(echo $target | grep 'redhat.com') ]]; then
+    target=$(fq $target)
+fi
 password=$2
-default_password="100yard-"
-timeout=${timeout:-"10s"}
+default_password="QwAo2U6GRxyNPKiZaOCx"
+timeout=${timeout:-"5s"}
 
 if [[ $# -lt 1 ]]; then
 	echo "You must specify a target host and root password ($0 <target_host> [root pw])."
-	echo "Password 100yard- will be used if no password is provided"
+	echo "Password QwAo2U6GRxyNPKiZaOCx will be used if no password is provided"
 	exit
 fi
 
@@ -35,11 +48,16 @@ fi
 
 nslookup $target > /dev/null
 if [[ $? -ne 0 ]]; then
-	 echo "$target does not appear to be a valid FQDN.  Please enter a valid FQDN target."
-	 exit 0
+	target=$(grep "alias $target" ~/.bashrc 2> /dev/null | awk '{print $NF}' | awk -F "@" '{print $NF}' | tr -d "'")
+	nslookup $target > /dev/null
+	if [[ $? -ne 0 ]]; then
+		echo "$target does not appear to be a valid FQDN.  Please enter a valid FQDN target."
+		exit 0
+	fi
 fi
 
 #timeout $timeout bash -c "until traceroute $target > /dev/null; do sleep 1s; done"
+echo "Checking connectivity to $target..."
 timeout $timeout bash -c "until ping -c1 $target > /dev/null; do sleep 1s; done"
 if [[ $? -ne 0 ]]; then
 	echo "$target is not reachable.  Exiting test..."
@@ -47,5 +65,5 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "Logging into $target..."
-cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -q -o "StrictHostKeyChecking= no" $user@$target 'bash -'
+cat /home/ralongi/github/tools/nic_info_tool/get_nic_info.sh | sshpass -p $password ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -q $user@$target 'bash -'
 

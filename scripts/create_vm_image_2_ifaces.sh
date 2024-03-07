@@ -17,13 +17,13 @@ vm=rhel$vm_version
 if [[ $vm_maj_ver -ge 7 ]]; then
 	distro="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-7/compose/Server/x86_64/os/"
 	optional="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-7/compose/Server/x86_64/os/"
-	iperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/iperf-2.0.4-1.el7.rf.x86_64.rpm"
-	netperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/netperf-2.6.0-1.el7.x86_64.rpm"
+	iperf_distro="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo/packages/iperf-2.0.4-1.el7.rf.x86_64.rpm"
+	netperf_distro="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo/packages/netperf-2.6.0-1.el7.x86_64.rpm"
 else
 	distro="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-6/compose/Server/x86_64/os/"
 	optional="http://download.eng.bos.redhat.com/rel-eng/latest-RHEL-6/compose/Server/x86_64/os/"
-	iperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/iperf-2.0.5-11.el6.x86_64.rpm"
-	netperf_distro="http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo/packages/netperf-2.6.0-1.el6.rf.x86_64.rpm"
+	iperf_distro="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo/packages/iperf-2.0.5-11.el6.x86_64.rpm"
+	netperf_distro="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo/packages/netperf-2.6.0-1.el6.rf.x86_64.rpm"
 fi
 
 # install EPEL repo
@@ -109,7 +109,7 @@ REPO
 cat >/etc/yum.repos.d/infra01-server.repo <<REPO
 [infra01-server]
 name=infra01-server
-baseurl=http://netqe-infra01.knqe.lab.eng.bos.redhat.com/repo
+baseurl=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/repo
 enabled=1
 gpgcheck=0
 skip_if_unavailable=1
@@ -164,7 +164,7 @@ sleep 5
 qemu-img convert -O qcow2 /var/lib/libvirt/images/$vm.qcow2 /home/$vm.qcow2
 
 # copy the qcow2 image file to infra01 server
-#sshpass -p 100yard- scp /home/$vm.qcow2 -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@netqe-infra01.knqe.lab.eng.bos.redhat.com:/home/www/html/vm/
+#sshpass -p 100yard- scp /home/$vm.qcow2 -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking=no" root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/vm/
 
 exit
 SCRIPT

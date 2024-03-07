@@ -1,0 +1,115 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>(Server/DUT: server_system_value, Client/Trex: client_system_value) FDP FDP_RELEASE_VALUE, RPM_OVS_NAME_VALUE, COMPOSE_VALUE, openvswitch/perf Perf CI card_type_value SPECIAL_INFO_VALUE</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="" role="None" ks_meta="harness='restraint-rhts beakerlib' disabled_root_access" kernel_options="" kernel_options_post="pci=realloc intel_iommu=on">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="COMPOSE_VALUE"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                    <or>
+                    </or>
+                </not>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="like" value="server_system_value"/>
+                </and>
+                <system_type op="=" value="Machine"/>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="SERVERS">
+        <params>
+          <param name="netscout_pair1" value="netscout_pair1_value"/>
+          <param name="netscout_pair2" value="netscout_pair2_value"/>
+        </params>
+      </task>    
+      <task name="/kernel/networking/openvswitch/perf" role="SERVERS">
+        <params>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="nic_test" value="NIC_TEST_VALUE"/>
+          <param name="test_env" value="TEST_ENV_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
+          <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
+          <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
+          <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
+          <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="" role="None" ks_meta="harness='restraint-rhts beakerlib' disabled_root_access" kernel_options="" kernel_options_post="pci=realloc intel_iommu=on">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                    <or>
+                    </or>
+                </not>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="like" value="client_system_value"/>
+                </and>
+                <system_type op="=" value="Machine"/>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="CLIENTS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="CLIENTS">
+        <params>
+          <param name="netscout_pair1" value="netscout_pair1_value"/>
+          <param name="netscout_pair2" value="netscout_pair2_value"/>
+        </params>
+      </task>      
+      <task name="/kernel/networking/openvswitch/perf" role="CLIENTS">
+        <params>
+          <param name="dbg_flag" value="dbg_flag_value"/>
+          <param name="nic_test" value="NIC_TEST_VALUE"/>
+          <param name="test_env" value="TEST_ENV_VALUE"/>
+          <param name="image" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/VM_IMAGE_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="rpm_openvswitch_selinux_extra_policy" value="RPM_OVS_SELINUX_EXTRA_POLICY_VALUE"/>
+          <param name="rpm_ovs" value="RPM_OVS_VALUE"/>
+          <param name="rpm_dpdk" value="RPM_DPDK_VALUE"/>
+          <param name="fdp_release" value="FDP_RELEASE_VALUE"/>
+          <param name="trex_url" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/trex/v2.52.tar.gz"/>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

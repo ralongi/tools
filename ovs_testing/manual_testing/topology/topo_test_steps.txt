@@ -103,9 +103,9 @@ export OVS_TOPO=setup
 #export OVS_TOPO="ovs_test_nic"
 #export OVS_TOPO="ovs_test_bond_set_active_slave ovs_test_bond_set_active_slave ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_chained_with_veth"
 export NIC_DRIVER="i40e"
-export RPM_CONTAINER_SELINUX_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
-export RPM_OVS_SELINUX_EXTRA_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el8fdp.noarch.rpm"
-export RPM_OVS="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/4.el8fdp/x86_64/openvswitch2.11-2.11.0-4.el8fdp.x86_64.rpm"
+export RPM_CONTAINER_SELINUX_POLICY="http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
+export RPM_OVS_SELINUX_EXTRA_POLICY="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/11.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-11.el8fdp.noarch.rpm"
+export RPM_OVS="http://download.devel.redhat.com/brewroot/packages/openvswitch2.11/2.11.0/4.el8fdp/x86_64/openvswitch2.11-2.11.0-4.el8fdp.x86_64.rpm"
 
 export NAY="yes"
 export PVT="no"

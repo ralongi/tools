@@ -1,0 +1,126 @@
+Provision system with RHEL-8.3 using Beaker, Scheduler, Reserve
+OR
+Pick system and provision it
+
+Once system is booted up:
+
+yum -y install wget
+yum -y install https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/e/epel-release-8-8.el8.noarch.rpm
+
+# Install oats
+To install oats on RHEL-8: 
+wget -O /etc/yum.repos.d/tps-deps.repo http://nest.test.redhat.com/mnt/tpsdist/test/RHEL-8/Repos/tps-deps.repo
+yum -y install busybox
+yum -y --nogpgcheck install http://nest.test.redhat.com/mnt/tpsdist/oats.noarch.rpm
+yum -y install nfs-utils ; service rpcbind start
+yum -y install perl-Date-Manip
+yum -y install rpm-build
+
+echo OATS_TEST_PROFILE="stable-rhel-8-baseos" >> /etc/sysconfig/oats.conf
+echo TREE=$(egrep -m 1 '^(url|nfs) ' /root/anaconda-ks.cfg | sed 's|^[^/]*/\(.*\)$|/\1| ; s|//|| ; s|"||g') >> /etc/sysconfig/oats.conf
+echo OATS_INSTALL_STAR='false' >> /etc/sysconfig/oats.conf
+
+systemctl start oatsd	
+tail -f /var/log/oatsd
+
+# after reboot:
+check to make sure /etc/yum.repos.d/ has expected repos:
+	ls -alth /etc/yum.repos.d/
+	
+### Important to run the command below before running tps tests (must be in tps directory):
+yum install -y $(tps-filter-filelist -o -u)
+systemctl start opensm
+
+sedeasy ()
+{
+sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+}
+
+#sedeasy "ONBOOT=0" "ONBOOT=1" /etc/sysconfig/oats.conf
+sed -i 's/ONBOOT=0/ONBOOT=1/g' /etc/sysconfig/oats.conf
+tps-setup-channel-cache
+tps-channel-cache
+update-tpsd-settings
+
+# for manual testing
+systemctl stop tpsd
+
+# otherwise:
+channel="rhel-8-for-x86_64-appstream-rpms" 
+sedeasy "# TPS_LIMIT_CHANNELS_TO=''" "TPS_LIMIT_CHANNELS_TO='$channel'" "/etc/tpsd.conf"
+sedeasy "# export TPS_LIMIT_CHANNELS_TO" "export TPS_LIMIT_CHANNELS_TO" "/etc/tpsd.conf"
+systemctl restart tpsd
+
+## Note: you don't need to run tpsd to run tests manually so best to stop tpsd whenever possible.
+
+arch=$(uname -m)
+RHEL_VERSION=$(cat /etc/os-release | grep VERSION_ID | cut -d \" -f 2 | cut -d . -f 1)
+if [[ $RHEL_VERSION -eq 7 ]]; then
+        if [[ -s /etc/yum.repos.d/beaker-Server.repo ]]; then
+                repo_file="/etc/yum.repos.d/beaker-Server.repo"
+        elif [[ -s /etc/yum.repos.d/beaker-Client.repo ]]; then
+                repo_file="/etc/yum.repos.d/beaker-Client.repo"
+        fi
+elif [[ $RHEL_VERSION -eq 8 ]]; then
+        repo_file="/etc/yum.repos.d/beaker-BaseOS.repo"
+fi
+
+MYCOMPOSE=$(cat $repo_file | grep baseurl | cut -c9-)
+compose=$(echo $MYCOMPOSE | awk -F "/" '{print $(NF-4)}')
+
+# Create BaseOS and AppStream repos for compose being used:
+(
+	echo [myrepo_1]
+	echo name=myrepo_1
+	echo baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/$compose/compose/BaseOS/$arch/os
+	echo enabled=1
+	echo gpgcheck=0
+	echo skip_if_unavailable=1
+) > /etc/yum.repos.d/myrepo_1.repo
+
+(
+	echo [myrepo_2]
+	echo name=myrepo_2
+	echo baseurl=http://download.eng.bos.redhat.com/rhel-8/rel-eng/RHEL-8/$compose/compose/AppStream/$arch/os/
+	echo enabled=1
+	echo gpgcheck=0
+	echo skip_if_unavailable=1
+) > /etc/yum.repos.d/myrepo_2.repo
+
+# Create CentOS repos needed for miscellaneous packages
+(
+	echo [CentOS-AppStream]
+	echo name=CentOS-AppStream
+	echo baseurl=http://mirror.centos.org/centos-8/8/AppStream/$arch/os/
+	echo gpgcheck=0
+	echo enabled=1
+) > /etc/yum.repos.d/CentOS-AppStream.repo
+
+(
+	echo [PowerTools]
+	echo name=CentOS-PowerTools
+	echo baseurl=http://mirror.centos.org/centos-8/8.2.2004/PowerTools/$arch/os/
+	echo gpgcheck=0
+	echo enabled=1
+) > /etc/yum.repos.d/CentOS-PowerTools.repo
+
+yum repolist
+for i in $(rpm -qa | grep dpdk); do yum -y remove $i; done
+
+package_list="libibverbs rdma-core-devel libmnl-devel gcc kernel-headers numactl-devel python3-devel python3-sphinx doxygen zlib-devel environment-modules mpitests-mpich openmpi openmpi-devel mstflint zlib-devel opa-fastfabric"
+
+rm -f /tmp/package_install.log; for i in $package_list; do yum -y install $i; if [[ $? -ne 0 ]]; then echo "$i FAILED to install" | tee -a /tmp/package_install.log; fi; done
+
+ls -alt /tmp/package_install.log
+
+for i in $package_list; do rpm -q $i; done
+for i in $package_list; do rpm -qa | grep $i; done
+
+for i in $(ls /etc/yum.repos.d/*.repo | grep -v tps-profile.repo); do sed -i 's/enabled=0/enabled=1/g' $i; done
+grep enabled=1 /etc/yum.repos.d/*.repo
+yum clean all expire-cache
+
+tps-cd -c 2020:55958
+tps -m
+
+/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive 

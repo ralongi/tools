@@ -1,0 +1,122 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>FDP 21J, openvswitch2.16-2.16.0-32.el8fdp.x86_64.rpm, RHEL-8.4.0-updates-20211026.0, ovs-dpdk/regression_bug</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="dell-per730-56.rhts.eng.pek2.redhat.com"/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ovs-dpdk/regression_bug" role="SERVERS">
+        <params>
+          <param name="QCOW_LOC" value="China"/>
+          <param name="test_type" value="ovs-dpdk"/>
+          <param name="NetScout_server_nic1" value="Dell50_p5p1"/>
+          <param name="NetScout_server_nic2" value="Dell50_p5p2"/>
+          <param name="NetScout_client_nic1" value="Dell55_p5p1"/>
+          <param name="NetScout_client_nic2" value="Dell55_p5p2"/>
+          <param name="NIC1_NAME" value="enp4s0"/>
+          <param name="NIC2_NAME" value="enp4s0d1"/>
+          <param name="TREX_IP" value="10.73.88.85"/>
+          <param name="NIC1_NAME" value="enp130s0f0"/>
+          <param name="NIC2_NAME" value="enp130s0f1"/>
+          <param name="GUEST_IMG" value="8.4"/>
+          <param name="NIC_DRIVER" value="mlx5_core"/>
+          <param name="clean_up" value="yes"/>
+          <param name="bug_num" value="bug1984461,bug1759336,bug1726568,bug1726579,bug1758824,bug1775783,bug1790841,bug1796497,bug1714592"/>
+          <param name="NIC1_MAC" value="ec:0d:9a:a0:1e:24"/>
+          <param name="NIC2_MAC" value="ec:0d:9a:a0:1e:25"/>
+          <param name="DPDK_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
+          <param name="DPDK_TOOL_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm"/>
+          <param name="OVS_URL" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/32.el8fdp/x86_64/openvswitch2.16-2.16.0-32.el8fdp.x86_64.rpm"/>
+          <param name="selinux_policy_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/28.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-28.el8fdp.noarch.rpm"/>
+          <param name="DPDK_GUEST_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
+          <param name="DPDK_TOOL_GUEST_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="RHEL-8.4.0-updates-20211026.0"/>
+                    <distro_variant op="=" value="BaseOS"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="dell-per740-03.rhts.eng.pek2.redhat.com"/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/check-install" role="CLIENTS">
+        <params>
+          <param name="DISTRO_BUILD" value="RHEL-8.4.0-updates-20211026.0"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/ovs-dpdk/regression_bug" role="CLIENTS">
+        <params>
+          <param name="QCOW_LOC" value="China"/>
+          <param name="test_type" value="ovs-dpdk"/>
+          <param name="NetScout_server_nic1" value="Dell50_p5p1"/>
+          <param name="NetScout_server_nic2" value="Dell50_p5p2"/>
+          <param name="NetScout_client_nic1" value="Dell55_p5p1"/>
+          <param name="NetScout_client_nic2" value="Dell55_p5p2"/>
+          <param name="NIC1_NAME" value="ens4f0"/>
+          <param name="NIC2_NAME" value="ens4f1"/>
+          <param name="TREX_IP" value="10.73.88.85"/>
+          <param name="PCI_NIC0" value="af:00.0"/>
+          <param name="PCI_NIC1" value="af:00.1"/>
+          <param name="GUEST_IMG" value="8.4"/>
+          <param name="NIC_DRIVER" value="mlx5_core"/>
+          <param name="bug_num" value="bug1984461,bug1759336,bug1726568,bug1726579,bug1758824,bug1775783,bug1790841,bug1796497,bug1714592"/>
+          <param name="clean_up" value="yes"/>
+          <param name="NIC1_MAC" value="ec:0d:9a:a0:1e:24"/>
+          <param name="NIC2_MAC" value="ec:0d:9a:a0:1e:25"/>
+          <param name="DPDK_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
+          <param name="DPDK_TOOL_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm"/>
+          <param name="OVS_URL" value="http://download.devel.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/32.el8fdp/x86_64/openvswitch2.16-2.16.0-32.el8fdp.x86_64.rpm"/>
+          <param name="selinux_policy_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/28.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-28.el8fdp.noarch.rpm"/>
+          <param name="DPDK_GUEST_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm"/>
+          <param name="DPDK_TOOL_GUEST_URL" value="http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

@@ -26,7 +26,7 @@ yum -y install at
 
 # install tuned
 # for RHEL-7.6
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/tuned/2.11.0/10.el7/noarch/tuned-2.11.0-10.el7.noarch.rpm http://download-node-02.eng.bos.redhat.com/brewroot/packages/tuned/2.11.0/10.el7/noarch/tuned-profiles-cpu-partitioning-2.11.0-10.el7.noarch.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/tuned/2.11.0/10.el7/noarch/tuned-2.11.0-10.el7.noarch.rpm http://download.devel.redhat.com/brewroot/packages/tuned/2.11.0/10.el7/noarch/tuned-profiles-cpu-partitioning-2.11.0-10.el7.noarch.rpm
 
 yum -y install tuned
 yum -y install tuned-profiles-cpu-partitioning
@@ -56,20 +56,20 @@ after reboot, verify hugepages via: cat /proc/meminfo
 
 # install DPDK on target Trex system
 
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.2/4.el8_1/x86_64/dpdk-18.11.2-4.el8_1.x86_64.rpm
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.2/4.el8_1/x86_64/dpdk-tools-18.11.2-4.el8_1.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.2/4.el8_1/x86_64/dpdk-18.11.2-4.el8_1.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.2/4.el8_1/x86_64/dpdk-tools-18.11.2-4.el8_1.x86_64.rpm
 
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/2.el8/x86_64/dpdk-19.11-2.el8.x86_64.rpm
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/19.11/2.el8/x86_64/dpdk-tools-19.11-2.el8.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/19.11/2.el8/x86_64/dpdk-19.11-2.el8.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/19.11/2.el8/x86_64/dpdk-tools-19.11-2.el8.x86_64.rpm
 
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11/4.el7_6/x86_64/dpdk-18.11-4.el7_6.x86_64.rpm
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11/4.el7_6/x86_64/dpdk-tools-18.11-4.el7_6.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/18.11/4.el7_6/x86_64/dpdk-18.11-4.el7_6.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/18.11/4.el7_6/x86_64/dpdk-tools-18.11-4.el7_6.x86_64.rpm
 
-#yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-18.11.7-1.el7_8.x86_64.rpm
-#yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-tools-18.11.7-1.el7_8.x86_64.rpm
+#yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-18.11.7-1.el7_8.x86_64.rpm
+#yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.7/1.el7_8/x86_64/dpdk-tools-18.11.7-1.el7_8.x86_64.rpm
 
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-20.11-3.el8.x86_64.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/dpdk/20.11/3.el8/x86_64/dpdk-tools-20.11-3.el8.x86_64.rpm
 
 # install EPEL repo and mlocate
 #yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm

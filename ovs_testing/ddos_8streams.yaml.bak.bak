@@ -1,0 +1,155 @@
+- duration : 0.1
+  generator :  
+          distribution : "seq"
+          clients_start : "16.0.0.1"
+          clients_end   : "16.0.0.255"
+          servers_start : "48.0.0.1"
+          servers_end   : "48.0.255.255"
+          clients_per_gb : 201
+          min_clients    : 101
+          dual_port_mask : "1.0.0.0" 
+          tcp_aging      : 3600
+          udp_aging      : 0
+          generator_clients :
+              - name : "c0"
+                distribution : "seq"
+                ip_start : "20.0.0.1"
+                ip_end : "20.10.255.255"
+              - name : "c1"
+                distribution : "seq"
+                ip_start : "21.0.0.1"
+                ip_end : "21.10.255.255"
+              - name : "c2"
+                distribution : "seq"
+                ip_start : "22.0.0.1"
+                ip_end : "22.10.255.255"
+              - name : "c3"
+                distribution : "seq"
+                ip_start : "23.0.0.1"
+                ip_end : "23.10.255.255"
+              - name : "c4"
+                distribution : "seq"
+                ip_start : "24.0.0.1"
+                ip_end : "24.10.255.255"
+              - name : "c5"
+                distribution : "seq"
+                ip_start : "25.0.0.1"
+                ip_end : "25.10.255.255"
+              - name : "c6"
+                distribution : "seq"
+                ip_start : "26.0.0.1"
+                ip_end : "26.10.255.255"
+              - name : "c7"
+                distribution : "seq"
+                ip_start : "27.0.0.1"
+                ip_end : "27.10.255.255"
+          generator_servers :
+              - name : "s0"
+                distribution : "seq"
+                ip_start : "30.0.0.1"
+                ip_end : "30.1.255.255"
+                track_ports : false
+              - name : "s1"
+                distribution : "seq"
+                ip_start : "31.0.0.1"
+                ip_end : "31.1.255.255"
+                track_ports : false
+              - name : "s2"
+                distribution : "seq"
+                ip_start : "32.0.0.1"
+                ip_end : "32.1.255.255"
+                track_ports : false
+              - name : "s3"
+                distribution : "seq"
+                ip_start : "33.0.0.1"
+                ip_end : "33.1.255.255"
+                track_ports : false
+              - name : "s4"
+                distribution : "seq"
+                ip_start : "34.0.0.1"
+                ip_end : "34.1.255.255"
+                track_ports : false
+              - name : "s5"
+                distribution : "seq"
+                ip_start : "35.0.0.1"
+                ip_end : "35.1.255.255"
+                track_ports : false
+              - name : "s6"
+                distribution : "seq"
+                ip_start : "36.0.0.1"
+                ip_end : "36.1.255.255"
+                track_ports : false
+              - name : "s7"
+                distribution : "seq"
+                ip_start : "37.0.0.1"
+                ip_end : "37.1.255.255"
+                track_ports : false
+  cap_ipg    : false
+  cap_info : 
+     - name: test.pcap
+       client_pool: "c0"
+       server_pool: "s0"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c1"
+       server_pool: "s1"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c2"
+       server_pool: "s2"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c3"
+       server_pool: "s3"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c4"
+       server_pool: "s4"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c5"
+       server_pool: "s5"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c6"
+       server_pool: "s6"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+     - name: test.pcap
+       client_pool: "c7"
+       server_pool: "s7"
+       cps : 300
+       ipg : 10000
+       rtt : 10000
+       w   : 1
+       limit: 100
+memory    :             
+      dp_flows    : 104048576 
+

@@ -4,19 +4,19 @@
 
 echo "COMPOSE is: $COMPOSE"
 
-dbg_flag=${dbg_flag:-"set +x"}
+dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 pushd ~/temp
 fdp_release=$FDP_RELEASE
-server="netqe21.knqe.lab.eng.bos.redhat.com"
-client="netqe44.knqe.lab.eng.bos.redhat.com"
-server_driver="i40e"
+server="netqe2.knqe.lab.eng.bos.redhat.com"
+client="netqe3.knqe.lab.eng.bos.redhat.com"
+server_driver="ice"
 client_driver="i40e"
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	
-VM_IMAGE=rhel8.3.qcow2 # USE rhel8.3 VM IMAGE for now to avoid problems with ipv6 tests
+#VM_IMAGE=rhel8.3.qcow2 # USE rhel8.3 VM IMAGE for now to avoid problems with ipv6 tests
 
-cat ~/git/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/mcast_snoop" | runtest $COMPOSE --machine=$server,$client $(echo "$brew_build_cmd") --systype=machine,machine $(echo "$zstream_repo_list") --param=dbg_flag="$dbg_flag" --param=SELINUX=$SELINUX --param=NAY=yes --param=PVT=no --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/mcast_snoop, Client driver: $client_driver, Server driver: $server_driver  $special_info"
+cat ~/git/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/mcast_snoop" | runtest $COMPOSE --machine=$server,$client $(echo "$brew_build_cmd") --systype=machine,machine $(echo "$zstream_repo_list") --param=dbg_flag="$dbg_flag" --param=SELINUX=$SELINUX --param=NAY=yes --param=PVT=no --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/mcast_snoop, Client driver: $client_driver, Server driver: $server_driver  $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
-rm -f ~/git/kernel/networking/tools/runtest-network/job*.xml
+rm -f ~/git/kernel/networking/tools/runtest-network/job*.xml --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 popd

@@ -7,8 +7,6 @@ dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
 
-source ~/.bashrc
-
 target=$1
 if [[ $# -lt 1 ]]; then
 	echo ""
@@ -19,17 +17,9 @@ if [[ $# -lt 1 ]]; then
 	exit 1
 fi
 
-if [[ $(echo $target | awk -F "." '{print NF}') -eq 1 ]]; then
-	if [[ $(fqdn $target) ]]; then
-		target=$(fqdn $target)
-	else
-		target=$target.knqe.lab.eng.bos.redhat.com
-	fi
-fi
-
 echo Target system is: $target
 
-# install necessary packages
+# Install necessary packages
 if [[ ! $(which sshpass) ]]; then
 	if ! rpm -q epel-release > /dev/null; then	
 		echo "Installing EPEL repo and sshpass package..."
@@ -62,26 +52,19 @@ if [[ $? -ne 0 ]]; then
 	exit 1
 fi
 
-#ssh -q root@$target exit
-#if [[ $? -eq 0 ]]; then
-#	echo "You already have an SSH key on $target.  Using standard SSH to connect..."
-#	ssh -o StrictHostKeyChecking=no root@$target
-#	exit 0
-#fi
+pw_file=~/password_list.txt
 
-pw_file="./password_list.txt"
-
-rm -f $pw_file
+rm -f "$pw_file"
 
 cat <<-EOF > $pw_file
-	fo0m4nchU
 	QwAo2U6GRxyNPKiZaOCx
 	100yard-
+	fo0m4nchU
 	redhat
 	qum5net
 EOF
 
-total_pw=$(cat $pw_file | wc -l)
+total_pw=$(cat "$pw_file" | wc -l)
 count=1
 
 echo "There are $total_pw passwords present in the password list file"

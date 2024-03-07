@@ -1,0 +1,167 @@
+<job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
+  <whiteboard>OVS FDP_RELEASE, OVS_RPM_NAME, COMPOSE, openvswitch/vm100, Driver: DRIVER</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="OVS FDP_RELEASE, OVS_RPM_NAME, COMPOSE, openvswitch/vm100, Driver: DRIVER" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="COMPOSE"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+      </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="netqe21.knqe.lab.eng.bos.redhat.com "/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+      </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="rpm_ovs" value="$RPM_OVS"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="RHEL-7.5" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="COMPOSE"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="netqe44.knqe.lab.eng.bos.redhat.com"/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="rpm_ovs" value="$RPM_OVS"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="RHEL-7.5" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="COMPOSE"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="netqe6.knqe.lab.eng.bos.redhat.com"/>
+                    <system_type op="=" value="Machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="SERVERS">
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="SERVERS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="rpm_ovs" value="$RPM_OVS"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="RHEL-7.5" role="None" ks_meta="" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="None"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+                <and>
+                    <distro_name op="=" value="COMPOSE"/>
+                    <distro_variant op="=" value="Server"/>
+                    <distro_method op="=" value="nfs"/>
+                    <distro_arch op="=" value="x86_64"/>
+                </and>
+            </distroRequires>
+      <hostRequires>
+                <and>
+                    <hostname op="=" value="netqe5.knqe.lab.eng.bos.redhat.com"/>
+                    <system_type op="=" value="machine"/>
+                </and>
+                <or>
+                </or>
+                <not>
+                </not>
+            </hostRequires>
+      <partitions>
+            </partitions>
+      <task name="/distribution/install" role="CLIENTS">
+        <params>
+          <param name="DISTRO_BUILD" value="COMPOSE"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/vm100" role="CLIENTS">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_DRIVER" value="DRIVER"/>
+          <param name="rpm_ovs" value="$RPM_OVS"/>
+          <param name="image_name" value="rhel7.5.qcow2"/>
+          <param name="pkg_netperf" value="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools/netperf-20160222.tar.bz2"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+

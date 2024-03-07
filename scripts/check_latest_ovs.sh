@@ -8,7 +8,7 @@ check_latest_openvswitch_package()
 	lp_version=$2
 	ovs_arch=${ovs_arch:-"x86_64"}
 	ovs_channel=${ovs_channel:-"fdp"}
-	ovs_rpm_parent_location="download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/$ovs_rpm_version"
+	ovs_rpm_parent_location="download.devel.redhat.com/brewroot/packages/openvswitch/$ovs_rpm_version"
 	sudo rhos-release -x $lp_version
 	sudo yum clean expire-cache
 	pushd ~

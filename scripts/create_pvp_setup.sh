@@ -187,7 +187,7 @@ function='0x0'/>
   </devices>
 </domain>
 
-wget -O /var/lib/libvirt/images/g1.qcow2 http://netqe-infra01.knqe.lab.eng.bos.redhat.com/share/vms/OVS/rhel8.2.qcow2_large
+wget -O /var/lib/libvirt/images/g1.qcow2 http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/vms/OVS/rhel8.2.qcow2_large
 cp /var/lib/libvirt/images/g1.qcow2 /var/lib/libvirt/images/g2.qcow2
 virsh define /home/g1.xml
 virsh define /home/g2.xml

@@ -62,8 +62,8 @@ chat with Flavio
 (01:27:49 PM) fbl_: no, fedora has its own packages
 (01:28:06 PM) fbl_: so you need to deploy fedora and get ovs, dpdk and driverctl from there
 (01:28:15 PM) fbl_: but the remaining should be the same
-(01:28:54 PM) ralongi: ok.  so you guys would provide us a pointer to the appropriate ovs related packages to install with fedora?  right now we install from http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/
-(01:29:31 PM) ralongi: or we just deploy fedora and then install ovs stuff from http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/?
+(01:28:54 PM) ralongi: ok.  so you guys would provide us a pointer to the appropriate ovs related packages to install with fedora?  right now we install from http://download.devel.redhat.com/brewroot/packages/openvswitch/
+(01:29:31 PM) ralongi: or we just deploy fedora and then install ovs stuff from http://download.devel.redhat.com/brewroot/packages/openvswitch/?
 (01:30:06 PM) fbl_: I think you can get from koji:
 (01:30:11 PM) fbl_: https://koji.fedoraproject.org/koji/packageinfo?packageID=13455
 (01:30:33 PM) fbl_: there is an option to get notification when new build is pushed to stable/rawhide

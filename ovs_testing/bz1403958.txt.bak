@@ -1,0 +1,55 @@
+[root@netqe2 ~]# ps -ax | grep ovs
+
+ 2935 pts/0    S+     0:00 grep --color=auto ovs
+ 
+[root@netqe2 ~]# rpm -ivh http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
+Retrieving http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/14.git20160727.el7fdp/x86_64/openvswitch-2.5.0-14.git20160727.el7fdp.x86_64.rpm
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:openvswitch-2.5.0-14.git20160727.################################# [100%]
+   
+[root@netqe2 ~]# systemctl enable openvswitch.service && systemctl start openvswitch.service
+Created symlink from /etc/systemd/system/multi-user.target.wants/openvswitch.service to /usr/lib/systemd/system/openvswitch.service.
+
+[root@netqe2 ~]# ps -ax | grep ovs
+ 2996 ?        S<s    0:00 ovsdb-server: monitoring pid 2997 (healthy)
+ 2997 ?        S<     0:00 ovsdb-server /etc/openvswitch/conf.db -vconsole:emer -vsyslog:err -vfile:info --remote=punix:/var/run/openvswitch/db.sock --private-key=db:Open_vSwitch,SSL,private_key --certificate=db:Open_vSwitch,SSL,certificate --bootstrap-ca-cert=db:Open_vSwitch,SSL,ca_cert --no-chdir --log-file=/var/log/openvswitch/ovsdb-server.log --pidfile=/var/run/openvswitch/ovsdb-server.pid --detach --monitor
+ 3012 ?        S<s    0:00 ovs-vswitchd: monitoring pid 3013 (healthy)
+ 3013 ?        S<L    0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach --monitor
+ 3019 pts/0    S+     0:00 grep --color=auto ovs
+ 
+[root@netqe2 ~]# ovsbr="ovsbr0"
+
+[root@netqe2 ~]# ovs-vsctl add-br $ovsbr
+
+[root@netqe2 ~]# ovs-vsctl show | grep $ovsbr
+    Bridge "ovsbr0"
+        Port "ovsbr0"
+            Interface "ovsbr0"
+            
+[root@netqe2 ~]# rpm -Uvh http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
+Retrieving http://download.devel.redhat.com/brewroot/packages/openvswitch/2.5.0/22.git20160727.el7fdp/x86_64/openvswitch-2.5.0-22.git20160727.el7fdp.x86_64.rpm
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:openvswitch-2.5.0-22.git20160727.################################# [ 50%]
+Cleaning up / removing...
+   2:openvswitch-2.5.0-14.git20160727.################################# [100%]
+   
+[root@netqe2 ~]# ps -ax | grep ovs
+ 3012 ?        S<s    0:00 ovs-vswitchd: monitoring pid 3013 (healthy)
+ 3013 ?        S<Ll   0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach --monitor
+ 3137 ?        Ss     0:00 /bin/sh /usr/share/openvswitch/scripts/ovs-ctl --no-ovsdb-server --no-monitor --system-id=random start
+ 3160 ?        S<     0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach
+ 3161 ?        S<Ls   0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach
+ 3167 pts/0    R+     0:00 grep --color=auto ovs
+
+[root@netqe2 ~]# systemctl restart openvswitch.service
+[root@netqe2 ~]# ps -ax | grep ovs
+ 3012 ?        S<s    0:00 ovs-vswitchd: monitoring pid 3013 (healthy)
+ 3013 ?        S<Ll   0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach --monitor
+ 3137 ?        Ss     0:00 /bin/sh /usr/share/openvswitch/scripts/ovs-ctl --no-ovsdb-server --no-monitor --system-id=random start
+ 3160 ?        S<     0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach
+ 3161 ?        S<Ls   0:00 ovs-vswitchd unix:/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/var/log/openvswitch/ovs-vswitchd.log --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach
+ 3212 ?        S<s    0:00 ovsdb-server /etc/openvswitch/conf.db -vconsole:emer -vsyslog:err -vfile:info --remote=punix:/var/run/openvswitch/db.sock --private-key=db:Open_vSwitch,SSL,private_key --certificate=db:Open_vSwitch,SSL,certificate --bootstrap-ca-cert=db:Open_vSwitch,SSL,ca_cert --no-chdir --log-file=/var/log/openvswitch/ovsdb-server.log --pidfile=/var/run/openvswitch/ovsdb-server.pid --detach
+ 3226 pts/0    S+     0:00 grep --color=auto ovs
+

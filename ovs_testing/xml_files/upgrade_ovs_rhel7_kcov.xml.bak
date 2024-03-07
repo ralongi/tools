@@ -1,0 +1,51 @@
+<job retention_tag="scratch">
+  <whiteboard>ralongi@redhat.com, Vanilla OVS upgrade test - 7.3/7.4 RHEL-7.4 GA with OVS 2.6.1.10/ FDP 2.8 FDB kcov</whiteboard>
+  <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, Vanilla OVS upgrade test - 7.3/7.4 RHEL-7.4 GA with OVS 2.6.1.10/ FDP 2.8 FDB kcov" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+          <distro_name op="=" value="RHEL-7.4"/>
+          <distro_variant op="=" value="Server"/>
+          <distro_arch op="=" value="x86_64"/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname op="=" value="netqe13.knqe.lab.eng.bos.redhat.com"/>
+          <system_type op="=" value="Machine"/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/kcov/prepare" role="STANDALONE">
+        <params>
+          <param name="MODE" value="KA"/>
+          <param name="KDIR" value="net"/>
+        </params>
+      </task>
+      <task name="/kernel/kcov/start" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/upgrade_ovs" role="STANDALONE">
+        <params>
+          <param name="dbg_flag" value="set -x"/>
+          <param name="vm_version" value="7.4"/>
+          <param name="create_many_flows" value="yes"/>
+          <param name="traffic_topo" value="pvp"/>
+          <param name="xena_test_duration" value="180"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NM_CTL" value="yes"/>
+          <param name="baseline_openvswitch_rpm_url" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.7.2/7.git20170719.el7fdp/x86_64/openvswitch-2.7.2-7.git20170719.el7fdp.x86_64.rpm"/>
+          <param name="openvswitch_rpm" value="http://download.devel.redhat.com/brewroot/packages/openvswitch/2.8.0/1.el7fdb/x86_64/openvswitch-2.8.0-1.el7fdb.x86_64.rpm"/>
+      </task>
+      <task name="/kernel/kcov/end" role="STANDALONE"/>
+      <task name="/kernel/kcov/finalize" role="STANDALONE"/>
+    </recipe>
+  </recipeSet>
+</job>
+

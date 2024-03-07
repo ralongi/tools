@@ -1,0 +1,5 @@
+      <task name="/distribution/reservesys" role="STANDALONE">
+        <params>
+          <param name="RESERVETIME" value="86400"/>
+        </params>
+      </task>

@@ -1,0 +1,447 @@
+
+[ralongi@ralongi openvswitch]$ rhpkg switch-branch fast-datapath-rhel-7
+Switched to branch 'fast-datapath-rhel-7'
+[ralongi@ralongi openvswitch]$ rhpkg prep
+Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.tN6pJk
++ umask 022
++ cd /home/ralongi/openvswitch
++ cd /home/ralongi/openvswitch
++ rm -rf openvswitch-2.6.1
++ /usr/bin/gzip -dc /home/ralongi/openvswitch/openvswitch-2.6.1.tar.gz
++ /usr/bin/tar -xf -
++ STATUS=0
++ '[' 0 -ne 0 ']'
++ cd openvswitch-2.6.1
++ /usr/bin/gzip -dc /home/ralongi/openvswitch/dpdk-16.11.tar.gz
++ /usr/bin/tar -xf -
++ STATUS=0
++ '[' 0 -ne 0 ']'
++ /usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .
++ echo 'Patch #1 (openvswitch-2.6-branch-ff22de4f.patch):'
+Patch #1 (openvswitch-2.6-branch-ff22de4f.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/openvswitch-2.6-branch-ff22de4f.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file FAQ.md
+patching file NEWS
+patching file configure.ac
+patching file datapath/conntrack.c
+patching file datapath/linux/compat/vxlan.c
+patching file debian/changelog
+patching file include/openflow/openflow-1.4.h
+patching file include/openvswitch/ofp-util.h
+patching file lib/dpif-netdev.c
+patching file lib/netdev-dpdk.c
+patching file lib/netdev.c
+patching file lib/ofp-print.c
+patching file lib/ofp-util.c
+patching file lib/ovs-router.c
+patching file manpages.mk
+patching file ofproto/ofproto-dpif-xlate.c
+patching file ofproto/ofproto.c
+patching file ovn/northd/ovn-northd.c
+patching file ovn/utilities/ovn-sbctl.8.in
+patching file ovn/utilities/ovn-trace.c
+patching file rhel/usr_lib_systemd_system_ovn-controller-vtep.service
+patching file rhel/usr_lib_systemd_system_ovn-controller.service
+patching file rhel/usr_lib_systemd_system_ovn-northd.service
+patching file tests/automake.mk
+patching file tests/mcast-snooping.at
+patching file tests/ofp-print.at
+patching file tests/ofproto.at
+patching file tests/ovs-router.at
+patching file tests/pmd.at
+patching file tests/testsuite.at
+patching file utilities/ovs-ctl.in
+patching file utilities/ovs-ofctl.c
+patching file utilities/ovs-tcpdump.in
+patching file vswitchd/vswitch.xml
++ echo 'Patch #10 (openvswitch-2.6-dpdk16.11-update.patch):'
+Patch #10 (openvswitch-2.6-dpdk16.11-update.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/openvswitch-2.6-dpdk16.11-update.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file .travis/linux-build.sh
+patching file INSTALL.DPDK-ADVANCED.md
+patching file INSTALL.DPDK.md
+patching file NEWS
+patching file lib/netdev-dpdk.c
++ echo 'Patch #20 (ovn-northd-support-IPAM-with-externally-specified-MAC.patch):'
+Patch #20 (ovn-northd-support-IPAM-with-externally-specified-MAC.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovn-northd-support-IPAM-with-externally-specified-MAC.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file NEWS
+patching file ovn/lib/ovn-util.c
+patching file ovn/lib/ovn-util.h
+patching file ovn/northd/ovn-northd.c
+patching file ovn/ovn-nb.xml
+patching file tests/ovn.at
++ echo 'Patch #21 (0001-ovn-Encode-dhcpv6-PACKET_IN-userdata-as-big-endian.patch):'
+Patch #21 (0001-ovn-Encode-dhcpv6-PACKET_IN-userdata-as-big-endian.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-ovn-Encode-dhcpv6-PACKET_IN-userdata-as-big-endian.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/controller/pinctrl.c
+patching file ovn/lib/actions.c
+patching file ovn/lib/ovn-dhcp.h
+patching file tests/ovn.at
++ echo 'Patch #22 (0001-ovn-northd-Sort-options-in-put_dhcp-v6-_opts.patch):'
+Patch #22 (0001-ovn-northd-Sort-options-in-put_dhcp-v6-_opts.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-ovn-northd-Sort-options-in-put_dhcp-v6-_opts.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/northd/ovn-northd.c
+Hunk #1 succeeded at 1951 (offset 11 lines).
+Hunk #2 succeeded at 2000 (offset 11 lines).
+Hunk #3 succeeded at 2025 (offset 11 lines).
+patching file tests/ovn.at
++ echo 'Patch #23 (0001-tests-Fix-race-in-ovn-vtep-3-HVs-1-VIFs-HV-1-GW-1-LS.patch):'
+Patch #23 (0001-tests-Fix-race-in-ovn-vtep-3-HVs-1-VIFs-HV-1-GW-1-LS.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-tests-Fix-race-in-ovn-vtep-3-HVs-1-VIFs-HV-1-GW-1-LS.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file tests/ovn.at
++ echo 'Patch #24 (0001-ovn-northd-Add-flows-in-DHCP_OPTIONS-pipeline-to-sup.patch):'
+Patch #24 (0001-ovn-northd-Add-flows-in-DHCP_OPTIONS-pipeline-to-sup.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-ovn-northd-Add-flows-in-DHCP_OPTIONS-pipeline-to-sup.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/northd/ovn-northd.c
+Hunk #1 succeeded at 1901 (offset 11 lines).
+Hunk #2 succeeded at 1972 (offset 11 lines).
+Hunk #3 succeeded at 2839 (offset 11 lines).
+Hunk #4 succeeded at 2853 (offset 11 lines).
+patching file tests/ovn.at
++ echo 'Patch #30 (ovsdb-idlc-Initialize-nonnull-string-columns-for-ins.patch):'
+Patch #30 (ovsdb-idlc-Initialize-nonnull-string-columns-for-ins.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovsdb-idlc-Initialize-nonnull-string-columns-for-ins.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovsdb/ovsdb-idlc.in
++ echo 'Patch #40 (ovn-controller-Provide-the-option-to-set-Encap.optio.patch):'
+Patch #40 (ovn-controller-Provide-the-option-to-set-Encap.optio.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovn-controller-Provide-the-option-to-set-Encap.optio.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/controller/chassis.c
+patching file ovn/controller/ovn-controller.8.xml
+Hunk #1 succeeded at 154 (offset 5 lines).
+patching file ovn/ovn-sb.xml
+Hunk #1 succeeded at 299 (offset -11 lines).
++ echo 'Patch #41 (rhel-firewall-service-files-for-OVN.patch):'
+Patch #41 (rhel-firewall-service-files-for-OVN.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/rhel-firewall-service-files-for-OVN.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file rhel/automake.mk
+patching file rhel/openvswitch-fedora.spec.in
+Hunk #4 succeeded at 513 (offset -11 lines).
+patching file rhel/usr_lib_firewalld_services_ovn-central-firewall-service.xml
+patching file rhel/usr_lib_firewalld_services_ovn-host-firewall-service.xml
++ echo 'Patch #42 (rhel-make-openvswitch-service-start-return-when-read.patch):'
+Patch #42 (rhel-make-openvswitch-service-start-return-when-read.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/rhel-make-openvswitch-service-start-return-when-read.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file rhel/usr_lib_systemd_system_openvswitch.service
++ echo 'Patch #43 (ovn-northd-ipam-handle-the-static-MAC-updates-by-the-user.patch):'
+Patch #43 (ovn-northd-ipam-handle-the-static-MAC-updates-by-the-user.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovn-northd-ipam-handle-the-static-MAC-updates-by-the-user.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/northd/ovn-northd.c
+Hunk #1 succeeded at 1064 (offset -115 lines).
+Hunk #2 succeeded at 1152 (offset -126 lines).
+patching file tests/ovn.at
+Hunk #1 succeeded at 4735 (offset -158 lines).
++ echo 'Patch #44 (0001-rhel-ifup-support-vhost-user-client-mode.patch):'
+Patch #44 (0001-rhel-ifup-support-vhost-user-client-mode.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-rhel-ifup-support-vhost-user-client-mode.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file rhel/etc_sysconfig_network-scripts_ifup-ovs
++ exit 0
+[ralongi@ralongi openvswitch]$ git log --oneline --grep=1422227
+[ralongi@ralongi openvswitch]$ 
+
+
+*************************************************************************
+
+[ralongi@ralongi openvswitch]$ rhpkg switch-branch fast-datapath-beta-rhel-7
+Switched to branch 'fast-datapath-beta-rhel-7'
+[ralongi@ralongi openvswitch]$ rhpkg prep
+Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.CRlBfZ
++ umask 022
++ cd /home/ralongi/openvswitch
++ cd /home/ralongi/openvswitch
++ rm -rf openvswitch-2.6.1
++ /usr/bin/gzip -dc /home/ralongi/openvswitch/openvswitch-2.6.1.tar.gz
++ /usr/bin/tar -xf -
++ STATUS=0
++ '[' 0 -ne 0 ']'
++ cd openvswitch-2.6.1
++ /usr/bin/gzip -dc /home/ralongi/openvswitch/dpdk-16.11.tar.gz
++ /usr/bin/tar -xf -
++ STATUS=0
++ '[' 0 -ne 0 ']'
++ /usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .
++ echo 'Patch #1 (openvswitch-2.6-branch-ff22de4f.patch):'
+Patch #1 (openvswitch-2.6-branch-ff22de4f.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/openvswitch-2.6-branch-ff22de4f.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file FAQ.md
+patching file NEWS
+patching file configure.ac
+patching file datapath/conntrack.c
+patching file datapath/linux/compat/vxlan.c
+patching file debian/changelog
+patching file include/openflow/openflow-1.4.h
+patching file include/openvswitch/ofp-util.h
+patching file lib/dpif-netdev.c
+patching file lib/netdev-dpdk.c
+patching file lib/netdev.c
+patching file lib/ofp-print.c
+patching file lib/ofp-util.c
+patching file lib/ovs-router.c
+patching file manpages.mk
+patching file ofproto/ofproto-dpif-xlate.c
+patching file ofproto/ofproto.c
+patching file ovn/northd/ovn-northd.c
+patching file ovn/utilities/ovn-sbctl.8.in
+patching file ovn/utilities/ovn-trace.c
+patching file rhel/usr_lib_systemd_system_ovn-controller-vtep.service
+patching file rhel/usr_lib_systemd_system_ovn-controller.service
+patching file rhel/usr_lib_systemd_system_ovn-northd.service
+patching file tests/automake.mk
+patching file tests/mcast-snooping.at
+patching file tests/ofp-print.at
+patching file tests/ofproto.at
+patching file tests/ovs-router.at
+patching file tests/pmd.at
+patching file tests/testsuite.at
+patching file utilities/ovs-ctl.in
+patching file utilities/ovs-ofctl.c
+patching file utilities/ovs-tcpdump.in
+patching file vswitchd/vswitch.xml
++ echo 'Patch #10 (openvswitch-2.6-dpdk16.11-update.patch):'
+Patch #10 (openvswitch-2.6-dpdk16.11-update.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/openvswitch-2.6-dpdk16.11-update.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file .travis/linux-build.sh
+patching file INSTALL.DPDK-ADVANCED.md
+patching file INSTALL.DPDK.md
+patching file NEWS
+patching file lib/netdev-dpdk.c
++ echo 'Patch #20 (ovn-northd-support-IPAM-with-externally-specified-MAC.patch):'
+Patch #20 (ovn-northd-support-IPAM-with-externally-specified-MAC.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovn-northd-support-IPAM-with-externally-specified-MAC.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file NEWS
+patching file ovn/lib/ovn-util.c
+patching file ovn/lib/ovn-util.h
+patching file ovn/northd/ovn-northd.c
+patching file ovn/ovn-nb.xml
+patching file tests/ovn.at
++ echo 'Patch #21 (0001-ovn-Encode-dhcpv6-PACKET_IN-userdata-as-big-endian.patch):'
+Patch #21 (0001-ovn-Encode-dhcpv6-PACKET_IN-userdata-as-big-endian.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-ovn-Encode-dhcpv6-PACKET_IN-userdata-as-big-endian.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/controller/pinctrl.c
+patching file ovn/lib/actions.c
+patching file ovn/lib/ovn-dhcp.h
+patching file tests/ovn.at
++ echo 'Patch #22 (0001-ovn-northd-Sort-options-in-put_dhcp-v6-_opts.patch):'
+Patch #22 (0001-ovn-northd-Sort-options-in-put_dhcp-v6-_opts.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-ovn-northd-Sort-options-in-put_dhcp-v6-_opts.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/northd/ovn-northd.c
+Hunk #1 succeeded at 1951 (offset 11 lines).
+Hunk #2 succeeded at 2000 (offset 11 lines).
+Hunk #3 succeeded at 2025 (offset 11 lines).
+patching file tests/ovn.at
++ echo 'Patch #23 (0001-tests-Fix-race-in-ovn-vtep-3-HVs-1-VIFs-HV-1-GW-1-LS.patch):'
+Patch #23 (0001-tests-Fix-race-in-ovn-vtep-3-HVs-1-VIFs-HV-1-GW-1-LS.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-tests-Fix-race-in-ovn-vtep-3-HVs-1-VIFs-HV-1-GW-1-LS.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file tests/ovn.at
++ echo 'Patch #24 (0001-ovn-northd-Add-flows-in-DHCP_OPTIONS-pipeline-to-sup.patch):'
+Patch #24 (0001-ovn-northd-Add-flows-in-DHCP_OPTIONS-pipeline-to-sup.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-ovn-northd-Add-flows-in-DHCP_OPTIONS-pipeline-to-sup.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/northd/ovn-northd.c
+Hunk #1 succeeded at 1901 (offset 11 lines).
+Hunk #2 succeeded at 1972 (offset 11 lines).
+Hunk #3 succeeded at 2839 (offset 11 lines).
+Hunk #4 succeeded at 2853 (offset 11 lines).
+patching file tests/ovn.at
++ echo 'Patch #30 (ovsdb-idlc-Initialize-nonnull-string-columns-for-ins.patch):'
+Patch #30 (ovsdb-idlc-Initialize-nonnull-string-columns-for-ins.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovsdb-idlc-Initialize-nonnull-string-columns-for-ins.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovsdb/ovsdb-idlc.in
++ echo 'Patch #40 (ovn-controller-Provide-the-option-to-set-Encap.optio.patch):'
+Patch #40 (ovn-controller-Provide-the-option-to-set-Encap.optio.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovn-controller-Provide-the-option-to-set-Encap.optio.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/controller/chassis.c
+patching file ovn/controller/ovn-controller.8.xml
+Hunk #1 succeeded at 154 (offset 5 lines).
+patching file ovn/ovn-sb.xml
+Hunk #1 succeeded at 299 (offset -11 lines).
++ echo 'Patch #41 (rhel-firewall-service-files-for-OVN.patch):'
+Patch #41 (rhel-firewall-service-files-for-OVN.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/rhel-firewall-service-files-for-OVN.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file rhel/automake.mk
+patching file rhel/openvswitch-fedora.spec.in
+Hunk #4 succeeded at 513 (offset -11 lines).
+patching file rhel/usr_lib_firewalld_services_ovn-central-firewall-service.xml
+patching file rhel/usr_lib_firewalld_services_ovn-host-firewall-service.xml
++ echo 'Patch #42 (rhel-make-openvswitch-service-start-return-when-read.patch):'
+Patch #42 (rhel-make-openvswitch-service-start-return-when-read.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/rhel-make-openvswitch-service-start-return-when-read.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file rhel/usr_lib_systemd_system_openvswitch.service
++ echo 'Patch #43 (ovn-northd-ipam-handle-the-static-MAC-updates-by-the-user.patch):'
+Patch #43 (ovn-northd-ipam-handle-the-static-MAC-updates-by-the-user.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/ovn-northd-ipam-handle-the-static-MAC-updates-by-the-user.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file ovn/northd/ovn-northd.c
+Hunk #1 succeeded at 1064 (offset -115 lines).
+Hunk #2 succeeded at 1152 (offset -126 lines).
+patching file tests/ovn.at
+Hunk #1 succeeded at 4735 (offset -158 lines).
++ echo 'Patch #44 (0001-rhel-ifup-support-vhost-user-client-mode.patch):'
+Patch #44 (0001-rhel-ifup-support-vhost-user-client-mode.patch):
++ /usr/bin/cat /home/ralongi/openvswitch/0001-rhel-ifup-support-vhost-user-client-mode.patch
++ /usr/bin/patch -p1 --fuzz=0
+patching file rhel/etc_sysconfig_network-scripts_ifup-ovs
++ exit 0
+[ralongi@ralongi openvswitch]$ git log --oneline --grep=1422227
+b7f4717 systemd service starts too fast
+[ralongi@ralongi openvswitch]$ git show
+commit 2926a69a2d2a74ae38ce364848e475db33c34e78
+Author: Aaron Conole <aconole@redhat.com>
+Date:   Thu Feb 16 09:34:06 2017 -0500
+
+    ifup/down vhostuser client support
+    
+    Also correct a type-o in patch42's comment
+    Resolves: #1418957
+
+diff --git a/0001-rhel-ifup-support-vhost-user-client-mode.patch b/0001-rhel-ifu
+new file mode 100644
+index 0000000..8d9913e
+--- /dev/null
++++ b/0001-rhel-ifup-support-vhost-user-client-mode.patch
+@@ -0,0 +1,46 @@
++From d46b603797c6fa8ab979e3de4ead73e50a37e7ec Mon Sep 17 00:00:00 2001
++From: Aaron Conole <aconole@bytheb.org>
++Date: Fri, 10 Feb 2017 12:49:38 -0500
++Subject: [PATCH] rhel/ifup: support vhost-user client mode
++
++This adds support for ifup to configure client-mode sockets by exposing
++two new variables $OVS_PORT_MODE and $OVS_PORT_PATH to the ifcfg
++scripts.  When OVS_PORT_MODE is set to 'client', the OVS_PORT_PATH will
++be passed as the vhost-server-path option.
++
++No change is needed to ifdown because the OVSDPDKVhostUserPort type
++already has an appropriate entry.
++
++Signed-off-by: Aaron Conole <aconole@redhat.com>
++Signed-off-by: Daniele Di Proietto <diproiettod@vmware.com>
++---
++ rhel/etc_sysconfig_network-scripts_ifup-ovs | 10 +++++++++-
++ 2 files changed, 18 insertions(+), 1 deletion(-)
++
+[ralongi@ralongi openvswitch]$ git show b7f4717
+commit b7f4717b40d64b915721cdafe6ebe24c7ed6ed27
+Author: Timothy Redaelli <tredaelli@redhat.com>
+Date:   Thu Feb 16 14:39:45 2017 +0100
+
+    systemd service starts too fast
+    
+    Resolves: #1422227
+
+diff --git a/openvswitch.spec b/openvswitch.spec
+index 3bec431..e1c6c4f 100644
+--- a/openvswitch.spec
++++ b/openvswitch.spec
+@@ -40,7 +40,7 @@ Version: 2.6.1
+ License: ASL 2.0 and LGPLv2+ and SISSL
+ 
+ %define snapshot .git20161206
+-%define rel 7%{?snapshot}
++%define rel 8%{?snapshot}
+ 
+ #define snapver 10346.git97bab959
+ %define srcname openvswitch
+@@ -85,6 +85,9 @@ Patch40: ovn-controller-Provide-the-option-to-set-Encap.optio.
+ # Backport OVN firewalld configuration files BZ 1390938
+ Patch41: rhel-firewall-service-files-for-OVN.patch
+ 
++# Backport OVN make openvswitch service start return when ready BZ 1422227
++Patch42: rhel-make-openvswitch-service-start-return-when-read.patch
++
+ BuildRequires: autoconf automake libtool
+ BuildRequires: systemd-units openssl openssl-devel
+ BuildRequires: python python-twisted-core python-zope-interface PyQt4 python-si
+@@ -209,6 +212,7 @@ Docker network plugins for OVN.
+ %patch30 -p1
+ %patch40 -p1
+ %patch41 -p1
++%patch42 -p1
+ 
+ %build
+ %if 0%{?snapshot:1}
+@@ -633,6 +637,9 @@ exit 0
+ %{_unitdir}/ovn-controller-vtep.service
+ 
+ %changelog
++* Thu Feb 16 2017 Timothy Redaelli <tredaelli@redhat.com> - 2.6.1-8.git20161206
++- systemd service starts too fast (#1422227)
++
+ * Fri Feb 10 2017 Lance Richardson <lrichard@redhat.com> - 2.6.1-7.git20161206
+ - iptables should be easily configurable for OVN hosts and OVN central server (
+ 
+diff --git a/rhel-make-openvswitch-service-start-return-when-read.patch b/rhel-m
+new file mode 100644
+index 0000000..8547f1e
+--- /dev/null
++++ b/rhel-make-openvswitch-service-start-return-when-read.patch
+@@ -0,0 +1,41 @@
++commit 273cc28d8d1bf597c97450223ec17bbd444c0b37
++Author: Alan Pevec <alan.pevec@redhat.com>
++Date:   Fri Feb 10 19:03:19 2017 -0500
++
++    rhel: make openvswitch service start return when ready
++    
++    In OVS 2.6 openvswitch systemd service was changed to use BindsTo
++    instead of Requires for sub-services but also removed them from After
++    
++    This made main openvswitch service return before sub-services were ready
++    breaking scripts which assumed everything is ready after systemctl start
++    e.g. in OpenStack CI infra [1] is calling ovs-vsctl immediately after
++    service start exposing a race in virtualized CI environment:
++    2017-02-09T23:11:12.498Z|00007|bridge|INFO|ovs-vswitchd (Open vSwitch) 2.6.
++    but ovs-ctl tried to access it few msec too early:
++    2017-02-09 23:11:12.352493 | ovs-vsctl: unix:/var/run/openvswitch/db.sock: 
++    
++    Solution is to add ordering dependencies, BindsTo/Requires do not ensure it
++    
++    [1] https://github.com/openstack-infra/devstack-gate/blob/c435a724bd257b22a
++    
++    [2] https://www.freedesktop.org/software/systemd/man/systemd.unit.html#Requ
++    
++    Fixes: 84ad120 ("rhel: Improved Systemd Integration")
++    Signed-off-by: Alan Pevec <alan.pevec@redhat.com>
++    Acked-by: Aaron Conole <aconole@redhat.com>
++    Signed-off-by: Russell Bryant <russell@ovn.org>
++
++diff --git a/rhel/usr_lib_systemd_system_openvswitch.service b/rhel/usr_lib_sys
++index e823c54..bdbceae 100644
++--- a/rhel/usr_lib_systemd_system_openvswitch.service
+++++ b/rhel/usr_lib_systemd_system_openvswitch.service
++@@ -1,7 +1,7 @@
++ [Unit]
++ Description=Open vSwitch
++ Before=network.target network.service
++-After=network-pre.target
+++After=network-pre.target ovsdb-server.service ovs-vswitchd.service
++ PartOf=network.target
++ BindsTo=ovsdb-server.service
++ BindsTo=ovs-vswitchd.service
+(END)
+
+
+
+
+

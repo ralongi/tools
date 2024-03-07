@@ -64,7 +64,7 @@ download_tools()
 download_tools
 
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
-file_server="netqe-infra01.knqe.lab.eng.bos.redhat.com"
+file_server="netqe-infra01.knqe.eng.rdu2.dc.redhat.com"
 ovsbr="ovsbr0"
 selinux_enable=${selinux_enable:-"yes"}
 overall_port_start=${overall_port_start:-"1"}
@@ -88,7 +88,7 @@ create_many_flows=${create_many_flows:-"yes"}
 auto_flow_restore=${auto_flow_restore:-"no"}
 repo_target_compose_id=${repo_target_compose_id:-""}
 install_ofed=${install_ofed:-"no"}
-ovs_selinux_rpm=${ovs_selinux_rpm:-"http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"}
+ovs_selinux_rpm=${ovs_selinux_rpm:-"http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"}
 install_latest_ovs_rpm=${install_latest_ovs_rpm:-"no"}
 
 # Variables below are for layered product (lp) such as RHELOSP, RHOCP, RHEV
@@ -117,7 +117,7 @@ skip_test2=${skip_test2:-"no"}
 export dbg_flag="set -x"
 export install_latest_ovs_rpm="no"
 export ovs_rpm_version="2.9.0"
-export ovs_selinux_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/6.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-6.el8fdp.noarch.rpm"
+export ovs_selinux_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/6.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-6.el8fdp.noarch.rpm"
 export lp_test_type="RHELOSP"
 export lp_starting_version="10"
 export lp_target_version="13"
@@ -134,7 +134,7 @@ export NIC_NUM="all"
 export NM_CTL="yes"
 
 rm -f /home/junk.txt
-wget -O /home/junk.txt http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/junk.txt
+wget -O /home/junk.txt http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/junk.txt
 password=$(cat /home/junk.txt)
 
 pvt_epel_install
@@ -165,7 +165,7 @@ reboot
 
 ############################## after reboot:
 rhel_version=$(cut -f1 -d. /etc/redhat-release | sed 's/[^0-9]//g')
-file_server="netqe-infra01.knqe.lab.eng.bos.redhat.com"
+file_server="netqe-infra01.knqe.eng.rdu2.dc.redhat.com"
 ovsbr="ovsbr0"
 selinux_enable=${selinux_enable:-"yes"}
 overall_port_start=${overall_port_start:-"1"}
@@ -189,7 +189,7 @@ create_many_flows=${create_many_flows:-"yes"}
 auto_flow_restore=${auto_flow_restore:-"no"}
 repo_target_compose_id=${repo_target_compose_id:-""}
 install_ofed=${install_ofed:-"no"}
-ovs_selinux_rpm=${ovs_selinux_rpm:-"http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"}
+ovs_selinux_rpm=${ovs_selinux_rpm:-"http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm"}
 install_latest_ovs_rpm=${install_latest_ovs_rpm:-"no"}
 
 # Variables below are for layered product (lp) such as RHELOSP, RHOCP, RHEV
@@ -218,7 +218,7 @@ skip_test2=${skip_test2:-"no"}
 export dbg_flag="set -x"
 export install_latest_ovs_rpm="no"
 export ovs_rpm_version="2.10.0"
-export ovs_selinux_rpm="http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/6.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-6.el8fdp.noarch.rpm"
+export ovs_selinux_rpm="http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/6.el8fdp/noarch/openvswitch-selinux-extra-policy-1.0-6.el8fdp.noarch.rpm"
 export lp_test_type="RHELOSP"
 export lp_starting_version="10"
 export lp_target_version="14"
@@ -279,7 +279,7 @@ cleanup_ovs
 yum localinstall -y http://download.lab.bos.redhat.com/rcm-guest/puddles/OpenStack/rhos-release/rhos-release-latest.noarch.rpm
 generate_lp_repo starting
 yum clean expire-cache
-yum -y install http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm
+yum -y install http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm
 yum -y install openvswitch
 systemctl enable openvswitch.service
 ovs_start

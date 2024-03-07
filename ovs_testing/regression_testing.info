@@ -16,25 +16,25 @@ Below is my cmd using to submit jobs:
     [root@dhcp-12-166 runtest-network]# pwd
     /kernel/networking/tools/runtest-network
 
-    cat ovs.list | egrep "openvswitch/topo|openvswitch/mcast_snoop" | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=netqe22.knqe.lab.eng.bos.redhat.com,netqe13.knqe.lab.eng.bos.redhat.com --systype=machine,machine  --param=NAY=no --param=PVT=yes --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/17.el7fdp/x86_64/openvswitch-2.9.0-17.el7fdp.x86_64.rpm --param=mh-NIC_DRIVER=i40e,mlx5_core
+    cat ovs.list | egrep "openvswitch/topo|openvswitch/mcast_snoop" | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=netqe22.knqe.rdu2.eng.redhat.com,netqe13.knqe.lab.eng.bos.redhat.com --systype=machine,machine  --param=NAY=no --param=PVT=yes --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/17.el7fdp/x86_64/openvswitch-2.9.0-17.el7fdp.x86_64.rpm --param=mh-NIC_DRIVER=i40e,mlx5_core
 
     2) ovs_qos:
     [root@dhcp-12-166 ovs_qos]# pwd
     /kernel/networking/openvswitch/ovs_qos
 
-    lstest | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=netqe13.knqe.lab.eng.bos.redhat.com,netqe22.knqe.lab.eng.bos.redhat.com --systype=machine,machine  --param=NAY=no --param=PVT=yes --param=mh-NIC_DRIVER=mlx5_core,i40e --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/17.el7fdp/x86_64/openvswitch-2.9.0-17.el7fdp.x86_64.rpm
+    lstest | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=netqe13.knqe.lab.eng.bos.redhat.com,netqe22.knqe.rdu2.eng.redhat.com --systype=machine,machine  --param=NAY=no --param=PVT=yes --param=mh-NIC_DRIVER=mlx5_core,i40e --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/17.el7fdp/x86_64/openvswitch-2.9.0-17.el7fdp.x86_64.rpm
 
     3) of_rule:
     [root@dhcp-12-166 of_rules]# pwd
     /kernel/networking/openvswitch/of_rules
 
-    lstest | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=hp-dl580g8-02.rhts.eng.pek2.redhat.com,hp-dl580g8-01.rhts.eng.pek2.redhat.com --systype=machine,machine  --param=NAY=yes --param=image_name=rhel7.5.qcow2 --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/36.el7fdp/x86_64/openvswitch-2.9.0-36.el7fdp.x86_64.rpm --cmd="yum install -y policycoreutils-python;rpm -ivh --force http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm" --param=mh-NIC_TX=3c:fd:fe:a0:3a:71,e4:1d:2d:1e:d5:10 --param=mh-NIC_RX=3c:fd:fe:a0:3a:70,e4:1d:2d:1e:d5:11
+    lstest | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=hp-dl580g8-02.rhts.eng.pek2.redhat.com,hp-dl580g8-01.rhts.eng.pek2.redhat.com --systype=machine,machine  --param=NAY=yes --param=image_name=rhel7.5.qcow2 --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/36.el7fdp/x86_64/openvswitch-2.9.0-36.el7fdp.x86_64.rpm --cmd="yum install -y policycoreutils-python;rpm -ivh --force http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm" --param=mh-NIC_TX=3c:fd:fe:a0:3a:71,e4:1d:2d:1e:d5:10 --param=mh-NIC_RX=3c:fd:fe:a0:3a:70,e4:1d:2d:1e:d5:11
 
     4) forward_bpdu:
     [root@dhcp-12-166 of_rules]# pwd
     /kernel/networking/openvswitch/forward_bpdu
 
-    lstest | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=hp-dl580g8-02.rhts.eng.pek2.redhat.com,hp-dl580g8-01.rhts.eng.pek2.redhat.com --systype=machine,machine  --param=NAY=yes --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch/2.9.0/36.el7fdp/x86_64/openvswitch-2.9.0-36.el7fdp.x86_64.rpm --cmd="yum install -y policycoreutils-python;rpm -ivh --force http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm" --param=mh-NIC_TX=3c:fd:fe:a0:3a:71,e4:1d:2d:1e:d5:10 --param=mh-NIC_RX=3c:fd:fe:a0:3a:70,e4:1d:2d:1e:d5:11
+    lstest | runtest RHEL-7.5  --variant=server --arch=x86_64 --machine=hp-dl580g8-02.rhts.eng.pek2.redhat.com,hp-dl580g8-01.rhts.eng.pek2.redhat.com --systype=machine,machine  --param=NAY=yes --param=image_name=rhel7.5.qcow2 --param=RPM_OVS=http://download.devel.redhat.com/brewroot/packages/openvswitch/2.9.0/36.el7fdp/x86_64/openvswitch-2.9.0-36.el7fdp.x86_64.rpm --cmd="yum install -y policycoreutils-python;rpm -ivh --force http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/3.el7fdp/noarch/openvswitch-selinux-extra-policy-1.0-3.el7fdp.noarch.rpm" --param=mh-NIC_TX=3c:fd:fe:a0:3a:71,e4:1d:2d:1e:d5:10 --param=mh-NIC_RX=3c:fd:fe:a0:3a:70,e4:1d:2d:1e:d5:11
 
     5) vm_100:
     clone below job

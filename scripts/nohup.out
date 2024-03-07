@@ -8,9 +8,9 @@ epel-release-7-13.noarch
 EPEL repo is already installed
 sshpass-1.06-2.el7.x86_64
 sshpass is already installed.
---2021-07-19 08:15:22--  http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/junk.txt
-Resolving netqe-infra01.knqe.lab.eng.bos.redhat.com (netqe-infra01.knqe.lab.eng.bos.redhat.com)... 10.19.15.43
-Connecting to netqe-infra01.knqe.lab.eng.bos.redhat.com (netqe-infra01.knqe.lab.eng.bos.redhat.com)|10.19.15.43|:80... connected.
+--2021-07-19 08:15:22--  http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/junk.txt
+Resolving netqe-infra01.knqe.eng.rdu2.dc.redhat.com (netqe-infra01.knqe.eng.rdu2.dc.redhat.com)... 10.19.15.43
+Connecting to netqe-infra01.knqe.eng.rdu2.dc.redhat.com (netqe-infra01.knqe.eng.rdu2.dc.redhat.com)|10.19.15.43|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 9 [text/plain]
 Saving to: ‘/home/ralongi/temp/junk.txt’
@@ -755,9 +755,9 @@ epel-release-7-13.noarch
 EPEL repo is already installed
 sshpass-1.06-2.el7.x86_64
 sshpass is already installed.
---2021-07-27 16:09:05--  http://netqe-infra01.knqe.lab.eng.bos.redhat.com/packages/junk.txt
-Resolving netqe-infra01.knqe.lab.eng.bos.redhat.com (netqe-infra01.knqe.lab.eng.bos.redhat.com)... 10.19.15.43
-Connecting to netqe-infra01.knqe.lab.eng.bos.redhat.com (netqe-infra01.knqe.lab.eng.bos.redhat.com)|10.19.15.43|:80... connected.
+--2021-07-27 16:09:05--  http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/packages/junk.txt
+Resolving netqe-infra01.knqe.eng.rdu2.dc.redhat.com (netqe-infra01.knqe.eng.rdu2.dc.redhat.com)... 10.19.15.43
+Connecting to netqe-infra01.knqe.eng.rdu2.dc.redhat.com (netqe-infra01.knqe.eng.rdu2.dc.redhat.com)|10.19.15.43|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 9 [text/plain]
 Saving to: ‘/home/ralongi/temp/junk.txt’

@@ -1,0 +1,81 @@
+<job retention_tag="scratch">
+  <whiteboard>ralongi@redhat.com, comprehensive OVS regression test regression test - RHEL-6.9 GA with OVS 2.3.1.2 kcov</whiteboard>
+  <recipeSet priority="High">
+    <recipe whiteboard="ralongi@redhat.com, comprehensive OVS regression test regression test - RHEL-6.9 GA with OVS 2.3.1.2 kcov" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux6" op="="/>
+          <distro_name value="RHEL-6.9" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="netqe18.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="STANDALONE"/>
+      <task name="/kernel/kcov/prepare" role="STANDALONE">
+        <params>
+          <param name="MODE" value="KA"/>
+          <param name="KDIR" value="net"/>
+        </params>
+      </task>
+      <task name="/kernel/kcov/start" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/spanning_tree" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="protocol" value="stp"/>
+          <param name="use_path_cost" value="no"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/spanning_tree" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>
+          <param name="protocol" value="stp"/>
+          <param name="use_path_cost" value="yes"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/add_del_ports" role="STANDALONE">
+        <params>
+          <param name="NAY" value="yes"/>        
+          <param name="total_batches" value="200"/>
+          <param name="ports_per_batch" value="50"/>
+          <param name="iterations" value="1"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/power_cycle_crash/set_config" role="STANDALONE">
+        <params>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NAY" value="yes"/>        
+          <param name="vm_version" value="6.9"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/power-cycle" role="STANDALONE"/>
+      <task name="/kernel/networking/openvswitch/power_cycle_crash/check_config" role="STANDALONE">
+        <params>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NAY" value="yes"/>        
+          <param name="vm_version" value="6.9"/>
+        </params>
+      </task>
+      <task name="/kernel/networking/openvswitch/userspace_commands" role="STANDALONE">
+        <params>
+          <param name="NIC_NUM" value="all"/>
+          <param name="NAY" value="yes"/>  
+        </params>
+      </task>
+      <task name="/kernel/kcov/end" role="STANDALONE"/>
+      <task name="/kernel/kcov/finalize" role="STANDALONE"/>
+    </recipe>
+  </recipeSet>
+</job>
+

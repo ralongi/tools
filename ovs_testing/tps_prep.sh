@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RPM_CONTAINER_SELINUX_POLICY="http://download-node-02.eng.bos.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
+RPM_CONTAINER_SELINUX_POLICY="http://download.devel.redhat.com/brewroot/packages/container-selinux/2.77/1.el7_6/noarch/container-selinux-2.77-1.el7_6.noarch.rpm"
 
 while [ 1 ]; do
 	if [[ ! $(tps-status | grep idle) ]] || [[ $(pgrep yum) ]]; then

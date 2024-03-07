@@ -1,0 +1,66 @@
+<job retention_tag="scratch">
+  <whiteboard>ralongi@redhat.com, OVS VLAN tag regression test - RHEL-6.9 GA with OVS 2.3.1.2</whiteboard>
+  <recipeSet priority="Urgent">
+    <recipe whiteboard="ralongi@redhat.com, OVS VLAN tag regression test - RHEL-6.9 GA with OVS 2.3.1.2" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux6" op="="/>
+          <distro_name value="RHEL-6.9" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="netqe8.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="SERVERS"/>
+      <task name="/kernel/networking/openvswitch/ovs_vlan" role="SERVERS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>        
+        </params>
+      </task>
+    </recipe>
+    <recipe whiteboard="ralongi@redhat.com, OVS VLAN tag regression test - RHEL-6.9 GA with OVS 2.3.1.2" role="None" ks_meta="method=nfs" kernel_options="" kernel_options_post="">
+      <autopick random="false"/>
+      <watchdog panic="ignore"/>
+      <packages/>
+      <ks_appends/>
+      <repos/>
+      <distroRequires>
+        <and>
+          <distro_family value="RedHatEnterpriseLinux6" op="="/>
+          <distro_name value="RHEL-6.9" op="="/>
+          <distro_variant value="Server" op="="/>
+          <distro_arch value="x86_64" op="="/>
+        </and>
+      </distroRequires>
+      <hostRequires>
+        <and>
+          <hostname value="netqe7.knqe.lab.eng.bos.redhat.com" op="="/>
+          <system_type value="Machine" op="="/>
+        </and>
+      </hostRequires>
+      <partitions/>
+      <task name="/distribution/install" role="CLIENTS"/>
+      <task name="/kernel/networking/openvswitch/ovs_vlan" role="CLIENTS">
+        <params>
+          <param name="NM_CTL" value="yes"/>
+          <param name="NAY" value="yes"/>
+          <param name="NIC_NUM" value="all"/>
+        </params>
+      </task>
+    </recipe>
+  </recipeSet>
+</job>
+
