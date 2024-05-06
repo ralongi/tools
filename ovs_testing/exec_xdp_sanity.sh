@@ -19,32 +19,32 @@ retention_tag="active+1"
 #pushd ~/git/kernel/networking/ebpf_xdp/sanity
 
 if [[ $driver == "ice" ]]; then
-	server="netqe2.knqe.lab.eng.bos.redhat.com"
-	client="netqe3.knqe.lab.eng.bos.redhat.com"
+	server="netqe51.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ice"
 	client_driver="i40e"
 	card_info="ICE"
 elif [[ $driver == "i40e" ]]; then
-	server="netqe3.knqe.lab.eng.bos.redhat.com"
-	client="netqe2.knqe.lab.eng.bos.redhat.com"
+	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="i40e"
 	client_driver="ice"
 	card_info="I40E"
 elif [[ $driver == "ixgbe" ]]; then
-	server="netqe1.knqe.lab.eng.bos.redhat.com"
-	client="netqe4.knqe.lab.eng.bos.redhat.com"
+	server="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ixgbe"
 	client_driver="sfc"
 	card_info="IXGBE"
 elif [[ $driver == "sfc" ]]; then
-	server="netqe4.knqe.lab.eng.bos.redhat.com"
-	client="netqe1.knqe.lab.eng.bos.redhat.com"
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="sfc"
 	client_driver="ixgbe"
 	card_info="SFC"
 elif [[ $driver == "cx5" ]]; then
-	server="netqe4.knqe.lab.eng.bos.redhat.com"
-	client="netqe1.knqe.lab.eng.bos.redhat.com"
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	server_pciid="15b3:1019"
@@ -53,8 +53,8 @@ elif [[ $driver == "cx5" ]]; then
 	pciid_info="--param=mh-netqe-nic-pciid="${server_pciid}","${client_pciid}""
 	if [[ -z $special_info ]]; then	special_info="(CX5)"; fi
 elif [[ $driver == "cx6dx" ]]; then
-	server="netqe1.knqe.lab.eng.bos.redhat.com"
-	client="netqe4.knqe.lab.eng.bos.redhat.com"
+	server="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	server_pciid="15b3:101d"
@@ -63,14 +63,14 @@ elif [[ $driver == "cx6dx" ]]; then
 	pciid_info='--param=mh-netqe-nic-pciid="${server_pciid}","${client_pciid}"'
 	if [[ -z $special_info ]]; then	special_info="(CX6 DX)"; fi
 elif [[ $driver == "cx3" ]]; then
-	server="netqe4.knqe.lab.eng.bos.redhat.com"
-	client="netqe1.knqe.lab.eng.bos.redhat.com"
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx4_en"
 	client_driver="mlx5_core"
 	card_info="CX3"
 elif [[ $driver == "nfp" ]]; then
-	server="netqe3.knqe.lab.eng.bos.redhat.com"
-	client="netqe2.knqe.lab.eng.bos.redhat.com"
+	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="nfp"
 	client_driver="i40e"
 	card_info="NFP"	
@@ -110,9 +110,9 @@ fi
 #driver_list="ixgbe i40e ice sfc cx5 cx6dx nfp qede enic bnxt_en"
 
 if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
-	lstest ~/git/kernel/networking/ebpf_xdp/sanity | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $(echo "$pciid_info") --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="$XDP_LOAD_MODE" --param=XDP_TEST_FRAMEWORK="$XDP_TEST_FRAMEWORK" --wb "(Server/DUT: $server, Client: $client), XDP Sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	lstest ~/git/kernel/networking/ebpf_xdp/sanity | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=SKIP_CASE="$SKIP_CASE" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $(echo "$pciid_info") --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="$XDP_LOAD_MODE" --param=XDP_TEST_FRAMEWORK="$XDP_TEST_FRAMEWORK" --wb "(Server/DUT: $server, Client: $client), XDP Sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 else
-	lstest ~/git/kernel/networking/ebpf_xdp/sanity | runtest $COMPOSE --crashsize=640M --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $(echo "$pciid_info") --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="$XDP_LOAD_MODE" --param=XDP_TEST_FRAMEWORK="$XDP_TEST_FRAMEWORK" --wb "(Server/DUT: $server, Client: $client), XDP Sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	lstest ~/git/kernel/networking/ebpf_xdp/sanity | runtest $COMPOSE --crashsize=640M --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=SKIP_CASE="$SKIP_CASE" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $(echo "$pciid_info") --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="$XDP_LOAD_MODE" --param=XDP_TEST_FRAMEWORK="$XDP_TEST_FRAMEWORK" --wb "(Server/DUT: $server, Client: $client), XDP Sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 popd 1> /dev/null

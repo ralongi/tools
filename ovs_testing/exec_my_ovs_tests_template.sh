@@ -17,7 +17,8 @@ if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 
 # Script to execute all of my ovs tests
 
-source ~/git/kernel/networking/openvswitch/common/package_list.sh > /dev/null
+#source ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh > /dev/null
+source ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh > /dev/null
 #source ~/.bashrc > /dev/null
 
 . ~/get_zstream_compose_function.sh
@@ -265,15 +266,15 @@ fi
 # If there is no value assigned for OVN packages, take the latest available
 
 if [[ -z $RPM_OVN_COMMON ]]; then
-	export RPM_OVN_COMMON=$(grep -i $FDP_RELEASE  ~/git/kernel/networking/openvswitch/common/package_list.sh | grep -i OVN_COMMON | grep -i RHEL$RHEL_VER_MAJOR | awk -F '=' '{print $NF}' | tail -n1)
+	export RPM_OVN_COMMON=$(grep -i $FDP_RELEASE  ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep -i OVN_COMMON | grep -i RHEL$RHEL_VER_MAJOR | awk -F '=' '{print $NF}' | tail -n1)
 fi
 
 if [[ -z $RPM_OVN_CENTRAL ]]; then
-	export RPM_OVN_CENTRAL=$(grep -i $FDP_RELEASE  ~/git/kernel/networking/openvswitch/common/package_list.sh | grep -i OVN_CENTRAL | grep -i RHEL$RHEL_VER_MAJOR | awk -F '=' '{print $NF}' | tail -n1)
+	export RPM_OVN_CENTRAL=$(grep -i $FDP_RELEASE  ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep -i OVN_CENTRAL | grep -i RHEL$RHEL_VER_MAJOR | awk -F '=' '{print $NF}' | tail -n1)
 fi
 
 if [[ -z $RPM_OVN_HOST ]]; then
-	export RPM_OVN_HOST=$(grep -i $FDP_RELEASE  ~/git/kernel/networking/openvswitch/common/package_list.sh | grep -i OVN_HOST | grep -i RHEL$RHEL_VER_MAJOR | awk -F '=' '{print $NF}' | tail -n1)
+	export RPM_OVN_HOST=$(grep -i $FDP_RELEASE  ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep -i OVN_HOST | grep -i RHEL$RHEL_VER_MAJOR | awk -F '=' '{print $NF}' | tail -n1)
 fi
 
 # SELinux packages

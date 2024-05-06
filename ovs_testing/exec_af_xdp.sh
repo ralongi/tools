@@ -14,28 +14,28 @@ $DBG_FLAG
 pushd ~/git/kernel/networking/ebpf_xdp/af_xdp
 
 if [[ $driver == "ice" ]]; then
-	server="netqe2.knqe.lab.eng.bos.redhat.com"
-	client="netqe3.knqe.lab.eng.bos.redhat.com"
+	server="netqe51.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ice"
 	client_driver="i40e"
 elif [[ $driver == "i40e" ]]; then
-	server="netqe3.knqe.lab.eng.bos.redhat.com"
-	client="netqe2.knqe.lab.eng.bos.redhat.com"
+	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="i40e"
 	client_driver="ice"
 elif [[ $driver == "ixgbe" ]]; then
-	server="netqe1.knqe.lab.eng.bos.redhat.com"
-	client="netqe4.knqe.lab.eng.bos.redhat.com"
+	server="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ixgbe"
 	client_driver="sfc"
 elif [[ $driver == "sfc" ]]; then
-	server="netqe4.knqe.lab.eng.bos.redhat.com"
-	client="netqe1.knqe.lab.eng.bos.redhat.com"
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="sfc"
 	client_driver="ixgbe"
 elif [[ $driver == "cx5" ]]; then
-	server="netqe4.knqe.lab.eng.bos.redhat.com"
-	client="netqe1.knqe.lab.eng.bos.redhat.com"
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	server_pciid="15b3:1019"
@@ -43,8 +43,8 @@ elif [[ $driver == "cx5" ]]; then
 	#pciid_info="--param=mh-netqe-nic-pciid="${server_pciid}","${client_pciid}""
 	special_info="(CX5)"
 elif [[ $driver == "cx6dx" ]]; then
-	server="netqe1.knqe.lab.eng.bos.redhat.com"
-	client="netqe4.knqe.lab.eng.bos.redhat.com"
+	server="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	server_pciid="15b3:101d"
@@ -52,16 +52,11 @@ elif [[ $driver == "cx6dx" ]]; then
 	#pciid_info='--param=mh-netqe-nic-pciid="${server_pciid}","${client_pciid}"'
 	special_info="(CX6 DX)"
 elif [[ $driver == "cx3" ]]; then
-	server="netqe4.knqe.lab.eng.bos.redhat.com"
-	client="netqe1.knqe.lab.eng.bos.redhat.com"
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx4_en"
 	client_driver="mlx5_core"
 	special_info="(CX3)"
-elif [[ $driver == "nfp" ]]; then
-	server="netqe3.knqe.lab.eng.bos.redhat.com"
-	client="netqe2.knqe.lab.eng.bos.redhat.com"
-	server_driver="nfp"
-	client_driver="i40e"
 elif [[ $driver == "enic" ]]; then
 	server="netqe26.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe22.knqe.eng.rdu2.dc.redhat.com"

@@ -8,8 +8,8 @@ product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"
 #pushd ~/git/kernel/networking/openvswitch/ovs_qos
 pushd ~/temp
-server="netqe3.knqe.lab.eng.bos.redhat.com"
-client="netqe2.knqe.lab.eng.bos.redhat.com"
+server="netqe52.knqe.eng.rdu2.dc.redhat.com"
+client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 server_driver="i40e"
 client_driver="ice"
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')

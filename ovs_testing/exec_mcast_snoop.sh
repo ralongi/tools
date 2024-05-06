@@ -8,8 +8,8 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 pushd ~/temp
 fdp_release=$FDP_RELEASE
-server="netqe2.knqe.lab.eng.bos.redhat.com"
-client="netqe3.knqe.lab.eng.bos.redhat.com"
+server="netqe51.knqe.eng.rdu2.dc.redhat.com"
+client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 server_driver="ice"
 client_driver="i40e"
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')	

@@ -101,8 +101,6 @@ if [[ $skip_pssh_hosts_file_creation == "no" ]] && [[ ! -s $pssh_hosts_file ]]; 
 	create_pssh_hosts_file
 	wait
 	check_pssh_hosts_file
-else
-	echo "Skipping pssh hosts file creation..."
 fi
 
 if [[ ! "$*" == *"arch="* ]] && [[ $(cat $pssh_hosts_file | wc -l) -ne 4 ]]; then

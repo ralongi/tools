@@ -39,8 +39,22 @@ export RHEL_VER_MAJOR=$(echo $RHEL_VER | awk -F "." '{print $1}')
 export FDP_STREAM=${FDP_STREAM:-"$3"}
 export FDP_STREAM2=$(echo $FDP_STREAM | tr -d '.')
 if [[ $FDP_STREAM2 -gt 213 ]]; then
-	YEAR=$(grep -i ovn /home/ralongi/git/kernel/networking/openvswitch/common/package_list.sh | grep $FDP_RELEASE | awk -F "_" '{print $3}' | grep -v 213 | tail -n1)
+	YEAR=$(grep -i ovn ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep $FDP_RELEASE | awk -F "_" '{print $3}' | grep -v 213 | tail -n1)
 fi
+
+get_starting_packages()
+{
+	$dbg_flag
+    starting_stream=$(grep OVS$FDP_STREAM2 ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump' | tail -n2 | head -n1 | awk -F "_" '{print $2}')
+    
+    export STARTING_RPM_OVS=$(grep "$starting_stream" ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep OVS$FDP_STREAM2 | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump' | awk -F "=" '{print $2}')
+    export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$(grep "$starting_stream" ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep -i selinux | grep RHEL$RHEL_VER_MAJOR | awk -F "=" '{print $NF}')
+
+    echo "STARTING_RPM_OVS: $STARTING_RPM_OVS"
+    echo "STARTING_RPM_OVS_SELINUX_EXTRA_POLICY: $STARTING_RPM_OVS_SELINUX_EXTRA_POLICY"
+}
+
+get_starting_packages
 
 pushd /home/ralongi/github/tools/ovs_testing
 /bin/cp -f exec_my_ovs_tests_template.sh exec_my_ovs_tests.sh
@@ -210,4 +224,6 @@ done
 
 popd
 
-
+echo "FDP_RELEASE: $FDP_RELEASE"
+echo "RHEL_VER_MAJOR: $RHEL_VER_MAJOR"
+echo "FDP_STREAM2: $FDP_STREAM2"

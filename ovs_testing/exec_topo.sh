@@ -105,16 +105,16 @@ fi
 
 ### ixgbe tests without Netscout
 if [[ "$driver" == "ixgbe" ]]; then
-	server="netqe3.knqe.lab.eng.bos.redhat.com"
-	client="netqe2.knqe.lab.eng.bos.redhat.com"
+	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="ixgbe"
 fi
 
 ### i40e without Netscout
 if [[ "$driver" == "i40e" ]]; then
-	server="netqe2.knqe.lab.eng.bos.redhat.com"
-	client="netqe3.knqe.lab.eng.bos.redhat.com"
+	server="netqe51.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ice"
 	client_driver="i40e"
 fi
@@ -127,8 +127,8 @@ fi
 # ICE E810 (RHEL-8.4 and higher)
 ### ice tests with Netscout
 if [[ "$driver" == "ice" ]]; then
-	server="netqe3.knqe.lab.eng.bos.redhat.com"
-	client="netqe2.knqe.lab.eng.bos.redhat.com"
+	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	NAY=yes
 	PVT=no
 	server_driver="i40e"
@@ -138,8 +138,8 @@ if [[ "$driver" == "ice" ]]; then
 	
 # mlx5_core CX5
 elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX5" ]]; then
-	server="netqe1.knqe.lab.eng.bos.redhat.com"
-	client="netqe4.knqe.lab.eng.bos.redhat.com"
+	server="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	#server_pciid="15b3:101d" #CX6
@@ -149,8 +149,8 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX5" ]]; then
 # mlx5_core CX6
 elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX6" ]]; then
 	if [[ $mlx_card_model == "DX" ]]; then
-		server="netqe4.knqe.lab.eng.bos.redhat.com"
-		client="netqe1.knqe.lab.eng.bos.redhat.com"
+		server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+		client="netqe50.knqe.eng.rdu2.dc.redhat.com"
 		server_driver="mlx5_core"
 		client_driver="mlx5_core"
 		NAY="yes"
@@ -236,10 +236,10 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ -z "$mlx_card_type" ]]; then
 	
 ### ARM aarch64 tests without Netscout
 elif [[ "$driver" == "arm" ]]; then
-	server="ampere-mtsnow-02.rhts.eng.pek2.redhat.com"
-	client="ampere-mtsnow-01.rhts.eng.pek2.redhat.com"
-	server_driver="ice"
-	client_driver="ice"
+	server="ampere-mtsnow-01.knqe.eng.rdu2.dc.redhat.com"
+	client="ampere-mtsnow-02.knqe.eng.rdu2.dc.redhat.com"
+	server_driver="mlx5_core"
+	client_driver="mlx5_core"
 	export RPM_OVS_AARCH64=$(echo $RPM_OVS | sed 's/x86_64/aarch64/g')
 	export RPM_OVS_TCPDUMP_PYTHON_AARCH64=$(echo $RPM_OVS_TCPDUMP_PYTHON | sed 's/x86_64/aarch64/g')
 	#export RPM_OVS_TCPDUMP_TEST_AARCH64=$(echo $RPM_OVS_TCPDUMP_TEST | sed 's/x86_64/aarch64/g')	

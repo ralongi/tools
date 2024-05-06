@@ -23,43 +23,43 @@ XDP_TEST_FRAMEWORK=${XDP_TEST_FRAMEWORK:-"beakerlib"}
 pushd ~/git/kernel/networking/ebpf_xdp/iproute2_load_xdp
 
 if [[ $driver == "ice" ]]; then
-	dut="netqe2.knqe.lab.eng.bos.redhat.com"
+	dut="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="ice"
 	TEST_DRIVER=$NIC_DRIVER
 elif [[ $driver == "i40e" ]]; then
-	#dut="netqe3.knqe.lab.eng.bos.redhat.com"
+	#dut="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	dut="netqe40.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="i40e"
 	TEST_DRIVER=$NIC_DRIVER
 elif [[ $driver == "ixgbe" ]]; then
-	dut="netqe1.knqe.lab.eng.bos.redhat.com"
+	dut="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="ixgbe"
 	TEST_DRIVER=$NIC_DRIVER
 elif [[ $driver == "sfc" ]]; then
-	dut="netqe4.knqe.lab.eng.bos.redhat.com"
+	dut="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="sfc"
 	TEST_DRIVER=$NIC_DRIVER
 elif [[ $driver == "cx5" ]]; then
-	dut="netqe4.knqe.lab.eng.bos.redhat.com"
+	dut="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="mlx5_core"
 	TEST_DRIVER=$NIC_DRIVER
 	dut_pciid="15b3:1019"
 	#pciid_info='--param=netqe-nic-pciid="$dut_pciid"'
 	special_info="(CX5)"
 elif [[ $driver == "cx6dx" ]]; then
-	dut="netqe1.knqe.lab.eng.bos.redhat.com"
+	dut="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="mlx5_core"
 	TEST_DRIVER=$NIC_DRIVER
 	dut_pciid="15b3:101d"
 	#pciid_info='--param=netqe-nic-pciid="$dut_pciid"'
 	special_info="(CX6 DX)"
 elif [[ $driver == "cx3" ]]; then
-	dut="netqe4.knqe.lab.eng.bos.redhat.com"
+	dut="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="mlx4_en"
 	TEST_DRIVER=$NIC_DRIVER
 	special_info="(CX3)"
 elif [[ $driver == "nfp" ]]; then
-	dut="netqe3.knqe.lab.eng.bos.redhat.com"
+	dut="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	NIC_DRIVER="nfp"
 	TEST_DRIVER=$NIC_DRIVER	
 elif [[ $driver == "qede" ]]; then

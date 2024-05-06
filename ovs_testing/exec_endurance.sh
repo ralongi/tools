@@ -40,8 +40,8 @@ if [[ $card_type == "cx5" ]]; then
 	CLIENT="netqe24.knqe.eng.rdu2.dc.redhat.com"
 	netscout_pair1="NETQE24_P4P1 NETQE25_P5P1"
 	netscout_pair2="NETQE24_P4P2 NETQE25_P5P2"
-	#SERVER="netqe4.knqe.lab.eng.bos.redhat.com"
-	#CLIENT="netqe1.knqe.lab.eng.bos.redhat.com"
+	#SERVER="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	#CLIENT="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
 		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel9_endurance
 		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe4_netqe1_rhel9_endurance
@@ -54,8 +54,8 @@ elif [[ $card_type == "cx6dx" ]]; then
 	card_info="100G CX6 DX"
 	SERVER=netqe24.knqe.eng.rdu2.dc.redhat.com
 	CLIENT=netqe25.knqe.eng.rdu2.dc.redhat.com
-	#SERVER="netqe1.knqe.lab.eng.bos.redhat.com"
-	#CLIENT="netqe4.knqe.lab.eng.bos.redhat.com"
+	#SERVER="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	#CLIENT="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
 		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel9_endurance
 		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe1_netqe4_rhel9_endurance
