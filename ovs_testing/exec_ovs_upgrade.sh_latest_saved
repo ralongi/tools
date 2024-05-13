@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# ovs_upgrade
+
+pushd ~/temp
+
+dbg_flag=${dbg_flag:-"set -x"}
+$dbg_flag
+LEAPP_UPGRADE=${LEAPP_UPGRADE:-"no"}
+#leapp_upgrade_repo=${leapp_upgrade_repo:-"http://file.emea.redhat.com/~mreznik/tmp/leapp_upgrade_repositories.repo"}
+
+if [[ -z $STARTING_RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
+	STARTING_RPM_OVS_SELINUX_EXTRA_POLICY_VALUE=OVS_SELINUX_"$STARTING_FDP_RELEASE"_RHEL"$COMPOSE_VER"
+	export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$(grep $STARTING_RPM_OVS_SELINUX_EXTRA_POLICY_VALUE ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh  | awk -F "=" '{print $2}')
+fi
+
+if [[ -z $STARTING_RPM_OVS ]]; then
+	FDP_STREAM_VALUE=$(echo $FDP_STREAM | tr -d ".")
+	STARTING_RPM_OVS_VALUE=OVS"$FDP_STREAM_VALUE"_"$STARTING_FDP_RELEASE"_RHEL"$COMPOSE_VER"
+	export STARTING_RPM_OVS=$(grep $STARTING_RPM_OVS_VALUE ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh  | awk -F "=" '{print $2}')
+fi
+
+if [[ -z $OVS_LATEST_STREAM_PKG ]]; then
+	start_line=$(grep -n "FDP $FDP_RELEASE Packages" ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | awk -F":" '{print $1}')	
+	export OVS_LATEST_STREAM_PKG=$(tail -n $start_line ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep OVS | grep RHEL"$RHEL_VER_MAJOR" | tail -3 | head -n1 | awk -F "=" '{print$2}')
+fi
+
+get_starting_packages()
+{
+	$dbg_flag
+    starting_stream=$(grep OVS$FDP_STREAM2 ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump' | tail -n2 | head -n1 | awk -F "_" '{print $2}')
+    
+    export STARTING_RPM_OVS=$(grep "$starting_stream" ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep OVS$FDP_STREAM2 | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump' | awk -F "=" '{print $2}')
+    export STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$(grep "$starting_stream" ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep -i selinux | grep RHEL$RHEL_VER_MAJOR | awk -F "=" '{print $NF}')
+
+    echo "STARTING_RPM_OVS: $STARTING_RPM_OVS"
+    echo "STARTING_RPM_OVS_SELINUX_EXTRA_POLICY: $STARTING_RPM_OVS_SELINUX_EXTRA_POLICY"
+}
+
+get_starting_packages
+
+dut=${dut:-"netqe21.knqe.lab.eng.bos.redhat.com"}
+ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+
+lstest ~/git/kernel/networking/openvswitch/ovs_upgrade | runtest $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=dbg_flag="$dbg_flag" --param=FDP_STREAM=$FDP_STREAM --param=NAY=yes --param=STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$STARTING_RPM_OVS_SELINUX_EXTRA_POLICY --param=STARTING_RPM_OVS=$STARTING_RPM_OVS --param=OVS_LATEST_STREAM_PKG=$OVS_LATEST_STREAM_PKG --param=RPM_OVS=$RPM_OVS --param=LEAPP_UPGRADE=$LEAPP_UPGRADE --wb "($dut), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: $LEAPP_UPGRADE $brew_build $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+
+rm -f *.xml	
+popd

@@ -246,7 +246,7 @@ elif [[ "$driver" == "arm" ]]; then
 	client="netqe48.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="ice"
-	#server_pciid="15b3:1021" #CX7
+	server_pciid="15b3:1021" #CX7
 	#server_pciid="15b3:101d" #CX6-DX
 	#client_pciid="8086:1592" #E810
 	export RPM_OVS_AARCH64=$(echo $RPM_OVS | sed 's/x86_64/aarch64/g')
