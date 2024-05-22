@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>(Server/DUT: netqe52.knqe.eng.rdu2.dc.redhat.com, Client: netqe51.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.4.0-updates-20240515.18, Client driver: i40e, Server driver: nfp, Driver under test: nfp Regression testing (XDP) for Integration, https://issues.redhat.com/browse/RHEL-33062</whiteboard>
+  <whiteboard>(Server/DUT: netqe52.knqe.eng.rdu2.dc.redhat.com, Client: netqe51.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-updates-20240520.24, Client driver: i40e, Server driver: nfp, Driver under test: nfp Integration testing, https://issues.redhat.com/browse/RHEL-31945</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="(Server/DUT: netqe52.knqe.eng.rdu2.dc.redhat.com, Client: netqe51.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.4.0-updates-20240515.18, Client driver: i40e, Server driver: nfp, Driver under test: nfp Regression testing (XDP) for Integration, https://issues.redhat.com/browse/RHEL-33062" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: netqe52.knqe.eng.rdu2.dc.redhat.com, Client: netqe51.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-updates-20240520.24, Client driver: i40e, Server driver: nfp, Driver under test: nfp Integration testing, https://issues.redhat.com/browse/RHEL-31945" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -47,7 +47,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <distroRequires>
                 <and>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-9.4.0-updates-20240515.18"/>
+                    <distro_name op="=" value="RHEL-9.5.0-updates-20240520.24"/>
                     <distro_variant op="=" value=""/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
@@ -69,7 +69,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/check-install" role="SERVERS">
         <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
         <params>
-          <param name="DISTRO_BUILD" value="RHEL-9.4.0-updates-20240515.18"/>
+          <param name="DISTRO_BUILD" value="RHEL-9.5.0-updates-20240520.24"/>
         </params>
       </task>
       <task name="/kernel/networking/ebpf_xdp/sanity" role="SERVERS">
@@ -109,7 +109,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="(Server/DUT: netqe52.knqe.eng.rdu2.dc.redhat.com, Client: netqe51.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.4.0-updates-20240515.18, Client driver: i40e, Server driver: nfp, Driver under test: nfp Regression testing (XDP) for Integration, https://issues.redhat.com/browse/RHEL-33062" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: netqe52.knqe.eng.rdu2.dc.redhat.com, Client: netqe51.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-updates-20240520.24, Client driver: i40e, Server driver: nfp, Driver under test: nfp Integration testing, https://issues.redhat.com/browse/RHEL-31945" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -155,7 +155,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <distroRequires>
                 <and>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-9.4.0-updates-20240515.18"/>
+                    <distro_name op="=" value="RHEL-9.5.0-updates-20240520.24"/>
                     <distro_variant op="=" value=""/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
@@ -177,7 +177,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/check-install" role="CLIENTS">
         <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
         <params>
-          <param name="DISTRO_BUILD" value="RHEL-9.4.0-updates-20240515.18"/>
+          <param name="DISTRO_BUILD" value="RHEL-9.5.0-updates-20240520.24"/>
         </params>
       </task>
       <task name="/kernel/networking/ebpf_xdp/sanity" role="CLIENTS">
