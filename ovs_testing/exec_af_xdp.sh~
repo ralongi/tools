@@ -57,11 +57,6 @@ elif [[ $driver == "cx3" ]]; then
 	server_driver="mlx4_en"
 	client_driver="mlx5_core"
 	special_info="(CX3)"
-elif [[ $driver == "nfp" ]]; then
-	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
-	server_driver="nfp"
-	client_driver="i40e"
 elif [[ $driver == "enic" ]]; then
 	server="netqe26.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe22.knqe.eng.rdu2.dc.redhat.com"
@@ -88,7 +83,7 @@ fi
 if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
 	lstest ~/git/kernel/networking/ebpf_xdp/af_xdp | runtest $COMPOSE --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="native" --param=XDP_TEST_FRAMEWORK=beakerlib --wb "(Server/DUT: $server, Client: $client), AF_XDP, $COMPOSE, networking/ebpf_xdp/af_xdp, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver $brew_build $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 else
-	lstest ~/git/kernel/networking/ebpf_xdp/af_xdp | runtest $COMPOSE --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="native" --param=XDP_TEST_FRAMEWORK=beakerlib --wb "(Server/DUT: $server, Client: $client), AF_XDP, $COMPOSE, networking/ebpf_xdp/af_xdp, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver $brew_build $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	lstest ~/git/kernel/networking/ebpf_xdp/af_xdp | runtest $COMPOSE --ks-meta method=http --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --param=XDP_LOAD_MODE="native" --param=XDP_TEST_FRAMEWORK=beakerlib --wb "(Server/DUT: $server, Client: $client), AF_XDP, $COMPOSE, networking/ebpf_xdp/af_xdp, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver $brew_build $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
 popd
