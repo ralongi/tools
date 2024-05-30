@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Perf CI
+# Endurance
 
 sedeasy ()
 {
@@ -88,11 +88,11 @@ if [[ $card_type == "cx5" ]]; then
 	#SERVER="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	#CLIENT="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel9
-		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe4_netqe1_rhel9
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel9_endurance
+		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe4_netqe1_rhel9_endurance
 	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel8
-		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe4_netqe1_rhel8
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe25_netqe24_rhel8_endurance
+		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx5_netqe4_netqe1_rhel8_endurance
 	fi
 elif [[ $card_type == "cx6dx" ]]; then
 	nic_test="mlx5_100g_cx6dx"
@@ -102,11 +102,11 @@ elif [[ $card_type == "cx6dx" ]]; then
 	#SERVER="netqe50.knqe.eng.rdu2.dc.redhat.com"
 	#CLIENT="netqe53.knqe.eng.rdu2.dc.redhat.com"
 	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel9
-		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe1_netqe4_rhel9
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel9_endurance
+		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe1_netqe4_rhel9_endurance
 	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel8
-		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe1_netqe4_rhel8
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe24_netqe25_rhel8_endurance
+		#test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_100g_cx6dx_netqe1_netqe4_rhel8_endurance
 	fi
 elif [[ $card_type == "cx6lx" ]]; then
 	nic_test="mlx5_25g_cx6lx"
@@ -114,9 +114,9 @@ elif [[ $card_type == "cx6lx" ]]; then
 	SERVER="wsfd-advnetlab35.anl.eng.rdu2.dc.redhat.com"
 	CLIENT="wsfd-advnetlab36.anl.eng.rdu2.dc.redhat.com"
 	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_cx6lx_anl35_anl36_rhel9
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_cx6lx_anl35_anl36_rhel9_endurance
 	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_cx6lx_anl35_anl36_rhel8
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_cx6lx_anl35_anl36_rhel8_endurance
 	fi
 elif [[ $card_type == "bf2" ]]; then
 	nic_test="mlx5_25g_bf2"
@@ -126,9 +126,9 @@ elif [[ $card_type == "bf2" ]]; then
 	netscout_pair1="netqe29_p3p1 netqe30_p7p1"
 	netscout_pair2="netqe29_p3p2 netqe30_p7p2"
 	if [[ $(echo $COMPOSE | grep 'RHEL-9') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_bf2_netqe30_netqe29_rhel9
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_bf2_netqe30_netqe29_rhel9_endurance
 	elif [[ $(echo $COMPOSE | grep 'RHEL-8') ]]; then
-		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_bf2_netqe30_netqe29_rhel8
+		test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_25g_bf2_netqe30_netqe29_rhel8_endurance
 	fi
 fi
 
@@ -136,7 +136,7 @@ if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
     runtest \
     --product=cpe:/o:redhat:enterprise_linux \
     --retention-tag=active+1 \
-    --distro=$COMPOSE,$TREX_COMPOSE \
+    --distro=$COMPOSE \
     --family=RedHatEnterpriseLinux$rhel_major_ver \
     --variant=BaseOS \
     --arch=$arch \
@@ -148,20 +148,20 @@ if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
     --task="/kernel/networking/openvswitch/perf" \
     --param=test_env=$test_env \
     --param=nic_test=$nic_test \
-    --param=trafficgen_url=$trafficgen_url \
     --param=trex_url=$trex_url \
+    --param=trafficgen_url=$trafficgen_url \
     --param=image=$image \
     --param=mh-rpm_dpdk=$dut_rpm_dpdk,$trex_rpm_dpdk \
-    --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX_EXTRA_POLICY \
+    --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX \
     --param=rpm_ovs=$RPM_OVS \
     --param=fdp_release=$FDP_RELEASE \
-    --wb="(Server/DUT: $SERVER, Client/Trex: $CLIENT) FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Perf CI ($card_info)" \
+    --wb="(Server/DUT: $SERVER, Client/Trex: $CLIENT) FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Endurance ($card_info)" \
     --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}"
 else
     runtest \
     --product=cpe:/o:redhat:enterprise_linux \
     --retention-tag=active+1 \
-    --distro=$COMPOSE,$TREX_COMPOSE \
+    --distro=$COMPOSE \
     --family=RedHatEnterpriseLinux$rhel_major_ver \
     --variant=BaseOS \
     --arch=$arch \
@@ -173,14 +173,14 @@ else
     --task="/kernel/networking/openvswitch/perf" \
     --param=test_env=$test_env \
     --param=nic_test=$nic_test \
-    --param=trafficgen_url=$trafficgen_url \
     --param=trex_url=$trex_url \
+    --param=trafficgen_url=$trafficgen_url \
     --param=image=$image \
     --param=mh-rpm_dpdk=$dut_rpm_dpdk,$trex_rpm_dpdk \
-    --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX_EXTRA_POLICY \
+    --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX \
     --param=rpm_ovs=$RPM_OVS \
     --param=fdp_release=$FDP_RELEASE \
-    --wb="(Server/DUT: $SERVER, Client/Trex: $CLIENT) FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Perf CI ($card_info)"    
+    --wb="(Server/DUT: $SERVER, Client/Trex: $CLIENT) FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Endurance ($card_info)"    
 fi
 
 popd

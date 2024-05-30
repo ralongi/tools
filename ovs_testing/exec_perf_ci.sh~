@@ -136,7 +136,7 @@ if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
     runtest \
     --product=cpe:/o:redhat:enterprise_linux \
     --retention-tag=active+1 \
-    --distro=$COMPOSE,$TREX_COMPOSE \
+    --mh-distro=$COMPOSE,$TREX_COMPOSE \
     --family=RedHatEnterpriseLinux$rhel_major_ver \
     --variant=BaseOS \
     --arch=$arch \
@@ -161,7 +161,7 @@ else
     runtest \
     --product=cpe:/o:redhat:enterprise_linux \
     --retention-tag=active+1 \
-    --distro=$COMPOSE,$TREX_COMPOSE \
+    --mh-distro=$COMPOSE,$TREX_COMPOSE \
     --family=RedHatEnterpriseLinux$rhel_major_ver \
     --variant=BaseOS \
     --arch=$arch \
