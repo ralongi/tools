@@ -250,7 +250,7 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.4.qcow2"
+	export VM_IMAGE="rhel9.5.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
@@ -353,11 +353,11 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh 6820c ovs_env=ovs-dpdk
 
 #./exec_endurance.sh cx5
-./exec_perf_ci.sh cx5
+#./exec_perf_ci.sh cx5
 #./exec_endurance.sh cx6dx
 #./exec_perf_ci.sh cx6dx
 #./exec_endurance.sh cx6lx
-./exec_perf_ci.sh cx6lx
+#./exec_perf_ci.sh cx6lx
 #./exec_endurance.sh bf2
 #./exec_perf_ci.sh bf2
 
