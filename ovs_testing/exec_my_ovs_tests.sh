@@ -333,8 +333,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
-##./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
+#./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
 #./exec_topo.sh arm ovs_env=kernel
 ##./exec_topo.sh arm ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx7 ovs_env=kernel
