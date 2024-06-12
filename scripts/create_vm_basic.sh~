@@ -12,7 +12,7 @@ if [[ $RHEL_VERSION -eq 7 ]]; then
 	elif [[ -s /etc/yum.repos.d/beaker-Client.repo ]]; then
 		repo_file="/etc/yum.repos.d/beaker-Client.repo"
 	fi
-elif [[ $RHEL_VERSION -ge 8 ]]; then
+elif [[ $RHEL_VERSION -eq 8 ]]; then
 	repo_file="/etc/yum.repos.d/beaker-BaseOS.repo"
 fi
 
