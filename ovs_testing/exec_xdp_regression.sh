@@ -113,6 +113,12 @@ elif [[ "$template" == xdp_regression_template.xml ]] && [[ $brew_build ]]; then
     template=xdp_regression_brew_template.xml
 fi
 
+if [[ "$template" == xdp_regression_netscout_template.xml ]] && [[ $cmds_to_run ]]; then
+    template=xdp_regression_netscout_cmds_template.xml
+elif [[ "$template" == xdp_regression_template.xml ]] && [[ $cmds_to_run ]]; then
+    template=xdp_regression_cmds_template.xml
+fi
+
 /bin/cp -f $template xdp_regression.xml
 sedeasy "COMPOSE_VALUE" "$COMPOSE" "xdp_regression.xml"
 sedeasy "ARCH_VALUE" "$ARCH" "xdp_regression.xml"
@@ -129,6 +135,7 @@ sedeasy "NETSCOUT_PAIR1_VALUE" "$netscout_pair1" "xdp_regression.xml"
 sedeasy "NETSCOUT_PAIR2_VALUE" "$netscout_pair2" "xdp_regression.xml"
 sedeasy "SPECIAL_INFO_VALUE" "$special_info" "xdp_regression.xml"
 sedeasy "BREW_BUILD_VALUE" "$brew_build" "xdp_regression.xml"
+sedeasy "CMDS_TO_RUN_VALUE" "$cmds_to_run" "xdp_regression.xml"
 
 bkr job-submit xdp_regression.xml
 

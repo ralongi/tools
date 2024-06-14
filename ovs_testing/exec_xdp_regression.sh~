@@ -18,6 +18,7 @@ XDP_TEST_FRAMEWORK=${XDP_TEST_FRAMEWORK:-"beakerlib"}
 ARCH=${ARCH:-"x86_64"}
 special_info=${special_info:-""}
 brew_build=${brew_build:-""}
+# example: export brew_build="repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1240303135/\$basearch/5.14.0-436.3968_1240302917.el9.\$basearch"
 product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"
 
@@ -128,6 +129,7 @@ sedeasy "NETSCOUT_PAIR1_VALUE" "$netscout_pair1" "xdp_regression.xml"
 sedeasy "NETSCOUT_PAIR2_VALUE" "$netscout_pair2" "xdp_regression.xml"
 sedeasy "SPECIAL_INFO_VALUE" "$special_info" "xdp_regression.xml"
 sedeasy "BREW_BUILD_VALUE" "$brew_build" "xdp_regression.xml"
+sedeasy "CMDS_TO_RUN_VALUE" "$cmds_to_run" "xdp_regression.xml"
 
 bkr job-submit xdp_regression.xml
 
