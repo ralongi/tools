@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE</whiteboard>
+  <whiteboard>(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE (SERVER_DRIVER_VALUE) SPECIAL_INFO_VALUE</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE (SERVER_DRIVER_VALUE) SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -135,7 +135,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE (SERVER_DRIVER_VALUE) SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
