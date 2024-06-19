@@ -1,1 +1,1 @@
-export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1307976600/\$basearch/5.14.0-454.4345_1307976463.el9.\$basearch"
+export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1329034342/\$basearch/5.14.0-461.4110_1329034148.el9.\$basearch"

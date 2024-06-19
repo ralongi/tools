@@ -1,1 +1,5 @@
-export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1329034342/\$basearch/5.14.0-461.4110_1329034148.el9.\$basearch"
+# Stock kernel
+export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1255494480/\$basearch/5.14.0-439.4050_1255494280.el9.\$basearch"
+
+# RT kernel
+export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1255494480/\$basearch/5.14.0-439.4050_1255494280.el9.\$basearch rtk"
