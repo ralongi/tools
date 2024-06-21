@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE</whiteboard>
+  <whiteboard>(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE (CARD_INFO_VALUE), Driver under test: SERVER_DRIVER_VALUE (CARD_INFO_VALUE) SPECIAL_INFO_VALUE</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE (CARD_INFO_VALUE), Driver under test: SERVER_DRIVER_VALUE (CARD_INFO_VALUE) SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -72,21 +72,14 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>
-      <task name="/distribution/command" role="SERVERS">
-        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
-        <params>
-          <param name="CMDS_TO_RUN" value="dnf -y install https://download.eng.bos.redhat.com/brewroot/packages/kernel/5.14.0/427.18.1.el9_4/x86_64/kernel-core-5.14.0-427.18.1.el9_4.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/kernel/5.14.0/427.18.1.el9_4/x86_64/kernel-modules-5.14.0-427.18.1.el9_4.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/kernel/5.14.0/427.18.1.el9_4/x86_64/kernel-5.14.0-427.18.1.el9_4.x86_64.rpm"/>
-        </params>
-      </task>
-      <task name="/distribution/utils/reboot" role="SERVERS">
       <task name="/kernel/networking/ebpf_xdp/sanity" role="SERVERS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
         <params>
           <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
           <param name="NAY" value="NAY_VALUE"/>
           <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
-          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
-          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
           <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
           <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
         </params>
@@ -103,8 +96,8 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
           <param name="NAY" value="NAY_VALUE"/>
           <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
-          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
-          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
           <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
           <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
         </params>
@@ -116,7 +109,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE, Driver under test: SERVER_DRIVER_VALUE SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE (CARD_INFO_VALUE), Driver under test: SERVER_DRIVER_VALUE (CARD_INFO_VALUE) SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -187,13 +180,6 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>
-      <task name="/distribution/command" role="CLIENTS">
-        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
-        <params>
-          <param name="CMDS_TO_RUN" value="dnf -y install https://download.eng.bos.redhat.com/brewroot/packages/kernel/5.14.0/427.18.1.el9_4/x86_64/kernel-core-5.14.0-427.18.1.el9_4.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/kernel/5.14.0/427.18.1.el9_4/x86_64/kernel-modules-5.14.0-427.18.1.el9_4.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/kernel/5.14.0/427.18.1.el9_4/x86_64/kernel-5.14.0-427.18.1.el9_4.x86_64.rpm"/>
-        </params>
-      </task>
-      <task name="/distribution/utils/reboot" role="CLIENTS">
       <task name="/kernel/networking/ebpf_xdp/sanity" role="CLIENTS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
         <params>

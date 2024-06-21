@@ -78,8 +78,8 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
           <param name="NAY" value="NAY_VALUE"/>
           <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
-          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
-          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
           <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
           <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
         </params>
@@ -96,8 +96,8 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="DBG_FLAG" value="DBG_FLAG_VALUE"/>
           <param name="NAY" value="NAY_VALUE"/>
           <param name="NIC_NUM" value="NIC_NUM_VALUE"/>
-          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
-          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE (CARD_INFO_VALUE)"/>
+          <param name="NIC_DRIVER" value="SERVER_DRIVER_VALUE"/>
+          <param name="TEST_DRIVER" value="SERVER_DRIVER_VALUE"/>
           <param name="XDP_LOAD_MODE" value="XDP_LOAD_MODE_VALUE"/>
           <param name="XDP_TEST_FRAMEWORK" value="XDP_TEST_FRAMEWORK_VALUE"/>
         </params>
