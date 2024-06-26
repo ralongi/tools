@@ -1,5 +1,5 @@
 # Stock kernel
 export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1255494480/\$basearch/5.14.0-439.4050_1255494280.el9.\$basearch"
 
-# RT kernel
-export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1255494480/\$basearch/5.14.0-439.4050_1255494280.el9.\$basearch rtk"
+# RT kernel (have to cancel job after initial submission, add rtk to end of string below, then re-submit
+export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-artifacts/1346888310/publish_x86_64/7179505999/artifacts/repo/5.14.0-469.4110_1346888097.el9.x86_64/"
