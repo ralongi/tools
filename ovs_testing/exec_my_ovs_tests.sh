@@ -314,8 +314,8 @@ sedeasy "24E" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-./exec_ovs_upgrade.sh
-./exec_sanity_check.sh
+#./exec_ovs_upgrade.sh
+#./exec_sanity_check.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
 #./exec_power_cycle_crash.sh
@@ -325,22 +325,22 @@ pushd /home/ralongi/github/tools/ovs_testing
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
 #./exec_topo.sh ixgbe ovs_env=kernel
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
-#./exec_topo.sh i40e ovs_env=kernel
-##./exec_topo.sh i40e ovs_env=ovs-dpdk
+./exec_topo.sh i40e ovs_env=kernel
+#./exec_topo.sh i40e ovs_env=ovs-dpdk
 #./exec_topo.sh ice ovs_env=kernel
 ##./exec_topo.sh ice ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
-#./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
-./exec_topo.sh arm ovs_env=kernel
-#./exec_topo.sh arm ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
+##./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
+#./exec_topo.sh arm ovs_env=kernel
+##./exec_topo.sh arm ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx7 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core bf2 ovs_env=kernel
-#./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core bf2 ovs_env=kernel
+##./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
 #./exec_topo.sh sts ovs_env=kernel
 ##./exec_topo.sh sts ovs_env=ovs-dpdk
 #./exec_topo.sh t4l ovs_env=kernel
@@ -353,11 +353,11 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh 6820c ovs_env=ovs-dpdk
 
 #./exec_endurance.sh cx5
-./exec_perf_ci.sh cx5
+#./exec_perf_ci.sh cx5
 #./exec_endurance.sh cx6dx
 #./exec_perf_ci.sh cx6dx
 #./exec_endurance.sh cx6lx
-./exec_perf_ci.sh cx6lx
+#./exec_perf_ci.sh cx6lx
 #./exec_endurance.sh bf2
 #./exec_perf_ci.sh bf2
 

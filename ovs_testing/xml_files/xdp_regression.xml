@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>(Server/DUT: netqe53.knqe.eng.rdu2.dc.redhat.com, Client: netqe50.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-20240701.2, Client driver: mlx5_core, Server driver: mlx5_core (CX5), Driver under test: mlx5_core (CX5) Integration testing, Jiras 28894, 30107, 30875</whiteboard>
+  <whiteboard>(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-20240708.2, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) (mlx5_core (CX6-DX)) Integration testing, https://issues.redhat.com/browse/RHEL-31820</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="(Server/DUT: netqe53.knqe.eng.rdu2.dc.redhat.com, Client: netqe50.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-20240701.2, Client driver: mlx5_core, Server driver: mlx5_core (CX5), Driver under test: mlx5_core (CX5) Integration testing, Jiras 28894, 30107, 30875" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-20240708.2, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) (mlx5_core (CX6-DX) Integration testing, https://issues.redhat.com/browse/RHEL-31820" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -47,7 +47,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <distroRequires>
                 <and>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-9.5.0-20240701.2"/>
+                    <distro_name op="=" value="RHEL-9.5.0-20240708.2"/>
                     <distro_variant op="=" value=""/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
@@ -60,7 +60,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
             </distroRequires>
       <hostRequires>
                 <and>
-                    <hostname op="like" value="netqe53.knqe.eng.rdu2.dc.redhat.com"/>
+                    <hostname op="like" value="netqe50.knqe.eng.rdu2.dc.redhat.com"/>
                 </and>
                 <system_type op="=" value="machine"/>
             </hostRequires>
@@ -69,8 +69,23 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/check-install" role="SERVERS">
         <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
         <params>
-          <param name="DISTRO_BUILD" value="RHEL-9.5.0-20240701.2"/>
+          <param name="DISTRO_BUILD" value="RHEL-9.5.0-20240708.2"/>
         </params>
+      </task>
+      <task name="/distribution/command" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="dnf -y install wget; wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/infra01-server.repo; dnf -y install bpftool-7.4.0-473.el9 kernel-5.14.0-473.el9"/>
+        </params>
+      </task>
+      <task name="/distribution/command" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#utils/reboot"/>
       </task>
       <task name="/kernel/networking/ebpf_xdp/sanity" role="SERVERS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
@@ -90,7 +105,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="dbg_flag" value="set -x"/>
         </params>
       </task>
-      <task name="/kernel/networking/ebpf_xdp/xdp_tools" role="SERVERS">
+            <task name="/kernel/networking/ebpf_xdp/xdp_tools" role="SERVERS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/xdp_tools"/>
         <params>
           <param name="DBG_FLAG" value="set -x"/>
@@ -109,7 +124,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="(Server/DUT: netqe53.knqe.eng.rdu2.dc.redhat.com, Client: netqe50.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-20240701.2, Client driver: mlx5_core, Server driver: mlx5_core (CX5), Driver under test: mlx5_core (CX5) Integration testing, Jiras 28894, 30107, 30875" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.5.0-20240708.2, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) (mlx5_core (CX6-DX) Integration testing, https://issues.redhat.com/browse/RHEL-31820" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -155,7 +170,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <distroRequires>
                 <and>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-9.5.0-20240701.2"/>
+                    <distro_name op="=" value="RHEL-9.5.0-20240708.2"/>
                     <distro_variant op="=" value=""/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
@@ -168,7 +183,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
             </distroRequires>
       <hostRequires>
                 <and>
-                    <hostname op="like" value="netqe50.knqe.eng.rdu2.dc.redhat.com"/>
+                    <hostname op="like" value="netqe53.knqe.eng.rdu2.dc.redhat.com"/>
                 </and>
                 <system_type op="=" value="machine"/>
             </hostRequires>
@@ -177,8 +192,23 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/check-install" role="CLIENTS">
         <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
         <params>
-          <param name="DISTRO_BUILD" value="RHEL-9.5.0-20240701.2"/>
+          <param name="DISTRO_BUILD" value="RHEL-9.5.0-20240708.2"/>
         </params>
+      </task>
+      <task name="/distribution/command" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="dnf -y install wget; wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/infra01-server.repo; dnf -y install bpftool-7.4.0-473.el9 kernel-5.14.0-473.el9"/>
+        </params>
+      </task>
+      <task name="/distribution/command" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#utils/reboot"/>
       </task>
       <task name="/kernel/networking/ebpf_xdp/sanity" role="CLIENTS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>

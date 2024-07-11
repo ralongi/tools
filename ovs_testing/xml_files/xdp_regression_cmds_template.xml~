@@ -78,7 +78,13 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="CMDS_TO_RUN" value="CMDS_TO_RUN_VALUE"/>
         </params>
       </task>
-      <task name="/distribution/utils/reboot" role="SERVERS"/>
+      <task name="/distribution/command" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="SERVERS">
       <task name="/kernel/networking/ebpf_xdp/sanity" role="SERVERS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
         <params>
@@ -116,7 +122,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE (CARD_INFO_VALUE), Driver under test: SERVER_DRIVER_VALUE (CARD_INFO_VALUE) (SERVER_DRIVER_VALUE (CARD_INFO_VALUE)) SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: SERVER_VALUE, Client: CLIENT_VALUE), XDP Regression Tests, COMPOSE_VALUE, Client driver: CLIENT_DRIVER_VALUE, Server driver: SERVER_DRIVER_VALUE (CARD_INFO_VALUE), Driver under test: SERVER_DRIVER_VALUE (CARD_INFO_VALUE) (SERVER_DRIVER_VALUE (CARD_INFO_VALUE) SPECIAL_INFO_VALUE" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -193,7 +199,13 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="CMDS_TO_RUN" value="CMDS_TO_RUN_VALUE"/>
         </params>
       </task>
-      <task name="/distribution/utils/reboot" role="CLIENTS"/>
+      <task name="/distribution/command" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="CLIENTS">
       <task name="/kernel/networking/ebpf_xdp/sanity" role="CLIENTS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
         <params>

@@ -72,6 +72,15 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
       </task>
+            <task name="/distribution/command" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#utils/reboot"/>
+      </task>
       <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="SERVERS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/netscout_connect_ports"/>
         <params>
@@ -187,6 +196,15 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         <params>
           <param name="DISTRO_BUILD" value="COMPOSE_VALUE"/>
         </params>
+      </task>
+            <task name="/distribution/command" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#utils/reboot"/>
       </task>
       <task name="/kernel/networking/openvswitch/netscout_connect_ports" role="CLIENTS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/openvswitch/netscout_connect_ports"/>
