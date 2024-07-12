@@ -325,10 +325,10 @@ pushd /home/ralongi/github/tools/ovs_testing
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
 #./exec_topo.sh ixgbe ovs_env=kernel
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
-./exec_topo.sh i40e ovs_env=kernel
-#./exec_topo.sh i40e ovs_env=ovs-dpdk
-#./exec_topo.sh ice ovs_env=kernel
-##./exec_topo.sh ice ovs_env=ovs-dpdk
+#./exec_topo.sh i40e ovs_env=kernel
+##./exec_topo.sh i40e ovs_env=ovs-dpdk
+./exec_topo.sh ice ovs_env=kernel
+#./exec_topo.sh ice ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
