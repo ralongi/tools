@@ -250,7 +250,7 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.4.qcow2"
+	export VM_IMAGE="rhel9.5.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
@@ -327,8 +327,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
 #./exec_topo.sh i40e ovs_env=kernel
 ##./exec_topo.sh i40e ovs_env=ovs-dpdk
-./exec_topo.sh ice ovs_env=kernel
-#./exec_topo.sh ice ovs_env=ovs-dpdk
+#./exec_topo.sh ice ovs_env=kernel
+##./exec_topo.sh ice ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
@@ -370,7 +370,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
-#./exec_ovs_memory_leak_soak.sh
+./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh

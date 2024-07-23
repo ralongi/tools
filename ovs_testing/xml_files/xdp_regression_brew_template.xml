@@ -77,6 +77,19 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
           <param name="BUILDID" value="BREW_BUILD_VALUE"/>
         </params>
       </task>
+      <task name="/distribution/command" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+          <param name="_fetch_opts" value=""/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="SERVERS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#utils/reboot"/>
+        <params>
+          <param name="_fetch_opts" value=""/>
+        </params>
+      </task>
       <task name="/kernel/networking/ebpf_xdp/sanity" role="SERVERS">
         <fetch url="https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2#networking/ebpf_xdp/sanity"/>
         <params>
@@ -188,6 +201,19 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/brew-build-install" role="CLIENTS">
         <params>
           <param name="BUILDID" value="BREW_BUILD_VALUE"/>
+        </params>
+      </task>
+      <task name="/distribution/command" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#command"/>
+        <params>
+          <param name="CMDS_TO_RUN" value="grubby --args=crashkernel=640M --update-kernel=ALL"/>
+          <param name="_fetch_opts" value=""/>
+        </params>
+      </task>
+      <task name="/distribution/utils/reboot" role="CLIENTS">
+        <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#utils/reboot"/>
+        <params>
+          <param name="_fetch_opts" value=""/>
         </params>
       </task>
       <task name="/kernel/networking/ebpf_xdp/sanity" role="CLIENTS">
