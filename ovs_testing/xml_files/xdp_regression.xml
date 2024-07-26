@@ -1,7 +1,7 @@
 <job retention_tag="active+1" product="cpe:/o:redhat:enterprise_linux">
-  <whiteboard>(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-10.0-20240717.79, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) RHEL-10 Beta CTC2 XDP readiness, https://issues.redhat.com/browse/FDPQE-870</whiteboard>
+  <whiteboard>(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.4.0-updates-20240725.1, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) Preliminary testing of MR packages, https://issues.redhat.com/browse/RHEL-45728</whiteboard>
   <recipeSet priority="Urgent">
-    <recipe whiteboard="(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-10.0-20240717.79, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) RHEL-10 Beta CTC2 XDP readiness, https://issues.redhat.com/browse/FDPQE-870" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.4.0-updates-20240725.1, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) Preliminary testing of MR packages, https://issues.redhat.com/browse/RHEL-45728" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -47,7 +47,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <distroRequires>
                 <and>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-10.0-20240717.79"/>
+                    <distro_name op="=" value="RHEL-9.4.0-updates-20240725.1"/>
                     <distro_variant op="=" value=""/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
@@ -69,7 +69,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/check-install" role="SERVERS">
         <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
         <params>
-          <param name="DISTRO_BUILD" value="RHEL-10.0-20240717.79"/>
+          <param name="DISTRO_BUILD" value="RHEL-9.4.0-updates-20240725.1"/>
         </params>
       </task>
       <task name="/distribution/command" role="SERVERS">
@@ -122,7 +122,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
         </params>
       </task>
     </recipe>
-    <recipe whiteboard="(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-10.0-20240717.79, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) RHEL-10 Beta CTC2 XDP readiness, https://issues.redhat.com/browse/FDPQE-870" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="(Server/DUT: netqe50.knqe.eng.rdu2.dc.redhat.com, Client: netqe53.knqe.eng.rdu2.dc.redhat.com), XDP Regression Tests, RHEL-9.4.0-updates-20240725.1, Client driver: mlx5_core, Server driver: mlx5_core (CX6-DX), Driver under test: mlx5_core (CX6-DX) Preliminary testing of MR packages, https://issues.redhat.com/browse/RHEL-45728" role="None" ks_meta="harness='restraint-rhts beakerlib' redhat_ca_cert disabled_root_access" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
       <watchdog/>
       <packages/>
@@ -168,7 +168,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <distroRequires>
                 <and>
                     <distro_method op="=" value="nfs"/>
-                    <distro_name op="=" value="RHEL-10.0-20240717.79"/>
+                    <distro_name op="=" value="RHEL-9.4.0-updates-20240725.1"/>
                     <distro_variant op="=" value=""/>
                     <distro_arch op="=" value="x86_64"/>
                 </and>
@@ -190,7 +190,7 @@ chmod a+x  /usr/$_rpath/* /usr/${_rpath%/*}/completed.d/*
       <task name="/distribution/check-install" role="CLIENTS">
         <fetch url="https://pkgs.devel.redhat.com/git/tests/distribution/snapshot/distribution-master.tar.gz#check-install"/>
         <params>
-          <param name="DISTRO_BUILD" value="RHEL-10.0-20240717.79"/>
+          <param name="DISTRO_BUILD" value="RHEL-9.4.0-updates-20240725.1"/>
         </params>
       </task>
       <task name="/distribution/command" role="CLIENTS">
