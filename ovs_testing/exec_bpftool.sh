@@ -15,9 +15,9 @@ product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"
 
 # Example brew_build_cmd (note back slashes to escape $basesearch variable)
-#export brew_build_cmd="--Brew=repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1063880898/\$basearch/5.14.0-383.3337_1063880735.el9.\$basearch"
+#export brew_build_cmd="--B repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1063880898/\$basearch/5.14.0-383.3337_1063880735.el9.\$basearch"
 
-#export brew_build_cmd="--Brew=repo:cki-artifacts,https://artifacts.internal.cki-project.org/arr-cki-prod-internal-artifacts/internal-artifacts/1361255010/publish_x86_64/7269536670/artifacts/repo/5.14.0-284.73.1.1834_1361254984.el9_2.x86_64/"
+#export brew_build_cmd="--B repo:cki-artifacts,https://artifacts.internal.cki-project.org/arr-cki-prod-internal-artifacts/internal-artifacts/1361255010/publish_x86_64/7269536670/artifacts/repo/5.14.0-284.73.1.1834_1361254984.el9_2.x86_64/"
 
 
 
