@@ -34,13 +34,13 @@ if [[ $(echo $rhel_minor_ver | grep -i RHEL) ]]; then
 	compose_id=$rhel_minor_ver
 	rhel_major_ver=$(echo $rhel_minor_ver | awk -F "." '{print $1}' | sed 's/RHEL-//g')
 	distro_id=$(bkr distro-trees-list --name=$compose_id --arch=$arch | grep ID | awk '{print $NF}')
-	build_url_baseos=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep "http://download.hosts.prod.psi.bos.redhat.com" | grep -v href | tr -d " ")
+	build_url_baseos=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep "http://download.eng.rdu.redhat.com" | tail -1 | grep -v href | tr -d " ")
 else
 	rhel_major_ver=$(echo $rhel_minor_ver | awk -F "." '{print $1}')
 	view_id=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/?simplesearch=rhel-$rhel_minor_ver | grep '/distros/view' | grep -v '\.n' | egrep -v '\.n|\.d' | head -n1 | awk -F ">" '{print $1}' | awk -F "=" '{print $NF}' | tr -d '"')
 	distro_id=$(curl -sL https://beaker.engineering.redhat.com/distros/view?id="$view_id" | grep distro_tree_id | head -n1 | awk -F "=" '{print $3}' | awk '{print $1}' | tr -d '"')
 	export compose_id=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/?simplesearch=rhel-$rhel_minor_ver | grep '/distros/view' | egrep -v '\.n|\.d' | grep -v '\.d' | head -n1 | awk -F ">" '{print $2}' | awk -F "<" '{print $1}')
-	build_url_baseos=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep "http://download.hosts.prod.psi.bos.redhat.com" | grep -v href | tr -d " ")
+	build_url_baseos=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep "http://download.eng.rdu.redhat.com" | grep -v href | tr -d " ")
 fi
 
 build_url_appstream=$(echo $build_url_baseos | sed 's/BaseOS/AppStream/g')
@@ -50,13 +50,13 @@ package=$2
 arch=$(echo $build_url_baseos | awk -F "/os" '{print $1}' | awk -F "/" '{print $NF}')
 
 if [[ $package ]]; then
-	package_list=$(curl -sL "$build_url_baseos"Packages | egrep -wi $package | head | awk -F ">" '{print $6}' | awk -F '"' '{print $2}')
+	package_list=$(curl -sL "$build_url_baseos"Packages | egrep -wi $package | head -1 | awk -F '>' '{print $3}' | awk -F '.rpm' '{print $1}')
 	if [[ -z $package_list ]]; then
-	    package_list=$(curl -sL "$build_url_appstream"Packages | egrep -wi $package | head | awk -F ">" '{print $6}' | awk -F '"' '{print $2}')
+	    package_list=$(curl -sL "$build_url_appstream"Packages | egrep -wi $package | head -1 | awk -F '>' '{print $3}' | awk -F '.rpm' '{print $1}')
 	fi
 fi
 
-kernel_id=$(curl -sL "$build_url_baseos"Packages | egrep -w kernel | head -n1 | awk -F ">" '{print $6}' | awk -F '"' '{print $2}')
+kernel_id=$(curl -sL "$build_url_baseos"Packages | egrep -w kernel | head -1 | awk -F '>' '{print $3}' | awk -F '.rpm' '{print $1}')
 echo $kernel_id > ~/kernel_id.tmp
 kernel_id=$(sed "s/.$arch.rpm//g" ~/kernel_id.tmp)
 rm -f ~/kernel_id.tmp
@@ -66,7 +66,7 @@ if [[ ! $(echo $rhel_minor_ver | grep -i RHEL) ]]; then
 fi
 echo "The kernel associated with compose $compose_id is: $kernel_id"
 echo ""
-if [[ $package ]] && [[ $package_list ]]; then 
+if [[ $package_list ]]; then 
 	echo "$package package list query results for compose $compose_id:"
 	echo ""
 	echo "$package_list"
