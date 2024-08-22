@@ -141,13 +141,13 @@ get_latest_driverctl()
 get_latest_driverctl
 
 if [[ -z $RPM_DRIVERCTL ]]; then
-	export RPM_DRIVERCTL=$DRIVERCTL_RHEL10
+	export RPM_DRIVERCTL=$DRIVERCTL_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_PYTHON ]]; then
-	export RPM_OVS_TCPDUMP_PYTHON=$OVS330_PYTHON_24E_RHEL10
+	export RPM_OVS_TCPDUMP_PYTHON=$OVS330_PYTHON_24E_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_TEST ]]; then
-	export RPM_OVS_TCPDUMP_TEST=$OVS330_TCPDUMP_24E_RHEL10
+	export RPM_OVS_TCPDUMP_TEST=$OVS330_TCPDUMP_24E_RHEL9
 fi
 
 # RHEL composes
@@ -250,14 +250,14 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel10.0.qcow2"
+	export VM_IMAGE="rhel9.4.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS330_24E_RHEL10
+	export RPM_OVS=$OVS330_24E_RHEL9
 else
 	export RPM_OVS=$RPM_OVS
 fi
@@ -279,7 +279,7 @@ fi
 
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_24E_RHEL10
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_24E_RHEL9
 else
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
 fi
@@ -298,7 +298,7 @@ fi
 #export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN330_24E_RHEL10 
+export RPM_OVN=$OVN330_24E_RHEL9 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -314,7 +314,7 @@ sedeasy "24E" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-#./exec_ovs_upgrade.sh
+./exec_ovs_upgrade.sh
 #./exec_sanity_check.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
@@ -331,8 +331,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh ice ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
-#./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
+##./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
 #./exec_topo.sh arm ovs_env=kernel
