@@ -118,6 +118,13 @@ elif [[ $driver == "atlantic" ]]; then
 	client_driver="atlantic"
 	card_info="ATLANTIC"
 	SYSTYPE="prototype"
+elif [[ $driver == "ionic" ]]; then
+	server="dell-per740-11.knqe.eng.rdu2.dc.redhat.com"
+	client="dell-per740-05.knqe.eng.rdu2.dc.redhat.com"
+	server_driver="ionic"
+	client_driver="mlx5_core"
+	card_info="IONIC"
+	SYSTYPE="prototype"
 fi
 
 # Temporarily add commands similar to below to runtest string to install packages downloaded to infra01
@@ -131,7 +138,7 @@ if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
 else
 #	lstest ~/git/kernel/networking/ebpf_xdp/bpftool | runtest $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
-	lstest ~/git/kernel/networking/ebpf_xdp/bpftool | runtest $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --B repo:cki-artifacts,https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-artifacts/1373770671/publish_x86_64/7341310113/artifacts/repo/5.14.0-479.4700_1373770531.el9.x86_64/ --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	lstest ~/git/kernel/networking/ebpf_xdp/bpftool | runtest $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --B "repo:cki-artifacts,https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-artifacts/1373801536/publish_x86_64/7341549401/artifacts/repo/5.14.0-479.4705_1373801362.el9.x86_64/ rtk" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 fi
 

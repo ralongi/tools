@@ -351,6 +351,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh bmc57504 ovs_env=ovs-dpdk
 #./exec_topo.sh 6820c ovs_env=kernel
 ##./exec_topo.sh 6820c ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core bf3 ovs_env=kernel
+##./exec_topo.sh mlx5_core bf3 ovs_env=ovs-dpdk
 
 #./exec_endurance.sh cx5
 #./exec_perf_ci.sh cx5
@@ -360,6 +362,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_perf_ci.sh cx6lx
 #./exec_endurance.sh bf2
 #./exec_perf_ci.sh bf2
+#./exec_endurance.sh bf3
+#./exec_perf_ci.sh bf3
 
 #./exec_topo.sh enic ovs_env=kernel
 ##./exec_topo.sh enic ovs_env=ovs-dpdk

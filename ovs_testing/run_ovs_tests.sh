@@ -136,6 +136,12 @@ for i in $tests; do
 		else
 			sed -i '/exec_topo.sh mlx5_core bf2/s/^#//g' exec_my_ovs_tests.sh
 		fi
+	elif [[ $i == *"topo_mlx5_core_bf3"* ]]; then
+	    if [[ $ovs_env ]]; then
+			sed -i "/exec_topo.sh mlx5_core bf3 ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
+		else
+			sed -i '/exec_topo.sh mlx5_core bf3/s/^#//g' exec_my_ovs_tests.sh
+		fi
 	elif [[ $i == *"topo_enic"* ]]; then
 		if [[ $ovs_env ]]; then
 			sed -i "/exec_topo.sh enic/s/^#//g ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh

@@ -219,6 +219,23 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "BF2" ]]; then
 	fi
 	cat ~/git/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=mh-nic_test=$server_nic_test,$client_nic_test --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type, $mlx_card_model), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}"
 	
+# mlx5_core BF3
+elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "BF3" ]]; then
+	server="netqe27.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe28.knqe.eng.rdu2.dc.redhat.com"
+	NAY="no"
+	PVT="yes"
+	server_driver="mlx5_core"
+	client_driver="mlx5_core"
+	if [[ $compose_version -gt 8 ]]; then
+		server_nic_test="enp130s0f0np0"
+		client_nic_test="ens1f0np0"
+	else
+		server_nic_test="ens3f0"
+		client_nic_test="ens7f0"
+	fi
+	cat ~/git/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=mh-nic_test=$server_nic_test,$client_nic_test --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type, $mlx_card_model), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	
 # if no mlx_card_type value, default to mlx5_core CX6
 elif [[ "$driver" == "mlx5_core" ]] && [[ -z "$mlx_card_type" ]]; then
 	mlx_card_type="CX6"
