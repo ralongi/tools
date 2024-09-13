@@ -18,3 +18,4 @@ done
 echo ""
 echo "Test URL: https://gitlab.cee.redhat.com/ralongi/kernel/-/archive/$branch/kernel-test.tar.gz#"
 echo "Merge Request URL: https://gitlab.cee.redhat.com/ralongi/kernel/-/merge_requests/new?merge_request%5Bsource_branch%5D=$branch"
+echo "Standard (non-test) URL: http://fs-qe.usersys.redhat.com/ftp/pub/lookaside/test-case-archives/kernel-master.tar.gz#"
