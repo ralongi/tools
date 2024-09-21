@@ -11,7 +11,7 @@ display_usage()
 
 echo ""
 while true; do
-    read -p "Please the target git branch name: " branch
+    read -p "Please provide the target git branch name: " branch
     break
 done
 
