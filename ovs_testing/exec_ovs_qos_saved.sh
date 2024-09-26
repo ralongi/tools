@@ -3,7 +3,7 @@
 # ovs_qos
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/openvswitch/ovs_qos
+pushd ~/git/my_fork/kernel/networking/openvswitch/ovs_qos
 server="netqe21.knqe.lab.eng.bos.redhat.com"
 client="netqe44.knqe.eng.rdu2.dc.redhat.com"
 server_driver="i40e"

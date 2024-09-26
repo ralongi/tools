@@ -3,7 +3,7 @@
 # memory_leak_soak
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/openvswitch/memory_leak_soak
+pushd ~/git/my_fork/kernel/networking/openvswitch/memory_leak_soak
 fdp_release=$FDP_RELEASE
 dut="wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"
 NIC_DRIVER=${NIC_DRIVER:-"i40e"}

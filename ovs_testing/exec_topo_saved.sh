@@ -62,7 +62,7 @@ EOF
 
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/tools/runtest-network --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+pushd ~/git/my_fork/kernel/networking/tools/runtest-network --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fdp_release=$FDP_RELEASE
 driver=$1
 if [[ $# -lt 1 ]]; then

@@ -4,7 +4,7 @@
 
 dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-pushd ~/git/kernel/networking/openvswitch/memory_leak_soak
+pushd ~/git/my_fork/kernel/networking/openvswitch/memory_leak_soak
 fdp_release=$FDP_RELEASE
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
 dut="wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"

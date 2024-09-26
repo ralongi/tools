@@ -3,7 +3,7 @@
 # forward-bpdu
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/openvswitch/forward-bpdu
+pushd ~/git/my_fork/kernel/networking/openvswitch/forward-bpdu
 fdp_release=$FDP_RELEASE
 server="netqe6.knqe.lab.eng.bos.redhat.com"
 client="netqe5.knqe.lab.eng.bos.redhat.com"

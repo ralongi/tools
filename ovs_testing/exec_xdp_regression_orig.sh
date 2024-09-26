@@ -11,7 +11,7 @@ echo "Compose: $COMPOSE"
 DBG_FLAG=${DBG_FLAG:-"set -x"}
 $DBG_FLAG
 
-pushd ~/git/kernel/networking/ebpf_xdp/sanity
+pushd ~/git/my_fork/kernel/networking/ebpf_xdp/sanity
 
 if [[ $driver == "ice" ]]; then
 	server="netqe51.knqe.eng.rdu2.dc.redhat.com"

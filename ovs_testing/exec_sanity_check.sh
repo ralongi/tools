@@ -4,7 +4,7 @@
 
 dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-pushd ~/git/kernel/networking/openvswitch/sanity_check
+pushd ~/git/my_fork/kernel/networking/openvswitch/sanity_check
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
 #dut=${dut:-"netqe21.knqe.lab.eng.bos.redhat.com"}
 dut=${dut:-"netqe32.knqe.eng.rdu2.dc.redhat.com"}
@@ -21,7 +21,7 @@ if [[ -z $image_name ]]; then
 fi
 
 # netqe31
-#pushd ~/git/kernel/networking/openvswitch/sanity_check
+#pushd ~/git/my_fork/kernel/networking/openvswitch/sanity_check
 #FDP_RELEASE=23F
 #fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
 #dut="netqe31.knqe.lab.eng.bos.redhat.com"

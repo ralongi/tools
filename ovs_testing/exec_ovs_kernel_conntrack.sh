@@ -3,7 +3,7 @@
 # ovs-kernel-conntrack
 
 dbg_flag="set -x"
-testdir="/home/ralongi/git/kernel/networking/ovs-dpdk/ovs-kernel-conntrack"
+testdir="/home/ralongi/git/my_fork/kernel/networking/ovs-dpdk/ovs-kernel-conntrack"
 pushd $testdir
 fdp_release=$FDP_RELEASE
 server="dell-per730-51.rhts.eng.pek2.redhat.com"

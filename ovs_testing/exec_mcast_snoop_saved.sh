@@ -3,7 +3,7 @@
 # mcast_snoop
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/tools/runtest-network --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+pushd ~/git/my_fork/kernel/networking/tools/runtest-network --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fdp_release=$FDP_RELEASE
 server="netqe21.knqe.lab.eng.bos.redhat.com"
 client="netqe44.knqe.eng.rdu2.dc.redhat.com"

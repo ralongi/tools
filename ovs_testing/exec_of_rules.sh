@@ -6,7 +6,7 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"
-pushd ~/git/kernel/networking/openvswitch/of_rules
+pushd ~/git/my_fork/kernel/networking/openvswitch/of_rules
 server="netqe51.knqe.eng.rdu2.dc.redhat.com"
 client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 server_driver="ice"
@@ -27,6 +27,6 @@ NIC_NUM=2
 
 lstest | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=x86_64 --machine=$server,$client --systype=machine,machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=NIC_NUM=$NIC_NUM --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver $brew_build $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
-#lstest ~/git/kernel/networking/openvswitch/of_rules | runtest $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=NIC_NUM=$NIC_NUM --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+#lstest ~/git/my_fork/kernel/networking/openvswitch/of_rules | runtest $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=mh-NIC_DRIVER=$server_driver,$client_driver --param=NIC_NUM=$NIC_NUM --param=image_name=$VM_IMAGE --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 popd

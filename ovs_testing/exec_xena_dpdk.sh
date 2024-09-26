@@ -3,7 +3,7 @@
 # xena_dpdk
 
 dbg_flag="set -x"
-testdir="/home/ralongi/git/kernel/networking/openvswitch/xena_conntrack/xena_dpdk"
+testdir="/home/ralongi/git/my_fork/kernel/networking/openvswitch/xena_conntrack/xena_dpdk"
 pushd $testdir
 fdp_release=$FDP_RELEASE
 server="dell-per740-04.rhts.eng.pek2.redhat.com"

@@ -3,7 +3,7 @@
 # conntrack_dpdk
 
 dbg_flag="set -x"
-testdir="/home/ralongi/git/kernel/networking/openvswitch/conntrack3/ct_userspace"
+testdir="/home/ralongi/git/my_fork/kernel/networking/openvswitch/conntrack3/ct_userspace"
 pushd $testdir
 fdp_release=$FDP_RELEASE
 server="dell-per730-25.rhts.eng.pek2.redhat.com"

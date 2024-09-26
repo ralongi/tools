@@ -45,8 +45,8 @@ echo "TREX/CLIENT COMPOSE is: $TREX_COMPOSE"
 
 dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
-pushd ~/git/kernel/networking/openvswitch/perf
-task="~/git/kernel/networking/openvswitch/perf"
+pushd ~/git/my_fork/kernel/networking/openvswitch/perf
+task="~/git/my_fork/kernel/networking/openvswitch/perf"
 rhel_minor_ver=$(echo $COMPOSE | awk -F - '{print $2}' | sed 's/.0//g')
 rhel_major_ver=$(echo $COMPOSE | awk -F - '{print $2}' | awk -F . '{print $1}') 
 card_type=$(echo $1 | tr '[:upper:]' '[:lower:]')

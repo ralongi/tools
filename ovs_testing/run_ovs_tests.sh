@@ -26,7 +26,7 @@ if [[ $# -lt 3 ]] || [[ $1 = "-h" ]] || [[ $1 = "--help" ]]	|| [[ $1 = "-?" ]]; 
 fi
 
 # Make sure local git is up to date
-pushd /home/ralongi/git/kernel/networking
+pushd /home/ralongi/git/my_fork/kernel/networking
 git status | grep 'working tree clean' || git pull > /dev/null
 popd
 

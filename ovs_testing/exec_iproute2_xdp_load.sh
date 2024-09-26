@@ -20,7 +20,7 @@ $DBG_FLAG
 XDP_LOAD_MODE=${XDP_LOAD_MODE:-"native"}
 XDP_TEST_FRAMEWORK=${XDP_TEST_FRAMEWORK:-"beakerlib"}
 
-pushd ~/git/kernel/networking/ebpf_xdp/iproute2_load_xdp
+pushd ~/git/my_fork/kernel/networking/ebpf_xdp/iproute2_load_xdp
 
 if [[ $driver == "ice" ]]; then
 	dut="netqe51.knqe.eng.rdu2.dc.redhat.com"

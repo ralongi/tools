@@ -3,7 +3,7 @@
 # conntrack2
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/openvswitch/conntrack2
+pushd ~/git/my_fork/kernel/networking/openvswitch/conntrack2
 fdp_release=$FDP_RELEASE
 server="dell-per730-25.rhts.eng.pek2.redhat.com"
 client="dell-per730-26.rhts.eng.pek2.redhat.com"

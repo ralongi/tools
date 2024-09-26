@@ -15,7 +15,7 @@ skip_rhel8_ovs215=${skip_ovs213:-"no"}
 
 # Set above variables in ./exec_tests_variables.sh to determine which jobs should run
 source ./exec_tests_variables.sh
-source ~/git/kernel/networking/openvswitch/common/package_list.sh
+source ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh
 
 use_hpe_synergy=${use_hpe_synergy:-"no"}
 

@@ -4,7 +4,7 @@
 
 dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-pushd ~/git/kernel/networking/openvswitch/sanity_check
+pushd ~/git/my_fork/kernel/networking/openvswitch/sanity_check
 fdp_release=$FDP_RELEASE
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
 dut="netqe9.knqe.lab.eng.bos.redhat.com"

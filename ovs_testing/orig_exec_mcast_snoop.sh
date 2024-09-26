@@ -3,7 +3,7 @@
 # mcast_snoop
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/tools/runtest-network
+pushd ~/git/my_fork/kernel/networking/tools/runtest-network
 fdp_release=$FDP_RELEASE
 server="netqe6.knqe.lab.eng.bos.redhat.com"
 client="netqe5.knqe.lab.eng.bos.redhat.com"

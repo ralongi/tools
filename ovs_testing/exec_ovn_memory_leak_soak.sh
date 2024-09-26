@@ -4,7 +4,7 @@
 
 dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-pushd ~/git/kernel/networking/openvswitch/ovn/soak_test
+pushd ~/git/my_fork/kernel/networking/openvswitch/ovn/soak_test
 echo "CWD is: $(pwd)"
 fdp_release=$FDP_RELEASE
 NIC_DRIVER=${NIC_DRIVER:-"i40e"}

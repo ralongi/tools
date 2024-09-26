@@ -9,7 +9,7 @@
 #nic_test="i40e_sriov"
 nic_test="mlx5_core_sriov"
 
-pushd ~/git/kernel/networking/openvswitch/perf
+pushd ~/git/my_fork/kernel/networking/openvswitch/perf
 server="netqe24.knqe.eng.rdu2.dc.redhat.com"
 client="netqe25.knqe.eng.rdu2.dc.redhat.com"
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')

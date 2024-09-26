@@ -3,7 +3,7 @@
 # of_rules
 
 dbg_flag="set -x"
-pushd ~/git/kernel/networking/openvswitch/of_rules
+pushd ~/git/my_fork/kernel/networking/openvswitch/of_rules
 fdp_release=$FDP_RELEASE
 server="netqe21.knqe.lab.eng.bos.redhat.com"
 client="netqe44.knqe.eng.rdu2.dc.redhat.com"
