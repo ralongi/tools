@@ -258,11 +258,12 @@ elif [[ "$driver" == "arm" ]]; then
 	#client="ampere-mtsnow-02.knqe.eng.rdu2.dc.redhat.com"
 	#server_driver="mlx5_core"
 	#client_driver="mlx5_core"
-	server="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe49.knqe.eng.rdu2.dc.redhat.com" # ARM system
 	#client="netqe47.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe48.knqe.eng.rdu2.dc.redhat.com"
+	#client="netqe48.knqe.eng.rdu2.dc.redhat.com"
+	server="netqe24.knqe.eng.rdu2.dc.redhat.com" #x86_64 system
 	server_driver="mlx5_core"
-	client_driver="ice"
+	client_driver="mlx5_core"
 	#server_pciid="15b3:1021" #CX7
 	#server_pciid="15b3:101d" #CX6-DX
 	#client_pciid="8086:1592" #E810
@@ -270,8 +271,18 @@ elif [[ "$driver" == "arm" ]]; then
 	export RPM_OVS_TCPDUMP_PYTHON_AARCH64=$(echo $RPM_OVS_TCPDUMP_PYTHON | sed 's/x86_64/aarch64/g')
 	#export RPM_OVS_TCPDUMP_TEST_AARCH64=$(echo $RPM_OVS_TCPDUMP_TEST | sed 's/x86_64/aarch64/g')	
 	export ovs_rpm_name=$(echo $RPM_OVS_AARCH64 | awk -F "/" '{print $NF}')
-	NAY=yes
-	PVT=no
+	netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1" # netqe24 CX5 to netqe49 CX7 ARM
+	netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2" # netqe24 CX5 to netqe49 CX7
+	GUEST_TYPE="container"
+	NAY=no
+	PVT=yes
+	if [[ $compose_version -gt 8 ]]; then
+		server_nic_test="enp130s0f0np0"
+		client_nic_test="enP2p2s0f0np0"
+	else
+		server_nic_test="ens4f0"
+		client_nic_test="enP2p2s0f0"
+	fi
 	#server_nic_test="eno2"
 	#client_nic_test="eno2"
 	#zstream_repo_list_aarch64=$(echo $zstream_repo_list | sed 's/x86_64/aarch64/g') 
@@ -284,7 +295,7 @@ elif [[ "$driver" == "arm" ]]; then
 	if [[ $ovs_env == "ovs-dpdk" ]]; then
 	    cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=aarch64 --machine=$server,$client --systype=machine,machine $(echo "$brew_build_cmd") $(echo "$zstream_repo_list") $(echo "$zstream_repo_list_aarch64") --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=mh-netqe-nic-pciid=$server_pciid,$client_pciid --param=HOST_TESTS_ONLY=yes --param=ovs_env=$ovs_env --param=image_name=$VM_IMAGE --param=SELINUX=$SELINUX --param=GUEST_TYPE=container --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS_AARCH64 --param=RPM_OVS_TCPDUMP_PYTHON=$RPM_OVS_TCPDUMP_PYTHON_AARCH64 --param=RPM_OVS_TCPDUMP_TEST=$RPM_OVS_TCPDUMP_TEST --param=rpm_driverctl=$RPM_DRIVERCTL --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver, ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	else
-	    cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=aarch64 --machine=$server,$client --systype=machine,machine $(echo "$brew_build_cmd") $(echo "$zstream_repo_list") $(echo "$zstream_repo_list_aarch64") --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=mh-netqe-nic-pciid=$server_pciid,$client_pciid --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=image_name=$VM_IMAGE --param=SELINUX=$SELINUX --param=GUEST_TYPE=container --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS_AARCH64 --param=RPM_OVS_TCPDUMP_PYTHON=$RPM_OVS_TCPDUMP_PYTHON_AARCH64 --param=RPM_OVS_TCPDUMP_TEST=$RPM_OVS_TCPDUMP_TEST --param=rpm_driverctl=$RPM_DRIVERCTL --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver, ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	    cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest $COMPOSE --product=$product --retention-tag=$retention_tag --arch=x86_64,aarch64 --machine=$server,$client --systype=machine,machine $(echo "$brew_build_cmd") $(echo "$zstream_repo_list") $(echo "$zstream_repo_list_aarch64") --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=mh-netqe-nic-pciid=$server_pciid,$client_pciid --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=image_name=$VM_IMAGE --param=SELINUX=$SELINUX --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=mh-RPM_OVS=$RPM_OVS,$RPM_OVS_AARCH64 --param=mh-RPM_OVS_TCPDUMP_PYTHON=$RPM_OVS_TCPDUMP_PYTHON,$RPM_OVS_TCPDUMP_PYTHON_AARCH64 --param=RPM_OVS_TCPDUMP_TEST=$RPM_OVS_TCPDUMP_TEST --param=rpm_driverctl=$RPM_DRIVERCTL --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver, ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"  --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}"
 	fi
 	
 	#cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --dryrun --prettyxml $COMPOSE  --arch=aarch64 --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine $(echo "$brew_build_cmd") $(echo "$zstream_repo_list"),$(echo "$zstream_repo_list_aarch64") --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=mh-RPM_OVS=$RPM_OVS,$RPM_OVS_AARCH64 --param=mh-RPM_OVS_TCPDUMP_PYTHON=$RPM_OVS_TCPDUMP_PYTHON,$RPM_OVS_TCPDUMP_PYTHON_AARCH64 --param=RPM_OVS_TCPDUMP_TEST=$RPM_OVS_TCPDUMP_TEST --param=rpm_driverctl=$RPM_DRIVERCTL --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver, ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
