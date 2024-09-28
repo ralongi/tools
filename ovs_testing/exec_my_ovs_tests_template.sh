@@ -13,6 +13,12 @@ if [[ $repo ]]; then
 	repo_cmd="--repo=$repo"
 fi
 
+if [[ $brew_target_flag != "off" ]]; then
+	export brew_target=${brew_target:-"lstk"}
+else
+	export brew_target=""
+fi
+
 if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 
 # Script to execute all of my ovs tests
@@ -302,6 +308,8 @@ export RPM_OVN=$OVNFDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
+export BONDING_CONTAINER_VLAN_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp ovs_test_container_vlan"
+
 export BONDING_CPU_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp ovs_test_ns_enable_nomlockall_CPUAffinity_test"
 
 export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ipv6 ovs_test_vlan_gre_ipv6 ovs_test_vlan_gre1_ipv6 ovs_test_vm_gre_ipv6 ovs_test_vm_gre1_ipv6 ovs_test_vm_gre_flow_ipv6 ovs_test_vm_vlan_gre_ipv6 ovs_test_vm_vlan_gre1_ipv6"
@@ -336,6 +344,9 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
 #./exec_topo.sh arm ovs_env=kernel
+
+#./exec_topo.sh mlx5_core_arm cx7 ovs_env=kernel
+
 ##./exec_topo.sh arm ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx7 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk

@@ -24,7 +24,7 @@ elif [[ $card_type == "cx6" ]]; then
 	nic_test=mlx5_100g_cx6
 fi
 
-lstest | runtest $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=nic_test=$nic_test --param=test_env=$test_env --param=image=$VM_IMAGE --param=rpm_dpdk=$rpm_dpdk --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX_EXTRA_POLICY --param=rpm_ovs=$RPM_OVS --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Endurance" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+lstest | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=nic_test=$nic_test --param=test_env=$test_env --param=image=$VM_IMAGE --param=rpm_dpdk=$rpm_dpdk --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX_EXTRA_POLICY --param=rpm_ovs=$RPM_OVS --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Endurance" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 popd
 

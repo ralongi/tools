@@ -100,11 +100,11 @@ for i in $tests; do
 		else
 			sed -i '/exec_topo.sh ice/s/^#//g' exec_my_ovs_tests.sh
 		fi
-	elif [[ $i == *"topo_arm"* ]]; then
+	elif [[ $i == *"topo_mlx5_core_arm"* ]]; then
 		if [[ $ovs_env ]]; then
-			sed -i "/exec_topo.sh arm ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
+			sed -i "/exec_topo.sh mlx5_core_arm ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
 		else
-			sed -i '/exec_topo.sh arm/s/^#//g' exec_my_ovs_tests.sh
+			sed -i '/exec_topo.sh mlx5_core_arm/s/^#//g' exec_my_ovs_tests.sh
 		fi
 	elif [[ $i == *"topo_mlx5_core_cx5"* ]]; then
 		if [[ $ovs_env ]]; then
@@ -225,6 +225,20 @@ for i in $tests; do
 		sed -i 's/NIC_DRIVER:-""/NIC_DRIVER:-"qede"/g' exec_ovs_memory_leak_soak.sh
 	fi
 done
+
+echo ""
+echo "If you don't want the test(s) specified to load the latest released kernel, you must exit and run 'export brew_target_flag=off' and re-run the test(s)."
+echo ""
+
+while true; do
+    read -p   "Do you want to proceed using the latest released kernel for the test(s)? " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+        esac
+done
+
 
 ./exec_my_ovs_tests.sh
 
