@@ -15,9 +15,19 @@ log=$(bkr job-results J:$job_id --prettyxml | grep -A40 '"/kernel/networking/ope
 result_file=$(basename $log)
 wget --quiet -O $result_file $log
 rm -f failed_tests.txt
-for i in $(grep rstrnt-report-result taskout.log | grep FAIL | awk '{print $4}'); do
-	echo $i | sed 's/-/_/g' >> failed_tests.txt
-done
+
+if [[ $(grep rstrnt-report-result taskout.log) ]]; then
+	for i in $(grep rstrnt-report-result taskout.log | grep FAIL | awk '{print $4}'); do
+		echo $i | sed 's/-/_/g' >> failed_tests.txt
+	done
+elif [[ $(grep -i 'RESULT: FAIL' taskout.log) ]]; then # for when job aborted with failures
+	for i in $(grep -i 'RESULT: FAIL' taskout.log | awk -F '(' '{print $NF}' | tr -d ')'); do
+		echo $i | sed 's/-/_/g' >> failed_tests.txt
+	done
+else
+	echo "There are no failed tests reported in taskout.log"
+	exit 0
+fi
 
 original_ovs_topo=$(bkr job-clone J:$job_id --prettyxml --dryrun | grep '<param name="OVS_TOPO"' | awk -F '"' '{print $4}' | tail -1)
 if [[ -z $new_ovs_topo ]]; then
