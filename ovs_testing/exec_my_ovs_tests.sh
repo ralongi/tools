@@ -322,7 +322,7 @@ sedeasy "24G" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-./exec_ovs_upgrade.sh
+#./exec_ovs_upgrade.sh
 #./exec_sanity_check.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
@@ -350,8 +350,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh arm ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx7 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core bf2 ovs_env=kernel
-##./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core bf2 ovs_env=kernel
+#./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
 #./exec_topo.sh sts ovs_env=kernel
 ##./exec_topo.sh sts ovs_env=ovs-dpdk
 #./exec_topo.sh t4l ovs_env=kernel
