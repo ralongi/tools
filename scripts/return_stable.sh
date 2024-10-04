@@ -93,6 +93,7 @@ fi
 p=$(cat $target_hosts_file | wc -l)
 
 pssh -O StrictHostKeyChecking=no -p $p -h $target_hosts_file -t 0 -l root return2beaker.sh > /dev/null
+rm -f ~/*pssh_*
 
 popd
 
