@@ -48,4 +48,5 @@ echo "The latest stable RHEL $rhel_minor_ver compose available in beaker is: $la
 echo "The kernel associated with compose $latest_compose_id is: $kernel_id"
 echo ""
 gvar latest_compose_id=$latest_compose_id
+echo $latest_compose_id > /tmp/new_compose_id.txt
 

@@ -22,6 +22,10 @@ if [[ $# -lt 1 ]]; then
 fi
 
 distro_id=$(bkr distro-trees-list --name=$compose_id --arch=$arch | grep -B2 "Variant: $variant" | grep ID | awk '{print $NF}')
+if [[ -z $distro_id ]]; then
+	echo "$compose_id does not appear to be available any longer"
+	exit 1
+fi
 
 build_url=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep -A 12 rdu.redhat.com | grep http | grep -v href | tr -d " " | tail -1)
 
