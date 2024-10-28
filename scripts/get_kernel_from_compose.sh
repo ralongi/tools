@@ -23,7 +23,7 @@ fi
 
 distro_id=$(bkr distro-trees-list --name=$compose_id --arch=$arch | grep -B2 "Variant: $variant" | grep ID | awk '{print $NF}')
 if [[ -z $distro_id ]]; then
-	echo "$compose_id does not appear to be available any longer"
+	echo "The RHEL-$compose_id compose specified does not appear to be available any longer.  Checking for the latest available RHEL-$compose_id compose..."
 	exit 1
 fi
 

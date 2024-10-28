@@ -38,7 +38,7 @@ fi
 
 FDP_STREAM=$(basename $RPM_OVS | awk -F "-" '{print $1}' | sed s/openvswitch//g )
 
-lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=LEAPP_UPGRADE=no --wb "($dut), $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: no" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=dbg_flag="$dbg_flag" --param=FDP_STREAM=$FDP_STREAM --param=NAY=yes --param=STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$STARTING_RPM_OVS_SELINUX_EXTRA_POLICY --param=STARTING_RPM_OVS=$STARTING_RPM_OVS --param=OVS_LATEST_STREAM_PKG=$OVS_LATEST_STREAM_PKG --param=RPM_OVS=$RPM_OVS --param=LEAPP_UPGRADE=$LEAPP_UPGRADE --wb "($dut), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: $LEAPP_UPGRADE $brew_build $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 rm -f *.xml	
 popd

@@ -53,7 +53,7 @@ if [[ $new_compose ]]; then sed -i "s/$old_compose/$new_compose/g" new_job.xml; 
 bkr job-submit new_job.xml | tee new_job.log
 new_job_id=$(grep Submitted new_job.log | awk -F "'" {'print $2}')
 job_wb=$(bkr job-results $new_job_id | grep '<whiteboard>' | awk -F '<whiteboard>' '{print $2}' | awk -F '</whiteboard>' '{print $1}')
-job_wb+=" \`Re-run of J:$job_id\`"
+job_wb+=" \`Re-test of failures in J:$job_id\`"
 bkr job-modify $new_job_id --whiteboard="$job_wb"
 rm -f /tmp/new_compose_id.txt
 popd
