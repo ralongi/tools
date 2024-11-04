@@ -36,8 +36,8 @@ echo "# FDP $fdp_release Packages" >> $new_package_list_file
 
 pushd $script_directory
 
-selinux_version=$(curl -sL http://download.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el7 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
-package_url=http://download.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
+selinux_version=$(curl -sL http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el7 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
+package_url=http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
 http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 echo "OVS_SELINUX_$fdp_release"_RHEL7=${package_url} >> $new_package_list_file
@@ -45,8 +45,8 @@ echo ""
 echo OVS_SELINUX_$fdp_release"_RHEL7 package location: $package_url"
 echo ""
 
-selinux_version=$(curl -sL http://download.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el8 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
-package_url=http://download.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
+selinux_version=$(curl -sL http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el8 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
+package_url=http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
 http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 echo "OVS_SELINUX_$fdp_release"_RHEL8=${package_url} >> $new_package_list_file
@@ -54,8 +54,8 @@ echo ""
 echo OVS_SELINUX_$fdp_release"_RHEL8 package location: $package_url"
 echo ""
 
-selinux_version=$(curl -sL http://download.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el9 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
-package_url=http://download.eng.bos.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
+selinux_version=$(curl -sL http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/ | grep el9 | tail -n1 | awk -F '>' '{print $6}' | awk -F '"' '{print $2}' | tr -d /)
+package_url=http://download.devel.redhat.com/brewroot/packages/openvswitch-selinux-extra-policy/1.0/$selinux_version/noarch/openvswitch-selinux-extra-policy-1.0-$selinux_version.noarch.rpm
 http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 echo "OVS_SELINUX_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -94,9 +94,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.13/2.13.0/$build_id.el8fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -123,9 +123,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el8fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -152,9 +152,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.16/2.16.0/$build_id.el8fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -181,9 +181,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el8fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -210,9 +210,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el8" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el8fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -239,9 +239,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.15/2.15.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -268,9 +268,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch2.17/2.17.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -297,9 +297,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.0/3.0.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -326,9 +326,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -355,9 +355,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.2/3.2.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -384,9 +384,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.3/3.3.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.3/3.3.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.3/3.3.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.3/3.3.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.3/3.3.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.3/3.3.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -413,9 +413,9 @@ else
 	build_id=$(echo $build | awk -F - '{print $NF}' | awk -F ".el9" '{print $1}')
 	python_package=$(grep -A8 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'scripts|devel|ipsec|debugsource|debuginfo|\[' | grep -i python | awk -F '"' '{print $2}')
 	tcpdump_package=$(grep -A1 '"noarch": \[' ~/temp/builds.txt | tail -n1 | awk -F '"' '{print $2}')
-	package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.4/3.4.0/$build_id.el9fdp/x86_64/$build"
-	python_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.4/3.4.0/$build_id.el9fdp/x86_64/$python_package"
-	tcpdump_package_url="http://download.eng.bos.redhat.com/brewroot/packages/openvswitch3.4/3.4.0/$build_id.el9fdp/noarch/$tcpdump_package"
+	package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.4/3.4.0/$build_id.el9fdp/x86_64/$build"
+	python_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.4/3.4.0/$build_id.el9fdp/x86_64/$python_package"
+	tcpdump_package_url="http://download.devel.redhat.com/brewroot/packages/openvswitch3.4/3.4.0/$build_id.el9fdp/noarch/$tcpdump_package"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$python_package_url" | grep HTTP | awk '{print $2}')
@@ -443,9 +443,9 @@ else
 	ovn_host_build=$(grep -A9 '"x86_64": \[' ~/temp/builds.txt | egrep -v 'vtep|debugsource|debuginfo|\[' | tail -n1 | awk -F '"' '{print $2}')
 	directory_id=$(echo $ovn_common_build | awk -F "-" '{print $2}')
 	build_id=$(echo $ovn_common_build | awk -F "." '{print $4}'  | awk -F "-" '{print $NF}')
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn2.13/$directory_id/"$build_id".el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -474,9 +474,9 @@ else
 	year=$(echo $ovn_common_build | awk -F "-" '{print $2}')
 	directory_id=$(echo $ovn_common_build | awk -F "-" '{print $3}')
 	build_id=$(echo $ovn_common_build | awk -F "." '{print $3}'  | awk -F "-" '{print $NF}')
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn-$year/$directory_id/"$build_id".el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn-$year/$directory_id/"$build_id".el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn-$year/$directory_id/"$build_id".el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn-$year/$directory_id/"$build_id".el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn-$year/$directory_id/"$build_id".el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn-$year/$directory_id/"$build_id".el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -507,9 +507,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -540,9 +540,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -573,9 +573,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -606,9 +606,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -639,9 +639,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -672,9 +672,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -705,9 +705,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -738,9 +738,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -771,9 +771,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -804,9 +804,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el8fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -837,9 +837,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -870,9 +870,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -903,9 +903,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -936,9 +936,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
@@ -969,9 +969,9 @@ else
 	point1=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $1}')
 	point2=$(echo $ovn_common_build  | awk -F "." '{print $4}' | awk -F "-" '{print $2}')
 	
-	ovn_common_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
-	ovn_central_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
-	ovn_host_package_url="http://download.eng.bos.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
+	ovn_common_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_common_build"
+	ovn_central_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_central_build"
+	ovn_host_package_url="http://download.devel.redhat.com/brewroot/packages/ovn$year/$year.$point1/$point2.el9fdp/x86_64/$ovn_host_build"
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_common_package_url" | grep HTTP | awk '{print $2}')
 	if [[ "$http_code" -ne 200 ]]; then echo "$ovn_common_package_url is NOT a valid link.  Exiting..."; exit 1; fi
 	http_code=$(curl --silent --head --write-out '%{http_code}' "$ovn_central_package_url" | grep HTTP | awk '{print $2}')
