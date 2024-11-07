@@ -61,7 +61,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS213_$fdp_release"_RHEL7=${package_url} >> $new_package_list_file
@@ -76,7 +76,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS213_$fdp_release"_RHEL8=${package_url} >> $new_package_list_file
@@ -95,7 +95,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS215_$fdp_release"_RHEL8=${package_url} >> $new_package_list_file
@@ -114,7 +114,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS216_$fdp_release"_RHEL8=${package_url} >> $new_package_list_file
@@ -133,7 +133,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS217_$fdp_release"_RHEL8=${package_url} >> $new_package_list_file
@@ -152,7 +152,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS310_$fdp_release"_RHEL8=${package_url} >> $new_package_list_file
@@ -171,7 +171,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS215_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -190,7 +190,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS217_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -209,7 +209,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS300_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -228,7 +228,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS310_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -247,7 +247,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS320_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -266,7 +266,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS330_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
@@ -285,7 +285,7 @@ if [[ -z $errata ]]; then
 	echo ""
 else
 	./get_errata_packages.sh -e $errata
-	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test')
 	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
 	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
 	echo "OVS340_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
