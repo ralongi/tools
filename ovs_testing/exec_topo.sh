@@ -175,15 +175,15 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX6" ]]; then
 		client="wsfd-advnetlab35.anl.eng.rdu2.dc.redhat.com"
 		server_driver="i40e"
 		client_driver="mlx5_core"
-		NAY="no"
-		PVT="yes"
-		if [[ $compose_version -gt 8 ]]; then
-			server_nic_test="ens1f0"
-			client_nic_test="ens3f0np0"
-		else
-			server_nic_test="ens1f0"
-			client_nic_test="ens3f0"
-		fi
+		NAY="yes"
+		PVT="no"
+		#if [[ $compose_version -gt 8 ]]; then
+		#	server_nic_test="ens1f0"
+		#	client_nic_test="ens3f0np0"
+		#else
+		#	server_nic_test="ens1f0"
+		#	client_nic_test="ens3f0"
+		#fi
 	fi
 	#server_pciid="15b3:1017" #CX5
 	#client_pciid="15b3:101d" #CX6 DX

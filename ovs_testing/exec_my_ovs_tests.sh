@@ -13,10 +13,12 @@ if [[ $repo ]]; then
 	repo_cmd="--repo=$repo"
 fi
 
-if [[ $brew_target_flag != "off" ]]; then
-	export brew_target=${brew_target:-"lstk"}
-else
+
+brew_target_flag=${brew_target_flag:-"off"}
+if [[ $brew_target_flag == "off" ]]; then
 	export brew_target=""
+else
+	export brew_target=${brew_target:-"lstk"}
 fi
 
 if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi

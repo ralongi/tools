@@ -233,11 +233,14 @@ for i in $tests; do
 done
 
 echo ""
-echo "If you don't want the test(s) specified to load the latest released kernel, you must exit and run 'export brew_target_flag=off' and re-run the test(s)."
+if [[ $brew_target_flag == "off" ]] && [[ $zstream_compose ]]; then
+	echo "The test(s) will use the latest Z stream kernel included with $COMPOSE."
+else
+	echo "The test(s) will use the latest available brew kernel."
 echo ""
 
 while true; do
-    read -p   "Do you want to proceed using the latest released kernel for the test(s)? " yn
+    read -p   "Do you want to proceed using the kernel specified for the test(s)? " yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) exit;;

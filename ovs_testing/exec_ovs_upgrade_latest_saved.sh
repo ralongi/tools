@@ -8,7 +8,7 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 LEAPP_UPGRADE=${LEAPP_UPGRADE:-"no"}
 #leapp_upgrade_repo=${leapp_upgrade_repo:-"http://file.emea.redhat.com/~mreznik/tmp/leapp_upgrade_repositories.repo"}
-dut=${dut:-"netqe32.knqe.eng.rdu2.dc.redhat.com"}
+dut=${dut:-"wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 
 RHEL_VER_MAJOR=$(echo $COMPOSE | awk -F "-" '{print $2}' | awk -F "." '{print $1}')

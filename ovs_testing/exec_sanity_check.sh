@@ -7,7 +7,7 @@ $dbg_flag
 pushd ~/git/my_fork/kernel/networking/openvswitch/sanity_check
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
 #dut=${dut:-"netqe21.knqe.lab.eng.bos.redhat.com"}
-dut=${dut:-"netqe32.knqe.eng.rdu2.dc.redhat.com"}
+dut=${dut:-"wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"}
 NIC_DRIVER=${NIC_DRIVER:-"i40e"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 netscout_pair1=${netscout_pair1:-"NETQE32_P3P1 XENA_M5P0"}

@@ -12,12 +12,7 @@ repo=${repo:-""}
 if [[ $repo ]]; then
 	repo_cmd="--repo=$repo"
 fi
-
-if [[ $brew_target_flag != "off" ]]; then
-	export brew_target=${brew_target:-"lstk"}
-else
-	export brew_target=""
-fi
+brew_target_flag=${brew_target_flag:-"off"}
 
 if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 
@@ -161,19 +156,27 @@ fi
 # if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing the scripts to kick off tests
 echo "Checking to see if a COMPOSE has been specified..."
 if [[ -z $COMPOSE ]]; then
-    echo "No compose has been specified yet.  Will try to find a valid $RHEL_VER Z stream compose"
+    echo "No compose has been specified yet.  Will try to find a valid $RHEL_VER Z stream compose."
 	get_zstream_compose $RHEL_VER
 	if [[ $zstream_compose ]]; then
 	    export COMPOSE=$zstream_compose
+	    export brew_target_flag="off"
 	    echo "Using Z stream compose $zstream_compose..."
 	else
-	    echo "No valid $RHEL_VER Z stream compose was found.  Will now use the latest available $RHEL_VER compose"
+	    echo "No valid $RHEL_VER Z stream compose was found.  Will now use the latest available $RHEL_VER compose."
 	    #/home/ralongi/github/tools/scripts/get_beaker_compose_id.sh $RHEL_VER
 	    get_beaker_compose_id $RHEL_VER
 	    export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
-	    echo " Will attempt to install Z stream kernel packages as part of the beaker job before the test task"
+	    export brew_target_flag="on"
+	    echo "Will install the latest available brew kernel on top of the latest available compose."
 	    export cmds_to_run="--cmd-and-reboot $(cat ~/temp/tt.txt)"
 	fi
+fi
+
+if [[ $brew_target_flag == "off" ]]; then
+	export brew_target=""
+else
+	export brew_target=${brew_target:-"lstk"}
 fi
 
 echo "Using compose: $COMPOSE"
