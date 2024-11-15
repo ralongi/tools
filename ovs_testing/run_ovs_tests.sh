@@ -232,21 +232,22 @@ for i in $tests; do
 	fi
 done
 
-echo ""
-if [[ $brew_target_flag == "off" ]] && [[ $zstream_compose ]]; then
-	echo "The test(s) will use the latest Z stream kernel included with $COMPOSE."
-else
-	echo "The test(s) will use the latest available brew kernel."
-echo ""
+#echo ""
+#if [[ $brew_target_flag == "off" ]] && [[ $zstream_compose ]]; then
+#	echo "The test(s) will use the latest Z stream kernel included with $COMPOSE."
+#else
+#	echo "The test(s) will use the latest available brew kernel."
+#fi
+#echo ""
 
-while true; do
-    read -p   "Do you want to proceed using the kernel specified for the test(s)? " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-        esac
-done
+#while true; do
+#    read -p   "Do you want to proceed using the kernel specified for the test(s)? " yn
+#    case $yn in
+#        [Yy]* ) break;;
+#        [Nn]* ) exit;;
+#        * ) echo "Please answer yes or no.";;
+#        esac
+#done
 
 
 ./exec_my_ovs_tests.sh

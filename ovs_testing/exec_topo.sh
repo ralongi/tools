@@ -103,30 +103,18 @@ if [[ "$driver" == *"mlx5_core"* ]] || [[ "$driver" == *"ixgbe"* ]]; then
 	OVS_SKIP_TESTS+=" ovs_test_container_vlan"
 fi
 
-### ixgbe tests without Netscout
-if [[ "$driver" == "ixgbe" ]]; then
-	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
-	server_driver="mlx5_core"
-	client_driver="ixgbe"
-fi
-
-### i40e without Netscout
+# i40e
 if [[ "$driver" == "i40e" ]]; then
 	server="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ice"
 	client_driver="i40e"
-fi
 
-# Standard topo run
-if [[ "$driver" == "ixgbe" ]] || [[ "$driver" == "i40e" ]]; then
 	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") --Brew=$brew_target --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=netscout_pair1="$netscout_pair1" --param=netscout_pair2="$netscout_pair2" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
-fi
 	
 # ICE E810 (RHEL-8.4 and higher)
 ### ice tests with Netscout
-if [[ "$driver" == "ice" ]]; then
+elif [[ "$driver" == "ice" ]]; then
 	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
 	NAY=yes
@@ -329,7 +317,15 @@ elif [[ "$driver" == "mlx5_core_arm" ]]; then
 	#bkr job-submit $job_xml_file
 
 	#cat ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64,aarch64 --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list"),$(echo "$zstream_repo_list") --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=mh-RPM_OVS=$RPM_OVS,$RPM_OVS_AARCH64 --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
-	
+
+elif [[ "$driver" == "ixgbe" ]]; then
+	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe50.knqe.eng.rdu2.dc.redhat.com"
+	server_driver="sfc"
+	client_driver="ixgbe"
+
+	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") --Brew=$brew_target --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=yes --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=netscout_pair1="$netscout_pair1" --param=netscout_pair2="$netscout_pair2" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+
 ### Cisco enic
 elif [[ "$driver" == "enic" ]]; then
 	server="netqe22.knqe.eng.rdu2.dc.redhat.com"

@@ -12,14 +12,7 @@ repo=${repo:-""}
 if [[ $repo ]]; then
 	repo_cmd="--repo=$repo"
 fi
-
-
 brew_target_flag=${brew_target_flag:-"off"}
-if [[ $brew_target_flag == "off" ]]; then
-	export brew_target=""
-else
-	export brew_target=${brew_target:-"lstk"}
-fi
 
 if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 
@@ -152,10 +145,10 @@ if [[ -z $RPM_DRIVERCTL ]]; then
 	export RPM_DRIVERCTL=$DRIVERCTL_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_PYTHON ]]; then
-	export RPM_OVS_TCPDUMP_PYTHON=$OVS310_PYTHON_24H_RHEL9
+	export RPM_OVS_TCPDUMP_PYTHON=$OVS340_PYTHON_24H_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_TEST ]]; then
-	export RPM_OVS_TCPDUMP_TEST=$OVS310_TCPDUMP_24H_RHEL9
+	export RPM_OVS_TCPDUMP_TEST=$OVS340_TCPDUMP_24H_RHEL9
 fi
 
 # RHEL composes
@@ -163,19 +156,27 @@ fi
 # if using a specific compose, first execute: export COMPOSE=<target compose id" in terminal window where you are executing the scripts to kick off tests
 echo "Checking to see if a COMPOSE has been specified..."
 if [[ -z $COMPOSE ]]; then
-    echo "No compose has been specified yet.  Will try to find a valid $RHEL_VER Z stream compose"
+    echo "No compose has been specified yet.  Will try to find a valid $RHEL_VER Z stream compose."
 	get_zstream_compose $RHEL_VER
 	if [[ $zstream_compose ]]; then
 	    export COMPOSE=$zstream_compose
+	    export brew_target_flag="off"
 	    echo "Using Z stream compose $zstream_compose..."
 	else
-	    echo "No valid $RHEL_VER Z stream compose was found.  Will now use the latest available $RHEL_VER compose"
+	    echo "No valid $RHEL_VER Z stream compose was found.  Will now use the latest available $RHEL_VER compose."
 	    #/home/ralongi/github/tools/scripts/get_beaker_compose_id.sh $RHEL_VER
 	    get_beaker_compose_id $RHEL_VER
 	    export COMPOSE=$(/home/ralongi/gvar/bin/gvar $latest_compose_id | awk -F "=" '{print $NF}')
-	    echo " Will attempt to install Z stream kernel packages as part of the beaker job before the test task"
+	    export brew_target_flag="on"
+	    echo "Will install the latest available brew kernel on top of the latest available compose."
 	    export cmds_to_run="--cmd-and-reboot $(cat ~/temp/tt.txt)"
 	fi
+fi
+
+if [[ $brew_target_flag == "off" ]]; then
+	export brew_target=""
+else
+	export brew_target=${brew_target:-"lstk"}
 fi
 
 echo "Using compose: $COMPOSE"
@@ -258,14 +259,14 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.2.qcow2"
+	export VM_IMAGE="rhel9.4.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS310_24H_RHEL9
+	export RPM_OVS=$OVS340_24H_RHEL9
 else
 	export RPM_OVS=$RPM_OVS
 fi
@@ -306,7 +307,7 @@ fi
 #export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN310_24H_RHEL9 
+export RPM_OVN=$OVN340_24H_RHEL9 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -325,10 +326,10 @@ sedeasy "24H" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 pushd /home/ralongi/github/tools/ovs_testing
 
 #./exec_ovs_upgrade.sh
-#./exec_sanity_check.sh
+./exec_sanity_check.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
-./exec_power_cycle_crash.sh
+#./exec_power_cycle_crash.sh
 #./exec_forward_bpdu.sh
 #./exec_of_rules.sh
 
