@@ -19,4 +19,4 @@ cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "open
 
 rm -f ~/git/my_fork/kernel/networking/tools/runtest-network/job*.xml --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
-popd
+popd 2>/dev/null

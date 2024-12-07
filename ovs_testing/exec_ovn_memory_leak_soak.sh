@@ -90,4 +90,4 @@ if [[ "$skip_rhel8_ovs215" != "yes" ]]; then
 	lstest | runtest $compose  --variant=BaseOS --arch=x86_64 --machine=$server,$client --systype=machine --topo=singleHost --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=RPM_OVN_COMMON=$RPM_OVN_COMMON --param=loop_round=$loop_round --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/ovn/soak_test, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 	
-popd
+popd 2>/dev/null

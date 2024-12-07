@@ -143,4 +143,4 @@ else
 
 fi
 
-popd 1> /dev/null
+popd 2>/dev/null

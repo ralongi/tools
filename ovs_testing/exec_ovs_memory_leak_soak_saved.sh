@@ -107,4 +107,4 @@ fi
 # 1K flow tests only, short duration (sanity check)
 #lstest | runtest $compose --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=900 --param=mem_check_interval=30s --param=num_mem_checks=24 --param=skip_5k_flows=yes --param=skip_10k_flows=yes --param=skip_25k_flows=yes --param=skip_100k_flows=yes --param=skip_1m_flows=yes --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
-popd
+popd 2>/dev/null

@@ -81,4 +81,4 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	lstest | runtest $compose --machine=$dut --param=dbg_flag="set -x" --param=selinux_enable=$selinux_enable --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=skip_traffic_tests=yes --param=skip_cleanup_env=yes --param=skip_openvswitch_restart_test=no --param=fdp_release_dir=$fdp_release_dir --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/sanity_check, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 	
-popd
+popd 2>/dev/null

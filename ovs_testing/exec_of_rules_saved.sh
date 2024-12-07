@@ -100,4 +100,4 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	lstest | runtest $compose --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=SELINUX=$SELINUX --param=NAY=yes --param=image_name=$image_name --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=mh-NIC_TX=$NIC_TX --param=mh-NIC_RX=$NIC_RX --cmd="yum install -y policycoreutils-python-utils; yum -y install $RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8" --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/of_rules, Client driver: $client_driver, Server driver: $server_driver" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 	
-popd
+popd 2>/dev/null

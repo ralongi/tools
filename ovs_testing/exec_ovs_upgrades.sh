@@ -130,7 +130,7 @@ while true; do
 					grep "$ending_compose" "$new_filename";					
 					bkr job-submit "$new_filename"
 				done
-				popd;
+				popd 2>/dev/null;
         		exit;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;

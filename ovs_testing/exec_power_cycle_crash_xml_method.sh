@@ -116,4 +116,4 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	bkr job-submit power_cycle_crash_rhel9.xml
 fi
 
-popd
+popd 2>/dev/null

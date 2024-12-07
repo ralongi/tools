@@ -300,4 +300,4 @@ if [[ "$skip_rhel9_ovs215" != "yes" ]]; then
 	#cat ovs.list | egrep "openvswitch/topo" | runtest $compose  --ks-meta "$ks_meta" --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=selinux_enable=$selinux_enable --param=NAY=no --param=PVT=yes --param=mh-nic_test=ens2f0,ens1f0 --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver (ICE E810)" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 fi
 
-popd
+popd 2>/dev/null

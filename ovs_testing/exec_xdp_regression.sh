@@ -150,4 +150,4 @@ sedeasy "CMDS_TO_RUN_VALUE" "$cmds_to_run" "xdp_regression.xml"
 
 bkr job-submit xdp_regression.xml
 
-popd
+popd 2>/dev/null

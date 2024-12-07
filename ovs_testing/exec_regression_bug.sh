@@ -23,4 +23,4 @@ sedeasy "RPM_DPDK_TOOL_VALUE" "$RPM_DPDK_TOOLS" "regression_bug_rhel"$RHEL_VER_M
 sedeasy "GUEST_IMG_VALUE" "$RHEL_VER" "regression_bug_rhel"$RHEL_VER_MAJOR".xml"
 bkr job-submit regression_bug_rhel"$RHEL_VER_MAJOR".xml
 
-popd
+popd 2>/dev/null

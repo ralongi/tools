@@ -155,4 +155,4 @@ fi
 # Example of reservesys
 #--insert-task="/distribution/reservesys {RESERVETIME=86400}" 
 
-popd
+popd 2>/dev/null

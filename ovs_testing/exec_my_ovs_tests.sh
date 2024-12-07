@@ -49,7 +49,7 @@ get_beaker_compose_id()
 	    git clone git@github.com:arturoherrero/gvar.git
 	    echo 'export PATH="${PATH}:~/gvar/bin"' >> ~/.bash_profile
 	    source ~/.bash_profile
-	    popd
+	    popd 2>/dev/null
     fi
 	    
     display_usage()
@@ -97,7 +97,7 @@ netscout_cable()
 		wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
 		sleep 2
 		python3 /home/ralongi/github/NetScout/NSConnect.py --connect $port1 $port2
-		popd
+		popd 2>/dev/null
 	elif [[ "$rhel_version" -eq 7 ]]; then	
 		scl enable rh-python34 - << EOF
 			pushd /home/NetScout/
@@ -105,7 +105,7 @@ netscout_cable()
 			wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
 			sleep 2
 			python /home/ralongi/github/NetScout/NSConnect.py --connect $port1 $port2
-			popd
+			popd 2>/dev/null
 EOF
 	fi
 }
@@ -199,7 +199,7 @@ get_zstream_repos()
 	export zstream_repo_list=$(cat zstream_repos.txt)
 	rm -f ZConfig.yaml
 	alias rm='rm -i'
-	popd
+	popd 2>/dev/null
 }
 
 get_dpdk_packages()
@@ -437,4 +437,4 @@ echo "RPM_OVN_COMMON: $RPM_OVN_COMMON"
 echo "RPM_OVN_CENTRAL: $RPM_OVN_CENTRAL"
 echo "RPM_OVN_HOST: $RPM_OVN_HOST"
 
-popd
+popd 2>/dev/null

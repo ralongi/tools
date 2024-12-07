@@ -103,4 +103,4 @@ else
 
 fi
 
-popd
+popd 2>/dev/null

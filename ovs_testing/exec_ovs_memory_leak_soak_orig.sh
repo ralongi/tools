@@ -67,4 +67,4 @@ lstest | runtest $compose  --variant=BaseOS --arch=x86_64 --machine=$dut --systy
 
 #lstest | runtest $compose  --variant=BaseOS --arch=x86_64 --machine=$dut --systype=machine  --param=dbg_flag="set -x" --param=NAY=yes --param=NIC_DRIVER=$NIC_DRIVER --param=NIC_NUM=2 --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS --param=traffic_runtime=720 --param=mem_check_interval=30s --param=num_mem_checks=24 --wb "$fdp_release, $ovs_rpm_name, $compose, openvswitch/memory_leak_soak, Driver: $NIC_DRIVER" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
-popd
+popd 2>/dev/null

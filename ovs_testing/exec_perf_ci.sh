@@ -183,4 +183,4 @@ else
     --wb="(Server/DUT: $SERVER, Client/Trex: $CLIENT) FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf Perf CI ($card_info)"    
 fi
 
-popd
+popd 2>/dev/null

@@ -18,7 +18,7 @@ netscout_cable()
 		wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
 		sleep 2
 		python3 /home/ralongi/github/NetScout/NSConnect.py --connect $port1 $port2
-		popd
+		popd 2>/dev/null
 	elif [[ "$rhel_version" -eq 7 ]]; then	
 		scl enable rh-python34 - << EOF
 			pushd /home/NetScout/
@@ -26,7 +26,7 @@ netscout_cable()
 			wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
 			sleep 2
 			python /home/ralongi/github/NetScout/NSConnect.py --connect $port1 $port2
-			popd
+			popd 2>/dev/null
 EOF
 	fi
 }
@@ -47,7 +47,7 @@ netscout_show_connections()
                 wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
                 sleep 2
                 python3 /home/ralongi/github/NetScout/NSConnect.py --showconnections
-                popd
+                popd 2>/dev/null
         elif [[ "$rhel_version" -eq 7 ]]; then  
                 scl enable rh-python34 - << EOF
                         pushd /home/NetScout/
@@ -55,7 +55,7 @@ netscout_show_connections()
                         wget -O ./settings.cfg http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/NSConn/"$netscout_switch".cfg
                         sleep 2
                         python /home/ralongi/github/NetScout/NSConnect.py --showconnections
-                        popd
+                        popd 2>/dev/null
 EOF
         fi
 }
@@ -405,4 +405,4 @@ else
 	
 fi
 
-popd
+popd 2>/dev/null

@@ -23,5 +23,5 @@ test_env=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/mlx5_cor
 
 runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --arch=x86_64 --servers=1 --clients=1 --machine=$server,$client --systype=machine,machine  --kernel-options-post="pci=realloc intel_iommu=on" --task="/kernel/networking/openvswitch/perf" --param=dbg_flag="set -x" --param=nic_test=$nic_test --param=test_env=$test_env --param=image=$VM_IMAGE --param=rpm_dpdk=$rpm_dpdk --param=rpm_openvswitch_selinux_extra_policy=$RPM_OVS_SELINUX_EXTRA_POLICY --param=rpm_ovs=$RPM_OVS --wb "Pensando SR-IOV, FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/perf" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
-popd
+popd 2>/dev/null
 

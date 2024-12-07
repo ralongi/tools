@@ -80,4 +80,4 @@ ks_meta="harness='restraint-rhts beakerlib beakerlib-redhat'"
 
 lstest | runtest $compose  --repo "http://download.devel.redhat.com/nightly/latest-BUILDROOT-8-RHEL-8/compose/Buildroot/x86_64/os" --variant=BaseOS --arch=x86_64 --ks-meta "$ks_meta" --arch=x86_64 --machine=$server,$client --systype=machine,machine  --param=dbg_flag="set -x" --param=image_name=$image_name --param=GUEST_IMAGE=$image_name --param=RPM_CONTAINER_SELINUX_POLICY=$RPM_CONTAINER_SELINUX_POLICY --param=OVS_EXTRA=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL7 --param=RPM_OVS=$RPM_OVS --param=RPM_DPDK=$RPM_DPDK_RHEL7 --param=RPM_DPDK_TOOLS=$RPM_DPDK_TOOLS_RHEL7 --param=QEMU_KVM_RHEV=$QEMU_KVM_RHEV_RHEL7 --wb "$fdp_release, $ovs_rpm_name, $compose, $(echo $testdir | awk -F 'git' '{print $2}')" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
-popd
+popd 2>/dev/null
