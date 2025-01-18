@@ -4,7 +4,7 @@
 
 dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
-dut=${dut:-"wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"}
+dut=${dut:-"netqe05.knqe.eng.rdu2.dc.redhat.com"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"

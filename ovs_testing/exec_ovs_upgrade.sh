@@ -8,7 +8,7 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 LEAPP_UPGRADE=${LEAPP_UPGRADE:-"no"}
 #leapp_upgrade_repo=${leapp_upgrade_repo:-"http://file.emea.redhat.com/~mreznik/tmp/leapp_upgrade_repositories.repo"}
-dut=${dut:-"wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"}
+dut=${dut:-"netqe05.knqe.eng.rdu2.dc.redhat.com"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 
 RHEL_VER_MAJOR=$(echo $COMPOSE | awk -F "-" '{print $2}' | awk -F "." '{print $1}')
@@ -38,7 +38,7 @@ fi
 
 FDP_STREAM=$(basename $RPM_OVS | awk -F "-" '{print $1}' | sed s/openvswitch//g )
 
-lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=LEAPP_UPGRADE=no --wb "($dut), $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: no" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=ROLE="STANDALONE" --param=LEAPP_UPGRADE=no --wb "($dut), $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: no" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 rm -f *.xml	
 popd 2>/dev/null

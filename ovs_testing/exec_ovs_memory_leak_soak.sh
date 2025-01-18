@@ -6,7 +6,7 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 pushd ~/git/my_fork/kernel/networking/openvswitch/memory_leak_soak
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
-dut=${dut:-"wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"}
+dut=${dut:-"wsfd-advnetlab34.anl.lab.eng.bos.redhat.com"}
 #SERVERS=$dut
 #CLIENTS="null"
 ROLE="STANDALONE"
