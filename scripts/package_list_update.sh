@@ -298,6 +298,25 @@ else
 	echo ""
 fi
 
+errata=$(grep 'OVS-3.50 RHEL-9' $fdp_errata_list_file | awk '{print $3}')
+if [[ -z $errata ]]; then
+	echo "No errata provided so OVS 3.50 RHEL-9 package will not be added for FDP $fdp_release"
+	echo ""
+else
+	./get_errata_packages.sh -e $errata
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
+	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
+	echo "OVS350_$fdp_release"_RHEL9=${package_url} >> $new_package_list_file
+	echo "OVS350_PYTHON_$fdp_release"_RHEL9=${python_package_url} >> $new_package_list_file
+	echo "OVS350_TCPDUMP_$fdp_release"_RHEL9=${tcpdump_package_url} >> $new_package_list_file
+	echo ""
+	echo OVS350_$fdp_release"_RHEL9 package location: $package_url"
+	echo OVS350_PYTHON_$fdp_release"_RHEL9 package location: $python_package_url"
+	echo OVS350_TCPDUMP_$fdp_release"_RHEL9 package location: $tcpdump_package_url"
+	echo ""
+fi
+
 errata=$(grep 'OVN-2.13 RHEL-8' $fdp_errata_list_file | awk '{print $3}')
 if [[ -z $errata ]]; then
 	echo "No errata provided so OVN 2.13 RHEL-8 package will not be added for FDP $fdp_release"
