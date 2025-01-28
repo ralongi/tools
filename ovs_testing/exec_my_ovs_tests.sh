@@ -259,7 +259,7 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.4.qcow2"
+	export VM_IMAGE="rhel9.6.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
@@ -334,14 +334,14 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_of_rules.sh
 
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
-./exec_topo.sh ixgbe ovs_env=kernel
-#./exec_topo.sh ixgbe ovs_env=ovs-dpdk
+#./exec_topo.sh ixgbe ovs_env=kernel
+##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
 #./exec_topo.sh i40e ovs_env=kernel
 ##./exec_topo.sh i40e ovs_env=ovs-dpdk
 #./exec_topo.sh ice ovs_env=kernel
 ##./exec_topo.sh ice ovs_env=ovs-dpdk
-#./exec_topo.sh ice_e830 ovs_env=kernel
-##./exec_topo.sh ice_e830 ovs_env=ovs-dpdk
+./exec_topo.sh ice_e830 ovs_env=kernel
+#./exec_topo.sh ice_e830 ovs_env=ovs-dpdk
 #./exec_topo.sh ice_e825 ovs_env=kernel
 ##./exec_topo.sh ice_e825 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
@@ -383,12 +383,12 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_endurance.sh bf3
 #./exec_perf_ci.sh bf3
 
-./exec_topo.sh enic ovs_env=kernel
-#./exec_topo.sh enic ovs_env=ovs-dpdk
-./exec_topo.sh qede ovs_env=kernel
-#./exec_topo.sh qede ovs_env=ovs-dpdk
-./exec_topo.sh bnxt_en ovs_env=kernel
-#./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
+#./exec_topo.sh enic ovs_env=kernel
+##./exec_topo.sh enic ovs_env=ovs-dpdk
+#./exec_topo.sh qede ovs_env=kernel
+##./exec_topo.sh qede ovs_env=ovs-dpdk
+#./exec_topo.sh bnxt_en ovs_env=kernel
+##./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
