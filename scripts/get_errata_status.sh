@@ -7,6 +7,8 @@ alias rm='rm'
 rm -f ~/temp/errata_status_info.tmp
 pushd ~/temp
 
+# Provide list of errata to be checked.  If no list is provided, check fdp_errata_list.txt file
+# Example to provide errata list: export errata_list="144721 144722 144723"
 if [[ -z $errata_list ]]; then
 	errata_list=$(egrep -i 'ovs|ovn|misc' ~/github/tools/scripts/fdp_errata_list.txt | grep -vi tests | awk '{print $3}')
 fi
