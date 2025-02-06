@@ -14,15 +14,15 @@ echo -e "Compose ID on $(hostname) is: $compose_id\n" >> ~/nic_info.txt
 echo -e "Running kernel version is: $(uname -r)\n" >> ~/nic_info.txt
 echo "---------------------------------------------------------------------" >> ~/nic_info.txt
 
-for i in $(ls /sys/class/net | egrep -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
+for i in $(ls /sys/class/net | grep -E -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
 	driver=$(ethtool -i $i | grep driver | awk '{print $2}')
-	driver_version=$(ethtool -i $i | grep version | egrep -v 'firmware|expansion' | awk '{print $2}')
+	driver_version=$(ethtool -i $i | grep version | grep -E -v 'firmware|expansion' | awk '{print $2}')
 	firmware_version=$(ethtool -i $i | grep 'firmware-version' | awk '{print $2}')
 	pci_address=$(ethtool -i $i | grep bus | awk '{print $NF}')
 	pci_address_short=$(ethtool -i $i | grep bus | awk -F ":" '{print $3":"$4}')
 	nic_name=$(lspci -v | grep $pci_address_short | awk -F ":" '{print $NF}')
 	speed=$(ethtool $i | grep Speed | awk '{print $2}' | tr -d '[a-z A-Z /]')
-	available_speeds=$(ethtool $i | awk '/Advertised link modes/,/Advertised pause frame use/' | grep -v pause | awk '{print $NF}' | awk -F 'base' '{print $1}' | sort -n | uniq)
+	available_speeds=$(ethtool $i | awk '/Supported link modes/,/Supported pause frame use/' | grep -v pause | awk '{print $NF}' | awk -F 'base' '{print $1}' | sort -n | uniq)
 	mac_address=$(ip -d link show $i | grep 'link/ether' | awk '{print $2}')
 	existing_physical_slot=$(grep -A3 ${i:0:5} ~/nic_info.txt | head -n12 | grep 'Slot location' | awk '{print $NF}')
 	part_number=$(lspci -vvnn -s $pci_address_short | grep Part | awk '{print $NF}')
@@ -34,7 +34,7 @@ for i in $(ls /sys/class/net | egrep -v "lo|ovs|vir|vnet|tun|$mgmt_iface"); do
 	elif [[ $existing_physical_slot ]]; then
 		physical_slot=$existing_physical_slot
 	else
-		physical_slot=$(dmidecode -t slot | grep -B8 $pci_address_short | head -n1 | awk '{print $NF}')
+		physical_slot=$(dmidecode -t slot | grep -B8 $pci_address_short | grep ID | awk '{print $NF}')
 	fi
 	
 	if [[ $physical_slot == "Onboard" ]]; then pci_lanes=NA; fi
