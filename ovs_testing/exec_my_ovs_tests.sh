@@ -115,28 +115,39 @@ EOF
 get_latest_driverctl()
 {
     $dbg_flag
-	latest_build_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl | grep valign | tail -n1 | awk -F '"' '{print $8}' | tr -d '/')
+    download_server="download.devel.redhat.com"
+    timeout 5s bash -c "curl -sL http://$download_server/brewroot/packages/driverctl"
+    if [[ $? -ne 0 ]]; then
+    	download_server="download.eng.bos.redhat.com"
+    	timeout 5s bash -c "curl -sL http://$download_server/brewroot/packages/driverctl"
+		if [[ $? -ne 0 ]]; then
+			echo "The driverctl package download servers are unreachable"
+			return 1
+		fi
+	fi    
+    
+	latest_build_id=$(curl -sL http://$download_server/brewroot/packages/driverctl | grep valign | tail -n1 | awk -F '"' '{print $8}' | tr -d '/')
 	
-	if [[ ! $(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el8) ]]; then
-	    latest_build_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl | grep valign | tail -n2 | head -n1 | awk -F '"' '{print $8}' | tr -d '/')
+	if [[ ! $(curl -sL http://$download_server/brewroot/packages/driverctl/$latest_build_id/ | grep el8) ]]; then
+	    latest_build_id=$(curl -sL http://$download_server/brewroot/packages/driverctl | grep valign | tail -n2 | head -n1 | awk -F '"' '{print $8}' | tr -d '/')
 	fi
 	
-	latest_el8_package_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el8 | head -n1 |  awk -F '"' '{print $8}' | tr -d '/')
-	el8_rpm=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/ | grep rpm | awk -F '"' '{print $8}')
+	latest_el8_package_id=$(curl -sL http://$download_server/brewroot/packages/driverctl/$latest_build_id/ | grep el8 | head -n1 |  awk -F '"' '{print $8}' | tr -d '/')
+	el8_rpm=$(curl -sL http://$download_server/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/ | grep rpm | awk -F '"' '{print $8}')
 	
-	echo "RHEL-8 URL: http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"	
-	export DRIVERCTL_RHEL8="http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"
+	echo "RHEL-8 URL: http://$download_server/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"	
+	export DRIVERCTL_RHEL8="http://$download_server/brewroot/packages/driverctl/$latest_build_id/$latest_el8_package_id/noarch/$el8_rpm"
 	
-	if [[ ! $(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el9) ]]; then
+	if [[ ! $(curl -sL http://$download_server/brewroot/packages/driverctl/$latest_build_id/ | grep el9) ]]; then
 	    latest_build_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl | grep valign | tail -n2 | head -n1 | awk -F '"' '{print $8}' | tr -d '/')
 	fi    
 
-	latest_el9_package_id=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/ | grep el9 | head -n1 |  awk -F '"' '{print $8}' | tr -d '/')
+	latest_el9_package_id=$(curl -sL http://$download_server/brewroot/packages/driverctl/$latest_build_id/ | grep el9 | head -n1 |  awk -F '"' '{print $8}' | tr -d '/')
 
-	el9_rpm=$(curl -sL http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/ | grep rpm | awk -F '"' '{print $8}')	
+	el9_rpm=$(curl -sL http://$download_server/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/ | grep rpm | awk -F '"' '{print $8}')	
 	
-	echo "RHEL-9 URL: http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"	
-	export DRIVERCTL_RHEL9="http://download.devel.redhat.com/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"
+	echo "RHEL-9 URL: http://$download_server/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"	
+	export DRIVERCTL_RHEL9="http://$download_server/brewroot/packages/driverctl/$latest_build_id/$latest_el9_package_id/noarch/$el9_rpm"
 }
 
 get_latest_driverctl
@@ -145,10 +156,10 @@ if [[ -z $RPM_DRIVERCTL ]]; then
 	export RPM_DRIVERCTL=$DRIVERCTL_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_PYTHON ]]; then
-	export RPM_OVS_TCPDUMP_PYTHON=$OVS340_PYTHON_25A_RHEL9
+	export RPM_OVS_TCPDUMP_PYTHON=$OVS350_PYTHON_25B_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_TEST ]]; then
-	export RPM_OVS_TCPDUMP_TEST=$OVS340_TCPDUMP_25A_RHEL9
+	export RPM_OVS_TCPDUMP_TEST=$OVS350_TCPDUMP_25B_RHEL9
 fi
 
 # RHEL composes
@@ -233,8 +244,8 @@ get_dpdk_packages()
 # DPDK packages for RHEL-7
 if [[ -z $RPM_DPDK ]] || [[ -z $RPM_DPDK_TOOLS ]]; then
 	if [[ $(echo $version_id  | awk -F '.' '{print $1}') -eq 7 ]]; then
-		export RPM_DPDK_RHEL7=http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-18.11.8-1.el7_8.x86_64.rpm
-		export RPM_DPDK_TOOLS_RHEL7=http://download.devel.redhat.com/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-tools-18.11.8-1.el7_8.x86_64.rpm
+		export RPM_DPDK_RHEL7=http://$download_server/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-18.11.8-1.el7_8.x86_64.rpm
+		export RPM_DPDK_TOOLS_RHEL7=http://$download_server/brewroot/packages/dpdk/18.11.8/1.el7_8/x86_64/dpdk-tools-18.11.8-1.el7_8.x86_64.rpm
 	#else
 	#	version_id=$(echo $COMPOSE | awk -F "-" '{print $2}' | sed s/.0//g)
 	#	get_dpdk_packages $version_id
@@ -266,7 +277,7 @@ fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS340_25A_RHEL9
+	export RPM_OVS=$OVS350_25B_RHEL9
 else
 	export RPM_OVS=$RPM_OVS
 fi
@@ -288,7 +299,7 @@ fi
 
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_25A_RHEL9
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_25B_RHEL9
 else
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
 fi
@@ -307,7 +318,7 @@ fi
 #export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN340_25A_RHEL9 
+export RPM_OVN=$OVN350_25B_RHEL9 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -318,8 +329,8 @@ export BONDING_CPU_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_s
 export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ipv6 ovs_test_vlan_gre_ipv6 ovs_test_vlan_gre1_ipv6 ovs_test_vm_gre_ipv6 ovs_test_vm_gre1_ipv6 ovs_test_vm_gre_flow_ipv6 ovs_test_vm_vlan_gre_ipv6 ovs_test_vm_vlan_gre1_ipv6"
 
 # Insert $FDP release into exec_perf_ci.sh and exec_endurance.sh
-sedeasy "25A" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_perf_ci.sh
-sedeasy "25A" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
+sedeasy "25B" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_perf_ci.sh
+sedeasy "25B" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 
 #pushd /home/ralongi/Documents/ovs_testing
 #pushd /home/ralongi/global_docs/ovs_testing
@@ -340,8 +351,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh i40e ovs_env=ovs-dpdk
 #./exec_topo.sh ice ovs_env=kernel
 ##./exec_topo.sh ice ovs_env=ovs-dpdk
-./exec_topo.sh ice_e830 ovs_env=kernel
-#./exec_topo.sh ice_e830 ovs_env=ovs-dpdk
+#./exec_topo.sh ice_e830 ovs_env=kernel
+##./exec_topo.sh ice_e830 ovs_env=ovs-dpdk
 #./exec_topo.sh ice_e825 ovs_env=kernel
 ##./exec_topo.sh ice_e825 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
@@ -392,7 +403,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
-#./exec_ovs_memory_leak_soak.sh
+./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh
