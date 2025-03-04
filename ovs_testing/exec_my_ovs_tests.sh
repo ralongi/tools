@@ -349,16 +349,16 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
 #./exec_topo.sh i40e ovs_env=kernel
 ##./exec_topo.sh i40e ovs_env=ovs-dpdk
-#./exec_topo.sh ice ovs_env=kernel
-##./exec_topo.sh ice ovs_env=ovs-dpdk
-#./exec_topo.sh ice_e830 ovs_env=kernel
-##./exec_topo.sh ice_e830 ovs_env=ovs-dpdk
-#./exec_topo.sh ice_e825 ovs_env=kernel
-##./exec_topo.sh ice_e825 ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core cx5 ovs_env=kernel
-##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
-##./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
+./exec_topo.sh ice ovs_env=kernel
+#./exec_topo.sh ice ovs_env=ovs-dpdk
+./exec_topo.sh ice_e830 ovs_env=kernel
+#./exec_topo.sh ice_e830 ovs_env=ovs-dpdk
+./exec_topo.sh ice_e825 ovs_env=kernel
+#./exec_topo.sh ice_e825 ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core cx5 ovs_env=kernel
+#./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
+#./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
 #./exec_topo.sh arm ovs_env=kernel
@@ -366,8 +366,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh mlx5_core_arm cx7 ovs_env=kernel
 
 ##./exec_topo.sh arm ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core cx7 ovs_env=kernel
-##./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core cx7 ovs_env=kernel
+#./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core bf2 ovs_env=kernel
 ##./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
 #./exec_topo.sh sts ovs_env=kernel
@@ -403,7 +403,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
-./exec_ovs_memory_leak_soak.sh
+#./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh
