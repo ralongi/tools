@@ -340,8 +340,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_sanity_check.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
-./exec_power_cycle_crash.sh
-#./exec_forward_bpdu.sh
+#./exec_power_cycle_crash.sh
+./exec_forward_bpdu.sh
 #./exec_of_rules.sh
 
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
