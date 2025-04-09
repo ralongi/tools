@@ -15,6 +15,7 @@ product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"
 NIC_NUM=2
 TESTS_TO_RUN=${TESTS_TO_RUN:-"all_tests"}
+COMPOSE_VER=$(echo $COMPOSE | awk -F 'RHEL-' '{print $2}' | awk -F '.' '{print $1}')
 
 # Example brew_build_cmd (note back slashes to escape $basesearch variable)
 #export brew_build_cmd="--B repo:cki-artifacts,https://s3.upshift.redhat.com/DH-PROD-CKI/internal/1063880898/\$basearch/5.14.0-383.3337_1063880735.el9.\$basearch"
@@ -31,6 +32,21 @@ if [[ $driver == "ice" ]]; then
 	server_driver="ice"
 	client_driver="i40e"
 	card_info="ICE"
+elif [[ $driver == "arm" ]]; then
+	server="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe24.knqe.eng.rdu2.dc.redhat.com"
+	server_driver="mlx5_core"
+	client_driver="mlx5_core"
+	card_info="ARM MLX5_CORE"
+	if [[ $COMPOSE_VER -eq 8 ]]; then
+		server_nic_list="enP2p2s0f0 enP2p2s0f1"
+		client_nic_list="enp130s0f0 enp130s0f1"
+	elif [[ $COMPOSE_VER -gt 8 ]]; then
+		server_nic_list="enP2p2s0f0np0 enP2p2s0f1np1"
+		client_nic_list="enp130s0f0np0 enp130s0f1np1"
+	fi
+	netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1"
+	netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2"
 elif [[ $driver == "igc" ]]; then
 	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
@@ -127,7 +143,6 @@ elif [[ $driver == "ionic" ]]; then
 	card_info="IONIC"
 	SYSTYPE="prototype"
 fi
-
 # Temporarily add commands similar to below to runtest string to install packages downloaded to infra01
 
 # --cmd-and-reboot 'dnf -y install wget; wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/infra01-server.repo; dnf -y install kernel-5.14.0-427.18.1.el9_4' 
@@ -135,17 +150,21 @@ fi
 # --cmd-and-reboot 'dnf -y install wget; wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/infra01-server.repo; dnf -y install bpftool-4.18.0-553.7.1.el8_10 kernel-4.18.0-553.7.1.el8_10'
 
 # with Netscout
-if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
-	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
-else
+#if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
+#	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+#else
 # normal run, no netscout
-	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --cmd "https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-1.5.3-1.el10_0.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-devel-1.5.3-1.el10_0.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-static-1.5.3-1.el10_0.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/xdp-tools-1.5.3-1.el10_0.x86_64.rpm" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+#	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --cmd "https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-1.5.3-1.el10_0.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-devel-1.5.3-1.el10_0.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-static-1.5.3-1.el10_0.x86_64.rpm https://download.eng.bos.redhat.com/brewroot/packages/xdp-tools/1.5.3/1.el10_0/x86_64/xdp-tools-1.5.3-1.el10_0.x86_64.rpm" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
 #--cmd "dnf -y install  https://download.devel.redhat.com/brewroot/vol/rhel-10/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-1.5.3-1.el10_0.x86_64.rpm https://download.devel.redhat.com/brewroot/vol/rhel-10/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-devel-1.5.3-1.el10_0.x86_64.rpm https://download.devel.redhat.com/brewroot/vol/rhel-10/packages/xdp-tools/1.5.3/1.el10_0/x86_64/libxdp-static-1.5.3-1.el10_0.x86_64.rpm https://download.devel.redhat.com/brewroot/vol/rhel-10/packages/xdp-tools/1.5.3/1.el10_0/x86_64/xdp-tools-1.5.3-1.el10_0.x86_64.rpm"
 
 # image mode
 
 #	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --bootc=latest-9.6 --packages="grubby nc pciutils wget driverctl iproute-tc wireshark llvm clang elfutils-libelf-devel libpcap-devel libbpf-devel lsof sysstat tcpdump iproute libibverbs bpftool xdp-tools" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --nrestraint --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info \`image mode\`" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+
+# image mode from pkg ARM
+
+	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --bootc="$COMPOSE",frompkg --packages="grubby nc pciutils wget driverctl iproute-tc wireshark llvm clang elfutils-libelf-devel libpcap-devel libbpf-devel lsof sysstat tcpdump iproute libibverbs bpftool xdp-tools" --product=$product --retention-tag=$retention_tag --arch=aarch64,x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=no --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}" --param=mh-NIC_LIST="${server_nic_list}","${client_nic_list}" --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --nrestraint --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info \`image mode\`" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 # RT kernel standard compose
 #	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE -B 'rtk' --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) RT kernel $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
@@ -159,7 +178,7 @@ else
 # infra01 packages
 #	lstest ~/git/my_fork/kernel/networking/ebpf_xdp/bpftool | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL; dnf -y install wget; wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/infra01-server.repo; dnf -y install	bpftool-7.3.0-427.32.1.2216_1415671754.el9_4 kernel-5.14.0-427.32.1.2216_1415671754.el9_4 kernel-modules-internal-5.14.0-427.32.1.2216_1415671754.el9_4 kernel-selftests-internal-5.14.0-427.32.1.2216_1415671754.el9_4" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bpftool test, $COMPOSE, networking/ebpf_xdp/bpftool, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
-fi
+#fi
 
 # Example of reservesys
 #--insert-task="/distribution/reservesys {RESERVETIME=86400}" 
