@@ -27,6 +27,25 @@ if [[ $driver == "ice" ]]; then
 	client="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="ice"
 	client_driver="i40e"
+elif [[ $driver == "arm" ]]; then
+	#server="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	#client="netqe24.knqe.eng.rdu2.dc.redhat.com"
+	server="netqe47.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe48.knqe.eng.rdu2.dc.redhat.com"
+	server_driver="mlx5_core"
+	client_driver="mlx5_core"
+	card_info="ARM MLX5_CORE"
+	if [[ $COMPOSE_VER -eq 8 ]]; then
+		server_nic_list="enP2p2s0f0 enP2p2s0f1"
+		client_nic_list="enp130s0f0 enp130s0f1"
+	elif [[ $COMPOSE_VER -gt 8 ]]; then
+		#server_nic_list="enP2p2s0f0np0 enP2p2s0f1np1"
+		#client_nic_list="enp130s0f0np0 enp130s0f1np1"
+		server_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
+		client_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
+	fi
+	#netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1"
+	#netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2"
 elif [[ $driver == "i40e" ]]; then
 	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
@@ -103,7 +122,7 @@ fi
 if [[ $netscout_pair1 ]] || [[ $netscout_pair2 ]]; then
 	lstest $GIT_HOME/kernel/networking/ebpf_xdp/bcctools | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --product=$product --retention-tag=$retention_tag  --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bcctools test, $COMPOSE, networking/ebpf_xdp/bcctools, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 else
-	lstest $GIT_HOME/kernel/networking/ebpf_xdp/bcctools | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --product=$product --retention-tag=$retention_tag  --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bcctools test, $COMPOSE, networking/ebpf_xdp/bcctools, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+#	lstest $GIT_HOME/kernel/networking/ebpf_xdp/bcctools | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --product=$product --retention-tag=$retention_tag  --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") --param=DBG_FLAG="$DBG_FLAG" --param=NAY=yes --param=NIC_NUM=2 --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), bcctools test, $COMPOSE, networking/ebpf_xdp/bcctools, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 	
 # image mode
 

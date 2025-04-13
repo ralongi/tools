@@ -28,6 +28,25 @@ if [[ $driver == "ice" ]]; then
 	server_driver="ice"
 	client_driver="i40e"
 	card_info="(ICE)"
+elif [[ $driver == "arm" ]]; then
+	#server="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	#client="netqe24.knqe.eng.rdu2.dc.redhat.com"
+	server="netqe47.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe48.knqe.eng.rdu2.dc.redhat.com"
+	server_driver="mlx5_core"
+	client_driver="mlx5_core"
+	card_info="ARM MLX5_CORE"
+	if [[ $COMPOSE_VER -eq 8 ]]; then
+		server_nic_list="enP2p2s0f0 enP2p2s0f1"
+		client_nic_list="enp130s0f0 enp130s0f1"
+	elif [[ $COMPOSE_VER -gt 8 ]]; then
+		#server_nic_list="enP2p2s0f0np0 enP2p2s0f1np1"
+		#client_nic_list="enp130s0f0np0 enp130s0f1np1"
+		server_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
+		client_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
+	fi
+	#netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1"
+	#netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2"
 elif [[ $driver == "i40e" ]]; then
 	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
