@@ -34,10 +34,10 @@ if [[ $driver == "ice" ]]; then
 	client_driver="i40e"
 	card_info="ICE"
 elif [[ $driver == "arm" ]]; then
-	#server="netqe49.knqe.eng.rdu2.dc.redhat.com"
-	#client="netqe24.knqe.eng.rdu2.dc.redhat.com"
-	server="netqe47.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe48.knqe.eng.rdu2.dc.redhat.com"
+	server="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe24.knqe.eng.rdu2.dc.redhat.com"
+	#server="netqe47.knqe.eng.rdu2.dc.redhat.com"
+	#client="netqe48.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	card_info="ARM MLX5_CORE"
@@ -45,13 +45,13 @@ elif [[ $driver == "arm" ]]; then
 		server_nic_list="enP2p2s0f0 enP2p2s0f1"
 		client_nic_list="enp130s0f0 enp130s0f1"
 	elif [[ $COMPOSE_VER -gt 8 ]]; then
-		#server_nic_list="enP2p2s0f0np0 enP2p2s0f1np1"
-		#client_nic_list="enp130s0f0np0 enp130s0f1np1"
-		server_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
-		client_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
+		server_nic_list="enP2p2s0f0np0 enP2p2s0f1np1"
+		client_nic_list="enp130s0f0np0 enp130s0f1np1"
+		#server_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
+		#client_nic_list="enP1p1s0f0np0 enP1p1s0f1np1"
 	fi
-	#netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1"
-	#netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2"
+	netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1"
+	netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2"
 elif [[ $driver == "igc" ]]; then
 	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
@@ -169,7 +169,7 @@ fi
 
 # image mode ARM
 
-	lstest $GIT_HOME/kernel/networking/ebpf_xdp/sanity | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --bootc="$COMPOSE",frompkg --packages="grubby nc pciutils wget driverctl iproute-tc wireshark llvm clang elfutils-libelf-devel libpcap-devel libbpf-devel lsof sysstat tcpdump iproute libibverbs sanity xdp-tools" --product=$product --retention-tag=$retention_tag --arch=aarch64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=no --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}" --param=mh-NIC_LIST="${server_nic_list}","${client_nic_list}" --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --nrestraint --wb "(Server/DUT: $server, Client: $client), sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info \`image mode\`" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	lstest $GIT_HOME/kernel/networking/ebpf_xdp/sanity | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --bootc="$COMPOSE",frompkg --packages="grubby nc pciutils wget driverctl iproute-tc wireshark llvm clang elfutils-libelf-devel libpcap-devel libbpf-devel lsof sysstat tcpdump iproute libibverbs sanity xdp-tools" --product=$product --retention-tag=$retention_tag --arch=aarch64,x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=no --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}" --param=mh-NIC_LIST="${server_nic_list}","${client_nic_list}" --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --nrestraint --wb "(Server/DUT: $server, Client: $client), sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) $special_info \`image mode\`" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 # RT kernel standard compose
 #	lstest $GIT_HOME/kernel/networking/ebpf_xdp/sanity | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE -B 'rtk' --ks-append="rootpw redhat" --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --arch=x86_64 --topo=multiHost.1.1 --machine=$server,$client --systype=$SYSTYPE,$SYSTYPE $(echo "$zstream_repo_list") $(echo "$brew_build_cmd") $(echo "$cmds_to_run") --param=DBG_FLAG="$DBG_FLAG" --param=TESTS_TO_RUN="$TESTS_TO_RUN" --param=NAY=yes --param=NIC_NUM=$NIC_NUM --param=mh-NIC_DRIVER="${server_driver}","${client_driver}" $pciid_info --param=mh-TEST_DRIVER="${server_driver}","${client_driver}" --wb "(Server/DUT: $server, Client: $client), sanity test, $COMPOSE, networking/ebpf_xdp/sanity, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $server_driver ($card_info) RT kernel $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
