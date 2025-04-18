@@ -15,7 +15,7 @@ RHEL_VERSION=$1
 
 if [[ $# -lt 1 ]]; then
 	echo "Please provide the RHEL major version."
-	echo "Example: $0 7 or $0 8 or $0 9"
+	echo "Example: $0 7 or $0 8 or $0 9 or $0 10"
 fi
 
 build_stable_rhel7()
@@ -31,6 +31,11 @@ build_stable_rhel8()
 build_stable_rhel9()
 {
 	bkr workflow-tomorrow 9 --split-buildroot $(echo $target_system) --stable-system --taskparam OATS_TPS_STABLE="true" --profile="fast-datapath-for-rhel-9-rpms" --arch=$arch --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump libatomic libreswan bpftrace" --task "! dnf -y install wget; wget -O ~/tps_rhel9_packages.sh http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/tps_rhel9_packages.sh; chmod +x ~/tps_rhel9_packages.sh; ~/tps_rhel9_packages.sh" --task "! mv /usr/local/bin/update-tpsd-settings /usr/local/bin/update-tpsd-settings_orig; wget -O /usr/local/bin/update-tpsd-settings http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/update-tpsd-settings; chmod +x /usr/local/bin/update-tpsd-settings; sed -i 's/jbappplatform-/jbappplatform-,fast-datapath-for-rhel-9-/g' /etc/tpsd.conf; echo 'export TPS_IGNORE_APPSTREAM=true' >> /etc/tpsd.conf; systemctl restart tpsd" --task "! systemctl restart tpsd" --task "! wget -O ~/tps_download_links.txt http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/tps_download_links.txt; pushd ~; wget -i ~/tps_download_links.txt -P . -q --show-progress; chmod +x *.sh; popd; echo alias up='/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive' >> ~/.bashrc; dnf -y install at; wget --no-check-certificate -O ~/stable_system_https.sh http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/stable_system_https.sh; chmod +x ~/stable_system_https.sh; ~/stable_system_https.sh"
+}
+
+build_stable_rhel10()
+{
+	bkr workflow-tomorrow 10 --split-buildroot $(echo $target_system) --stable-system --taskparam OATS_TPS_STABLE="true" --profile="fast-datapath-for-rhel-10-rpms" --arch=$arch --variant=BaseOS --task "! dnf -y install openvswitch-selinux-extra-policy tcpdump libatomic libreswan bpftrace" --task "! dnf -y install wget; wget -O ~/tps_rhel9_packages.sh http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/tps_rhel9_packages.sh; chmod +x ~/tps_rhel9_packages.sh; ~/tps_rhel9_packages.sh" --task "! mv /usr/local/bin/update-tpsd-settings /usr/local/bin/update-tpsd-settings_orig; wget -O /usr/local/bin/update-tpsd-settings http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/update-tpsd-settings; chmod +x /usr/local/bin/update-tpsd-settings; sed -i 's/jbappplatform-/jbappplatform-,fast-datapath-for-rhel-9-/g' /etc/tpsd.conf; echo 'export TPS_IGNORE_APPSTREAM=true' >> /etc/tpsd.conf; systemctl restart tpsd" --task "! systemctl restart tpsd" --task "! wget -O ~/tps_download_links.txt http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/tps_download_links.txt; pushd ~; wget -i ~/tps_download_links.txt -P . -q --show-progress; chmod +x *.sh; popd; echo alias up='/mnt/qa/scratch/rbiba/tps-utils/tps-report-interactive' >> ~/.bashrc; dnf -y install at; wget --no-check-certificate -O ~/stable_system_https.sh http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/ralongi/stable_system_https.sh; chmod +x ~/stable_system_https.sh; ~/stable_system_https.sh"
 }
 
 if [[ $RHEL_VERSION -eq 7 ]]; then
@@ -84,5 +89,23 @@ if [[ $RHEL_VERSION -eq 9 ]]; then
 		
 		arch=s390x
 		build_stable_rhel9
+	fi
+fi
+
+if [[ $RHEL_VERSION -eq 10 ]]; then
+	if [[ $arch ]]; then
+		build_stable_rhel10
+	else
+		arch=x86_64
+		build_stable_rhel10
+		
+		arch=ppc64le
+		build_stable_rhel10
+		
+		arch=aarch64
+		build_stable_rhel10
+		
+		arch=s390x
+		build_stable_rhel10
 	fi
 fi
