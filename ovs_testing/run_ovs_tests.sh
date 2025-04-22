@@ -220,6 +220,8 @@ for i in $tests; do
 		sed -i '/exec_perf_ci.sh bf2/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"sanity_check"* ]]; then
 		sed -i '/exec_sanity_check.sh/s/^#//g' exec_my_ovs_tests.sh
+	elif [[ $i == *"vm100"* ]]; then
+		sed -i '/exec_vm100.sh/s/^#//g' exec_my_ovs_tests.sh
 	elif [[ $i == *"ovs_memory_leak_soak_i40e"* ]]; then
 		/bin/cp -f exec_ovs_memory_leak_soak_template.sh exec_ovs_memory_leak_soak.sh
 		sed -i '/exec_ovs_memory_leak_soak.sh/s/^#//g' exec_my_ovs_tests.sh
