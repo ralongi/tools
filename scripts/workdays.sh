@@ -1,9 +1,12 @@
 #!/bin/bash
 
+start_date=$(date +%F)
+end_date="2026-04-03"
+
 # Function to calculate the number of weekdays between two dates
 calculate_weekdays() {
-  start_date="$1"
-  end_date="$2"
+  #start_date="$1"
+  #end_date="$2"
 
   # Convert dates to timestamps
   start_ts=$(date -d "$start_date" +%s)
@@ -34,8 +37,10 @@ calculate_weekdays() {
 }
 
 count_mondays() {
-  start_date="$1"
-  end_date="$2"
+  #start_date="$1"
+  #end_date="$2"
+  start_date=$(date +%F)
+  end_date="2026-04-03"
   count=0
 
   # Convert dates to timestamps
@@ -56,14 +61,14 @@ count_mondays() {
 }
 
 # Main script
-if [[ $# -ne 2 ]]; then
-  echo "Usage: $0 <start_date> <end_date>"
-  echo "Date format: YYYY-MM-DD"
-  exit 1
-fi
+#if [[ $# -ne 2 ]]; then
+#  echo "Usage: $0 <start_date> <end_date>"
+#  echo "Date format: YYYY-MM-DD"
+#  exit 1
+#fi
 
-start_date="$1"
-end_date="$2"
+#start_date="$1"
+#end_date="$2"
 
 # Validate date format
 if ! [[ "$start_date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || ! [[ "$end_date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
@@ -73,12 +78,12 @@ fi
 
 weekdays=$(calculate_weekdays "$start_date" "$end_date")
 
-echo "Number of weekdays between $start_date and $end_date: $weekdays"
-echo "Please enter number of non-working weekdays ahead (PTO, holidays, etc):"; read free_days
+#echo "Number of weekdays between $start_date and $end_date: $weekdays"
+echo "Enter number of non-working weekdays ahead (PTO, holidays, etc):"; read free_days
 
 working_days=$(( $weekdays - $free_days ))
 echo "Number of working days left between $start_date and $end_date: $working_days"
 
 num_mondays=$(count_mondays "$1" "$2")
-echo "Number of calendar Mondays between $1 and $2: $num_mondays (Don't forget you will be taking some of these Mondays off!)"
+echo "Number of calendar Mondays between $start_date and $end_date: $num_mondays (Don't forget you will be taking some of these Mondays off!)"
 
