@@ -6,15 +6,21 @@
 dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
 script_directory=~/github/tools/scripts
-#checkin_git=${checkin_git:-"no"}
 fdp_release=$1
-if [[ $# -lt 1 ]]; then echo "Please provide FDP release (21I, 21j, etc):"; read fdp_release; fi
+if [[ $# -lt 1 ]]; then echo "Please provide FDP release designation without 'FDP' (25.C, 25.c, etc):"; read fdp_release; fi
 fdp_release=$(echo "$fdp_release" | awk '{print toupper($0)}')
+if [[ ! $(echo "$fdp_release" | grep '.' ]]; then
+	echo "Please include the period in the FDP release designation without 'FDP' (25.C, 25.c, etc)"
+fi
 new_package_template_file="/home/ralongi/github/tools/scripts/new_package_list_template.sh"
 new_package_list_temp_file="/home/ralongi/temp/new_package_list_temp.sh"
 new_package_list_file="/home/ralongi/temp/new_package_list.sh"
 fdp_errata_list_file=/home/ralongi/github/tools/scripts/errata_list.txt
 package_list_file=~/package_list.txt
+
+batch=$(curl -su : --negotiate https://errata.devel.redhat.com/advisory/filters/4400 | grep "$fdp_release" |awk -F '"' '{print $4}' | awk -F '/' '{print $NF}' | head -1)
+errata_list=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/batches/$batch | jq | grep id | awk '{print $NF}' | grep -v ,)
+
 
 sedeasy ()
 {
@@ -63,6 +69,15 @@ echo "OVS_SELINUX_$fdp_release"_RHEL10=${package_url} >> $new_package_list_file
 echo ""
 echo OVS_SELINUX_$fdp_release"_RHEL10 package location: $package_url"
 echo ""
+
+for i in $errata_list; do
+	./get_errata_packages.sh -e $errata
+	package_url=$(grep packages $package_list_file | egrep -v '\-devel|ipsec|python|debug|test|scripts')
+	python_package_url=$(grep packages $package_list_file | grep python | egrep -v 'debug')
+	tcpdump_package_url=$(grep packages $package_list_file | grep 'noarch')
+	
+
+
 
 errata=$(grep 'OVS-2.13 RHEL-7' $fdp_errata_list_file | awk '{print $3}')
 if [[ -z $errata ]]; then

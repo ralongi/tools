@@ -156,10 +156,10 @@ if [[ -z $RPM_DRIVERCTL ]]; then
 	export RPM_DRIVERCTL=$DRIVERCTL_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_PYTHON ]]; then
-	export RPM_OVS_TCPDUMP_PYTHON=$OVS350_PYTHON_25B_RHEL9
+	export RPM_OVS_TCPDUMP_PYTHON=$OVS350_PYTHON_25C_RHEL9
 fi
 if [[ -z $RPM_OVS_TCPDUMP_TEST ]]; then
-	export RPM_OVS_TCPDUMP_TEST=$OVS350_TCPDUMP_25B_RHEL9
+	export RPM_OVS_TCPDUMP_TEST=$OVS350_TCPDUMP_25C_RHEL9
 fi
 
 # RHEL composes
@@ -270,14 +270,14 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.6.qcow2"
+	export VM_IMAGE="rhel9.4.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS350_25B_RHEL9
+	export RPM_OVS=$OVS350_25C_RHEL9
 else
 	export RPM_OVS=$RPM_OVS
 fi
@@ -299,7 +299,7 @@ fi
 
 # SELinux packages
 if [[ -z $RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_25B_RHEL9
+	export RPM_OVS_SELINUX_EXTRA_POLICY=$OVS_SELINUX_25C_RHEL9
 else
 	export RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY
 fi
@@ -318,7 +318,7 @@ fi
 #export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN350_25B_RHEL9 
+export RPM_OVN=$OVN350_25C_RHEL9 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -329,8 +329,8 @@ export BONDING_CPU_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_s
 export GRE_IPV6_TESTS="ovs_test_gre_ipv6 ovs_test_gre1_ipv6 ovs_test_gre_flow_ipv6 ovs_test_vlan_gre_ipv6 ovs_test_vlan_gre1_ipv6 ovs_test_vm_gre_ipv6 ovs_test_vm_gre1_ipv6 ovs_test_vm_gre_flow_ipv6 ovs_test_vm_vlan_gre_ipv6 ovs_test_vm_vlan_gre1_ipv6"
 
 # Insert $FDP release into exec_perf_ci.sh and exec_endurance.sh
-sedeasy "25B" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_perf_ci.sh
-sedeasy "25B" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
+sedeasy "25C" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_perf_ci.sh
+sedeasy "25C" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 
 #pushd /home/ralongi/Documents/ovs_testing
 #pushd /home/ralongi/global_docs/ovs_testing
@@ -338,7 +338,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 
 #./exec_ovs_upgrade.sh
 #./exec_sanity_check.sh
-./exec_vm100.sh
+#./exec_vm100.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
 #./exec_power_cycle_crash.sh
@@ -395,12 +395,12 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_endurance.sh bf3
 #./exec_perf_ci.sh bf3
 
-#./exec_topo.sh enic ovs_env=kernel
-##./exec_topo.sh enic ovs_env=ovs-dpdk
-#./exec_topo.sh qede ovs_env=kernel
-##./exec_topo.sh qede ovs_env=ovs-dpdk
-#./exec_topo.sh bnxt_en ovs_env=kernel
-##./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
+./exec_topo.sh enic ovs_env=kernel
+#./exec_topo.sh enic ovs_env=ovs-dpdk
+./exec_topo.sh qede ovs_env=kernel
+#./exec_topo.sh qede ovs_env=ovs-dpdk
+./exec_topo.sh bnxt_en ovs_env=kernel
+#./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
