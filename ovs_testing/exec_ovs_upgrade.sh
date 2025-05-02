@@ -3,6 +3,7 @@
 # ovs_upgrade
 
 pushd ~/temp
+wget -O ~/fdp_package_list.sh http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/misc/fdp_package_list.sh
 
 dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
@@ -12,7 +13,7 @@ dut=${dut:-"netqe05.knqe.eng.rdu2.dc.redhat.com"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 
 RHEL_VER_MAJOR=$(echo $COMPOSE | awk -F "-" '{print $2}' | awk -F "." '{print $1}')
-RPM_LIST=$(grep -w $(basename $RPM_OVS | awk -F "-" '{print $1}') ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump|selinux')
+RPM_LIST=$(grep -w $(basename $RPM_OVS | awk -F "-" '{print $1}') ~/fdp_package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump|selinux')
 
 LATEST_RPM_OVS=$(echo $RPM_LIST | awk '{print $NF}' | awk -F "=" '{print $NF}')
 RPM_OVS_VER=$(basename $RPM_OVS | awk -F ".el" '{print $1}' | awk -F "-" '{print $NF}')
@@ -26,14 +27,14 @@ if [[ -z $STARTING_RPM_OVS ]]; then
 	fi
 fi
 
-STARTING_STREAM=$(grep $STARTING_RPM_OVS ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | awk -F "_" '{print $2}')
+STARTING_STREAM=$(grep $STARTING_RPM_OVS ~/fdp_package_list.sh | awk -F "_" '{print $2}')
 
 if [[ -z $STARTING_RPM_OVS_SELINUX_EXTRA_POLICY ]]; then
-	STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$(grep $STARTING_STREAM ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep -i selinux | grep RHEL$RHEL_VER_MAJOR | awk -F "=" '{print $NF}')
+	STARTING_RPM_OVS_SELINUX_EXTRA_POLICY=$(grep $STARTING_STREAM ~/fdp_package_list.sh | grep -i selinux | grep RHEL$RHEL_VER_MAJOR | awk -F "=" '{print $NF}')
 fi
 
 if [[ -z $OVS_LATEST_STREAM_PKG ]]; then
-	OVS_LATEST_STREAM_PKG=$(grep OVS ~/git/my_fork/kernel/networking/openvswitch/common/package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump|selinux' | tail -n1 | awk -F "=" '{print $NF}')
+	OVS_LATEST_STREAM_PKG=$(grep OVS ~/fdp_package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump|selinux' | tail -n1 | awk -F "=" '{print $NF}')
 fi
 
 FDP_STREAM=$(basename $RPM_OVS | awk -F "-" '{print $1}' | sed s/openvswitch//g )
