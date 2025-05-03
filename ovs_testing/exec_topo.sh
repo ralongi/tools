@@ -10,6 +10,7 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 
 COMPOSE_VER=$(echo $COMPOSE | awk -F '-' '{print $2}')
+COMPOSE_MAJOR_VER=$(echo $COMPOSE | awk -F '-' '{print $2}' | awk -F '.' '{print $1}')
 if [[ $ovs_env == "ovs-dpdk" ]]; then
     ver_comp_result_file=version_compare_result.txt
     rpmdev-vercmp $COMPOSE_VER 8.8.0
@@ -349,7 +350,11 @@ elif [[ "$driver" == "enic" ]]; then
 	client_driver="enic"
 	netscout_pair1="NETQE26_ENP9S0 NETQE22_P6P1"
 	netscout_pair2="NETQE26_ENP10S0 NETQE22_P6P2"
-	server_nic_test="enp3s0f0"
+	if [[ $COMPOSE_MAJOR_VER -ge 10 ]]; then
+		server_nic_test="enp3s0f0np0"
+	else
+		server_nic_test="enp3s0f0"
+	fi	
 	client_nic_test="enp9s0"
 	
 	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") --Brew=$brew_target --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=yes --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}"

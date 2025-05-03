@@ -38,5 +38,21 @@ RHEL-9:
     
 ###########################################################
 
+RHEL-8:
+
+# netqe22
+    Driver (eno1): bnx2x
+    Driver (eno2): bnx2x
+    Driver (eno4): bnx2x
+    Driver (enp130s0f0np0): bnxt_en
+    Driver (enp130s0f1np1): bnxt_en
+    Driver (enp3s0f0): i40e
+    Driver (enp3s0f1): i40e
+    Driver (enp5s0f0): qede
+    Driver (enp5s0f1): qede
     
+# netqe26
+    Driver (enp10s0): enic
+    Driver (enp1s0f1): igb
+    Driver (enp9s0): enic    
     
