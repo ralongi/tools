@@ -91,8 +91,24 @@ for i in $errata_list; do
 	fi
 done
 
+# Remove any existing lines in ~/fdp_package_list.sh referring to $fdp_release to avoid redundancy, etc
+existing_line_number=$(grep -n "$fdp_release" ~/fdp_package_list.sh | awk -F ':' '{print $1}' | head -1)
+if [[ $existing_line_number ]]; then
+	echo "Removing existing entries for $fdp_release..."
+	line_number_before=$(( existing_line_number - 1 ))
+	line=$(sed -n "${line_number_before}p" ~/fdp_package_list.sh)
+
+	if [[ -z "$line" ]]; then
+		sed -n -i "1,$(( line_number_before - 1 )) p; $line_number_before q" ~/fdp_package_list.sh
+	else
+		sed -n -i "1,$(( existing_line_number - 1 )) p; $existing_line_number q" ~/fdp_package_list.sh
+	fi
+fi
+
+# Append enteries for $fdp_release to ~/fdp_package_list.sh
 cat $new_package_list_file >> ~/fdp_package_list.sh
 
+# Copy ~/fdp_package_list.sh yo infra01
 scp ~/fdp_package_list.sh root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/share/misc/fdp_package_list.sh
 popd &>/dev/null
 popd &>/dev/null
@@ -100,4 +116,3 @@ popd &>/dev/null
 echo ""
 echo "Review the /home/www/html/share/misc/fdp_package_list.sh file on infra01 to confirm that it looks correct!"
 echo ""
-
