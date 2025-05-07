@@ -1,11 +1,12 @@
 get_iface_stats_lite()
 {
 	iface=$1
+	sleep_time=${sleep_time:-"3"}
 	suppress_stats_output=${suppress_stats_output:-"no"}
 	
 	start_tx_packets=$(cat /sys/class/net/$iface/statistics/tx_packets)	
 	start_rx_packets=$(cat /sys/class/net/$iface/statistics/rx_packets)	
-	sleep 3
+	sleep $sleep_time
 	end_tx_packets=$(cat /sys/class/net/$iface/statistics/tx_packets)
 	end_rx_packets=$(cat /sys/class/net/$iface/statistics/rx_packets)
 
