@@ -28,6 +28,12 @@ image_mode=${image_mode:-"no"}
 
 #export brew_build_cmd="--B repo:cki-artifacts,https://artifacts.internal.cki-project.org/arr-cki-prod-internal-artifacts/internal-artifacts/1361255010/publish_x86_64/7269536670/artifacts/repo/5.14.0-284.73.1.1834_1361254984.el9_2.x86_64/"
 
+# To install RPMs from a brew build:
+# go to brew task link: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=67546939
+# right click on kernel rpm, copy link address: https://download.devel.redhat.com/brewroot/work/tasks/6939/67546939/kernel-5.14.0-583.atlantic_kernel_5.14.0_583.el9.x86_64.rpm
+# remove the rpm from the link and use that with brew_build_cmd:
+#export brew_build_cmd="--B https://download.devel.redhat.com/brewroot/work/tasks/6939/67546939/"
+
 # Temporarily add commands similar to below to runtest string to install packages downloaded to infra01
 
 # --cmd-and-reboot 'dnf -y install wget; wget -O /etc/yum.repos.d/infra01-server.repo http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/infra01-server.repo; dnf -y install kernel-5.14.0-427.18.1.el9_4' 
