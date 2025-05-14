@@ -71,6 +71,8 @@ if [[ $package_list ]]; then
 	echo ""
 	echo "$package_list"
 	echo ""
+elif [[ -z $package ]]; then
+	echo "No package name was provided to query for compose $compose_id"
 else
     echo "$package was not found in the list of packages for compose $compose_id" 
 fi
