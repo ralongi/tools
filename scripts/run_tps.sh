@@ -37,6 +37,8 @@ if [[ $(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$e
 	pssh_hosts_file="pssh_stable_hosts_rhel8.txt"
 elif [[ $(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq | grep RHEL-9) ]]; then
 	pssh_hosts_file="pssh_stable_hosts_rhel9.txt"
+elif [[ $(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/erratum/$errata/builds | jq | grep RHEL-10) ]]; then
+	pssh_hosts_file="pssh_stable_hosts_rhel10.txt"
 fi
 
 while true; do
@@ -49,10 +51,12 @@ while true; do
 done
 
 rm -f stable_jobs*
-bkr job-list --mine --w "Stable system RHEL-8" >> stable_jobs_rhel8.txt
-bkr job-list --mine --w "Stable system RHEL-9" >> stable_jobs_rhel9.txt
+bkr job-list --mine --w "Stable system RHEL-8" --unfinished >> stable_jobs_rhel8.txt
+bkr job-list --mine --w "Stable system RHEL-9" --unfinished >> stable_jobs_rhel9.txt
+bkr job-list --mine --w "Stable system RHEL-10" --unfinished >> stable_jobs_rhel10.txt
 stable_job_list_rhel8=$(cat stable_jobs_rhel8.txt | tr -d '[",]]')
 stable_job_list_rhel9=$(cat stable_jobs_rhel9.txt | tr -d '[",]]')
+stable_job_list_rhel10=$(cat stable_jobs_rhel10.txt | tr -d '[",]]')
 
 create_pssh_hosts_file()
 {
@@ -69,6 +73,17 @@ create_pssh_hosts_file()
 		sleep 2
 	elif [[ $pssh_hosts_file == "pssh_stable_hosts_rhel9.txt" ]]; then
 		for i in $stable_job_list_rhel9; do
+			reservesys_status=$(bkr job-results --no-logs --prettyxml $i | grep /distribution/reservesys | grep 'status="Running"' | awk '{print $7}' | awk -F '"' '{print $2}')
+			reservesys_result=$(bkr job-results --no-logs --prettyxml $i | grep '<result path="/distribution/reservesys"' | awk '{print $6}' | awk -F '"' '{print $2}')
+			beaker_system=$(bkr job-results --no-logs --prettyxml $i | grep 'system value=' | awk -F'"' '{print $2}' | tail -n1)
+			beaker_system_arch=$(bkr job-results --no-logs --prettyxml $i | grep distro_arch | awk -F '"' '{print $(NF-1)}')
+			if [[ $reservesys_status == "Running" ]] && [[ $reservesys_result == "Pass" ]] ; then
+				echo "$beaker_system $beaker_system_arch" >> $pssh_hosts_file
+			fi
+		done
+		sleep2
+	elif [[ $pssh_hosts_file == "pssh_stable_hosts_rhel10.txt" ]]; then
+		for i in $stable_job_list_rhel10; do
 			reservesys_status=$(bkr job-results --no-logs --prettyxml $i | grep /distribution/reservesys | grep 'status="Running"' | awk '{print $7}' | awk -F '"' '{print $2}')
 			reservesys_result=$(bkr job-results --no-logs --prettyxml $i | grep '<result path="/distribution/reservesys"' | awk '{print $6}' | awk -F '"' '{print $2}')
 			beaker_system=$(bkr job-results --no-logs --prettyxml $i | grep 'system value=' | awk -F'"' '{print $2}' | tail -n1)
