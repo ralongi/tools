@@ -390,19 +390,22 @@ elif [[ "$driver" == "bnxt_en" ]]; then
 
 # Intel ice E810 STS card	
 elif [[ "$driver" == "sts" ]]; then
-	server="netqe18.knqe.lab.eng.bos.redhat.com"
+	server="netqe22.knqe.eng.rdu2.dc.redhat.com"
 	client="netqe29.knqe.eng.rdu2.dc.redhat.com"
 	NAY="no"
-	PVT="yes"
+	PVT="no"
+	GET_NIC_WITH_MAC="yes"
+	SERVER_NIC_MAC_STRING="40:a6:b7:0b:d0:ac"
+	CLIENT_NIC_MAC_STRING="00:e0:ed:f0:0e:60"
 	server_driver="i40e"
 	client_driver="ice"
-	#netscout_pair1="NETQE29_STS2_1 NETQE22_P6P1"
-	#netscout_pair2="NETQE29_STS2_2 NETQE22_P6P2"
-	server_nic_test="ens1f0"
-	client_nic_test="ens8f0"
+	netscout_pair1="NETQE29_STS2_1 NETQE22_P6P1"
+	netscout_pair2="NETQE29_STS2_2 NETQE22_P6P2"
+	#server_nic_test="ens1f0"
+	#client_nic_test="ens8f0"
 	special_info="Intel E810 STS2 NIC"	
 	
-	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") --Brew=$brew_target --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=mh-nic_test=$server_nic_test,$client_nic_test --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}"
+	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine $(echo "$zstream_repo_list") --Brew=$brew_target --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT -param=GET_NIC_WITH_MAC=$GET_NIC_WITH_MAC --param=mh-NIC_MAC_STRING=${SERVER_NIC_MAC_STRING},${CLIENT_NIC_MAC_STRING} --param=mh-nic_test=$server_nic_test,$client_nic_test --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}"
 	
 # Intel i40e X710 T4L card	
 elif [[ "$driver" == "t4l" ]]; then
