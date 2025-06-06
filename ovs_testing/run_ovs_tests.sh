@@ -94,23 +94,23 @@ for i in $tests; do
 		else
 			sed -i '/exec_topo.sh i40e/s/^#//g' exec_my_ovs_tests.sh
 		fi
-	elif [[ $i == *"topo_ice" ]]; then
+	elif [[ $i == *"topo_e810"* ]]; then
 		if [[ $ovs_env ]]; then
-			sed -i "/exec_topo.sh ice ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
+			sed -i "/exec_topo.sh e810_ice ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
 		else
-			sed -i '/exec_topo.sh ice/s/^#//g' exec_my_ovs_tests.sh
+			sed -i '/exec_topo.sh e810_ice/s/^#//g' exec_my_ovs_tests.sh
 		fi
-	elif [[ $i == *"topo_ice_e830" ]]; then
+	elif [[ $i == *"topo_e830"* ]]; then
 		if [[ $ovs_env ]]; then
-			sed -i "/exec_topo.sh ice_e830 ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
+			sed -i "/exec_topo.sh e830_ice ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
 		else
-			sed -i '/exec_topo.sh ice_e830/s/^#//g' exec_my_ovs_tests.sh
+			sed -i '/exec_topo.sh e830_ice/s/^#//g' exec_my_ovs_tests.sh
 		fi
-	elif [[ $i == *"topo_ice_e825" ]]; then
+	elif [[ $i == *"topo_e825"* ]]; then
 		if [[ $ovs_env ]]; then
 			sed -i "/exec_topo.sh ice_e825 ovs_env=$ovs_env/s/^#//g" exec_my_ovs_tests.sh
 		else
-			sed -i '/exec_topo.sh ice_e825/s/^#//g' exec_my_ovs_tests.sh
+			sed -i '/exec_topo.sh e825_ice/s/^#//g' exec_my_ovs_tests.sh
 		fi
 	elif [[ $i == *"topo_mlx5_core_arm"* ]]; then
 		if [[ $ovs_env ]]; then
