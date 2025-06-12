@@ -343,7 +343,7 @@ elif [[ "$driver" == "bmc57504" ]]; then
 	else
 		server_nic_test="ens4f0"
 	fi
-	special_info="Broadcom BMC57504 NIC https://issues.redhat.com/browse/FDPQE-450"	
+	special_info="Broadcom BMC57504 NIC https://issues.redhat.com/browse/FDPQE-450"
 	
 # HPE Synergy 6820C qede
 elif [[ "$driver" == "6820c" ]]; then
@@ -353,6 +353,45 @@ elif [[ "$driver" == "6820c" ]]; then
 	client_driver="qede"
 	client_nic_test="ens1f0"
 	server_nic_test="ens1f0"
+
+# Intel E810 for backplane
+elif [[ "$driver" == "e810_ice_bp" ]]; then
+	server="wsfd-advnetlab241-intel-ptl.anl.eng.bos2.dc.redhat.com"
+	client="wsfd-advnetlab241.anl.eng.bos2.dc.redhat.com"
+	NAY="no"
+	PVT="no"
+	GET_NIC_WITH_MAC="yes"
+	CLIENT_NIC_MAC_STRING="88:dc:97:52:28:a0" # 88:dc:97:52:28:a1"
+	SERVER_NIC_MAC_STRING="88:dc:97:52:28:9c" # 88:dc:97:52:28:9d"
+	server_driver="ice"
+	client_driver="ice"
+	card_info="E810 for Backplane"
+
+# Intel E823 for backplane
+elif [[ "$driver" == "e823_ice_bp" ]]; then
+	server="wsfd-advnetlab241.anl.eng.bos2.dc.redhat.com"
+	client="wsfd-advnetlab241-intel-ptl.anl.eng.bos2.dc.redhat.com"
+	NAY="no"
+	PVT="no"
+	GET_NIC_WITH_MAC="yes"
+	CLIENT_NIC_MAC_STRING="88:dc:97:52:28:9c" # 88:dc:97:52:28:9d"
+	SERVER_NIC_MAC_STRING="88:dc:97:52:28:a0" # 88:dc:97:52:28:a1"
+	server_driver="ice"
+	client_driver="ice"
+	card_info="E823 for Backplane"
+
+# Intel E823 for SFP
+elif [[ "$driver" == "e823_ice_sfp" ]]; then
+	server="wsfd-advnetlab242.anl.eng.bos2.dc.redhat.com"
+	client="wsfd-advnetlab241-intel-ptl.anl.eng.bos2.dc.redhat.com"
+	NAY="no"
+	PVT="no"
+	GET_NIC_WITH_MAC="yes"
+	CLIENT_NIC_MAC_STRING="88:dc:97:52:28:9e" # 88:dc:97:52:28:9f"
+	SERVER_NIC_MAC_STRING="40:a6:b7:0e:43:d0" # 40:a6:b7:0e:43:d1"
+	server_driver="i40e"
+	client_driver="ice"
+	card_info="E823 for SFP"
 fi
 
 # load specific kernel job

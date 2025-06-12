@@ -356,6 +356,12 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh e830_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e825_ice ovs_env=kernel
 ##./exec_topo.sh e825_ice ovs_env=ovs-dpdk
+#./exec_topo.sh e810_ice_bp ovs_env=kernel
+##./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
+#./exec_topo.sh e823_ice_bp ovs_env=kernel
+##./exec_topo.sh e823_ice_bp ovs_env=ovs-dpdk
+#./exec_topo.sh e823_ice_sfp ovs_env=kernel
+##./exec_topo.sh e823_ice_sfp ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx5 ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
