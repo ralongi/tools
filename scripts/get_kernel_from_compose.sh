@@ -36,6 +36,6 @@ export kernel_id_short=$(echo $kernel_id | awk -F '.x86_64' '{print $1}')
 #kernel_id=$(sed "s/.$arch.rpm//g" ~/kernel_id.tmp)
 #rm -f ~/kernel_id.tmp
 echo ""
-echo "The kernel package associated with compose $compose_id ($arch) is: $kernel_id"
+echo "The kernel associated with compose $compose_id ($arch) is: $kernel_id_short"
 echo ""
 

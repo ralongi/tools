@@ -10,7 +10,7 @@ rhel_major_ver=$(echo $rhel_minor_ver | awk -F "." '{print $1}')
 #	rhel_minor_ver=$rhel_minor_ver".0"
 #fi
 
-source ~/.bash_profile
+source ~/.bash_profile 2> /dev/null
 gvar -v > /dev/null
 if [[ $? -ne 0 ]]; then
 	pushd ~
@@ -39,7 +39,7 @@ export latest_compose_id=$(curl -sL https://beaker.engineering.redhat.com/distro
 build_url=$(curl -sL https://beaker.engineering.redhat.com/distrotrees/$distro_id#lab-controllers | grep http | grep rdu.redhat.com | grep -v href | awk '{print $NF}' | tail -n1)
 arch=$(echo $build_url | awk -F "/os" '{print $1}' | awk -F "/" '{print $NF}')
 #el_ver=$(echo "el$rhel_major_ver")
-kernel_id=$(curl -sL "$build_url"Packages | grep -Ew kernel | head -n1 | awk -F ">" '{print $2}' | awk -F '"' '{print $2}')
+kernel_id=$(curl -sL "$build_url"Packages | grep -Ew kernel | head -n1 | awk -F ">" '{print $6}' | awk -F '"' '{print $2}')
 echo $kernel_id > ~/kernel_id.tmp
 kernel_id=$(sed "s/.$arch.rpm//g" ~/kernel_id.tmp)
 rm -f ~/kernel_id.tmp
