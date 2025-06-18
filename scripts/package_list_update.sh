@@ -1,7 +1,6 @@
 #! /bin/bash
 
-# Script to update package_list.sh
-# Script reads /home/ralongi/github/tools/scripts/fdp_errata_list.txt so be sure to update that file with the correct errata info before running script
+# Script to update fdp_package_list.sh which is mainly used by kernel/networking/openvswitch/ovs_upgrade
 
 dbg_flag=${dbg_flag:-"set +x"}
 $dbg_flag
@@ -19,6 +18,7 @@ new_package_list_temp_file="/home/ralongi/temp/new_package_list_temp.sh"
 new_package_list_file="/home/ralongi/temp/new_package_list.sh"
 fdp_errata_list_file=/home/ralongi/github/tools/scripts/errata_list.txt
 package_list_file=~/package_list.txt
+upload_package_file=${upload_package_file:-"yes"}
 
 batch=$(curl -su : --negotiate https://errata.devel.redhat.com/advisory/filters/4400 | grep "$fdp_release" |awk -F '"' '{print $4}' | awk -F '/' '{print $NF}' | head -1)
 errata_list=$(curl -su : --negotiate https://errata.devel.redhat.com/api/v1/batches/$batch | jq | grep id | awk '{print $NF}' | grep -v ,)
@@ -105,14 +105,22 @@ if [[ $existing_line_number ]]; then
 	fi
 fi
 
-# Append enteries for $fdp_release to ~/fdp_package_list.sh
+# Append entries for $fdp_release to ~/fdp_package_list.sh
 cat $new_package_list_file >> ~/fdp_package_list.sh
 
-# Copy ~/fdp_package_list.sh yo infra01
-scp ~/fdp_package_list.sh root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/share/misc/fdp_package_list.sh
+# Copy ~/fdp_package_list.sh to infra01
+if [[ "$upload_package_file" == "yes" ]]; then
+	scp ~/fdp_package_list.sh root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/share/misc/fdp_package_list.sh
+else
+	echo "Skipping upload of package file per user request..."
+fi
 popd &>/dev/null
 popd &>/dev/null
 
 echo ""
-echo "Review the /home/www/html/share/misc/fdp_package_list.sh file on infra01 to confirm that it looks correct!"
+if [[ "$upload_package_file" == "yes" ]]; then
+	echo "Review the /home/www/html/share/misc/fdp_package_list.sh file on infra01 to confirm that it looks correct!"
+else
+	echo "Review the ~/fdp_package_list.sh file to confirm that it looks correct!"
+fi
 echo ""
