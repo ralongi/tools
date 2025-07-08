@@ -102,11 +102,17 @@ fi
 
 # i40e
 if [[ "$driver" == "i40e" ]]; then
-	server="netqe51.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe52.knqe.eng.rdu2.dc.redhat.com"
-	server_driver="ice"
-	client_driver="i40e"
+	#server="netqe51.knqe.eng.rdu2.dc.redhat.com"
+	#client="netqe52.knqe.eng.rdu2.dc.redhat.com"
+	#server_driver="ice"
+	#client_driver="i40e"
 	card_info="I40E"
+	server="wsfd-advnetlab35.anl.eng.rdu2.dc.redhat.com"
+	client="wsfd-advnetlab36.anl.eng.rdu2.dc.redhat.com"
+	server_driver="mlx5_core"
+	client_driver="i40e"
+	SERVER_NIC_MAC_STRING="10:70:fd:5d:76:ac 10:70:fd:5d:76:ad"
+	CLIENT_NIC_MAC_STRING="3c:fd:fe:ea:f8:10 3c:fd:fe:ea:f8:11"
 
 elif [[ "$driver" == "e810_ice" ]]; then
 	server="netqe52.knqe.eng.rdu2.dc.redhat.com"

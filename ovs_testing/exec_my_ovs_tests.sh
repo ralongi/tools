@@ -348,8 +348,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
 #./exec_topo.sh ixgbe ovs_env=kernel
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
-#./exec_topo.sh i40e ovs_env=kernel
-##./exec_topo.sh i40e ovs_env=ovs-dpdk
+./exec_topo.sh i40e ovs_env=kernel
+#./exec_topo.sh i40e ovs_env=ovs-dpdk
 #./exec_topo.sh e810_ice ovs_env=kernel
 ##./exec_topo.sh e810_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e830_ice ovs_env=kernel
@@ -401,12 +401,12 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_endurance.sh bf3
 #./exec_perf_ci.sh bf3
 
-./exec_topo.sh enic ovs_env=kernel
-#./exec_topo.sh enic ovs_env=ovs-dpdk
-./exec_topo.sh qede ovs_env=kernel
-#./exec_topo.sh qede ovs_env=ovs-dpdk
-./exec_topo.sh bnxt_en ovs_env=kernel
-#./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
+#./exec_topo.sh enic ovs_env=kernel
+##./exec_topo.sh enic ovs_env=ovs-dpdk
+#./exec_topo.sh qede ovs_env=kernel
+##./exec_topo.sh qede ovs_env=ovs-dpdk
+#./exec_topo.sh bnxt_en ovs_env=kernel
+##./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
