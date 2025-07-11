@@ -115,18 +115,18 @@ if [[ "$driver" == "i40e" ]]; then
 	CLIENT_NIC_MAC_STRING="3c:fd:fe:ea:f8:10 3c:fd:fe:ea:f8:11"
 
 elif [[ "$driver" == "e810_ice" ]]; then
-	server="netqe52.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe51.knqe.eng.rdu2.dc.redhat.com"
-	SERVER_NIC_MAC_STRING="40:a6:b7:2f:b9:20" #40:a6:b7:2f:b9:21"
-	CLIENT_NIC_MAC_STRING="b4:96:91:a0:3f:7e" #b4:96:91:a0:3f:7f"
-	server_driver="i40e"
+	server="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
+	client="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
+	SERVER_NIC_MAC_STRING="30:3e:a7:0b:3b:9c" #30:3e:a7:0b:3b:9d
+	CLIENT_NIC_MAC_STRING="30:3e:a7:0b:3b:48" #30:3e:a7:0b:3b:49
+	server_driver="ice"
 	client_driver="ice"
 	card_info="E810 ICE"
 	
 # Intel E830 ice card
 elif [[ "$driver" == "e830_ice" ]]; then
-	server="wsfd-advnetlab152.anl.eng.rdu2.dc.redhat.com"
-	client="wsfd-advnetlab151.anl.eng.rdu2.dc.redhat.com"
+	server="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
+	client="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="ice"
 	server_nic_test="ens6f0np0"

@@ -348,16 +348,16 @@ pushd /home/ralongi/github/tools/ovs_testing
 # To run just the ovs_test_ns_enable_nomlockall_CPUAffinity_test for topo, add "cpu" to the string of arguments
 #./exec_topo.sh ixgbe ovs_env=kernel
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
-./exec_topo.sh i40e ovs_env=kernel
-#./exec_topo.sh i40e ovs_env=ovs-dpdk
-#./exec_topo.sh e810_ice ovs_env=kernel
-##./exec_topo.sh e810_ice ovs_env=ovs-dpdk
+#./exec_topo.sh i40e ovs_env=kernel
+##./exec_topo.sh i40e ovs_env=ovs-dpdk
+./exec_topo.sh e810_ice ovs_env=kernel
+#./exec_topo.sh e810_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e830_ice ovs_env=kernel
 ##./exec_topo.sh e830_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e825_ice ovs_env=kernel
 ##./exec_topo.sh e825_ice ovs_env=ovs-dpdk
-#./exec_topo.sh e810_ice_bp ovs_env=kernel
-##./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
+./exec_topo.sh e810_ice_bp ovs_env=kernel
+#./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_bp ovs_env=kernel
 ##./exec_topo.sh e823_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_sfp ovs_env=kernel
