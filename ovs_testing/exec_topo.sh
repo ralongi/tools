@@ -201,17 +201,23 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "BF2" ]]; then
 	
 # mlx5_core BF3
 elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "BF3" ]]; then
-	server="netqe27.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe28.knqe.eng.rdu2.dc.redhat.com"
+	#server="netqe27.knqe.eng.rdu2.dc.redhat.com"
+	#client="netqe28.knqe.eng.rdu2.dc.redhat.com"
+	#server_driver="mlx5_core"
+	#client_driver="mlx5_core"
+	server="netqe31.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe56.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
-	if [[ $compose_version -gt 8 ]]; then
-		server_nic_test="enp130s0f0np0"
-		client_nic_test="ens1f0np0"
-	else
-		server_nic_test="ens3f0"
-		client_nic_test="ens7f0"
-	fi
+	SERVER_NIC_MAC_STRING="ec:0d:9a:44:36:14 ec:0d:9a:44:36:15"
+	CLIENT_NIC_MAC_STRING="a0:88:c2:d3:4f:18 a0:88:c2:d3:4f:19"
+	#if [[ $compose_version -gt 8 ]]; then
+	#	server_nic_test="enp130s0f0np0"
+	#	client_nic_test="ens1f0np0"
+	#else
+	#	server_nic_test="ens3f0"
+	#	client_nic_test="ens7f0"
+	cfi
 	card_info="BF3"
 	
 # if no mlx_card_type value, default to mlx5_core CX6

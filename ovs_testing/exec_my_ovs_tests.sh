@@ -270,7 +270,7 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.4.qcow2"
+	export VM_IMAGE="rhel9.6.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
@@ -350,14 +350,14 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
 #./exec_topo.sh i40e ovs_env=kernel
 ##./exec_topo.sh i40e ovs_env=ovs-dpdk
-./exec_topo.sh e810_ice ovs_env=kernel
-#./exec_topo.sh e810_ice ovs_env=ovs-dpdk
+#./exec_topo.sh e810_ice ovs_env=kernel
+##./exec_topo.sh e810_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e830_ice ovs_env=kernel
 ##./exec_topo.sh e830_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e825_ice ovs_env=kernel
 ##./exec_topo.sh e825_ice ovs_env=ovs-dpdk
-./exec_topo.sh e810_ice_bp ovs_env=kernel
-#./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
+#./exec_topo.sh e810_ice_bp ovs_env=kernel
+##./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_bp ovs_env=kernel
 ##./exec_topo.sh e823_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_sfp ovs_env=kernel
@@ -387,8 +387,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh bmc57504 ovs_env=ovs-dpdk
 #./exec_topo.sh 6820c ovs_env=kernel
 ##./exec_topo.sh 6820c ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core bf3 ovs_env=kernel
-##./exec_topo.sh mlx5_core bf3 ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core bf3 ovs_env=kernel
+#./exec_topo.sh mlx5_core bf3 ovs_env=ovs-dpdk
 
 #./exec_endurance.sh cx5
 #./exec_perf_ci.sh cx5
