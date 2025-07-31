@@ -102,18 +102,13 @@ fi
 
 # i40e
 if [[ "$driver" == "i40e" ]]; then
-	#server="netqe51.knqe.eng.rdu2.dc.redhat.com"
-	#client="netqe52.knqe.eng.rdu2.dc.redhat.com"
-	#server_driver="ice"
-	#client_driver="i40e"
 	card_info="I40E"
-	server="wsfd-advnetlab35.anl.eng.rdu2.dc.redhat.com"
-	client="wsfd-advnetlab36.anl.eng.rdu2.dc.redhat.com"
-	server_driver="mlx5_core"
+	server="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
+	client="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
+	server_driver="sfc"
 	client_driver="i40e"
-	SERVER_NIC_MAC_STRING="10:70:fd:5d:76:ac 10:70:fd:5d:76:ad"
-	CLIENT_NIC_MAC_STRING="3c:fd:fe:ea:f8:10 3c:fd:fe:ea:f8:11"
-
+	SERVER_NIC_MAC_STRING="00:0f:53:7c:b2:70" #00:0f:53:7c:b2:71"
+	CLIENT_NIC_MAC_STRING="3c:fd:fe:ad:86:b4" #3c:fd:fe:ad:86:b5"
 elif [[ "$driver" == "e810_ice" ]]; then
 	server="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
 	client="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
@@ -145,23 +140,23 @@ elif [[ "$driver" == "e825_ice" ]]; then
 	
 # mlx5_core CX5
 elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX5" ]]; then
-	server="netqe50.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe53.knqe.eng.rdu2.dc.redhat.com"
+	server="003-r760-ee58u06.anl.eng.rdu2.dc.redhat.com"
+	client="004-r760-ee58u08.anl.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
-	SERVER_NIC_MAC_STRING="04:3f:72:b2:c0:ac" #04:3f:72:b2:c0:ad"
-	CLIENT_NIC_MAC_STRING="0c:42:a1:9d:04:52" #0c:42:a1:9d:04:53"
+	SERVER_NIC_MAC_STRING="b8:59:9f:c4:ad:f6" #b8:59:9f:c4:ad:f7
+	CLIENT_NIC_MAC_STRING="b8:59:9f:c4:ad:e6" #b8:59:9f:c4:ad:e7
 	mlx_card_type="CX5"
 	card_info="CX5"
 # mlx5_core CX6
 elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX6" ]]; then
 	if [[ $mlx_card_model == "DX" ]]; then
-		server="netqe53.knqe.eng.rdu2.dc.redhat.com"
-		client="netqe50.knqe.eng.rdu2.dc.redhat.com"
+		server="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
+		client="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
 		server_driver="mlx5_core"
 		client_driver="mlx5_core"
-		SERVER_NIC_MAC_STRING='"0c:42:a1:9d:04:52 0c:42:a1:9d:04:53"'
-		CLIENT_NIC_MAC_STRING='"04:3f:72:b2:c0:ac 04:3f:72:b2:c0:ad"'
+		SERVER_NIC_MAC_STRING="10:70:fd:a3:7c:98" #10:70:fd:a3:7c:99
+		CLIENT_NIC_MAC_STRING="04:3f:72:b2:c0:ac" #04:3f:72:b2:c0:ad
 		echo "${SERVER_NIC_MAC_STRING}","${CLIENT_NIC_MAC_STRING}" > ~/temp/nic_mac_string.txt
 		card_info="CX6-DX"
 	fi
@@ -174,12 +169,12 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX6" ]]; then
 	fi
 	
 elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "CX7" ]]; then
-	server="wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com"
-	client="wsfd-advnetlab33.anl.eng.rdu2.dc.redhat.com"
+	server="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
+	client="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
-	SERVER_NIC_MAC_STRING="b8:59:9f:c4:ad:e6"
-	CLIENT_NIC_MAC_STRING="10:70:fd:a3:7c:99"
+	SERVER_NIC_MAC_STRING="04:3f:72:b2:c0:ac" #04:3f:72:b2:c0:ad
+	CLIENT_NIC_MAC_STRING="10:70:fd:a3:7c:98" #10:70:fd:a3:7c:99
 	card_info="CX7"
 	
 # mlx5_core BF2
@@ -209,8 +204,8 @@ elif [[ "$driver" == "mlx5_core" ]] && [[ "$mlx_card_type" == "BF3" ]]; then
 	client="netqe56.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
-	SERVER_NIC_MAC_STRING="ec:0d:9a:44:36:14 ec:0d:9a:44:36:15"
-	CLIENT_NIC_MAC_STRING="a0:88:c2:d3:4f:18 a0:88:c2:d3:4f:19"
+	SERVER_NIC_MAC_STRING="ec:0d:9a:44:36:14" #ec:0d:9a:44:36:15
+	CLIENT_NIC_MAC_STRING="a0:88:c2:d3:4f:18" #a0:88:c2:d3:4f:19
 	#if [[ $compose_version -gt 8 ]]; then
 	#	server_nic_test="enp130s0f0np0"
 	#	client_nic_test="ens1f0np0"
@@ -289,8 +284,8 @@ elif [[ "$driver" == "enic" ]]; then
 	client_nic_test="enp9s0"
 	HOST_TESTS_ONLY="yes"
 	card_info="ENIC"
-	SERVER_NIC_MAC_STRING="40:a6:b7:0b:d0:ac 40:a6:b7:0b:d0:ad"
-	CLIENT_NIC_MAC_STRING="00:5d:73:7d:36:75 00:5d:73:7d:36:76"
+	SERVER_NIC_MAC_STRING="40:a6:b7:0b:d0:ac" #40:a6:b7:0b:d0:ad
+	CLIENT_NIC_MAC_STRING="00:5d:73:7d:36:75" #00:5d:73:7d:36:76
 	
 elif [[ "$driver" == "qede" ]]; then
 	server="netqe26.knqe.eng.rdu2.dc.redhat.com"
@@ -303,8 +298,8 @@ elif [[ "$driver" == "qede" ]]; then
 	client_nic_test="enp5s0f0"
 	HOST_TESTS_ONLY="yes"
 	card_info="QEDE"
-	SERVER_NIC_MAC_STRING="00:5d:73:7d:36:75 00:5d:73:7d:36:76"
-	CLIENT_NIC_MAC_STRING="00:0e:1e:f0:e4:48 00:0e:1e:f0:e4:49"
+	SERVER_NIC_MAC_STRING="00:5d:73:7d:36:75" #00:5d:73:7d:36:76
+	CLIENT_NIC_MAC_STRING="00:0e:1e:f0:e4:48" #00:0e:1e:f0:e4:49
 	
 elif [[ "$driver" == "bnxt_en" ]]; then
 	server="netqe26.knqe.eng.rdu2.dc.redhat.com"
@@ -317,8 +312,8 @@ elif [[ "$driver" == "bnxt_en" ]]; then
 	client_nic_test="enp130s0f0np0"
 	HOST_TESTS_ONLY="yes"
 	card_info="BNXT_EN"
-	SERVER_NIC_MAC_STRING="00:5d:73:7d:36:75 00:5d:73:7d:36:76"
-	CLIENT_NIC_MAC_STRING="00:0a:f7:b7:09:50 00:0a:f7:b7:09:51"
+	SERVER_NIC_MAC_STRING="00:5d:73:7d:36:75" #00:5d:73:7d:36:76
+	CLIENT_NIC_MAC_STRING="00:0a:f7:b7:09:50" #00:0a:f7:b7:09:51
 	
 # Intel ice E810 STS card	
 elif [[ "$driver" == "sts" ]]; then
