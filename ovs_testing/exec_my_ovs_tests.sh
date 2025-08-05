@@ -360,8 +360,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh e823_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_sfp ovs_env=kernel
 ##./exec_topo.sh e823_ice_sfp ovs_env=ovs-dpdk
-#./exec_topo.sh mlx5_core cx5 ovs_env=kernel
-##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
+./exec_topo.sh mlx5_core cx5 ovs_env=kernel
+#./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
@@ -408,7 +408,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
-./exec_ovs_memory_leak_soak.sh
+#./exec_ovs_memory_leak_soak.sh
 #./exec_ovn_memory_leak_soak.sh
 
 #./exec_regression_bug.sh
