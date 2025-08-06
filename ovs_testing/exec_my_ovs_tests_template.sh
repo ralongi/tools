@@ -16,6 +16,12 @@ brew_target_flag=${brew_target_flag:-"off"}
 
 if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 
+# Attempt to set uefi systems to PXE boot
+# List of target uefi systems in file ~/uefi_pssh_hosts.txt, run ~/set_uefi_bootnext_pxi.sh on target systems
+echo "Attempting to set PXE boot on uefi systems before running tests..."
+num_pssh_hosts=$(cat ~/uefi_pssh_hosts.txt | wc -l)
+timeout 10s bash -c "until pssh -O StrictHostKeyChecking=no -p $num_pssh_hosts -h ~/uefi_pssh_hosts.txt -t 0 -l root 'bash -s' < ~/set_uefi_bootnext_pxi.sh; do sleep 0; done"
+
 # Script to execute all of my ovs tests
 
 source ~/fdp_package_list.sh > /dev/null
