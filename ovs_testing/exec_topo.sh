@@ -110,10 +110,10 @@ if [[ "$driver" == "i40e" ]]; then
 	SERVER_NIC_MAC_STRING="00:0f:53:7c:b2:70" #00:0f:53:7c:b2:71"
 	CLIENT_NIC_MAC_STRING="3c:fd:fe:ad:86:b4" #3c:fd:fe:ad:86:b5"
 elif [[ "$driver" == "e810_ice" ]]; then
-	server="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
-	client="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
-	SERVER_NIC_MAC_STRING="30:3e:a7:0b:3b:9c" #30:3e:a7:0b:3b:9d
-	CLIENT_NIC_MAC_STRING="30:3e:a7:0b:3b:48" #30:3e:a7:0b:3b:49
+	server="003-r760-ee58u06.anl.eng.rdu2.dc.redhat.com"
+	client="004-r760-ee58u08.anl.eng.rdu2.dc.redhat.com"
+	SERVER_NIC_MAC_STRING="30:3e:a7:0b:37:4c" #30:3e:a7:0b:37:4d
+	CLIENT_NIC_MAC_STRING="30:3e:a7:0b:2a:0c" #30:3e:a7:0b:2a:0d	
 	server_driver="ice"
 	client_driver="ice"
 	card_info="E810 ICE"

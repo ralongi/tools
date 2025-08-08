@@ -18,9 +18,9 @@ if [[ $brew_build ]]; then export brew_build_cmd="-B $brew_build"; fi
 
 # Attempt to set uefi systems to PXE boot
 # List of target uefi systems in file ~/uefi_pssh_hosts.txt, run ~/set_uefi_bootnext_pxi.sh on target systems
-echo "Attempting to set PXE boot on uefi systems before running tests..."
-num_pssh_hosts=$(cat ~/uefi_pssh_hosts.txt | wc -l)
-timeout 10s bash -c "until pssh -O StrictHostKeyChecking=no -p $num_pssh_hosts -h ~/uefi_pssh_hosts.txt -t 0 -l root 'bash -s' < ~/set_uefi_bootnext_pxi.sh; do sleep 0; done"
+#echo "Attempting to set PXE boot on uefi systems before running tests..."
+#num_pssh_hosts=$(cat ~/uefi_pssh_hosts.txt | wc -l)
+#timeout 10s bash -c "until pssh -O StrictHostKeyChecking=no -p $num_pssh_hosts -h ~/uefi_pssh_hosts.txt -t 0 -l root 'bash -s' < ~/set_uefi_bootnext_pxi.sh; do sleep 0; done"
 
 # Script to execute all of my ovs tests
 
@@ -160,10 +160,10 @@ if [[ -z $RPM_DRIVERCTL ]]; then
 	export RPM_DRIVERCTL=$DRIVERCTL_RHEL10
 fi
 if [[ -z $RPM_OVS_TCPDUMP_PYTHON ]]; then
-	export RPM_OVS_TCPDUMP_PYTHON=$OVS350_PYTHON_25D_RHEL10
+	export RPM_OVS_TCPDUMP_PYTHON=$OVS360_PYTHON_25D_RHEL10
 fi
 if [[ -z $RPM_OVS_TCPDUMP_TEST ]]; then
-	export RPM_OVS_TCPDUMP_TEST=$OVS350_TCPDUMP_25D_RHEL10
+	export RPM_OVS_TCPDUMP_TEST=$OVS360_TCPDUMP_25D_RHEL10
 fi
 
 # RHEL composes
@@ -274,14 +274,14 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel10.1.qcow2"
+	export VM_IMAGE="rhel10.0.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
 
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
-	export RPM_OVS=$OVS350_25D_RHEL10
+	export RPM_OVS=$OVS360_25D_RHEL10
 else
 	export RPM_OVS=$RPM_OVS
 fi
@@ -322,7 +322,7 @@ fi
 #export QEMU_KVM_RHEV_RHEL7=http://download.devel.redhat.com/brewroot/packages/qemu-kvm-rhev/2.12.0/48.el7_9.2/x86_64/qemu-kvm-rhev-2.12.0-48.el7_9.2.x86_64.rpm
 
 # OVN packages
-export RPM_OVN=$OVN350_25D_RHEL10 
+export RPM_OVN=$OVN360_25D_RHEL10 
 
 export BONDING_TESTS="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp"
 
@@ -354,22 +354,22 @@ pushd /home/ralongi/github/tools/ovs_testing
 ##./exec_topo.sh ixgbe ovs_env=ovs-dpdk
 #./exec_topo.sh i40e ovs_env=kernel
 ##./exec_topo.sh i40e ovs_env=ovs-dpdk
-./exec_topo.sh e810_ice ovs_env=kernel
-#./exec_topo.sh e810_ice ovs_env=ovs-dpdk
+#./exec_topo.sh e810_ice ovs_env=kernel
+##./exec_topo.sh e810_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e830_ice ovs_env=kernel
 ##./exec_topo.sh e830_ice ovs_env=ovs-dpdk
 #./exec_topo.sh e825_ice ovs_env=kernel
 ##./exec_topo.sh e825_ice ovs_env=ovs-dpdk
-./exec_topo.sh e810_ice_bp ovs_env=kernel
-#./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
+#./exec_topo.sh e810_ice_bp ovs_env=kernel
+##./exec_topo.sh e810_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_bp ovs_env=kernel
 ##./exec_topo.sh e823_ice_bp ovs_env=ovs-dpdk
 #./exec_topo.sh e823_ice_sfp ovs_env=kernel
 ##./exec_topo.sh e823_ice_sfp ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core cx5 ovs_env=kernel
-#./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
-#./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx5 ovs_env=kernel
+##./exec_topo.sh mlx5_core cx5 ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx6 dx ovs_env=kernel
+##./exec_topo.sh mlx5_core cx6 dx ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core cx6 lx ovs_env=kernel
 ##./exec_topo.sh mlx5_core cx6 lx ovs_env=ovs-dpdk
 #./exec_topo.sh arm ovs_env=kernel
@@ -377,8 +377,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh mlx5_core_arm cx7 ovs_env=kernel
 
 ##./exec_topo.sh arm ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core cx7 ovs_env=kernel
-#./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx7 ovs_env=kernel
+##./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core bf2 ovs_env=kernel
 ##./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
 #./exec_topo.sh sts ovs_env=kernel
@@ -405,12 +405,12 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_endurance.sh bf3
 #./exec_perf_ci.sh bf3
 
-#./exec_topo.sh enic ovs_env=kernel
-##./exec_topo.sh enic ovs_env=ovs-dpdk
-#./exec_topo.sh qede ovs_env=kernel
-##./exec_topo.sh qede ovs_env=ovs-dpdk
-#./exec_topo.sh bnxt_en ovs_env=kernel
-##./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
+./exec_topo.sh enic ovs_env=kernel
+#./exec_topo.sh enic ovs_env=ovs-dpdk
+./exec_topo.sh qede ovs_env=kernel
+#./exec_topo.sh qede ovs_env=ovs-dpdk
+./exec_topo.sh bnxt_en ovs_env=kernel
+#./exec_topo.sh bnxt_en ovs_env=ovs-dpdk
 #./exec_topo.sh nfp ovs_env=kernel
 ##./exec_topo.sh nfp ovs_env=ovs-dpdk
 
