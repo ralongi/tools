@@ -12,6 +12,7 @@ if [[ ! $(echo "$fdp_release" | grep '\.') ]]; then
 	echo "Please include the period in the FDP release designation without 'FDP' (25.C, 25.c, etc)"
 	exit 0
 fi
+package_file=~/inf_www/share/misc/fdp_package_list.sh
 fdp_release_short=$(echo $fdp_release | tr -d .)
 new_package_template_file="/home/ralongi/github/tools/scripts/new_package_list_template.sh"
 new_package_list_temp_file="/home/ralongi/temp/new_package_list_temp.sh"
@@ -91,36 +92,22 @@ for i in $errata_list; do
 	fi
 done
 
-# Remove any existing lines in ~/fdp_package_list.sh referring to $fdp_release to avoid redundancy, etc
-existing_line_number=$(grep -n "$fdp_release" ~/fdp_package_list.sh | awk -F ':' '{print $1}' | head -1)
+# Remove any existing lines in $package_file referring to $fdp_release to avoid redundancy, etc
+existing_line_number=$(grep -n "$fdp_release" $package_file | awk -F ':' '{print $1}' | head -1)
 if [[ $existing_line_number ]]; then
 	echo "Removing existing entries for $fdp_release..."
 	line_number_before=$(( existing_line_number - 1 ))
-	line=$(sed -n "${line_number_before}p" ~/fdp_package_list.sh)
+	line=$(sed -n "${line_number_before}p" $package_file)
 
 	if [[ -z "$line" ]]; then
-		sed -n -i "1,$(( line_number_before - 1 )) p; $line_number_before q" ~/fdp_package_list.sh
+		sed -n -i "1,$(( line_number_before - 1 )) p; $line_number_before q" $package_file
 	else
-		sed -n -i "1,$(( existing_line_number - 1 )) p; $existing_line_number q" ~/fdp_package_list.sh
+		sed -n -i "1,$(( existing_line_number - 1 )) p; $existing_line_number q" $package_file
 	fi
 fi
 
-# Append entries for $fdp_release to ~/fdp_package_list.sh
-cat $new_package_list_file >> ~/fdp_package_list.sh
+# Append entries for $fdp_release to $package_file
+cat $new_package_list_file >> $package_file
 
-# Copy ~/fdp_package_list.sh to infra01
-if [[ "$upload_package_file" == "yes" ]]; then
-	scp ~/fdp_package_list.sh root@netqe-infra01.knqe.eng.rdu2.dc.redhat.com:/home/www/html/share/misc/fdp_package_list.sh
-else
-	echo "Skipping upload of package file per user request..."
-fi
 popd &>/dev/null
 popd &>/dev/null
-
-echo ""
-if [[ "$upload_package_file" == "yes" ]]; then
-	echo "Review the /home/www/html/share/misc/fdp_package_list.sh file on infra01 to confirm that it looks correct!"
-else
-	echo "Review the ~/fdp_package_list.sh file to confirm that it looks correct!"
-fi
-echo ""
