@@ -234,13 +234,15 @@ elif [[ "$driver" == "mlx5_core_arm" ]]; then
 	#client="ampere-mtsnow-02.knqe.eng.rdu2.dc.redhat.com"
 	#server_driver="mlx5_core"
 	#client_driver="mlx5_core"
-	mlx_card_type="CX7"
+	mlx_card_type="CX6-DX"
 	client="netqe49.knqe.eng.rdu2.dc.redhat.com" # ARM system
 	#client="netqe47.knqe.eng.rdu2.dc.redhat.com"
 	#client="netqe48.knqe.eng.rdu2.dc.redhat.com"
 	server="netqe24.knqe.eng.rdu2.dc.redhat.com" #x86_64 system
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
+	SERVER_NIC_MAC_STRING="0c:42:a1:22:a3:46" #0c:42:a1:22:a3:47
+	CLIENT_NIC_MAC_STRING="94:6d:ae:d9:23:f4" #94:6d:ae:d9:23:f5	
 	#server_pciid="15b3:1021" #CX7
 	#server_pciid="15b3:101d" #CX6-DX
 	#client_pciid="8086:1592" #E810
@@ -248,8 +250,8 @@ elif [[ "$driver" == "mlx5_core_arm" ]]; then
 	export RPM_OVS_TCPDUMP_PYTHON_AARCH64=$(echo $RPM_OVS_TCPDUMP_PYTHON | sed 's/x86_64/aarch64/g')
 	#export RPM_OVS_TCPDUMP_TEST_AARCH64=$(echo $RPM_OVS_TCPDUMP_TEST | sed 's/x86_64/aarch64/g')	
 	export ovs_rpm_name=$(echo $RPM_OVS_AARCH64 | awk -F "/" '{print $NF}')
-	netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1" # netqe24 CX5 to netqe49 CX7 ARM
-	netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2" # netqe24 CX5 to netqe49 CX7
+	#netscout_pair1="NETQE24_P4P1 NETQE49_CX7_P5P1" # netqe24 CX5 to netqe49 CX7 ARM
+	#netscout_pair2="NETQE24_P4P2 NETQE49_CX7_P5P2" # netqe24 CX5 to netqe49 CX7
 	GUEST_TYPE="container"
 	if [[ $compose_version -gt 8 ]]; then
 		server_nic_test="enp130s0f0np0"
@@ -258,7 +260,7 @@ elif [[ "$driver" == "mlx5_core_arm" ]]; then
 		server_nic_test="enp130s0f0"
 		client_nic_test="enP2p2s0f0"
 	fi
-	card_info="ARM CX7"
+	card_info="ARM CX6-DX"
 	
 elif [[ "$driver" == "ixgbe" ]]; then
 	server="netqe53.knqe.eng.rdu2.dc.redhat.com"
@@ -433,7 +435,36 @@ fi
 #	cat ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --product=$product --retention-tag=$retention_tag --machine=$server,$client -B $brew_build --systype=machine,machine  --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=selinux_enable=$selinux_enable --param=NAY=$NAY --param=GUEST_TYPE=$GUEST_TYPE --param=PVT=$PVT --param=image_name=$image_name --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY_RHEL8 --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=netscout_pair1="$netscout_pair1" --param=netscout_pair2="$netscout_pair2" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($mlx_card_type), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
 
 if [[ $image_mode == "yes" ]]; then
-	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --bootc=$COMPOSE --nrestraint --autopath --kernel-options "crashkernel=640M" --packages="virt-viewer,virt-install,libvirt-daemon,virt-manager,libvirt,qemu-kvm,libguestfs,guestfs-tools,gcc,gcc-c++,glibc-devel,net-tools,zlib-devel,pciutils,lsof,tcl,tk,git,wget,nano,driverctl,dpdk,dpdk-tools,ipv6calc,wireshark-cli,nmap-ncat,python3-pip,rpmdevtools,git,grubby,netperf" --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") --Brew=$brew_target --param=SERVERS="$server" --param=CLIENTS="$client" --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=GET_NIC_WITH_MAC=$GET_NIC_WITH_MAC --param=mh-NIC_MAC_STRING=$(echo $SERVER_NIC_MAC_STRING),$(echo $CLIENT_NIC_MAC_STRING) --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($card_info), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info \`image mode\`" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	#cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --bootc=$COMPOSE --nrestraint --autopath --kernel-options "crashkernel=640M" --packages="virt-viewer,virt-install,libvirt-daemon,virt-manager,libvirt,qemu-kvm,libguestfs,guestfs-tools,gcc,gcc-c++,glibc-devel,net-tools,zlib-devel,pciutils,lsof,tcl,tk,git,wget,nano,driverctl,dpdk,dpdk-tools,ipv6calc,wireshark-cli,nmap-ncat,python3-pip,rpmdevtools,git,grubby,netperf" --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") --Brew=$brew_target --param=SERVERS="$server" --param=CLIENTS="$client" --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=GET_NIC_WITH_MAC=$GET_NIC_WITH_MAC --param=mh-NIC_MAC_STRING=$(echo $SERVER_NIC_MAC_STRING),$(echo $CLIENT_NIC_MAC_STRING) --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($card_info), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info \`image mode\`" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	
+	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest RHEL-9.7.0-updates-20250813.1 \
+--machine=wsfd-advnetlab34.anl.eng.rdu2.dc.redhat.com,wsfd-advnetlab33.anl.eng.rdu2.dc.redhat.com \
+--systype=Machine  --param=NAY=no --param=PVT=no \
+--kernel-options='crashkernel=640M' \
+--param=IMG_GUEST=http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/vm/rhel9.7.qcow2 \
+--param=RPM_OVS_SELINUX_EXTRA_POLICY=https://download.eng.pek2.redhat.com/brewroot/vol/rhel-9/packages/openvswitch-selinux-extra-policy/1.0/39.el9fdp/noarch/openvswitch-selinux-extra-policy-1.0-39.el9fdp.noarch.rpm  \
+--param=RPM_OVS=https://download-01.beak-001.prod.iad2.dc.redhat.com/brewroot/vol/rhel-9/packages/openvswitch3.6/3.6.0/0.2.el9fdp/x86_64/openvswitch3.6-3.6.0-0.2.el9fdp.x86_64.rpm \
+--param=OVS_SKIP_CLEANUP_ENV=yes \
+--param=OVS_SKIP="ovs_test_bond_active_backup ovs_test_bond_set_active_slave ovs_test_bond_lacp_active ovs_test_bond_lacp_passive ovs_test_bond_balance_slb ovs_test_bond_balance_tcp ovs_test_ns_enable_nomlockall_CPUAffinity_test" \
+--param=GUEST_TYPE=all --param=SKIP_HOST_TESTS=no --param=ovs_env=kernel \
+--param=OVS_TOPO='ovs_all' \
+--param=rpm_driverctl=http://download.devel.redhat.com/brewroot/packages/driverctl/0.115/1.el9/noarch/driverctl-0.115-1.el9.noarch.rpm \
+--param=RPM_OVS_TCPDUMP_PYTHON=https://download-01.beak-001.prod.iad2.dc.redhat.com/brewroot/vol/rhel-9/packages/openvswitch3.6/3.6.0/0.2.el9fdp/x86_64/python3-openvswitch3.6-3.6.0-0.2.el9fdp.x86_64.rpm \
+--param=RPM_OVS_TCPDUMP_TEST=https://download-01.beak-001.prod.iad2.dc.redhat.com/brewroot/vol/rhel-9/packages/openvswitch3.6/3.6.0/0.2.el9fdp/noarch/openvswitch3.6-test-3.6.0-0.2.el9fdp.noarch.rpm \
+--param=mh-NIC_DRIVER=mlx5_core,mlx5_core  \
+--wb="" --task=/kernel/networking/openvswitch/topo \
+--topo=multiHost.1.1 --bootc=RHEL-9.7.0-updates-20250813.1  \
+--fetch-url=kernel@http://netqe-bj.usersys.redhat.com/share/mhou/mhou-kernel.tar.gz \
+--nrestraint --autopath \
+--param=GET_NIC_WITH_MAC=yes \
+--param=mh-NIC_MAC_STRING="3c:fd:fe:ea:f7:b0 3c:fd:fe:ea:f7:b1,b4:96:91:a0:3f:7e b4:96:91:a0:3f:7f" \
+--packages="virt-viewer,virt-install,libvirt-daemon,virt-manager,libvirt,qemu-kvm,libguestfs,guestfs-tools,gcc,gcc-c++,glibc-devel,zlib-devel,pciutils,tcl,tk,git,wget,nano,ipv6calc,wireshark-cli,nmap-ncat,python3-pip,rpmdevtools,grubby,net-tools,beakerlib-redhat,bc,bind-utils,bzip2,ethtool,expect,iproute,libtool,nc,net-tools,nmap,nmap-ncat,patch,rsync,socat,tcpdump,traceroute,wget,lsof" \
+-B "repo,https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-artifacts/1980582006/publish_x86_64/10997103189/artifacts/repo/5.14.0-604.7232_1980581845.el9.x86_64/"
+--wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($card_info), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info \`image mode\`"\
+--insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" \
+--append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+	
+	
 	
 else
 	cat ~/git/my_fork/kernel/networking/tools/runtest-network/ovs.list | egrep "openvswitch/topo" | runtest --ks-meta "packages=kernel-64k" --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE --cmd-and-reboot="grubby --args=crashkernel=640M --update-kernel=ALL" --product=$product --retention-tag=$retention_tag --machine=$server,$client --systype=machine,machine  $(echo "$zstream_repo_list") --Brew=$brew_target --param=SERVERS="$server" --param=CLIENTS="$client" --param=dbg_flag="$dbg_flag" --param=OVS_TOPO=$OVS_TOPO --param=HOST_TESTS_ONLY=$HOST_TESTS_ONLY --param=ovs_env=$ovs_env --param=SELINUX=$SELINUX --param=AVC_ERROR=+no_avc_check --param=GUEST_TYPE=$GUEST_TYPE --param=NAY=$NAY --param=PVT=$PVT --param=GET_NIC_WITH_MAC=$GET_NIC_WITH_MAC --param=mh-NIC_MAC_STRING="${SERVER_NIC_MAC_STRING}","${CLIENT_NIC_MAC_STRING}" --param=image_name=$VM_IMAGE --param=SRC_NETPERF=$SRC_NETPERF --param=RPM_OVS_SELINUX_EXTRA_POLICY=$RPM_OVS_SELINUX_EXTRA_POLICY --param=RPM_OVS=$RPM_OVS $(echo $extra_packages) --param=OVS_SKIP_CLEANUP_ENV=yes --param=OVS_SKIP="$OVS_SKIP_TESTS" --param=mh-NIC_DRIVER=$server_driver,$client_driver --wb "(Server: $server, Client: $client), FDP $FDP_RELEASE, $ovs_rpm_name, $COMPOSE, openvswitch/topo, Client driver: $client_driver, Server driver: $server_driver, Driver under test: $client_driver ($card_info), ovs_env: $ovs_env, OVS_TOPO: $OVS_TOPO $special_info" --insert-task="/kernel/networking/openvswitch/netscout_connect_ports {dbg_flag=set -x} {netscout_pair1=$netscout_pair1} {netscout_pair2=$netscout_pair2}" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"

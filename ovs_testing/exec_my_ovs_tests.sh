@@ -274,7 +274,7 @@ export SRC_NETPERF="http://netqe-infra01.knqe.eng.rdu2.dc.redhat.com/share/tools
 
 # VM image names
 if [[ -z $VM_IMAGE ]]; then
-	export VM_IMAGE="rhel9.6.qcow2"
+	export VM_IMAGE="rhel9.7.qcow2"
 else
 	export VM_IMAGE=$VM_IMAGE
 fi
@@ -344,7 +344,7 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_sanity_check.sh
 #./exec_vm100.sh
 #./exec_ovs_qos.sh
-#./exec_mcast_snoop.sh
+./exec_mcast_snoop.sh
 #./exec_power_cycle_crash.sh
 #./exec_forward_bpdu.sh
 #./exec_of_rules.sh
@@ -377,8 +377,8 @@ pushd /home/ralongi/github/tools/ovs_testing
 #./exec_topo.sh mlx5_core_arm cx7 ovs_env=kernel
 
 ##./exec_topo.sh arm ovs_env=ovs-dpdk
-./exec_topo.sh mlx5_core cx7 ovs_env=kernel
-#./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
+#./exec_topo.sh mlx5_core cx7 ovs_env=kernel
+##./exec_topo.sh mlx5_core cx7 ovs_env=ovs-dpdk
 #./exec_topo.sh mlx5_core bf2 ovs_env=kernel
 ##./exec_topo.sh mlx5_core bf2 ovs_env=ovs-dpdk
 #./exec_topo.sh sts ovs_env=kernel
