@@ -2,11 +2,11 @@
 
 $dbg_flag
 
-start_date=$(date +%F)
+start_date=${start_date:-$(date +%F)}
 end_date="2026-04-03"
 
 count_mondays() {
-  start_date=$(date +%F)
+  start_date=$start_date
   end_date="2026-04-03"
   count=0
 

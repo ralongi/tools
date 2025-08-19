@@ -11,6 +11,11 @@ LEAPP_UPGRADE=${LEAPP_UPGRADE:-"no"}
 #leapp_upgrade_repo=${leapp_upgrade_repo:-"http://file.emea.redhat.com/~mreznik/tmp/leapp_upgrade_repositories.repo"}
 dut=${dut:-"netqe05.knqe.eng.rdu2.dc.redhat.com"}
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
+image_mode=${image_mode:-"no"}
+NAY="${NAY:-"no"}"
+PVT="${PVT:-"no"}"
+GET_NIC_WITH_MAC="${GET_NIC_WITH_MAC:-"yes"}"
+NIC_NUM=2
 
 RHEL_VER_MAJOR=$(echo $COMPOSE | awk -F "-" '{print $2}' | awk -F "." '{print $1}')
 RPM_LIST=$(grep -w $(basename $RPM_OVS | awk -F "-" '{print $1}') ~/fdp_package_list.sh | grep RHEL$RHEL_VER_MAJOR | egrep -vi 'python|tcpdump|selinux')
@@ -39,7 +44,11 @@ fi
 
 FDP_STREAM=$(basename $RPM_OVS | awk -F "-" '{print $1}' | sed s/openvswitch//g )
 
-lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine --param=dbg_flag="$dbg_flag" --param=NAY=yes --param=ROLE="STANDALONE" --param=LEAPP_UPGRADE=no --wb "($dut), $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: no" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+if [[ $image_mode == "yes" ]]; then
+	lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --bootc=$COMPOSE --nrestraint --autopath --kernel-options "crashkernel=640M" --packages="grubby sshpass iperf3 virt-viewer virt-install libvirt-daemon virt-manager libvirt qemu-kvm libguestfs guestfs-tools gcc gcc-c++ glibc-devel net-tools zlib-devel pciutils lsof tcl tk git wget nano driverctl dpdk dpdk-tools ipv6calc wireshark-cli nmap-ncat dnsmasq" --ks-append="rootpw redhat" --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine --param=dbg_flag="$dbg_flag" -param=NAY=$NAY --param=PVT=$PVT --param=GET_NIC_WITH_MAC=$GET_NIC_WITH_MAC --param=NIC_MAC_STRING="b4:96:91:a5:b9:48 b4:96:91:a5:b9:49" --param=ROLE="STANDALONE" --param=LEAPP_UPGRADE=no --wb "($dut), $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: no  \`Image Mode\`" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+else
+	lstest ~/git/my_fork/kernel/networking/openvswitch/ovs_upgrade | runtest --fetch-url kernel@https://gitlab.cee.redhat.com/kernel-qe/kernel/-/archive/master/kernel-master.tar.bz2 $COMPOSE  --arch=x86_64 --machine=$dut --topo=singleHost --systype=machine --param=dbg_flag="$dbg_flag" -param=NAY=$NAY --param=PVT=$PVT --param=GET_NIC_WITH_MAC=$GET_NIC_WITH_MAC --param=NIC_MAC_STRING="b4:96:91:a5:b9:48 b4:96:91:a5:b9:49" --param=ROLE="STANDALONE" --param=LEAPP_UPGRADE=no --wb "($dut), $COMPOSE, openvswitch/ovs_upgrade, LEAPP UPGRADE: no  \`Package Mode\`" --append-task="/kernel/networking/openvswitch/crash_check {dbg_flag=set -x}"
+fi
 
 rm -f *.xml	
 popd 2>/dev/null
