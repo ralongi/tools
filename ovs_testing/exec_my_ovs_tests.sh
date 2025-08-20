@@ -340,8 +340,8 @@ sedeasy "25D" "$FDP_RELEASE" ~/github/tools/ovs_testing/exec_endurance.sh
 #pushd /home/ralongi/global_docs/ovs_testing
 pushd /home/ralongi/github/tools/ovs_testing
 
-./exec_ovs_upgrade.sh
-./exec_sanity_check.sh
+#./exec_ovs_upgrade.sh
+#./exec_sanity_check.sh
 #./exec_vm100.sh
 #./exec_ovs_qos.sh
 #./exec_mcast_snoop.sh
