@@ -279,6 +279,12 @@ else
 	export VM_IMAGE=$VM_IMAGE
 fi
 
+if [[ -z $VM_IMAGE_AARCH64 ]]; then
+	export VM_IMAGE_AARCH64="rhelRHEL_VER_VALUE.aarch64.qcow2"
+else
+	export VM_IMAGE_AARCH64=$VM_IMAGE_AARCH64
+fi
+
 # OVS packages
 if [[ -z $RPM_OVS ]]; then
 	export RPM_OVS=$OVSFDP_STREAM_VALUE_FDP_RELEASE_VALUE_RHELRHEL_VER_MAJOR_VALUE
