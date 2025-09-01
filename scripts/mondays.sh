@@ -37,5 +37,5 @@ num_mondays=$(count_mondays "$1" "$2")
 start_ts=$(date -d "$start_date" +%s)
 start_day_of_week=$(date -d "@$start_ts" +%u)
 if [[ $start_day_of_week -eq 1 ]]; then num_mondays=$((( $num_mondays - 1 ))); fi
-echo "Number of calendar Mondays between $start_date and $end_date: $num_mondays (Don't forget you will be taking some of these Mondays off!)"
+echo "Number of calendar Mondays between $start_date and $end_date: $num_mondays" #(Don't forget you will be taking some of these Mondays off!)
 
