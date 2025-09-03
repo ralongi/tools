@@ -27,13 +27,13 @@ RPM_OVS_AARCH64=${RPM_OVS_AARCH64:-$(echo $RPM_OVS | sed 's/x86_64/aarch64/g')}
 RPM_OVS_TCPDUMP_PYTHON_AARCH64=${RPM_OVS_TCPDUMP_PYTHON_AARCH64:-$(echo $RPM_OVS_TCPDUMP_PYTHON | sed 's/x86_64/aarch64/g')}
 
 if [[ "$arch_test" == "x86_64" ]]; then
-	server="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
-	client="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
-	server_driver="sfc"
-	client_driver="i40e"
+	server="002-r760-ee58u04.anl.eng.rdu2.dc.redhat.com"
+	client="001-r760-ee58u02.anl.eng.rdu2.dc.redhat.com"
+	server_driver="i40e"
+	client_driver="sfc"
 elif [[ "$arch_test" == "aarch64" ]]; then
-	server="netqe24.knqe.eng.rdu2.dc.redhat.com"
-	client="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	server="netqe49.knqe.eng.rdu2.dc.redhat.com"
+	client="netqe24.knqe.eng.rdu2.dc.redhat.com"
 	server_driver="mlx5_core"
 	client_driver="mlx5_core"
 	ovs_rpm_name=$(echo $RPM_OVS_AARCH64 | awk -F "/" '{print $NF}')

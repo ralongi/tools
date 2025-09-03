@@ -6,17 +6,7 @@ dbg_flag=${dbg_flag:-"set -x"}
 $dbg_flag
 pushd ~/git/my_fork/kernel/networking/openvswitch/sanity_check
 fdp_release_dir=$(echo $FDP_RELEASE | tr -d [" ".])
-#dut=${dut:-"netqe21.knqe.lab.eng.bos.redhat.com"}
 dut=${dut:-"netqe05.knqe.eng.rdu2.dc.redhat.com"}
-if [[ -z $arch ]]; then
-	if [[ $dut == "netqe49.knqe.eng.rdu2.dc.redhat.com" ]]; then
-		arch="aarch64"
-		RPM_OVS=$(echo $RPM_OVS | sed 's/x86_64/aarch64/g')
-		image_name="rhel9.4.aarch64.64k.qcow2"
-	else
-		arch="x86_64"
-	fi
-fi
 
 if [[ $(echo $COMPOSE | awk -F - '{print $2}' | awk -F '.' '{print $1}') -lt 10 ]]; then
 	locate_pkg=mlocate
@@ -40,8 +30,8 @@ fi
 
 ovs_rpm_name=$(echo $RPM_OVS | awk -F "/" '{print $NF}')
 NIC_DRIVER=${NIC_DRIVER:-"i40e"}
-netscout_pair1=${netscout_pair1:-"NETQE32_P3P1 XENA_M5P0"}
-netscout_pair2=${netscout_pair2:-"NETQE32_P3P2 XENA_M5P1"}
+#netscout_pair1=${netscout_pair1:-"NETQE32_P3P1 XENA_M5P0"}
+#netscout_pair2=${netscout_pair2:-"NETQE32_P3P2 XENA_M5P1"}
 skip_traffic_tests=${skip_traffic_tests:-"yes"}
 product="cpe:/o:redhat:enterprise_linux"
 retention_tag="active+1"
