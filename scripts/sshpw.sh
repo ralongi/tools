@@ -57,7 +57,7 @@ pw_file=~/password_list.txt
 rm -f "$pw_file"
 
 cat <<-EOF > $pw_file
-	QwAo2U6GRxyNPKiZaOCx
+	mVPVY3eKiHgbEWGKxuLX
 	100yard-
 	fo0m4nchU
 	redhat
