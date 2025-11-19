@@ -122,7 +122,7 @@ get_latest_driverctl()
     download_server="download.devel.redhat.com"
     timeout 5s bash -c "curl -sL http://$download_server/brewroot/packages/driverctl"
     if [[ $? -ne 0 ]]; then
-    	download_server="download.eng.bos.redhat.com"
+    	download_server="download.engineering.redhat.com"
     	timeout 5s bash -c "curl -sL http://$download_server/brewroot/packages/driverctl"
 		if [[ $? -ne 0 ]]; then
 			echo "The driverctl package download servers are unreachable"
@@ -259,11 +259,11 @@ fi
 # Comment out below since DPDK packages are now included with openvswitch
 #if [[ -z $RPM_DPDK ]] || [[ -z $RPM_DPDK_TOOLS ]]; then
 #	if [[ $(echo $COMPOSE | grep RHEL-8) ]]; then
-#		export RPM_DPDK=https://download.eng.bos.redhat.com/brewroot/vol/rhel-8/packages/dpdk/21.11/2.el8_6/x86_64/dpdk-21.11-2.el8_6.x86_64.rpm
-#		export RPM_DPDK_TOOLS=https://download.eng.bos.redhat.com/brewroot/vol/rhel-8/packages/dpdk/21.11/2.el8_6/x86_64/dpdk-tools-21.11-2.el8_6.x86_64.rpm
+#		export RPM_DPDK=https://download.engineering.redhat.com/brewroot/vol/rhel-8/packages/dpdk/21.11/2.el8_6/x86_64/dpdk-21.11-2.el8_6.x86_64.rpm
+#		export RPM_DPDK_TOOLS=https://download.engineering.redhat.com/brewroot/vol/rhel-8/packages/dpdk/21.11/2.el8_6/x86_64/dpdk-tools-21.11-2.el8_6.x86_64.rpm
 #	elif [[ $(echo $COMPOSE | grep RHEL-9) ]]; then
-#		export RPM_DPDK=https://download.eng.bos.redhat.com/brewroot/vol/rhel-9/packages/dpdk/21.11/2.el9_0/x86_64/dpdk-21.11-2.el9_0.x86_64.rpm
-#		export RPM_DPDK_TOOLS=https://download.eng.bos.redhat.com/brewroot/vol/rhel-9/packages/dpdk/21.11/2.el9_0/x86_64/dpdk-tools-21.11-2.el9_0.x86_64.rpm
+#		export RPM_DPDK=https://download.engineering.redhat.com/brewroot/vol/rhel-9/packages/dpdk/21.11/2.el9_0/x86_64/dpdk-21.11-2.el9_0.x86_64.rpm
+#		export RPM_DPDK_TOOLS=https://download.engineering.redhat.com/brewroot/vol/rhel-9/packages/dpdk/21.11/2.el9_0/x86_64/dpdk-tools-21.11-2.el9_0.x86_64.rpm
 #	fi
 #fi
 
