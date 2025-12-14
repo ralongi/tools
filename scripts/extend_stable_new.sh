@@ -8,7 +8,9 @@ if [[ $machine ]]; then
 	echo "Reserve time on $machine being extended by $extend_time seconds"
 	bkr watchdog-extend --by=$extend_time "$machine"
 else
-	bkr job-list --mine --w "Stable system" --w "tasks on" --unfinished > ~/stable_jobs.txt
+	rm -f ~/stable_jobs.txt
+	bkr job-list --mine --w "Stable system" --w "tasks on" --unfinished >> ~/stable_jobs.txt
+	bkr job-list --mine --w "Stable system" --unfinished >> ~/stable_jobs.txt
 	bkr job-list --mine --w "Reserve" --unfinished >> ~/stable_jobs.txt
 	job_list=$(cat ~/stable_jobs.txt | tr -d '[",]')
 	echo "Stable system jobs being extended by $extend_time seconds: $job_list"
