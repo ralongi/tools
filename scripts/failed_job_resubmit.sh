@@ -14,7 +14,8 @@ pushd ~
 
 task_name=$(bkr job-results J:$job_id --prettyxml | grep 'task name=' | grep -Ev 'distribution|crash|netscout' | head -1 | awk -F'"' '{print $2}')
 old_compose=$(bkr job-results J:$job_id --prettyxml | grep DISTRO_BUILD | head -1 | awk -F '"' '{print $4}')
-old_compose_ver=$(echo $old_compose | awk -F '-' '{print $2}' |  sed 's/.0//g')
+#old_compose_ver=$(echo $old_compose | awk -F '-' '{print $2}' |  sed 's/.0//g')
+old_compose_ver=$(echo $old_compose | awk -F '-' '{print $2}')
 /home/ralongi/github/tools/scripts/get_kernel_from_compose.sh $old_compose_ver
 if [[ $? -ne 0 ]]; then
 	/home/ralongi/github/tools/scripts/get_beaker_compose_id.sh $old_compose_ver
