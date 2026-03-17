@@ -3,11 +3,12 @@
 $dbg_flag
 
 start_date=${start_date:-$(date +%F)}
-end_date="2026-04-03"
+end_date=${end_date:-"2026-04-03"}
+#end_date="2026-04-03"
 
 count_mondays() {
   start_date=$start_date
-  end_date="2026-04-03"
+  end_date=$end_date
   count=0
 
   # Convert dates to timestamps
